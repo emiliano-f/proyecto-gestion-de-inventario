@@ -5,10 +5,10 @@ Primero se deben instalar todas las dependencias del frontend que se encuentran 
 
     pip install -r requirements.py
 
-...
+
 
 Luego se ejecuta la aplicación
 
     yarn run dev
 
-...
+
