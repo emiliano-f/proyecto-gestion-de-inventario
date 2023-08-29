@@ -4,11 +4,11 @@ import {BiEdit} from "react-icons/bi"
 import {HiOutlineEye} from "react-icons/hi"
 import {MdAddCircle} from "react-icons/md"
 
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState,useEffect } from "react";
 import { ListItems ,resources,GetUrlParts } from "../Api/apiService";
 
-export default function ItemList() : React.ReactNode{
+function ItemList() : React.ReactNode{
     const {module:moduleName,item:itemName} = GetUrlParts();
     const [items,setItems]= useState([]);
     useEffect(() => {
@@ -104,3 +104,5 @@ function AddButtons({item}:any){
         </>
     );
 }
+
+export default ItemList;
