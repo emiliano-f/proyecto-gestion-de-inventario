@@ -1,19 +1,23 @@
-**/__pycache__/*
-
 # venv
+./venv
+./.venv
+.venv
+venv
 venv/
 
 # db
 *.sqlite3
 
 #pyCache
+**/__pycache__/*
 /*/__pycache__
 */__pycache__
 __pycache__
+
+
+#vsCode
+.vscode
+
+# Archivos
 *.dot
-*.sqlite3
 *.png
-./venv
-./.venv
-.venv
-venv
