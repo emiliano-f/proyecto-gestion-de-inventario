@@ -1,6 +1,6 @@
 import {Outlet} from "react-router-dom";
 
-export default function Home() : React.ReactNode{
+const Home: React.FC = () => {
     return(
         <>
         <div>
@@ -14,3 +14,5 @@ export default function Home() : React.ReactNode{
         </>
     );
 }
+
+export default Home;

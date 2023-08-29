@@ -1,13 +1,11 @@
 import axios from "axios"
 import {useEffect} from "react";
-import { Link, useParams,useLocation } from "react-router-dom";
-
-type setFunction = React.Dispatch<React.SetStateAction<any>>;
+import { Link, useParams,useLocation, ActionFunctionArgs } from "react-router-dom";
 
 const inventarioAPI = axios.create()
 inventarioAPI.defaults.baseURL = "http://127.0.0.1:8000"
 
-export function ListItems(setItems : setFunction) : any {
+export function ListItems(setItems : any) : any {
     const {item,module} = GetUrlParts();
     const url = `${module}/${item}/`;;      
     useEffect(() => {
@@ -19,7 +17,7 @@ export function ListItems(setItems : setFunction) : any {
     },[url,setItems]);
 }
 
-export function ReadItem(setItem : setFunction) : any {
+export function ReadItem(setItem:any) : any {
     const {item,module} = GetUrlParts();
     const {id} = useParams()
     const url = `${module}/${item}/${id}`;
