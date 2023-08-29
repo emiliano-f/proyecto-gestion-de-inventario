@@ -6,7 +6,7 @@ import {MdAddCircle} from "react-icons/md"
 
 import {Link} from "react-router-dom";
 import { useState,useEffect } from "react";
-import { ListItems ,resources,GetUrlParts } from "../components/Api/apiService";
+import { ListItems ,resources,GetUrlParts } from "../Api/apiService";
 
 export function ItemList(){
     const {module:moduleName,item:itemName} = GetUrlParts();

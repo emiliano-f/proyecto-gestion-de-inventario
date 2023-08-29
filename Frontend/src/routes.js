@@ -4,8 +4,9 @@ import Home from "./pages/HomePage";
 import About from "./pages/AboutPage";
 import Dashboard from "./pages/DashboardPage";
 import ErrorPage from "./pages/ErrorPage"
-import {ItemList}  from "./pages/ItemListPage";
-import {CreateForm,ReadForm,UpdateForm,DeleteForm} from "./pages/ItemDetailPage";
+
+import {ItemList}  from "./components/List/List";
+import {CreateForm,ReadForm,UpdateForm,DeleteForm} from "./components/Form/Form";
 import {ReadItem,FormSubmitter,FormLoader} from "./components/Api/apiService";
 import { resources } from "./components/Api/apiService";
 
@@ -38,7 +39,7 @@ import { resources } from "./components/Api/apiService";
 
 
 /**
- * Geenra las rutas a partir de un json
+ * Genera las rutas a partir de un json
  * @param {*} itemNames 
  * @returns 
  */
@@ -55,25 +56,21 @@ function getItemRoutes(){
         {
           path: `${module}/${item}/create/`,
           element: <CreateForm/>,
-          loader: FormLoader,
           action: FormSubmitter
         },
         {
           path: `${module}/${item}/read/:id`,
           element: <ReadForm/>,
-          loader: FormLoader,
           action: ReadItem
         },
         {
           path: `${module}/${item}/update/:id`,
           element: <UpdateForm/>,
-          loader: FormLoader,
           action: FormSubmitter
         },
         {
           path: `${module}/${item}/delete/:id`,
           element: <DeleteForm/>,
-          loader: FormLoader,
           action: FormSubmitter
         }];
         routes = routes.concat(newRoutes)
@@ -87,8 +84,10 @@ function getItemRoutes(){
     );
     return routes;
   }
-
-  var routes = [
+/**
+ * Array que contiene los objetos que definen las rutas de la aplicación
+ */
+var routes = [
   {
     path: "/",
     loader: () => (redirect("/home"))
