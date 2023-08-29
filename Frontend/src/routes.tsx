@@ -1,7 +1,7 @@
 import { RouteObject, createBrowserRouter,redirect} from "react-router-dom";
 
 import Home from "./pages/HomePage";
-import About from "./pages/AboutPage";
+import About from "./pages/martinPages/AboutPage";
 import Dashboard from "./pages/DashboardPage";
 import ErrorPage from "./pages/ErrorPage"
 import ItemList  from "./components/List/List";
