@@ -1,4 +1,4 @@
-import {Form, Link, useLoaderData} from "react-router-dom";
+import {Form, Link, redirect, useLoaderData} from "react-router-dom";
 import {ReadItem,resources,GetUrlParts} from "../Api/apiService";
 import { useState } from "react";
 
@@ -9,13 +9,13 @@ import { useState } from "react";
  * @param {*} setData 
  * @returns 
  */
-const handleInputChange = (item,att,setData) => (event)=> {
-    setData((item) => ({ ...item, [att]: event.target.value }))
+const handleInputChange = (item:any,att:any,setData:any) => (event:any)=> {
+    setData((item:any) => ({ ...item, [att]: event.target.value }))
 }
 
-function ItemForm(op){
+function ItemForm(op:any){
     const {module : moduleName,item : itemName} = GetUrlParts()
-    const [itemObj,setItemObj]= useState(useLoaderData() || [])
+    const [itemObj,setItemObj] :any= useState(useLoaderData() || [])
     const attributes = resources[moduleName][itemName]
     if(op!=="Create"){
         ReadItem(setItemObj)
@@ -25,7 +25,7 @@ function ItemForm(op){
         case "Create":{form = <>
             <h1>Crear nuevo {itemName}</h1>
             <Form method="POST">
-                {attributes.map((att,index)=>{
+                {attributes.map((att:any,index:any)=>{
                     if(index!==0){
                         return(<div key={index} >{att}<input type="text"  value={itemObj[att]||''} name={att} onChange={handleInputChange(itemObj,att,setItemObj)}/></div>);
                     }else{
@@ -39,7 +39,7 @@ function ItemForm(op){
         case "Read":{form = <>
             <h1>Ver {itemName}</h1>
             <Form method="GET">
-                {attributes.map((att,index)=>{return(
+                {attributes.map((att:any,index:any)=>{return(
                 <div key={index}>{att}<input type="text" name={att} value={itemObj[att]||''} onChange={handleInputChange(itemObj,att,setItemObj)}disabled/></div>)})}
                 <button type="submit" disabled>Modificar</button>
             </Form>
@@ -48,20 +48,22 @@ function ItemForm(op){
         case "Update":{form = <>
             <h1>Modificar {itemName}</h1>
             <Form method="PUT">
-                {attributes.map((att,index)=>{return(<div key={index}>{att}<input type="text" name={att} value={itemObj[att]||''} onChange={handleInputChange(itemObj,att,setItemObj)}/></div>)})}
+                {attributes.map((att:any,index:any)=>{return(<div key={index}>{att}<input type="text" name={att} value={itemObj[att]||''} onChange={handleInputChange(itemObj,att,setItemObj)}/></div>)})}
                 <button type="submit">Modificar</button>
             </Form>
         </>}
         break;
         case "Delete":{form = <> 
             <h1>Eliminar {itemName}</h1>
-            <Form method="DELETE" to="../../" relative="path">
-                {attributes.map((att,index)=>{return(<div key={index}>{att}<input type="text" name={att} value={itemObj[att]||''} state={{op:'Delete'}} disabled/></div>)})}
+            <Form method="DELETE" relative="path">
+                {attributes.map((att:any,index:any)=>{return(<div key={index}>{att}<input type="text" name={att} value={itemObj[att]||''} disabled/></div>)})}
                <button type="submit">Eliminar</button>
             </Form>
         </>}
         break;
-        default:{}
+        default:{
+
+        } 
     }
     return(
     <div>
@@ -70,15 +72,15 @@ function ItemForm(op){
     </div>);
 }
 
-export function CreateForm(){
+export function CreateForm():React.ReactNode{
     return ItemForm("Create")
 }
-export function UpdateForm(){
+export function UpdateForm():React.ReactNode{
     return ItemForm("Update")
 }
-export function ReadForm(){
+export function ReadForm():React.ReactNode{
     return ItemForm("Read")
 }
-export function DeleteForm(){
+export function DeleteForm():React.ReactNode{
     return ItemForm("Delete")
 }

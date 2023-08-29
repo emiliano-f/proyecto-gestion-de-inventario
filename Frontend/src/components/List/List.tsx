@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 import { useState,useEffect } from "react";
 import { ListItems ,resources,GetUrlParts } from "../Api/apiService";
 
-export function ItemList(){
+export default function ItemList() : React.ReactNode{
     const {module:moduleName,item:itemName} = GetUrlParts();
     const [items,setItems]= useState([]);
     useEffect(() => {
@@ -17,7 +17,7 @@ export function ItemList(){
       }, [window.location.href]);
     try{
         ListItems(setItems);
-    }catch(Error){
+    }catch(error:any){
         throw new Error(`El recurso ${itemName} no existe.`)
     }
     return(
@@ -31,7 +31,7 @@ export function ItemList(){
     );
 }
 
-function BuildTable(moduleName,itemName,items){
+function BuildTable(moduleName:any,itemName:any,items:any){
     const [table,setTable] = useState(<h3>La lista esta vacía</h3>);
     useEffect(()=>{
         if (items.length > 0){
@@ -51,12 +51,12 @@ function BuildTable(moduleName,itemName,items){
     return (table);
 }
 
-function FillHeader({moduleName,itemName}){
+function FillHeader({moduleName,itemName} :any ){
     const header = resources[moduleName][itemName]
     return(
         <>
             <tr>{ 
-                header.map((itemAtt,index) => {
+                header.map((itemAtt:any,index:any) => {
                     return (<th key={index}>{itemAtt}</th>)
                 })
             }
@@ -66,13 +66,13 @@ function FillHeader({moduleName,itemName}){
     );
 }
 
-function FillRows({items}){
-    const list = items.map((item) => {
+function FillRows({items}:any){
+    const list = items.map((item:any) => {
         //console.log(item)
         var values = Object.values(item)
         return(
             <tr key={item.id}>{
-            values.map((att,index) => {
+            values.map((att:any,index) => {
                     return <th key={index}>{att}</th> 
                 })
             }
@@ -83,7 +83,7 @@ function FillRows({items}){
     return list
 }
 
-function AddButtons({item}){
+function AddButtons({item}:any){
     return(
         <>
         <th>
