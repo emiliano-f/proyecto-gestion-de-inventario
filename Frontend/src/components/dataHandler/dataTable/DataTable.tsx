@@ -1,6 +1,9 @@
 import { DataGrid, GridColDef, GridToolbar} from "@mui/x-data-grid";
 import "./dataTable.scss"
 import { Link } from "react-router-dom";
+import { BsTrash } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
+import { HiOutlineEye } from "react-icons/hi";
 
 
 type Props = {
@@ -22,6 +25,7 @@ export const DataTable = (props: Props) => {
         headerName: "Action",
         width: 200,
         renderCell: (params) => {
+
             return(
                 <div className="action">
                     <Link to={`/${props.slug}/${params.row.id}`}>
@@ -29,6 +33,21 @@ export const DataTable = (props: Props) => {
                     </Link>
                     <div className="delete" onClick={()=>handleDelete(params.row.id)}>
                         <img src="/delete.svg" alt="" />
+                    </div>
+                    <div>
+                        <Link to={`Read/${params.row.id}`}>
+                            <button><HiOutlineEye/></button>
+                        </Link>
+                    </div>
+                    <div>
+                        <Link to={`Update/${params.row.id}`}>
+                        <button><BiEdit/></button>
+                        </Link>
+                    </div>
+                    <div>
+                        <Link to={`Delete/${params.row.id}`}>
+                            <button><BsTrash/></button>
+                        </Link>
                     </div>
                 </div>  
             )

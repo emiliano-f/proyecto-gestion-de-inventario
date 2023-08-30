@@ -11,15 +11,19 @@ import { ListItems ,resources,GetUrlParts } from "../Api/apiService";
 function ItemList() : React.ReactNode{
     const {module:moduleName,item:itemName} = GetUrlParts();
     const [items,setItems]= useState([]);
+    
+    
     useEffect(() => {
         // Restablecer la variable al valor predeterminado
         setItems([]);
-      }, [window.location.href]);
+    }, [window.location.href]);
+    
     try{
         ListItems(setItems);
     }catch(error:any){
         throw new Error(`El recurso ${itemName} no existe.`)
     }
+    
     return(
         <div className="view-details">
             <h1>Tabla de {itemName}</h1>

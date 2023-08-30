@@ -1,14 +1,12 @@
 import { RouteObject, createBrowserRouter,redirect} from "react-router-dom";
 
-import Home from "./pages/HomePage";
-import About from "./pages/martinPages/AboutPage";
+import Home from "../../pages/home/Home";
 import Dashboard from "./pages/DashboardPage";
-import ErrorPage from "./pages/ErrorPage"
 import ItemList  from "./components/List/List";
 import {CreateForm,ReadForm,UpdateForm,DeleteForm} from "./components/Form/Form";
+import {ReadItem,FormSubmitter} from "./components/Api/apiService";
 
 import { resources } from "./components/Api/apiService";
-import {ReadItem,FormSubmitter} from "./components/Api/apiService";
 
 /*información: https://reactrouter.com/en/main/route/route*/
 
@@ -20,8 +18,7 @@ function getItemRoutes(){
         const newRoutes:RouteObject[]= [
         {
           path:`${module}/${item}`,
-          element: <ItemList />,
-          errorElement: <ErrorPage />
+          element: <ItemList />
         },
         {
           path: `${module}/${item}/create/`,

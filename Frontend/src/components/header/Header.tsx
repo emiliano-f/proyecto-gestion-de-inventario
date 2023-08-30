@@ -1,6 +1,6 @@
 import "./navbar.scss"
 
-function Navbar() {
+function Header() {
   return (
     <div className="navbar">
       <div className="logo">
@@ -27,4 +27,4 @@ function Navbar() {
   )
 }
 
-export default Navbar
+export default Header

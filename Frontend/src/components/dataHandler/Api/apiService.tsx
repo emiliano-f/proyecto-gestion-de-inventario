@@ -30,11 +30,6 @@ export function ReadItem(setItem:any) : any {
     },[url,setItem]);
 }
 
-export async function FormLoader({request} : any) : Promise<any> {
-    //let url = new URL(request.url);
-    return(null)
-}
-
 export async function FormSubmitter({request,params} : any) : Promise<any> {
     
     //importante que la url este correcta
