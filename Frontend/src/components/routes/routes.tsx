@@ -1,12 +1,9 @@
 import { RouteObject, createBrowserRouter,redirect} from "react-router-dom";
 
 import Home from "../../pages/home/Home";
-import Dashboard from "./pages/DashboardPage";
-import ItemList  from "./components/List/List";
-import {CreateForm,ReadForm,UpdateForm,DeleteForm} from "./components/Form/Form";
-import {ReadItem,FormSubmitter} from "./components/Api/apiService";
-
-import { resources } from "./components/Api/apiService";
+import ItemList  from "../../pages/listItem/ListItem";
+import {CreateForm,ReadForm,UpdateForm,DeleteForm} from "../martinComps/Form/Form";
+import {ReadItem,FormSubmitter,resources} from "../dataHandler/Api/apiService";
 
 /*información: https://reactrouter.com/en/main/route/route*/
 
@@ -62,22 +59,10 @@ var routes = [
   },
   {
     path: "/home",
-    loader: () => ( redirect("/Dashboard")),
     element: <Home/>,
-    children: [
-      {
-        index:true,
-        path:"/home/about",
-        element: <About/>
-      }
-    ]
-  },
-  {
-    path: "/Dashboard/",
-    element: <Dashboard/> ,
-    children : getItemRoutes()
+    children : getItemRoutes(),
   }
 ];
-
+console.log(routes)
 const router = createBrowserRouter(routes);
 export default router;

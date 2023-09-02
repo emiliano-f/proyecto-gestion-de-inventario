@@ -1,8 +1,8 @@
-import "./navbar.scss"
+import "./header.scss"
 
 function Header() {
   return (
-    <div className="navbar">
+    <div className="header">
       <div className="logo">
         <img src="logo.png" alt="" />
         <span>Mantenimiento</span>

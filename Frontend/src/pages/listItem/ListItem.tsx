@@ -1,11 +1,11 @@
-import "./users.scss"
+import "./listItem.scss"
 
 import { useState } from "react";
 
 import { GridColDef } from "@mui/x-data-grid";
-import { DataTable } from "../../components/dataTable/DataTable"
-import { Add } from "../../components/add/Add";
-import { getColumns } from "../../components/tableHeaderBuilder/TableHeaderBuilder"
+import { DataTable } from "../../components/dataHandler/dataTable/DataTable"
+import { Add } from "../../components/dataHandler/addItem/AddItem";
+import  getColumnsToExport  from "../../components/dataHandler/tableHeaderBuilder/TableHeaderBuilder"
 import { GetUrlParts } from "../../components/dataHandler/Api/apiService";
 import { ListItems as getItems } from "../../components/dataHandler/Api/apiService";
 
@@ -15,7 +15,7 @@ const ListItem = () => {
 
     getItems(setItems);
     const {module,item:itemName} = GetUrlParts();
-    const columns: GridColDef[] = getColumns(module);
+    const columns: GridColDef[] = getColumnsToExport(module);
     
     return (
         <div className="listItem">

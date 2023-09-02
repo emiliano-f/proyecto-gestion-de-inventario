@@ -1,5 +1,5 @@
 import {Form, Link, redirect, useLoaderData} from "react-router-dom";
-import {ReadItem,resources,GetUrlParts} from "../Api/apiService";
+import {ReadItem,resources,GetUrlParts} from "../../dataHandler/Api/apiService";
 import { useState } from "react";
 
 /**
