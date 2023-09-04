@@ -22,12 +22,12 @@ function getRoutes(){
   var routes :RouteObject[] = [];
   sideBarContent.forEach((section) => {
     section.modules.forEach((module) => {
-        /*routes.push(
+        routes.push(
           {
             path:module.url,
-            element:<Resume/>
+            loader: () => {return redirect("/inventario/insumos/") }
           }
-        );*/
+        );
         module.items?.forEach((item)=>{
           routes = routes.concat([
             {
@@ -53,7 +53,12 @@ function getRoutes(){
 
 
 /**
- * Arreglo que contiene todas las rutas de la aplicación
+ * Arreglo que contiene todas lasconst backendUrls: Record<string,string>  ={
+    "insumos":"/inventario/insumos",
+    "tipos-insumo":"/inventario/tiposInsumo",
+    "Herramientas":"/inventario/herramienta",
+    "Tipo De Herramienta":"/inventario/tipoHerramienta",
+} rutas de la aplicación
  */
 var routes = [
   {

@@ -1,6 +1,7 @@
 import axios from "axios"
 import {useEffect} from "react";
 import { Link, useParams,useLocation, ActionFunctionArgs } from "react-router-dom";
+import Accordion from 'react-bootstrap/Accordion';
 
 const inventarioAPI = axios.create()
 inventarioAPI.defaults.baseURL = "http://127.0.0.1:8000"
@@ -13,7 +14,7 @@ const backendUrls: Record<string,string>  ={
 }
 
 export function ListItems(setItems : any, itemName : string) : any {
-    console.log(itemName)
+    //console.log(itemName)
     useEffect(() => {
         async function loadItems(){
             await inventarioAPI.get(backendUrls[itemName])
@@ -30,7 +31,7 @@ export function ListItems(setItems : any, itemName : string) : any {
 
 export function ReadItem(setItem:any,itemName:string) : any {
     const {id} = useParams()
-    console.log(backendUrls[itemName]+`/${id}`)
+    //console.log(backendUrls[itemName]+`/${id}`)
     useEffect(() => {
         async function loadItem(){
             const jsonItem = await inventarioAPI.get(backendUrls[itemName]+`/${id}`);
