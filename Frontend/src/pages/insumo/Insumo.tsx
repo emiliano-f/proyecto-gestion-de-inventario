@@ -1,8 +1,7 @@
-import "./item.scss"
+import "./insumo.scss"
 import Single from "../../components/single/Single"
 import { singleItem } from "../../data"
-
-const Item = () => {
+const Insumo = () => {
 
     // Fetch data and send to Single Component
     return (
@@ -12,4 +11,4 @@ const Item = () => {
     )
 }
 
-export default Item
+export default Insumo

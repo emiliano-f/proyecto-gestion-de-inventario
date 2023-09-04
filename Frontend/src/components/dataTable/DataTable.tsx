@@ -1,9 +1,8 @@
-import { DataGrid, GridColDef, GridToolbar} from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import "./dataTable.scss"
 import { Link } from "react-router-dom";
-import { BsTrash } from "react-icons/bs";
-import { BiEdit } from "react-icons/bi";
-import { HiOutlineEye } from "react-icons/hi";
+// import { useEffect } from "react";
+// import axios from "axios";
 
 
 type Props = {
@@ -12,10 +11,12 @@ type Props = {
     slug: string
 }
 
-const handleDelete = (id:number) => {
+const handleDelete = (slug: string, id: number) => {
     // delete the item
     // axios.delete(`/api/${slug}/id)
-    console.log(id + " has been deleted!")
+    // axios.delete(`http://127.0.0.1:8000/${slug}/${id}`);
+
+    console.log(id + ": no se puede borrar. Método no permitido")
 }
 
 export const DataTable = (props: Props) => {
@@ -25,34 +26,18 @@ export const DataTable = (props: Props) => {
         headerName: "Action",
         width: 200,
         renderCell: (params) => {
-
-            return(
+            return (
                 <div className="action">
                     <Link to={`/${props.slug}/${params.row.id}`}>
                         <img src="/view.svg" alt="" />
                     </Link>
-                    <div className="delete" onClick={()=>handleDelete(params.row.id)}>
+                    <div className="delete" onClick={() => handleDelete(props.slug, params.row.id)}>
                         <img src="/delete.svg" alt="" />
                     </div>
-                    <div>
-                        <Link to={`Read/${params.row.id}`}>
-                            <button><HiOutlineEye/></button>
-                        </Link>
-                    </div>
-                    <div>
-                        <Link to={`Update/${params.row.id}`}>
-                        <button><BiEdit/></button>
-                        </Link>
-                    </div>
-                    <div>
-                        <Link to={`Delete/${params.row.id}`}>
-                            <button><BsTrash/></button>
-                        </Link>
-                    </div>
-                </div>  
+                </div>
             )
         }
-    }    
+    }
 
     return (
         <div className="dataTable">
@@ -67,21 +52,21 @@ export const DataTable = (props: Props) => {
                         },
                     },
                 }}
-                slots={{toolbar:GridToolbar}}
+                slots={{ toolbar: GridToolbar }}
                 slotProps={{
-                    toolbar:{
-                        showQuickFilter:true,
-                        quickFilterProps:{debounceMs: 500},
+                    toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
 
                     }
                 }}
                 pageSizeOptions={[5]}
                 checkboxSelection
                 disableRowSelectionOnClick
-            
+
                 disableDensitySelector
                 disableColumnSelector
-                />
+            />
         </div>
     )
 }

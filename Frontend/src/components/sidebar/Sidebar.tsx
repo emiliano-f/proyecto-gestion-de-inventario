@@ -4,16 +4,16 @@ import "./sidebar.scss"
 function Sidebar() {
     return (
         <div className="sidebar">
-            {sidebarContent.map((module) => (
-                <div className="item" key={module.id}>
-                <span className="title">{module.title}</span>
-                {module.listItems.map((listItem) => (
-                    <Link to={listItem.url} className="listItem" key={listItem.id}>
-                        <img src={listItem.icon} alt="" />
-                        <span className="listItemTitle">{listItem.title}</span>
-                    </Link>
-                ))}               
-            </div>
+            {sideBarContent.map((item) => (
+                <div className="item" key={item.id}>
+                    <span className="title">{item.title}</span>
+                    {item.listItems.map((listItem) => (
+                        <Link to={listItem.url} className="listItem" key={listItem.id}>
+                            <img src={listItem.icon} alt="" />
+                            <span className="listItemTitle">{listItem.title}</span>
+                        </Link>
+                    ))}
+                </div>
             ))}
         </div>
     );
@@ -21,8 +21,8 @@ function Sidebar() {
 
 export default Sidebar
 
-//Modificar menu
-const sidebarContent = [
+
+export const sideBarContent = [
     {
         id: 1,
         title: "main",
@@ -31,13 +31,13 @@ const sidebarContent = [
                 id: 1,
                 title: "Home",
                 url: "/",
-                icon: "home.svg",
+                icon: "/home.svg",
             },
             {
                 id: 2,
                 title: "Perfil",
                 url: "/users/1",
-                icon: "user.svg",
+                icon: "/user.svg",
             },
         ],
     },
@@ -49,29 +49,48 @@ const sidebarContent = [
                 id: 1,
                 title: "Usuarios",
                 url: "/users",
-                icon: "user.svg",
+                icon: "/user.svg",
+
             },
             {
                 id: 2,
-                title: "Inventario",
-                url: "/inventory",
-                icon: "product.svg",
+                title: "Insumos",
+                url: "/inventario/insumos",
+                /*
+                tables: [
+                    "insumos",
+                    "tipoInsumos"
+                ]
+                */
+                icon: "/product.svg",
             },
             {
                 id: 3,
-                title: "Órdenes",
-                url: "/orders",
-                icon: "order.svg",
+                title: "Tipos de Insumo",
+                url: "/inventario/tipos-insumo",
+                /*
+                tables: [
+                    "insumos",
+                    "tipoInsumos"
+                ]
+                */
+                icon: "/product.svg",
             },
             {
                 id: 4,
+                title: "Órdenes",
+                url: "/orders",
+                icon: "/order.svg",
+            },
+            {
+                id: 5,
                 title: "Tareas",
                 url: "/posts",
-                icon: "post2.svg",
+                icon: "/post2.svg",
             },
         ],
     },
-    
+
     {
         id: 4,
         title: "Maintenance",
@@ -80,13 +99,13 @@ const sidebarContent = [
                 id: 1,
                 title: "Settings",
                 url: "/",
-                icon: "setting.svg",
+                icon: "/setting.svg",
             },
             {
                 id: 2,
                 title: "Backups",
                 url: "/",
-                icon: "backup.svg",
+                icon: "/backup.svg",
             },
         ],
     },
@@ -98,13 +117,13 @@ const sidebarContent = [
                 id: 1,
                 title: "Charts",
                 url: "/",
-                icon: "chart.svg",
+                icon: "/chart.svg",
             },
             {
                 id: 2,
                 title: "Logs",
                 url: "/",
-                icon: "log.svg",
+                icon: "/log.svg",
             },
         ],
     },

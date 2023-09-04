@@ -1,11 +1,11 @@
 import {RouterProvider} from 'react-router-dom'
-import router from './components/routes/routes'
+
+import "./styles/global.scss"
+import router from './routes/routes'
 
 function App(){
     return (
-      <>
-        <RouterProvider router={router} />
-      </>
+      <RouterProvider router={router} />
     );
 }
 

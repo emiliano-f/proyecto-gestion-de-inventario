@@ -1,13 +1,15 @@
-import { RouteObject, createBrowserRouter,redirect} from "react-router-dom";
+import { RouteObject, createBrowserRouter, redirect } from "react-router-dom";
 
-import Home from "../../pages/home/Home";
-import ItemList  from "../../pages/listItem/ListItem";
-import {CreateForm,ReadForm,UpdateForm,DeleteForm} from "../martinComps/Form/Form";
-import {ReadItem,FormSubmitter,resources} from "../dataHandler/Api/apiService";
+
+import Dashboard from "../pages/dashboard/Dashboard";
+import Insumos from "../pages/insumos/Insumos";
+import Insumo from "../pages/insumo/Insumo";
+import Login from "../pages/login/Login";
+import Home from "../pages/home/Home";
 
 /*información: https://reactrouter.com/en/main/route/route*/
 
-
+/*
 function getItemRoutes(){
   var routes :RouteObject[] = [];
   Object.keys(resources).forEach((module) => {
@@ -48,21 +50,49 @@ function getItemRoutes(){
     );
     return routes;
   }
+  */
+
 /**
  * Array que contiene los objetos que definen las rutas de la aplicación
  */
 
 var routes = [
+
   {
     path: "/",
-    loader: () => (redirect("/home"))
+    element: <Dashboard />,
+    children: [
+      {
+        path: "/",
+        element: <Home />
+      },
+      {
+        path: "/inventario/insumos",
+        element: <Insumos />
+      },
+
+      {
+        path: "/inventario/insumos/:id",
+        element: <Insumo />
+      },
+      /*
+      {
+        path: "/inventario/tipos-insumo",
+        element: <Insumos />
+      },
+      {
+        path: "/inventario/tipos-insumo/:id",
+        element: <Insumo />
+      }
+      */
+    ]
   },
   {
-    path: "/home",
-    element: <Home/>,
-    children : getItemRoutes(),
+    path: "/login",
+    element: <Login />
   }
 ];
+
 console.log(routes)
 const router = createBrowserRouter(routes);
 export default router;

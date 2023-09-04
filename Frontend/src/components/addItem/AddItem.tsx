@@ -1,6 +1,7 @@
 import { GridColDef } from "@mui/x-data-grid"
 import "./addItem.scss"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 type Props = {
     slug: string,
@@ -21,33 +22,68 @@ export function setItem(item:any) {
 }
 */
 
-export const Add = (props: Props) => {
+const AddItem = (props: Props) => {
 
+    interface formDataType { [key: string]: FormDataEntryValue }
+    const responseBody: formDataType = {}
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        // Prevent the browser from reloading the page
         e.preventDefault();
-        
-        // add new item
-        // setItem(e)
-    }
+        // console.log(e.currentTarget);
+
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+
+        axios.post(`http://127.0.0.1:8000/${props.slug}/`, formData)
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+
+
+        // const formData = new FormData(e.currentTarget);
+
+        // axios.post(`http://127.0.0.1:8000/${props.slug}`,)
+        /*
+        console.log(e.target);
+        // Read the form data
+        const form  = e.currentTarget as HTMLFormElement;
+        const formData = new FormData(form);
+
+        const formJson = Object.fromEntries(formData.entries());
+        //console.log(formJson);
+        //console.log(formData)
+        await axios.post(`localhost:8000/${props.slug}')
+        */
+    };
+
 
     return (
-        <div className="add">
+        <div className="addItem">
             <div className="modal">
-                <span className="close" onClick={()=>props.setOpen(false)}>X</span>
+                <span className="close" onClick={() => props.setOpen(false)}>X</span>
                 <h1>Add new {props.slug}</h1>
-                <form onSubmit={handleSubmit}>
+                <form method="post" onSubmit={handleSubmit}>
                     {props.columns
-                    .filter(item=>item.field !== "id" && item.field !== "img")
-                    .map(column => (
-                        <div className="item">
-                            <label htmlFor="">{column.headerName}</label>
-                            <input type={column.type} placeholder={column.field} />
-                        </div>
-                    ))}
-                    <button>Send</button>
+                        .filter(item => item.field !== "id" && item.field !== "img")
+                        .map(column => (
+                            <div className="item">
+                                <label htmlFor="1">{column.headerName}</label>
+                                <input
+                                    type={column.type}
+                                    name={column.field}
+                                    placeholder={column.field} />
+                            </div>
+                        ))}
+                    <button type="submit">Send</button>
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};
+
+export default AddItem;
