@@ -31,6 +31,7 @@ const AddItem = (props: Props) => {
         // Prevent the browser from reloading the page
         e.preventDefault();
         // console.log(e.currentTarget);
+        
 
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
@@ -66,7 +67,7 @@ const AddItem = (props: Props) => {
         <div className="addItem">
             <div className="modal">
                 <span className="close" onClick={() => props.setOpen(false)}>X</span>
-                <h1>Add new {props.slug}</h1>
+                <h1>Crear nuevo {props.slug}</h1>
                 <form method="post" onSubmit={handleSubmit}>
                     {props.columns
                         .filter(item => item.field !== "id" && item.field !== "img")
@@ -79,7 +80,7 @@ const AddItem = (props: Props) => {
                                     placeholder={column.field} />
                             </div>
                         ))}
-                    <button type="submit">Send</button>
+                    <button type="submit">Crear</button>
                 </form>
             </div>
         </div>

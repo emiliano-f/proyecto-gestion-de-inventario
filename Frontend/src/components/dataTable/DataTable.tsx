@@ -1,4 +1,5 @@
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { useRef } from "react";
 import "./dataTable.scss"
 import { Link } from "react-router-dom";
 // import { useEffect } from "react";
@@ -7,44 +8,41 @@ import { Link } from "react-router-dom";
 
 type Props = {
     columns: GridColDef[],
-    rows: object[],
-    slug: string
-}
-
-const handleDelete = (slug: string, id: number) => {
-    // delete the item
-    // axios.delete(`/api/${slug}/id)
-    // axios.delete(`http://127.0.0.1:8000/${slug}/${id}`);
-
-    console.log(id + ": no se puede borrar. Método no permitido")
+    rows: object[]
 }
 
 export const DataTable = (props: Props) => {
+    const containerRef = useRef(null);
 
     const actionColumn: GridColDef = {
         field: "action",
         headerName: "Action",
-        width: 200,
+        width: 150,
         renderCell: (params) => {
             return (
                 <div className="action">
-                    <Link to={`/${props.slug}/${params.row.id}`}>
-                        <img src="/view.svg" alt="" />
+                    <Link to={`${params.row.id}/`}>
+                        <button className="button"><img src="/read.png" alt="" /></button>
                     </Link>
-                    <div className="delete" onClick={() => handleDelete(props.slug, params.row.id)}>
-                        <img src="/delete.svg" alt="" />
-                    </div>
+                    <Link to={`detail/${params.row.id}/`}>
+                        <button className="button"><img src="/edit.png" alt="" /></button>
+                    </Link>
+                    <Link to={`delete/${params.row.id}/`}>
+                        <button className="button"><img src="/delete.png" alt="" /></button>
+                    </Link>
                 </div>
             )
-        }
+        },
     }
 
+    
     return (
-        <div className="dataTable">
+        <div className="dataTable" ref={containerRef}>
             <DataGrid
                 className="dataGrid"
                 rows={props.rows}
                 columns={[...props.columns, actionColumn]}
+                //columnWidth = {containerRef.current ? containerRef.current.offsetWidth / columns.length : 100}
                 initialState={{
                     pagination: {
                         paginationModel: {
@@ -63,9 +61,10 @@ export const DataTable = (props: Props) => {
                 pageSizeOptions={[5]}
                 checkboxSelection
                 disableRowSelectionOnClick
-
+                autoHeight
                 disableDensitySelector
                 disableColumnSelector
+                
             />
         </div>
     )
