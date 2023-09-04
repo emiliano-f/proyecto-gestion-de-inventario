@@ -36,7 +36,6 @@ class Insumo(models.Model):
         texto = "{0} ({1})"
         return texto.format(self.nombre, self.cantidad)
     
-    
 class TipoHerramienta(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=32)

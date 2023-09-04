@@ -93,6 +93,6 @@ var routes = [
   }
 ];
 
-console.log(routes)
+// console.log(routes)
 const router = createBrowserRouter(routes);
 export default router;
