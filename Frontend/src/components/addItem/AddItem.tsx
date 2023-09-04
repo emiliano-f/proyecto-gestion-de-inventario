@@ -42,7 +42,7 @@ const AddItem = (props: Props) => {
             .catch(function (error) {
                 console.log(error);
             });
-
+                
 
 
         // const formData = new FormData(e.currentTarget);
