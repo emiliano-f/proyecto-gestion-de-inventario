@@ -11,17 +11,6 @@ class InsumoSerializer(serializers.ModelSerializer):
         model = models.Insumo
         fields = '__all__'
 
-class TipoHerramientaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.TipoHerramienta
-        fields = '__all__'
-
-class HerramientaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Herramienta
-        fields = '__all__'
-
-
 class OrdenRetiroSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.OrdenRetiro
@@ -30,9 +19,4 @@ class OrdenRetiroSerializer(serializers.ModelSerializer):
 class AjusteStockSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.AjusteStock
-        fields = '__all__'
-
-class EstadoHerramientaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.EstadoHerramienta
         fields = '__all__'

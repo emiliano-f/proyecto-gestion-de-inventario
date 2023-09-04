@@ -1,11 +1,4 @@
 from django.db import models
-from tarea.models import Tarea
-
-ESTADO_CHOICES = (
-    ('OK', 'OK'),
-    ('En reparación', 'En reparación'),
-    ('Mal estado', 'Mal estado'),
-)
 
 class TipoInsumo(models.Model):
     id = models.AutoField(primary_key=True)
@@ -36,34 +29,10 @@ class Insumo(models.Model):
         texto = "{0} ({1})"
         return texto.format(self.nombre, self.cantidad)
     
-    
-class TipoHerramienta(models.Model):
-    id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=32)
-    descripcion = models.CharField(max_length=256, null=True)
-
-    def __str__(self):
-        texto = "{0}"
-        return texto.format(self.Nombre)
-
-class Herramienta(models.Model):
-    id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=32)
-    tipoHerramienta = models.ForeignKey(TipoHerramienta, on_delete=models.DO_NOTHING)
-    codigo = models.CharField(max_length=16, null=True)
-    estado = models.CharField(max_length=16, choices=ESTADO_CHOICES, default='OK')
-
-    fechaAlta = models.DateTimeField(auto_now=True)
-    observaciones = models.CharField(max_length=255, null=True)
-
-    def __str__(self):
-        texto = "{0} [{1}]"
-        return texto.format(self.nombre, self.estado)    
-        
 class OrdenRetiro(models.Model):
     id = models.AutoField(primary_key=True)
     insumo = models.ForeignKey(Insumo, on_delete=models.DO_NOTHING)
-    tarea = models.ForeignKey(Tarea, on_delete=models.DO_NOTHING)
+    tarea = models.ForeignKey('tarea.Tarea', on_delete=models.DO_NOTHING)
     cantidad = models.IntegerField()
     fechaHora = models.DateTimeField(auto_now=True)
 
@@ -83,9 +52,3 @@ class AjusteStock(models.Model):
             ("-", "-"),
     )
     accionCantidad = models.CharField(max_length=1, choices=ACCION_CANTIDAD, default='+')
-
-class EstadoHerramienta(models.Model):
-    herramienta = models.ForeignKey(Herramienta, on_delete=models.DO_NOTHING)
-    fecha = models.DateTimeField(auto_now=True)
-    estado = models.CharField(max_length=16, choices=ESTADO_CHOICES, default="OK")
-    observaciones = models.CharField(max_length=255, null=True)
