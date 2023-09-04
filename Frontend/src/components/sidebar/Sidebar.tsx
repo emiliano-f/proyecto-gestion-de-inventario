@@ -4,14 +4,17 @@ import "./sidebar.scss"
 function Sidebar() {
     return (
         <div className="sidebar">
-            {sideBarContent.map((item) => (
-                <div className="item" key={item.id}>
-                    <span className="title">{item.title}</span>
-                    {item.listItems.map((listItem) => (
-                        <Link to={listItem.url} className="listItem" key={listItem.id}>
-                            <img src={listItem.icon} alt="" />
-                            <span className="listItemTitle">{listItem.title}</span>
+            {sideBarContent.map((section) => (
+                <div className="section" key={section.id}>
+                    <span className="sectionTitle">{section.title}</span>
+                    {section.modules.map((module) => (
+                        <>
+                        <Link to={module.url} className="module" key={module.id}>
+                            <img src={module.icon} alt="" />
+                            <span className="moduleTitle">{module.title}</span>
                         </Link>
+                        <PrintItems module={module}/>
+                        </>                            
                     ))}
                 </div>
             ))}
@@ -21,12 +24,29 @@ function Sidebar() {
 
 export default Sidebar
 
+function PrintItems({module}: any){
+    var r = <></> 
+    if("items" in module){
+        r = module.items.map((item)=>(
+            <Link to={item.url} className="item" key={item.id}>
+                <span className="itemTitle">{item.title}</span>
+            </Link>
+        ))
+        
+    }
+    return r;
+}
+
+
+/**
+ * Lista de Secciones{Modulos{Items}}
+ */
 
 export const sideBarContent = [
     {
         id: 1,
-        title: "main",
-        listItems: [
+        title: "Principal",
+        modules: [
             {
                 id: 1,
                 title: "Home",
@@ -43,61 +63,63 @@ export const sideBarContent = [
     },
     {
         id: 2,
-        title: "lists",
-        listItems: [
+        title: "Modulos",
+        modules: [
             {
                 id: 1,
                 title: "Usuarios",
                 url: "/users",
-                icon: "/user.svg",
-
+                icon: "/usersubtables.svg",
             },
             {
                 id: 2,
-                title: "Insumos",
-                url: "/inventario/insumos",
-                /*
-                tables: [
-                    "insumos",
-                    "tipoInsumos"
-                ]
-                */
-                icon: "/product.svg",
+                title: "Inventario",
+                url: "/inventario/",
+                items: [
+                    {
+                        id: 1,
+                        title: "Insumos",
+                        url: "/inventario/insumos",
+                    },
+                    {
+                        id: 2,
+                        title: "Tipos de Insumo",
+                        url: "/inventario/tipos-insumo",
+                    },
+                    {
+                        id: 3,
+                        title: "Herramientas",
+                        url: "/inventario/tipos-insumo",
+                    },
+                    {
+                        id: 4,
+                        title: "Tipos de Herramientas",
+                        url: "/inventario/tipos-insumo",
+                    },
+                ],
+                icon: "/inventory-whitex.png",
             },
             {
                 id: 3,
-                title: "Tipos de Insumo",
-                url: "/inventario/tipos-insumo",
-                /*
-                tables: [
-                    "insumos",
-                    "tipoInsumos"
-                ]
-                */
-                icon: "/product.svg",
-            },
-            {
-                id: 4,
                 title: "Órdenes",
                 url: "/orders",
                 icon: "/order.svg",
             },
             {
-                id: 5,
+                id: 4,
                 title: "Tareas",
                 url: "/posts",
                 icon: "/post2.svg",
             },
         ],
     },
-
     {
         id: 4,
-        title: "Maintenance",
-        listItems: [
+        title: "Opciones",
+        modules: [
             {
                 id: 1,
-                title: "Settings",
+                title: "Opciones",
                 url: "/",
                 icon: "/setting.svg",
             },
@@ -111,8 +133,8 @@ export const sideBarContent = [
     },
     {
         id: 5,
-        title: "analytics",
-        listItems: [
+        title: "Analiticas",
+        modules: [
             {
                 id: 1,
                 title: "Charts",
@@ -128,29 +150,3 @@ export const sideBarContent = [
         ],
     },
 ];
-
-/*martin sidebar
-return(
-        <div className="Sidebar">
-            <h2>Inventario</h2>
-            <nav>{
-                Object.keys(resources).map((module,index) => {
-                    return (
-                    <div key={index}>
-                        <h3>modulo {module}</h3>    
-                        <ol key={index}>{
-                            Object.keys(resources[module]).map((item,index) => {
-                                return (
-                                <li key={index}>
-                                    <Link key={index} to={`${module}/${item}/`}>
-                                        <h4>{item}</h4>
-                                    </Link>
-                                </li>);
-                            })
-                        }</ol>   
-                    </div>)
-                },[resources])
-            }</nav>
-        </div>
-    );
-    */

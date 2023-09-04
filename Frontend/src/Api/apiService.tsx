@@ -5,31 +5,64 @@ import { Link, useParams,useLocation, ActionFunctionArgs } from "react-router-do
 const inventarioAPI = axios.create()
 inventarioAPI.defaults.baseURL = "http://127.0.0.1:8000"
 
-export function ListItems(setItems : any) : any {
-    const {item,module} = GetUrlParts();
-    const url = `${module}/${item}/`;;      
-    useEffect(() => {
-        async function loadItems(){
-            const jsonItem = await inventarioAPI.get(url);
-            setItems(jsonItem.data)
-        }
-        loadItems()
-    },[url,setItems]);
+const backendUrls: Record<string,string>  ={
+    "insumos":"/inventario/insumos",
+    "tipos-insumo":"/inventario/tiposInsumo",
+    "Herramientas":"/inventario/herramienta",
+    "Tipo De Herramienta":"/inventario/tipoHerramienta",
 }
 
-export function ReadItem(setItem:any) : any {
-    const {item,module} = GetUrlParts();
+export function ListItems(setItems : any, itemName : string) : any {
+    console.log(itemName)
+    useEffect(() => {
+        async function loadItems(){
+            await inventarioAPI.get(backendUrls[itemName])
+            .then((response) => {
+                setItems(response.data);
+            })  
+            .catch((setItemerror) => {
+                console.error(`Error al obtener datos de ${backendUrls[itemName]}`);
+            });
+        }
+        loadItems()
+    },[setItems,itemName]);
+}
+
+export function ReadItem(setItem:any,itemName:string) : any {
     const {id} = useParams()
-    const url = `${module}/${item}/${id}`;
+    console.log(backendUrls[itemName]+`/${id}`)
     useEffect(() => {
         async function loadItem(){
-            const jsonItem = await inventarioAPI.get(url);
+            const jsonItem = await inventarioAPI.get(backendUrls[itemName]+`/${id}`);
             setItem(jsonItem.data)
         }
         loadItem()
-    },[url,setItem]);
+    },[itemName,setItem]);
 }
 
+export function GetUrlParts() : any {
+    const location = useLocation()
+    const parts = location.pathname.split("/").filter(part => part !== '');
+    const keys = ["module","item","id"]
+    const objeto = Object.assign({}, ...parts.map((valor, index) => ({ [keys[index]]: valor })));
+    return objeto;
+}
+
+export function DeleteItem(itemName:string,id:number){
+    async function deleteData(itemName :string,id:number){
+        //Esta funcion puede cambiar
+        await inventarioAPI.delete(backendUrls[itemName] +`${id}/`)
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+    deleteData(itemName,id);    
+}
+
+/*
 export async function FormSubmitter({request,params} : any) : Promise<any> {
     
     //importante que la url este correcta
@@ -66,31 +99,4 @@ export async function FormSubmitter({request,params} : any) : Promise<any> {
     <Link to="../../" relative="path"/>
     console.log(result)
     return null;
-}
-
-async function getResources() : Promise<any> {
-  var data = {};
-  try{
-    const request = await inventarioAPI.get('models_info');
-    data = request.data;
-  }catch(error){console.log(error)}  
-  return data;
-}
-
-export const resources = await getResources();
-
-function GetUrlPartsFromRequest(request : any) : any {
-    var parts = request.url.split("/").filter((part : string) => part !== '');
-    console.log(parts)
-    const keys = ["protocol","address","dashboard","module","item","operation"]
-    const objeto = Object.assign({}, ...parts.map((valor:any, index:number) => ({ [keys[index]]: valor })));
-    return objeto;
-}
-
-export function GetUrlParts() : any {
-    const location = useLocation()
-    const parts = location.pathname.split("/").filter(part => part !== '');
-    const keys = ["dashboard","module","item"]
-    const objeto = Object.assign({}, ...parts.map((valor, index) => ({ [keys[index]]: valor })));
-    return objeto;
-}
+}*/

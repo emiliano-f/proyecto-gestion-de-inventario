@@ -14,7 +14,7 @@ function Dashboard() {
                     <Sidebar />
                 </div>
                 <div className="contentContainer">
-                    <Outlet />
+                    <Outlet/>
                 </div>
             </div>
             <Footer />

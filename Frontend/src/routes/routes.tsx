@@ -2,90 +2,71 @@ import { RouteObject, createBrowserRouter, redirect } from "react-router-dom";
 
 
 import Dashboard from "../pages/dashboard/Dashboard";
-import Insumos from "../pages/insumos/Insumos";
-import Insumo from "../pages/insumo/Insumo";
 import Login from "../pages/login/Login";
 import Home from "../pages/home/Home";
 
 /*información: https://reactrouter.com/en/main/route/route*/
 
-/*
-function getItemRoutes(){
-  var routes :RouteObject[] = [];
-  Object.keys(resources).forEach((module) => {
-    Object.keys(resources[module]).forEach((item) => {
-        const newRoutes:RouteObject[]= [
-        {
-          path:`${module}/${item}`,
-          element: <ItemList />
-        },
-        {
-          path: `${module}/${item}/create/`,
-          element: <CreateForm/>,
-          action: FormSubmitter
-        },
-        {
-          path: `${module}/${item}/read/:id`,
-          element: <ReadForm/>,
-          action: ReadItem
-        },
-        {
-          path: `${module}/${item}/update/:id`,
-          element: <UpdateForm/>,
-          action: FormSubmitter
-        },
-        {
-          path: `${module}/${item}/delete/:id`,
-          element: <DeleteForm/>,
-          action: FormSubmitter
-        }];
-        routes = routes.concat(newRoutes)
-      return ;});
-    return ;});
-    routes.push(
-      {
-        index:true,
-        element: <Home/>
-      }
-    );
-    return routes;
-  }
-  */
+
+import Detail from "../pages/detail/Detail"
+import List from "../pages/list/List"
+import Form from "../pages/form/Form"
+//import Resume
+import {sideBarContent} from "../components/sidebar/Sidebar";
 
 /**
- * Array que contiene los objetos que definen las rutas de la aplicación
+ * Genera a partir de los elementos del menu lateral las url's correspondientes
+ * @returns Un arreglo con todas las rutas para inventario
  */
+function getRoutes(){
+  var routes :RouteObject[] = [];
+  sideBarContent.forEach((section) => {
+    section.modules.forEach((module) => {
+        /*routes.push(
+          {
+            path:module.url,
+            element:<Resume/>
+          }
+        );*/
+        module.items?.forEach((item)=>{
+          routes = routes.concat([
+            {
+              path: item.url,
+              element: <List/>,
+            },
+            {
+              path: item.url+"/detail/:id/",
+              element: <Detail/>
+            },
+            {
+              path: item.url+"/modify/:id/",
+              element: <Form/>,
+            }
+          ]);
+        })
+      });
+    });
+    
+    return routes;
+  }
+  
 
+
+/**
+ * Arreglo que contiene todas las rutas de la aplicación
+ */
 var routes = [
-
   {
     path: "/",
     element: <Dashboard />,
-    children: [
+    children: getRoutes().concat(
+    [
       {
+        index:true,
         path: "/",
         element: <Home />
-      },
-      {
-        path: "/inventario/insumos",
-        element: <Insumos />
-      },
-
-      {
-        path: "/inventario/insumos/:id",
-        element: <Insumo />
-      },
-      /*
-      {
-        path: "/inventario/tipos-insumo",
-        element: <Insumos />
-      },
-      {
-        path: "/inventario/tipos-insumo/:id",
-        element: <Insumo />
       }
-      */
-    ]
+    ])
   },
   {
     path: "/login",
@@ -93,6 +74,5 @@ var routes = [
   }
 ];
 
-// console.log(routes)
 const router = createBrowserRouter(routes);
 export default router;

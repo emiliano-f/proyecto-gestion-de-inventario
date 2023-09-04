@@ -27,4 +27,28 @@
             }
         }
     }
+    
+    /* Estilos para el botón */
+    .button {
+        display: inline-block;
+        padding: 5px 5px; /* Espaciado interno (arriba/abajo izquierda/derecha) */
+        font-size: 16px;
+        background-color: #ffffff; /* Color de fondo */
+        color: #fff; /* Color del texto */
+        border: none; /* Sin borde */
+        border-radius: 5px; /* Bordes redondeados */
+        cursor: pointer; /* Cambia el cursor a una mano cuando se pasa sobre el botón */
+        text-align: center; /* Alinea el texto al centro */
+        text-decoration: none; /* Sin subrayado por defecto en el texto */
+    }
+  
+    /* Cambia el color de fondo cuando se pasa el cursor sobre el botón */
+    .button:hover {
+    background-color: #bedff5;
+    }
+
+    /* Cambia el color de fondo cuando el botón está presionado */
+    .button:active {
+    background-color: #788d9b;
+    }
 }

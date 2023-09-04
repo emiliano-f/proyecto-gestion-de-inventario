@@ -54,7 +54,7 @@ const Insumos = () => {
         .catch((error) => {
             console.error("Error al obtener datos de /inventario/insumos");
         });
-    }, []);
+    }, []);columns
     
     return (
         <div className="inventory">
