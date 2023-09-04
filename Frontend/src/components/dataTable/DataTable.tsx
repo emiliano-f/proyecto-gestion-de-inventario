@@ -1,9 +1,8 @@
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import { useRef } from "react";
+import { useRef,useState } from "react";
 import "./dataTable.scss"
 import { Link } from "react-router-dom";
-// import { useEffect } from "react";
-// import axios from "axios";
+
 
 
 type Props = {
@@ -13,7 +12,8 @@ type Props = {
 
 export const DataTable = (props: Props) => {
     const containerRef = useRef(null);
-
+    const [open, setOpen] = useState(false);
+    
     const actionColumn: GridColDef = {
         field: "action",
         headerName: "Action",
@@ -21,15 +21,13 @@ export const DataTable = (props: Props) => {
         renderCell: (params) => {
             return (
                 <div className="action">
-                    <Link to={`${params.row.id}/`}>
+                    <Link to={`detail/${params.row.id}/`}>
                         <button className="button"><img src="/read.png" alt="" /></button>
                     </Link>
-                    <Link to={`detail/${params.row.id}/`}>
+                    <Link to={`modify/${params.row.id}/`}>
                         <button className="button"><img src="/edit.png" alt="" /></button>
                     </Link>
-                    <Link to={`delete/${params.row.id}/`}>
-                        <button className="button"><img src="/delete.png" alt="" /></button>
-                    </Link>
+                    <button className="button" onClick={() => setOpen(true)}><img src="/delete.png" alt="" /></button>
                 </div>
             )
         },
@@ -69,3 +67,4 @@ export const DataTable = (props: Props) => {
         </div>
     )
 }
+

@@ -18,7 +18,7 @@ const List = () => {
     const columns: GridColDef[] = GetColumns(moduleName,itemName);
     return (
         <div className="item">
-            <div className="info">s
+            <div className="info">
                 <h1>{itemName}</h1>
                 <button className="button" onClick={() => setOpen(true)}>Agregar {itemName}</button>
             </div>

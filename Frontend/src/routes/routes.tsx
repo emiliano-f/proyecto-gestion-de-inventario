@@ -2,8 +2,6 @@ import { RouteObject, createBrowserRouter, redirect } from "react-router-dom";
 
 
 import Dashboard from "../pages/dashboard/Dashboard";
-import Insumos from "../pages/insumos/Insumos";
-import Insumo from "../pages/insumo/Insumo";
 import Login from "../pages/login/Login";
 import Home from "../pages/home/Home";
 
@@ -37,11 +35,11 @@ function getRoutes(){
               element: <List/>,
             },
             {
-              path: item.url+"detail/:id/",
+              path: item.url+"/detail/:id/",
               element: <Detail/>
             },
             {
-              path: item.url+"delete/:id/",
+              path: item.url+"/modify/:id/",
               element: <Form/>,
             }
           ]);
@@ -58,7 +56,6 @@ function getRoutes(){
  * Arreglo que contiene todas las rutas de la aplicación
  */
 var routes = [
-
   {
     path: "/",
     element: <Dashboard />,
@@ -68,23 +65,6 @@ var routes = [
         index:true,
         path: "/",
         element: <Home />
-      },
-      {
-        path: "/inventario/insumos",
-        element: <Insumos />
-      },
-
-      {
-        path: "/inventario/insumos/:id",
-        element: <Insumo />
-      },
-      {
-        path: "/inventario/tipos-insumo",
-        element: <Insumos />
-      },
-      {
-        path: "/inventario/tipos-insumo/:id",
-        element: <Insumo />
       }
     ])
   },
