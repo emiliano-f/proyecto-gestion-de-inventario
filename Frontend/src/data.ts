@@ -1,4 +1,4 @@
-
+//ELIMINAR
 export const topDealUsers = [
     {
         id: 1,

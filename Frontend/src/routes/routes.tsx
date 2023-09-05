@@ -12,7 +12,7 @@ import Detail from "../pages/detail/Detail"
 import List from "../pages/list/List"
 import Form from "../pages/form/Form"
 //import Resume
-import {sideBarContent} from "../components/sidebar/Sidebar";
+import {data as sideBarContent} from "../data/data.tsx";
 
 /**
  * Genera a partir de los elementos del menu lateral las url's correspondientes
