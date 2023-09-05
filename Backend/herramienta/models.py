@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 ESTADO_CHOICES = (
     ('OK', 'OK'),
@@ -24,6 +25,7 @@ class Herramienta(models.Model):
 
     fechaAlta = models.DateTimeField(auto_now=True)
     observaciones = models.CharField(max_length=255, null=True)
+    userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         texto = "{0} [{1}]"
@@ -34,3 +36,4 @@ class EstadoHerramienta(models.Model):
     fecha = models.DateTimeField(auto_now=True)
     estado = models.CharField(max_length=16, choices=ESTADO_CHOICES, default="OK")
     observaciones = models.CharField(max_length=255, null=True)
+    userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
