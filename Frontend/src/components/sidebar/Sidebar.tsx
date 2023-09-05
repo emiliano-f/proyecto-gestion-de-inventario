@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import "./sidebar.scss"
 import { Accordion} from "react-bootstrap";
 import {data as sideBarContent} from "../../data/data.tsx";
+
 function Sidebar() {
     return (
         <div className="sidebar">
@@ -19,7 +20,11 @@ function Sidebar() {
                                     </Link>
                                 </Accordion.Header>
                                 <Accordion.Body>
-                                    <PrintItems module={module}/>
+                                    {module.tables?.map((item,index)=>(
+                                        <Link key={index} to={item.url} className="item">
+                                            <span className="itemTitle">{item.title}</span>
+                                        </Link>
+                                    ))}
                                 </Accordion.Body>
                             </Accordion.Item>
                         </Accordion>                 
@@ -31,15 +36,3 @@ function Sidebar() {
 };
 
 export default Sidebar
-
-function PrintItems({module}: any){
-    var r = <></> 
-    if("items" in module){
-        r = module.items.map((item,index)=>(
-            <Link key={index} to={item.url} className="item">
-                <span className="itemTitle">{item.title}</span>
-            </Link>
-        ))
-    }
-    return r;
-}

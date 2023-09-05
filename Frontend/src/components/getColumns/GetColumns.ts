@@ -2,7 +2,6 @@ import { GridColDef } from "@mui/x-data-grid";
 import {tableColumnMetaData as tableMetaData} from "../../data/data.tsx";
 
 function GetColumns(moduleName:string,itemName:String): GridColDef[]{
-    console.log(itemName)
     return tableMetaData[moduleName][itemName]
     .filter((colAtts : Array<any>) => colAtts[0]===true)
     .map((colAtts : Array<any>) => {

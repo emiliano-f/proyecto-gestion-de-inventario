@@ -96,7 +96,7 @@ function createModules(){
                 tables: Object.keys(tableColumnMetaData[module]).map((item,index)=>{
                     return {
                         id: index,
-                        title: translate[module].singular,
+                        title: translate[item].singular,
                         url: `/${module}/${item}`,
                     }
                 })
