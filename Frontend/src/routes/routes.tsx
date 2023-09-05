@@ -25,7 +25,7 @@ function getRoutes(){
         routes.push(
           {
             path:module.url,
-            loader: () => {return redirect("/inventario/insumos/") }
+            loader: () => {return redirect(module.tables[0].url)}
           }
         );
         module.tables?.forEach((item)=>{

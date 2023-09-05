@@ -3,6 +3,7 @@ import { DeleteItem as Delete,GetUrlParts } from "../../Api/apiService";
 
 const DeleteItem = (row,setOpen) => {
     const {item:itemName} = GetUrlParts();
+    
     const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         Delete(itemName,row.id);

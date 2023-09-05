@@ -168,3 +168,15 @@ export const data = [
         ],
     },
 ];
+
+function buildUrls(){
+    const urls: Record<string,string> = {};
+    Object.keys(tableColumnMetaData).forEach((module)=>{
+        Object.keys(tableColumnMetaData[module]).forEach((item)=>{
+            urls[item]=`/${module}/${item}`;
+        })
+    })
+    return urls;
+}
+
+export const backendUrls: Record<string,string>=buildUrls()

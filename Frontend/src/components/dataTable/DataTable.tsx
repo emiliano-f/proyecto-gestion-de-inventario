@@ -3,8 +3,6 @@ import { useRef,useState } from "react";
 import "./dataTable.scss"
 import { Link } from "react-router-dom";
 
-
-
 type Props = {
     columns: GridColDef[],
     rows: object[]
