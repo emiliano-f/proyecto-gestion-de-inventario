@@ -1,16 +1,23 @@
 
 import { Link } from "react-router-dom"
 import "./sidebar.scss"
-import { Accordion} from "react-bootstrap";
+import { Accordion, Card, useAccordionButton} from "react-bootstrap";
+import "../../styles/accordion/acordion.css";
+
+
+import { useState } from "react";
+
+
+
 
 function Sidebar() {
+
     return (
         <div className="sidebar">
             {sideBarContent.map((section) => (
                 <div className="section" key={section.id}>
-                    <div className="accordion">Este acocordisoid</div>
                     <span className="sectionTitle">{section.title}</span>
-                    {section.modules.map((module,index) => (
+                    {section.modules.map((module, index) => (
                         <Accordion key={index}>
                             <Accordion.Item eventKey="1">
                                 <Accordion.Header>
@@ -19,16 +26,21 @@ function Sidebar() {
                                         <span className="moduleTitle">{module.title}</span>
                                     </Link>
                                 </Accordion.Header>
-                                <Accordion.Body>
-                                    <PrintItems module={module}/>
-                                </Accordion.Body>
+                                
+                                {module.items && module.items.length > 0 && ( // Verifica si module.items existe y tiene elementos
+                                    <Accordion.Body>
+                                        <PrintItems module={module} />
+                                    </Accordion.Body>
+                                )}
                             </Accordion.Item>
-                        </Accordion>                 
+                        </Accordion>
                     ))}
                 </div>
             ))}
         </div>
     );
+    
+    
 };
 
 export default Sidebar
@@ -44,6 +56,7 @@ function PrintItems({module}: any){
     }
     return r;
 }
+
 
 /**
  * Lista de Secciones{Modulos{Items}}
