@@ -1,14 +1,7 @@
 
 import { Link } from "react-router-dom"
 import "./sidebar.scss"
-import { Accordion, Card, useAccordionButton} from "react-bootstrap";
-import "../../styles/accordion/acordion.css";
-
-
-import { useState } from "react";
-
-
-
+import { Accordion} from "react-bootstrap";
 
 function Sidebar() {
 
@@ -32,15 +25,14 @@ function Sidebar() {
                                         <PrintItems module={module} />
                                     </Accordion.Body>
                                 )}
+
                             </Accordion.Item>
                         </Accordion>
                     ))}
                 </div>
             ))}
         </div>
-    );
-    
-    
+    );    
 };
 
 export default Sidebar
@@ -170,3 +162,4 @@ export const sideBarContent = [
         ],
     },
 ];
+
