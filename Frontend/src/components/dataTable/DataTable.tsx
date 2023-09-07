@@ -6,6 +6,8 @@ import DeleteItem from "../deleteItem/DeleteItem"
 
 import {GetUrlParts} from "../../Api/apiService"
 
+
+
 type Props = {
     columns: GridColDef[],
     rows: object[]
