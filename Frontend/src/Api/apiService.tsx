@@ -44,7 +44,7 @@ export function ReadItem(setItem:any,itemName:string) : any {
 
 export function CreateItem(itemName:string,formData:FormData){   
     async function createData(itemName :string,formData:FormData){
-        axios.post(backendUrls[itemName], formData)
+        await inventarioAPI.post(backendUrls[itemName], formData)
         .then(function (response) {
             console.log(response);
         })
@@ -55,10 +55,9 @@ export function CreateItem(itemName:string,formData:FormData){
     createData(itemName,formData); 
 }
 
-export function UpdateItem(itemName:string,formData:FormData){   
-    const {id} = useParams();
-    async function updateData(itemName:string,id:string,formData:FormData){
-        axios.put(backendUrls[itemName] +`${id}/`, formData)
+export function UpdateItem(itemName:string,formData:FormData,id:string|undefined){   
+    async function updateData(itemName:string,id:string|undefined,formData:FormData){
+        await inventarioAPI.put(backendUrls[itemName] +`/${id}/`, formData)
         .then(function (response) {
             console.log(response);
         })
@@ -69,11 +68,10 @@ export function UpdateItem(itemName:string,formData:FormData){
     updateData(itemName,id,formData)
 }
 
-export function DeleteItem(itemName:string){
-    const {id} = useParams()
+export function DeleteItem(itemName:string,id:string){
     async function deleteData(itemName :string,id:string){
         //Esta funcion puede cambiar
-        await inventarioAPI.delete(backendUrls[itemName] +`${id}/`)
+        await inventarioAPI.delete(backendUrls[itemName] +`/${id}/`)
         .then(function (response) {
             console.log(response);
         })

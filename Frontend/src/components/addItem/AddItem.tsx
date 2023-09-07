@@ -11,8 +11,6 @@ type Props = {
 
 const AddItem = (props: Props) => {
 
-    interface formDataType { [key: string]: FormDataEntryValue }
-    
     const {item:itemName} = GetUrlParts();
     
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

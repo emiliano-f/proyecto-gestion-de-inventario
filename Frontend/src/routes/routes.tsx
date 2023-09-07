@@ -11,6 +11,7 @@ import Home from "../pages/home/Home";
 import Detail from "../pages/detail/Detail"
 import List from "../pages/list/List"
 import Form from "../pages/form/Form"
+import Delete from "../pages/delete/Delete"
 //import Resume
 import {data as sideBarContent} from "../data/data.tsx";
 
@@ -41,6 +42,10 @@ function getRoutes(){
             {
               path: item.url+"/modify/:id/",
               element: <Form/>,
+            },
+            {
+              path: item.url+"/delete/:id/",
+              element: <Delete/>,
             }
           ]);
         })
