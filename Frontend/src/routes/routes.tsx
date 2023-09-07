@@ -13,7 +13,7 @@ import List from "../pages/list/List"
 import Form from "../pages/form/Form"
 import Delete from "../pages/delete/Delete"
 //import Resume
-import {sideBarContent} from "../components/sidebar/Sidebar";
+import {data as sideBarContent} from "../data/data.tsx";
 
 /**
  * Genera a partir de los elementos del menu lateral las url's correspondientes
@@ -26,10 +26,10 @@ function getRoutes(){
         routes.push(
           {
             path:module.url,
-            loader: () => {return redirect("/inventario/insumos/") }
+            loader: () => {return redirect(module.tables[0].url)}
           }
         );
-        module.items?.forEach((item)=>{
+        module.tables?.forEach((item)=>{
           routes = routes.concat([
             {
               path: item.url,
