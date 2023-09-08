@@ -5,7 +5,7 @@ from herramienta import views as views_herramienta
 
 router = routers.DefaultRouter()
 router.register(r'tipos-insumo', views.TipoInsumoCRUD, 'tipos-insumo')
-router.register(r'insumos', views.InsumoCRUD, 'insumos')
+#router.register(r'insumos', views.InsumoCRUD, 'insumos')
 router.register(r'ordenes-retiro', views.OrdenRetiroCRUD, 'ordenes-retiro')
 router.register(r'ajustes-stock', views.AjusteStockCRUD, 'ajustes-stock')
 
@@ -15,5 +15,7 @@ router.register(r'herramientas', views_herramienta.HerramientaCRUD, 'herramienta
 router.register(r'estado-herramientas', views_herramienta.EstadoHerramientaCRUD, 'estado-herramientas')
 
 urlpatterns = [
+        path('insumos/', views.InsumoCRUD.as_view({'get':'list', 'post':'create'}), name='insumos'),
+        path('insumos/<int:pk>/', views.InsumoCRUD.as_view({'get':'retrieve','put':'update','delete':'destroy'}), name='insumos'),
     path('', include(router.urls)),
 ]
