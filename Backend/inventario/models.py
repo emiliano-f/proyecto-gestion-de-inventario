@@ -28,7 +28,7 @@ class Insumo(models.Model):
 
     def __str__(self):
         texto = "{0} ({1})"
-        return texto.format(self.nombre, self.cantidad)
+        return texto.format(self.tipoInsumo, self.cantidad)
     
 class OrdenRetiro(models.Model):
     id = models.AutoField(primary_key=True)
@@ -39,7 +39,7 @@ class OrdenRetiro(models.Model):
 
     def __str__(self):
         texto = "{0} ({1})"
-        return texto.format(self.idInsumo, self.cantidad)
+        return texto.format(self.id, self.cantidad)
 
 class AjusteStock(models.Model):
     id = models.AutoField(primary_key=True)

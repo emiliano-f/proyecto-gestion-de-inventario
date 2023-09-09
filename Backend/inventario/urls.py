@@ -16,6 +16,6 @@ router.register(r'estado-herramientas', views_herramienta.EstadoHerramientaCRUD,
 
 urlpatterns = [
         path('insumos/', views.InsumoCRUD.as_view({'get':'list', 'post':'create'}), name='insumos'),
-        path('insumos/<int:pk>/', views.InsumoCRUD.as_view({'get':'retrieve','put':'update','delete':'destroy'}), name='insumos'),
+        path('insumos/<int:pk>/', views.InsumoCRUD.as_view({'get':'retrieve','put':'update','delete':'destroy'}), name='insumos-id'),
     path('', include(router.urls)),
 ]

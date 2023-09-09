@@ -7,7 +7,7 @@ class TipoInsumoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class InsumoSerializer(serializers.ModelSerializer):
-    tipo_insumo = TipoInsumoSerializer(read_only=True)
+    tipoInsumo = TipoInsumoSerializer()
 
     class Meta:
         model = models.Insumo
