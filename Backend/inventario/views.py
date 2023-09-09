@@ -18,7 +18,7 @@ class InsumoCRUD(viewsets.ViewSet):
         # join
         insumo = models.Insumo.objects.prefetch_related('tipoInsumo').all()
         # serializer
-        serializer_class = serializer.InsumoSerializer(insumo, many=True)
+        serializer_class = serializer.InsumoTipoInsumoSerializer(insumo, many=True)
         return Response(serializer_class.data)
 
     def create(self, request):
@@ -33,12 +33,11 @@ class InsumoCRUD(viewsets.ViewSet):
             insumo = models.Insumo.objects.get(id=pk)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
-        print(insumo)
-        serializer_class = serializer.InsumoSerializer(insumo)
+        serializer_class = serializer.InsumoTipoInsumoSerializer(insumo)
         return Response(serializer_class.data)
 
     def update(self, request, pk):
-        insumo = models.Insumo.objects.get(pk=pk)
+        insumo = models.Insumo.objects.get(id=pk)
         serializer_class = serializer.InsumoSerializer(insumo, data=request.data)
         if serializer_class.is_valid():
             serializer_class.save()
@@ -46,7 +45,7 @@ class InsumoCRUD(viewsets.ViewSet):
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
-        insumo = models.Insumo.objects.get(pk=pk)
+        insumo = models.Insumo.objects.get(id=pk)
         insumo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
         

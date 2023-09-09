@@ -7,11 +7,12 @@ class TipoInsumoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class InsumoSerializer(serializers.ModelSerializer):
-    tipoInsumo = TipoInsumoSerializer()
-
     class Meta:
         model = models.Insumo
         fields = '__all__'
+
+class InsumoTipoInsumoSerializer(InsumoSerializer):
+    tipoInsumo = TipoInsumoSerializer(read_only=True)
 
 class OrdenRetiroSerializer(serializers.ModelSerializer):
     class Meta:
