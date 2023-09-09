@@ -13,7 +13,6 @@ class TipoInsumoCRUD(CustomModelViewSet):
     queryset = models.TipoInsumo.objects.all()
 
 class InsumoCRUD(viewsets.ViewSet):
-
     def list(self, request):
         # join
         insumo = models.Insumo.objects.prefetch_related('tipoInsumo').all()
@@ -48,12 +47,6 @@ class InsumoCRUD(viewsets.ViewSet):
         insumo = models.Insumo.objects.get(id=pk)
         insumo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-        
-"""
-class InsumoCRUD(CustomModelView):
-    #serializer_class = serializer.InsumoSerializer
-    #queryset = models.Insumo.objects.all()
-"""
 
 class OrdenRetiroCRUD(CustomModelViewSet):
     serializer_class = serializer.OrdenRetiroSerializer

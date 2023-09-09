@@ -12,6 +12,9 @@ class HerramientaSerializer(serializers.ModelSerializer):
         model = models.Herramienta
         fields = '__all__'
 
+class HerramientaTipoHerramientaSerializer(HerramientaSerializer):
+    tipoHerramienta = TipoHerramientaSerializer(read_only=True)
+
 class EstadoHerramientaSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.EstadoHerramienta

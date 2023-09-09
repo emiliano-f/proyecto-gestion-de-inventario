@@ -3,7 +3,7 @@ from . import serializer
 from . import models
 
 class CustomModelViewSet(viewsets.ModelViewSet):
-    http_method_names = ['post', 'get', 'put']
+    http_method_names = ['post', 'get', 'put', 'delete']
 
 class EmpleadoCRUD(CustomModelViewSet):
     serializer_class = serializer.EmpleadoSerializer
