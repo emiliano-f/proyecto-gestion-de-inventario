@@ -30,10 +30,10 @@ class InsumoCRUD(viewsets.ViewSet):
 
     def retrieve(self, request, pk):
         try:
-            insumo = models.Insumo.objects.get(pk=pk).select_related('tipo_insumo').all()
+            insumo = models.Insumo.objects.get(id=pk)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
-
+        print(insumo)
         serializer_class = serializer.InsumoSerializer(insumo)
         return Response(serializer_class.data)
 
