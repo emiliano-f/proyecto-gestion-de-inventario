@@ -3,7 +3,7 @@ from django.http import JsonResponse
 
 def get_models(request):
     # Get apps
-    apps_names = ["inventario", "compra", "usuario", "tarea"]
+    apps_names = ["inventario", "compra", "usuario", "tarea", "herramienta"]
 
     #aplicaciones = apps.get_app_configs()
     #for app in aplicaciones:
