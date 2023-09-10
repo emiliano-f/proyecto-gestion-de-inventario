@@ -13,7 +13,8 @@ class HerramientaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class HerramientaTipoHerramientaSerializer(HerramientaSerializer):
-    tipoHerramienta = TipoHerramientaSerializer(read_only=True)
+    #tipoHerramienta = TipoHerramientaSerializer(read_only=True)
+    tipoHerramienta = serializers.CharField(source='tipoHerramienta.nombre')
 
 class EstadoHerramientaSerializer(serializers.ModelSerializer):
     class Meta:
