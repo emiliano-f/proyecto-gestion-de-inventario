@@ -3,6 +3,7 @@ import {useState} from "react";
 import {Link} from "react-router-dom"
 import "./detail.scss"
 import { useParams} from "react-router-dom";
+import { translate } from "../../data/data";
 
 const Detail = () => {
     const [row, setRow] = useState(null);
@@ -15,7 +16,7 @@ const Detail = () => {
                 <div className="info">
 
                     <div className="topInfo">
-                        <h1>{itemName}</h1>
+                        <h1>{translate[itemName].singular}</h1>
                         <Link to={`/${moduleName}/${itemName}/modify/${useParams().id}`} className="button"><button className="button">Modificar</button></Link> 
                     </div>
                     

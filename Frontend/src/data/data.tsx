@@ -23,7 +23,7 @@ const names : Array<string> =[
     "tareas"
 ]
 
-const translate ={
+export const translate ={
     [names[0]]:{singular:"Inventario",plural:"Inventarios"},
     [names[1]]:{singular:"Tipo de Insumo",plural:"Tipos de Insumo"},
     [names[2]]:{singular:"Insumo",plural:"Insumos"},
@@ -180,3 +180,8 @@ function buildUrls(){
 }
 
 export const backendUrls: Record<string,string>=buildUrls()
+
+//contexto para compartir mensajes de error entre las vistas CRUD
+import { createContext, useState } from "react"
+
+export const crudContext = createContext([]);
