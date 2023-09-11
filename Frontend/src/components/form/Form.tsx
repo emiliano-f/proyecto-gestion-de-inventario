@@ -5,6 +5,7 @@ import { useState, useContext } from "react";
 import { Link, useParams, redirect } from "react-router-dom";
 import { translate, crudContext } from "../../data/data";
 
+
 function Form(){
     const [row, setRow] = useState([]);
     const {item:itemName,module:moduleName} = GetUrlParts();
@@ -29,6 +30,7 @@ function Form(){
         } finally {
             history.back();
         }
+
     };
 
     return (

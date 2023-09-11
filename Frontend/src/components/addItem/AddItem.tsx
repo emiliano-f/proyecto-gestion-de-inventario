@@ -26,7 +26,15 @@ const AddItem = (props: Props) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        Create(itemName,formData);
+        
+        try{
+            Create(itemName,formData);
+            setMsg([`Se ha creado el nuevo ${translate[itemName].singular} con exito`,false])
+        }catch(error){
+            setMsg([`Ha surgido un error al crear el Nuevo ${translate[itemName].singular}`,true])
+        }finally{
+            props.setOpen(false)
+        }            
     };
     */
     const onSubmit: SubmitHandler<any> = (data) => {

@@ -8,10 +8,10 @@ import Home from "../pages/home/Home";
 /*información: https://reactrouter.com/en/main/route/route*/
 
 
-import Detail from "../pages/detail/Detail"
+import Detail from "../components/detail/Detail"
 import List from "../pages/list/List"
-import Form from "../pages/form/Form"
-import Delete from "../pages/delete/Delete"
+import Form from "../components/form/Form"
+import Delete from "../components/delete/Delete"
 //import Resume
 import {data as sideBarContent} from "../data/data.tsx";
 
