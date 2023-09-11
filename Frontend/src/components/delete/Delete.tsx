@@ -30,15 +30,15 @@ const Delete = () => {
         <h1>El {translate[itemName].singular} con id {id} no existe o ha sido borrado anteriormente.</h1>
     </div>
     if(row){
-        r= <div className="addItem">
-            <div className="modal">
+        r= <div className="delete">
+            <div className="modal2">
                 <h1>Eliminar {translate[itemName].singular}</h1>
                 <h2>¿Está usted seguro de que quiere eliminar el {translate[itemName].singular} con identificador {id}?</h2>
                 <form method="post" onSubmit={handleDelete}>
-                    <button type="submit">Eliminar</button>
+                    <button className="btn btn-danger" type="submit">Eliminar</button>
                 </form>
                 <Link to={`/${moduleName}/${itemName}`} >
-                    <button className="button">Atras</button>
+                    <button className="btn btn-secondary">Atras</button>
                 </Link>
             </div>
         </div>
