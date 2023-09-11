@@ -15,70 +15,53 @@ export function GetUrlParts() : any {
     return objeto;
 }
 
-export function ListItems(setItems : any, itemName : string) : any {
-    //console.log(itemName)
+export function ListItems(setItems: any, itemName: string): any {
     useEffect(() => {
-        async function loadItems(){
+        async function loadItems() {
             await inventarioAPI.get(backendUrls[itemName])
-            .then((response) => {
-                setItems(response.data);
-            })  
-            .catch((setItemerror) => {
-                console.error(`Error al obtener datos de ${backendUrls[itemName]}`);
-            });
+                .then((response) => {
+                    setItems(response.data);
+                })
+                .catch((error) => { throw error });
         }
         loadItems()
-    },[setItems,itemName]);
+    }, [setItems, itemName]);
 }
 
-export function ReadItem(setItem:any,itemName:string) : any {
-    const {id} = useParams()
-    //console.log(backendUrls[itemName]+`/${id}`)
+export function ReadItem(setItem: any, itemName: string): any {
+    const { id } = useParams()
     useEffect(() => {
-        async function loadItem(){
-            const jsonItem = await inventarioAPI.get(backendUrls[itemName]+`/${id}`);
+        async function loadItem() {
+            const jsonItem = await inventarioAPI.get(
+                backendUrls[itemName] + `/${id}`
+            ).catch((error) => { throw error });
             setItem(jsonItem.data)
         }
         loadItem()
-    },[itemName,setItem]);
+    }, [itemName, setItem]);
 }
 
-export function CreateItem(itemName:string,formData:FormData){   
-    async function createData(itemName :string,formData:FormData){
+export function CreateItem(itemName: string, formData: FormData) {
+    async function createData(itemName: string, formData: FormData) {
         await inventarioAPI.post(backendUrls[itemName], formData)
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+            .catch((error) => { throw error });
     }
-    createData(itemName,formData); 
+    createData(itemName, formData);
 }
 
-export function UpdateItem(itemName:string,formData:FormData,id:string|undefined){   
-    async function updateData(itemName:string,id:string|undefined,formData:FormData){
-        await inventarioAPI.put(backendUrls[itemName] +`/${id}/`, formData)
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+export function UpdateItem(itemName: string, formData: FormData, id: string | undefined) {
+    async function updateData(itemName: string, id: string | undefined, formData: FormData) {
+        await inventarioAPI.put(backendUrls[itemName] + `/${id}/`, formData)
+            .catch((error) => { throw error });
     }
-    updateData(itemName,id,formData)
+    updateData(itemName, id, formData)
 }
 
-export function DeleteItem(itemName:string,id:string){
-    async function deleteData(itemName :string,id:string){
+export function DeleteItem(itemName: string, id: string) {
+    async function deleteData(itemName: string, id: string) {
         //Esta funcion puede cambiar
-        await inventarioAPI.delete(backendUrls[itemName] +`/${id}/`)
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+        await inventarioAPI.delete(backendUrls[itemName] + `/${id}/`)
+            .catch((error) => { throw error });
     }
-    deleteData(itemName,id);    
+    deleteData(itemName, id);
 }

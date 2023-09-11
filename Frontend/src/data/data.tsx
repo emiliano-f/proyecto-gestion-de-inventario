@@ -1,3 +1,11 @@
+
+// Hard code para unidades de medida
+export const unidadesMedida: Array<string> = [
+    "litro",
+    "metro",
+    "gramo",
+    "contable"
+]
 /**
  * Nombres en singular de modulos y en plural de tablas
  */
@@ -23,26 +31,26 @@ const names : Array<string> =[
     "tareas"
 ]
 
-const translate ={
-    [names[0]]:{singular:"Inventario",plural:"Inventarios"},
-    [names[1]]:{singular:"Tipo de Insumo",plural:"Tipos de Insumo"},
-    [names[2]]:{singular:"Insumo",plural:"Insumos"},
-    [names[3]]:{singular:"Tipo de Herramienta",plural:"Tipos de Herramientas"},
-    [names[4]]:{singular:"Herramienta",plural:"Herramientas"},
-    [names[5]]:{singular:"Orden de Retiro",plural:"Ordenes de Retiro"},
-    [names[6]]:{singular:"Ajuste de Stock",plural:"Ajustes de Stock"},
-    [names[7]]:{singular:"Estado de Herramienta",plural:"Estados de Herramienta"},
-    [names[8]]:{singular:"Compra",plural:"Compras"},
-    [names[9]]:{singular:"Pedido de Insumo",plural:"Pedidos de Insumo"},
-    [names[10]]:{singular:"Presupuesto",plural:"Presupuestos"},
-    [names[11]]:{singular:"Detalle de Pedido",plural:"Detalles de Pedido"},
-    [names[12]]:{singular:"Usuario",plural:"Usuarios"},
-    [names[13]]:{singular:"Usuario",plural:"Usuarios"},
-    [names[14]]:{singular:"Tarea",plural:"Tareas"},
-    [names[15]]:{singular:"Empleado",plural:"Empleados"},
-    [names[16]]:{singular:"Orden de Servicio",plural:"Ordenes de Servicio"},
-    [names[17]]:{singular:"Encuesta de Satisfacción",plural:"Encuestas de Satisfacción"},
-    [names[18]]:{singular:"Tarea",plural:"Tareas"},
+export const translate = {
+    [names[0]]: { singular: "Inventario", plural: "Inventarios" },
+    [names[1]]: { singular: "Tipo de Insumo", plural: "Tipos de Insumo" },
+    [names[2]]: { singular: "Insumo", plural: "Insumos" },
+    [names[3]]: { singular: "Tipo de Herramienta", plural: "Tipos de Herramientas" },
+    [names[4]]: { singular: "Herramienta", plural: "Herramientas" },
+    [names[5]]: { singular: "Orden de Retiro", plural: "Ordenes de Retiro" },
+    [names[6]]: { singular: "Ajuste de Stock", plural: "Ajustes de Stock" },
+    [names[7]]: { singular: "Estado de Herramienta", plural: "Estados de Herramienta" },
+    [names[8]]: { singular: "Compra", plural: "Compras" },
+    [names[9]]: { singular: "Pedido de Insumo", plural: "Pedidos de Insumo" },
+    [names[10]]: { singular: "Presupuesto", plural: "Presupuestos" },
+    [names[11]]: { singular: "Detalle de Pedido", plural: "Detalles de Pedido" },
+    [names[12]]: { singular: "Usuario", plural: "Usuarios" },
+    [names[13]]: { singular: "Usuario", plural: "Usuarios" },
+    [names[14]]: { singular: "Tarea", plural: "Tareas" },
+    [names[15]]: { singular: "Empleado", plural: "Empleados" },
+    [names[16]]: { singular: "Orden de Servicio", plural: "Ordenes de Servicio" },
+    [names[17]]: { singular: "Encuesta de Satisfacción", plural: "Encuestas de Satisfacción" },
+    [names[18]]: { singular: "Tarea", plural: "Tareas" },
 }
 
 /**
@@ -53,14 +61,37 @@ const translate ={
  * string(nombre que se muestra),
  * string(tipo del dato),
  * float(porcentaje que indica para el tamaño de la columna)
+ * boolean(indica si el campo es obligatorio)
  * ]
  */
 export const tableColumnMetaData:Record<string,Record<string,Array<Array<any>>>> = {
     [names[0]]: {
-        [names[1]]: [[true,"id","ID","number",0.05], [true,"nombre","Nombre","string",0.15], [false,"descripcion","Descripción","string",0.2]],
-        [names[2]]: [[true,"id","ID","number",0.05], [true,"tipoInsumo","Tipo de Insumo","number",0.1],[true,"unidadMedida","Unidad de Medida","number",0.1],[true,"cantidad","Cantidad","number",0.1],[true,"codigo","Código","string",0.1], [false,"observaciones","Observaciones","string",0.1],[false,"puntoReposicion","Punto de Reposición","number",0.1]],
-        [names[3]]: [[true,"id","ID","number",0.05], [true,"nombre","Nombre","string",0.15], [false,"descripcion","Descripción","string",0.2]], 
-        [names[4]]: [[true,"id","ID","number",0.05], [true,"nombre","Nombre","string",0.15], [true,"tipoHerramienta","Tipo de Herramienta","number",0.05], [true,"codigo","Código","string",0.05], [true,"estado","Estado","string",0.15],[false,"fechaAlta","Fecha de Creación","string",0.15], [false,"observaciones","Observaciones","string",150]],
+        [names[1]]:
+            [[true,"id","ID","number",0.05, true],
+            [true,"nombre","Nombre","string",0.15, true],
+            [false,"descripcion","Descripción","string",0.2, false]],
+        [names[2]]:
+            [[true,"id","ID","number",0.05, true],
+            [true, "descripcion", "Descripción", "string", 0.1, true],
+            [true,"tipoInsumo","Tipo de Insumo","string",0.1, true],
+            [true,"unidadMedida","Unidad de Medida","string",0.1, true],
+            [true,"cantidad","Cantidad","number",0.1, true],
+            [true,"codigo","Código","string",0.1, false],
+            [false,"observaciones","Observaciones","string",0.1, false],
+            [false,"puntoReposicion","Punto de Reposición","number",0.1, false]],
+        [names[3]]:
+            [[true,"id","ID","number",0.05, true],
+            [true,"nombre","Nombre","string",0.15, true],
+            [false,"descripcion","Descripción","string",0.2, false]], 
+        [names[4]]:
+            [[true,"id","ID","number",0.05, true],
+            [true,"nombre","Nombre","string",0.15, true],
+            [true,"tipoHerramienta","Tipo de Herramienta","number",0.05, true],
+            [true,"codigo","Código","string",0.05, false],
+            [true,"estado","Estado","string",0.15, true],
+            [false,"fechaAlta","Fecha de Creación","string",0.15, true],
+            [false,"observaciones","Observaciones","string",150, false]],
+
         [names[5]]: [[true,"id","ID","number",0.05], [true,"insumo","Insumo","number",0.05], [true,"tarea","Tarea","number",0.05], [true,"cantidad","Cantidad","number",0.05], [false,"fechaHora","Fecha","string",0.15]], 
         [names[6]]: [[true,"id","ID","number",0.05], [true,"insumo","Insumo","number",0.05], [true,"cantidad","Cantidad","number",0.05] ,[true,"observaciones","Observaciones","string",120], [false,"fecha","Fecha","string",0.15], "accionCantidad"], 
         [names[7]]: [[true,"id","ID","number",0.05], [true,"herramienta","Herramienta",0.05], [false,"fecha","Fecha","string",0.15], [false,"estado","Estado","string",0.15], [true,"observaciones","Observaciones","string",120]]
@@ -126,7 +157,7 @@ export const data = [
                 id: 2,
                 title: "Perfil",
                 url: "/users/1",
-                icon: "/user.svg",
+                icon: "/usuario.svg",
             },
         ],
     },
@@ -180,3 +211,8 @@ function buildUrls(){
 }
 
 export const backendUrls: Record<string,string>=buildUrls()
+
+//contexto para compartir mensajes de error entre las vistas CRUD
+import { createContext, useState } from "react"
+
+export const crudContext = createContext([]);

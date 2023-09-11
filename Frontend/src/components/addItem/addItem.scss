@@ -54,6 +54,14 @@
                     border: 1px solid $soft-color;
                     border-radius: 3px;
                 }
+                select {
+                    padding: 10px;
+                    background-color: transparent;
+                    color: white;
+                    outline: none;
+                    border: 1px solid $soft-color;
+                    border-radius: 3px;
+                }
             }
             button {
                 width: 100%;

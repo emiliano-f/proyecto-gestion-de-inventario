@@ -19,15 +19,16 @@ const Delete = () => {
         <h1>El {itemName} con id {id} no existe o ha sido borrado anteriormente.</h1>
     </div>
     if(row){
-        r= <div className="addItem">
-            <div className="modal">
-                <h1>Eliminar {itemName}</h1>
-                <h2>¿Está usted seguro de que quiere eliminar el {itemName} con identificador {id}?</h2>
+        r= <div className="delete">
+            <div className="modal2">
+                <h2>Eliminar {itemName}</h2>
+                <h1>¿Está usted seguro de que quiere eliminar el {itemName} con identificador {id}?</h1>
                 <form method="post" onSubmit={handleDelete}>
-                    <button type="submit">Eliminar</button>
+                    <button className="btn btn-danger" type="submit">Eliminar</button>
                 </form>
+                
                 <Link to={`/${moduleName}/${itemName}`} >
-                    <button className="button">Atras</button>
+                    <button className="btn btn-secondary btn-lg">Atras</button>
                 </Link>
             </div>
         </div>

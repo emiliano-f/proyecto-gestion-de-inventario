@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import "./insumos.scss"
 import { DataTable } from "../../components/dataTable/DataTable"
-import Add from "../../components/addItem/AddItem";
+import AddItem from "../../components/addItem/AddItem";
 import { GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
 // import { inventory } from "../../data";
@@ -54,7 +54,7 @@ const Insumos = () => {
         .catch((error) => {
             console.error("Error al obtener datos de /inventario/insumos");
         });
-    }, []);columns
+    }, []);
     
     return (
         <div className="inventory">
@@ -65,7 +65,7 @@ const Insumos = () => {
             
             <DataTable slug="inventario/insumos" columns={columns} rows={insumos} />
             
-            {open && <Add slug="inventario/insumos" columns={columns} setOpen={setOpen} />}
+            {open && <AddItem slug="inventario/insumos" columns={columns} setOpen={setOpen} />}
         </div>
     )
 }
