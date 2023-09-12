@@ -1,4 +1,4 @@
-import "./form.scss"
+//import "./form.scss"
 import {GetUrlParts,UpdateItem as Update,ReadItem as Read} from "../../Api/apiService"
 import { useState, useContext } from "react";
 // import { useForm } from 'react-hook-form';
@@ -34,8 +34,8 @@ function Form(){
     };
 
     return (
-        <div>
-            <div className="form">
+        <div className="detail">
+            <div className="itemModal">
                 <h1>Modificar {itemName}</h1>
                 <form method="post" onSubmit={handleSubmit}>
                     {Object.keys(row).map((key, index) => (

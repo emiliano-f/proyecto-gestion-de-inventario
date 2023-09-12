@@ -9,7 +9,7 @@ export const unidadesMedida: Array<string> = [
 /**
  * Nombres en singular de modulos y en plural de tablas
  */
-const names : Array<string> =[
+const names: Array<string> = [
     "inventario",
     "tipos-insumo",
     "insumos",
@@ -55,84 +55,122 @@ export const translate = {
 
 /**
  * Objeto que contiene idexadas las caracterisitcas de las columnas de cada tabla
- * [
- * boolean(indica si se muestra en las tablas),
- * string(nombre de atributo),
- * string(nombre que se muestra),
- * string(tipo del dato),
- * float(porcentaje que indica para el tamaño de la columna)
- * boolean(indica si el campo es obligatorio)
- * ]
  */
-export const tableColumnMetaData:Record<string,Record<string,Array<Array<any>>>> = {
+export const tableColumnMetaData: Record<string, Record<string, Record<string,any>>> = {
     [names[0]]: {
-        [names[1]]:
-            [[true,"id","ID","number",0.05, true],
-            [true,"nombre","Nombre","string",0.15, true],
-            [false,"descripcion","Descripción","string",0.2, false]],
-        [names[2]]:
-            [[true,"id","ID","number",0.05, true],
+        [names[1]]:{
+            "id":{
+                show: true,
+                name: "ID",
+                type: "number",
+                col_size: 0.05,
+                is_obligatory: true,
+                enum: void
+            },
+            "nombre":{
+                show: true,
+                name: "Nombre",
+                type: "string",
+                col_size: 0.05,
+                is_obligatory:true,
+                enum: void
+            },
+            "descripcion":{
+                show: true,
+                name: "Descripción",
+                type: "string",
+                col_size: 0.2,
+                is_obligatory:false,
+                enum: void
+            },
+        },
+        [names[2]]:[
+            [true, "id", "ID", "number", 0.05, true],
             [true, "descripcion", "Descripción", "string", 0.1, true],
-            [true,"tipoInsumo","Tipo de Insumo","string",0.1, true],
-            [true,"unidadMedida","Unidad de Medida","string",0.1, true],
-            [true,"cantidad","Cantidad","number",0.1, true],
-            [true,"codigo","Código","string",0.1, false],
-            [false,"observaciones","Observaciones","string",0.1, false],
-            [false,"puntoReposicion","Punto de Reposición","number",0.1, false]],
-        [names[3]]:
-            [[true,"id","ID","number",0.05, true],
-            [true,"nombre","Nombre","string",0.15, true],
-            [false,"descripcion","Descripción","string",0.2, false]], 
-        [names[4]]:
-            [[true,"id","ID","number",0.05, true],
-            [true,"nombre","Nombre","string",0.15, true],
-            [true,"tipoHerramienta","Tipo de Herramienta","number",0.05, true],
-            [true,"codigo","Código","string",0.05, false],
-            [true,"estado","Estado","string",0.15, true],
-            [false,"fechaAlta","Fecha de Creación","string",0.15, true],
-            [false,"observaciones","Observaciones","string",150, false]],
-
-        [names[5]]: [[true,"id","ID","number",0.05], [true,"insumo","Insumo","number",0.05], [true,"tarea","Tarea","number",0.05], [true,"cantidad","Cantidad","number",0.05], [false,"fechaHora","Fecha","string",0.15]], 
-        [names[6]]: [[true,"id","ID","number",0.05], [true,"insumo","Insumo","number",0.05], [true,"cantidad","Cantidad","number",0.05] ,[true,"observaciones","Observaciones","string",120], [false,"fecha","Fecha","string",0.15], "accionCantidad"], 
-        [names[7]]: [[true,"id","ID","number",0.05], [true,"herramienta","Herramienta",0.05], [false,"fecha","Fecha","string",0.15], [false,"estado","Estado","string",0.15], [true,"observaciones","Observaciones","string",120]]
+            [true, "tipoInsumo", "Tipo de Insumo", "string", 0.1, true],
+            [true, "unidadMedida", "Unidad de Medida", "string", 0.1, true],
+            [true, "cantidad", "Cantidad", "number", 0.1, true],
+            [true, "codigo", "Código", "string", 0.1, false],
+            [false, "observaciones", "Observaciones", "string", 0.1, false],
+            [false, "puntoReposicion", "Punto de Reposición", "number", 0.1, false]
+        ],
+        [names[3]]:[
+            [true, "id", "ID", "number", 0.05, true],
+            [true, "nombre", "Nombre", "string", 0.15, true],
+            [false, "descripcion", "Descripción", "string", 0.2, false]
+        ],
+        [names[4]]:[
+            [true, "id", "ID", "number", 0.05, true],
+            [true, "nombre", "Nombre", "string", 0.15, true],
+            [true, "tipoHerramienta", "Tipo de Herramienta", "number", 0.05, true],
+            [true, "codigo", "Código", "string", 0.05, false],
+            [true, "estado", "Estado", "string", 0.15, true],
+            [false, "fechaAlta", "Fecha de Creación", "string", 0.15, true],
+            [false, "observaciones", "Observaciones", "string", 150, false]
+        ],
+        [names[5]]:[
+            [true, "id", "ID", "number", 0.05], [true, "insumo", "Insumo", "number", 0.05], [true, "tarea", "Tarea", "number", 0.05], [true, "cantidad", "Cantidad", "number", 0.05], [false, "fechaHora", "Fecha", "string", 0.15]
+        ],
+        [names[6]]:[
+            [true, "id", "ID", "number", 0.05], [true, "insumo", "Insumo", "number", 0.05], [true, "cantidad", "Cantidad", "number", 0.05], [true, "observaciones", "Observaciones", "string", 120], [false, "fecha", "Fecha", "string", 0.15], "accionCantidad"
+        ],
+        [names[7]]:[
+            [true, "id", "ID", "number", 0.05], [true, "herramienta", "Herramienta", 0.05], [false, "fecha", "Fecha", "string", 0.15], [false, "estado", "Estado", "string", 0.15], [true, "observaciones", "Observaciones", "string", 120]
+        ]
     },
     //falta completar lo demás
     [names[8]]: {
-        [names[9]]: ["id", "fechaHora", "observaciones"],
-        [names[10]]: ["id", "fecha", "proveedor", "total", "aprobado", "pedidoInsumo"],
-        [names[11]]: ["id", "pedidoInsumo", "insumo", "cantidad", "observacion"]
+        [names[9]]:[
+            "id", "fechaHora", "observaciones"
+        ],
+        [names[10]]:[
+            "id", "fecha", "proveedor", "total", "aprobado", "pedidoInsumo"
+        ],
+        [names[11]]:[
+            "id", "pedidoInsumo", "insumo", "cantidad", "observacion"
+        ]
     },
     [names[12]]: {
-        [names[13]]: ["id", "legajo", "nombre", "apellido", "cargo", "mail", "telefono"]
-    }, 
+        [names[13]]:[
+            "id", "legajo", "nombre", "apellido", "cargo", "mail", "telefono"
+        ]
+    },
     [names[14]]: {
-        [names[15]]: ["id", "dni", "nombre", "apellido", "telefono", "mail", "categoria"], 
-        [names[16]]: ["id", "usuario", "tarea", "fechaGeneracion", "prioridad", "categoria", "estado"], 
-        [names[17]]: ["id", "ordenServicio", "satisfaccion", "tiempoRespuesta", "observaciones"], 
-        [names[18]]: ["id", "supTarea", "tipo", "descripcion", "fechaTentativa", "fechaInicio", "fechaFin"]
+        [names[15]]:[
+            "id", "dni", "nombre", "apellido", "telefono", "mail", "categoria"
+        ],
+        [names[16]]:[
+            "id", "usuario", "tarea", "fechaGeneracion", "prioridad", "categoria", "estado"
+        ],
+        [names[17]]:[
+            "id", "ordenServicio", "satisfaccion", "tiempoRespuesta", "observaciones"
+        ],
+        [names[18]]:[
+            "id", "supTarea", "tipo", "descripcion", "fechaTentativa", "fechaInicio", "fechaFin"
+        ]
     }
 }
 
-function createModules(){
+function createModules() {
     return {
         id: 2,
         title: "Modulos",
-        modules: 
-        Object.keys(tableColumnMetaData).map((module,index)=>{
-            return {
-                id: index,
-                title: translate[module].singular,
-                url: `/${module}/`,
-                icon: `/${module}.svg`,
-                tables: Object.keys(tableColumnMetaData[module]).map((item,index)=>{
-                    return {
-                        id: index,
-                        title: translate[item].singular,
-                        url: `/${module}/${item}`,
-                    }
-                })
-            }
-        }),
+        modules:
+            Object.keys(tableColumnMetaData).map((module, index) => {
+                return {
+                    id: index,
+                    title: translate[module].singular,
+                    url: `/${module}/`,
+                    icon: `/${module}.svg`,
+                    tables: Object.keys(tableColumnMetaData[module]).map((item, index) => {
+                        return {
+                            id: index,
+                            title: translate[item].singular,
+                            url: `/${module}/${item}`,
+                        }
+                    })
+                }
+            }),
     }
 }
 
@@ -146,7 +184,7 @@ export const data = [
     {
         id: 1,
         title: "Principal",
-        modules:[
+        modules: [
             {
                 id: 1,
                 title: "Home",
@@ -200,17 +238,17 @@ export const data = [
     },
 ];
 
-function buildUrls(){
-    const urls: Record<string,string> = {};
-    Object.keys(tableColumnMetaData).forEach((module)=>{
-        Object.keys(tableColumnMetaData[module]).forEach((item)=>{
-            urls[item]=`/${module}/${item}`;
+function buildUrls() {
+    const urls: Record<string, string> = {};
+    Object.keys(tableColumnMetaData).forEach((module) => {
+        Object.keys(tableColumnMetaData[module]).forEach((item) => {
+            urls[item] = `/${module}/${item}`;
         })
     })
     return urls;
 }
 
-export const backendUrls: Record<string,string>=buildUrls()
+export const backendUrls: Record<string, string> = buildUrls()
 
 //contexto para compartir mensajes de error entre las vistas CRUD
 import { createContext, useState } from "react"

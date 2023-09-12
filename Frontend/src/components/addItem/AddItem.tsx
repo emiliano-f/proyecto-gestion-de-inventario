@@ -38,7 +38,7 @@ const AddItem = (props: Props) => {
     };
     */
     const onSubmit: SubmitHandler<any> = (data) => {
-        console.log(data);
+        //console.log(data);
 
         try {
             Create(itemName, data);
