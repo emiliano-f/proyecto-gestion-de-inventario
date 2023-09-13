@@ -1,15 +1,15 @@
 import { GridColDef } from "@mui/x-data-grid";
-import {tableColumnMetaData as tableMetaData} from "../../data/data.tsx";
+import STRUCTURE from "../../data/structure";
 
 export function GetColumns(moduleName:string,itemName:String): GridColDef[]{
-    return tableMetaData[moduleName][itemName]
-    .filter((colAtts : Array<any>) => colAtts[0]===true)
-    .map((colAtts : Array<any>) => {
+    return Object.entries(STRUCTURE[moduleName][itemName])
+    .filter(([key,attribute]) => attribute.show === true)
+    .map(([key,attribute]) => {
         return {
-            field: colAtts[1],
-            headerName: colAtts[2],
-            type: colAtts[3],
-            flex: colAtts[4]
+            field: key,
+            headerName: attribute.name,
+            type: attribute.type,
+            flex: attribute.col_size
         };
     });
 }
@@ -24,13 +24,13 @@ export type Field = {
 }
 
 export function GetFields(moduleName: string, itemName: String): Field[] {
-    return tableMetaData[moduleName][itemName]
-        .map((colAtts: Array<any>) => {
+    return Object.entries(STRUCTURE[moduleName][itemName])
+        .map(([key,attribute]) => {
             return {
-                field: colAtts[1],
-                headerName: colAtts[2],
-                type: colAtts[3],
-                required: colAtts[5]
+                field: key,
+                headerName: attribute.name,
+                type: attribute.type,
+                required: attribute.is_obligatory
             };
         });
 }

@@ -1,12 +1,12 @@
 
-import Navbar from "../../components/navbar/Navbar"
 import { Outlet } from "react-router-dom"
+
+import Navbar from "../../components/navbar/Navbar"
 import Footer from "../../components/footer/Footer"
 import Sidebar from "../../components/sidebar/Sidebar"
 
-import { crudContext } from "../../data/data"
 import { useState } from "react"
-
+import { crudContext } from "../../data/data"
 
 function Dashboard() {
     const data = useState(["", false]);

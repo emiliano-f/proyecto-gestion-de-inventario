@@ -1,14 +1,12 @@
-
 import { Link } from "react-router-dom"
 import "./sidebar.scss"
 import { Accordion} from "react-bootstrap";
-import {data as sideBarContent} from "../../data/data.tsx";
+import {SECTIONS} from "../../data/data";
 
 function Sidebar() {
-
     return (
         <div className="sidebar">
-            {sideBarContent.map((section) => (
+            {SECTIONS.map((section) => (
                 <div className="section" key={section.id}>
                     <span className="sectionTitle">{section.title}</span>
                     {section.modules.map((module, index) => (

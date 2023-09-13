@@ -1,9 +1,9 @@
 import "./delete.scss"
-import { DeleteItem} from "../../Api/apiService"; 
-import { ReadItem,GetUrlParts } from "../../Api/apiService";
+import {DeleteItem} from "../../Api/apiService"; 
+import {ReadItem,GetUrlParts } from "../../Api/apiService";
 import {useState, useContext} from "react";
-import { Link, useParams,redirect } from "react-router-dom";
-import { translate, crudContext } from "../../data/data";
+import {Link, useParams} from "react-router-dom";
+import {crudContext, getSingular} from "../../data/data";
 
 const Delete = () => {
     const [row, setRow] = useState(null);
@@ -18,22 +18,22 @@ const Delete = () => {
         e.preventDefault();
         try{
             DeleteItem(itemName,id);
-            setMsg([`Se ha eliminado el ${translate[itemName].singular} ${id} con exito`, false])
+            setMsg([`Se ha eliminado el ${getSingular(itemName)} ${id} con exito`, false])
         }catch(error){
-            setMsg([`Ha surgido un error al eliminar el ${translate[itemName].singular} ${id}`, true])
+            setMsg([`Ha surgido un error al eliminar el ${getSingular(itemName)} ${id}`, true])
         }finally{
             history.back();
         } 
     };
 
     var r = <div>
-        <h1>El {translate[itemName].singular} con id {id} no existe o ha sido borrado anteriormente.</h1>
+        <h1>El {getSingular(itemName)} con id {id} no existe o ha sido borrado anteriormente.</h1>
     </div>
     if(row){
         r= <div className="delete">
             <div className="modal2">
-                <h1>Eliminar {translate[itemName].singular}</h1>
-                <h2>¿Está usted seguro de que quiere eliminar el {translate[itemName].singular} con identificador {id}?</h2>
+                <h1>Eliminar {getSingular(itemName)}</h1>
+                <h2>¿Está usted seguro de que quiere eliminar el {getSingular(itemName)} con identificador {id}?</h2>
                 <form method="post" onSubmit={handleDelete}>
                     <button className="btn btn-danger" type="submit">Eliminar</button>
                 </form>

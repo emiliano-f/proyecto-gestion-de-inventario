@@ -3,7 +3,7 @@ import {useState} from "react";
 import {Link} from "react-router-dom"
 import "./detail.scss"
 import { useParams} from "react-router-dom";
-import { translate } from "../../data/data";
+import { getSingular } from "../../data/data";
 
 const Detail = () => {
     const [row, setRow] = useState(null);
@@ -13,7 +13,7 @@ const Detail = () => {
     return (
         <div className="card text-bg-dark mb-3">    
             <div className="card-header">
-                <h1>{translate[itemName].singular}</h1>
+                <h1>{getSingular(itemName)}</h1>
                 <Link to={`/${moduleName}/${itemName}/modify/${useParams().id}`} className="button"><button className="btn btn-primary">Modificar</button></Link> 
             </div>
             
@@ -24,7 +24,7 @@ const Detail = () => {
                     <span className="itemTitle">{key}: </span>
                     <span className="itemValue">{row[key]}</span>
                 </div>
-                )):<h1>El {itemName} solicitado no se encuentra en la base de datos con esa id</h1>
+                )):<h1>El {getSingular(itemName)} solicitado no se encuentra en la base de datos con esa id</h1>
                 }
             </div>
             <Link to={`/${moduleName}/${itemName}`} >

@@ -3,7 +3,7 @@ import {GetUrlParts,UpdateItem as Update,ReadItem as Read} from "../../Api/apiSe
 import { useState, useContext } from "react";
 // import { useForm } from 'react-hook-form';
 import { Link, useParams, redirect } from "react-router-dom";
-import { translate, crudContext } from "../../data/data";
+import { getSingular, crudContext } from "../../data/data";
 
 
 function Form(){
@@ -24,9 +24,9 @@ function Form(){
         const formData = new FormData(form);
         try {
             Update(itemName, formData, id);
-            setMsg([`Se ha modificado el ${translate[itemName].singular} ${id} con exito`, false])
+            setMsg([`Se ha modificado el ${getSingular(itemName)} ${id} con exito`, false])
         } catch (error) {
-            setMsg([`Ha surgido un error al modificar el ${translate[itemName].singular} ${id}`, true])
+            setMsg([`Ha surgido un error al modificar el ${getSingular(itemName)} ${id}`, true])
         } finally {
             history.back();
         }

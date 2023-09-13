@@ -10,7 +10,7 @@ import AddItem from "../../components/addItem/AddItem";
 import {ListItems,GetUrlParts} from "../../Api/apiService";
 import {GetColumns, GetFields, Field} from "../../components/getColumns/GetColumns";
 
-import { translate, crudContext } from "../../data/data"
+import { getSingular,getPlural, crudContext } from "../../data/data"
 
 const List = () => {
     const [open, setOpen] = useState(false);
@@ -19,11 +19,15 @@ const List = () => {
     const [msg, setMsg] = useContext(crudContext)
 
     const {module: moduleName,item: itemName} = GetUrlParts();
-    ListItems(setItems,itemName)
+    try{
+        ListItems(setItems,itemName)
+    }catch(error){
+        setMsg([`Ha surgido un error al buscar ${getPlural(itemName)}`, true])
+    }
     const columns: GridColDef[] = GetColumns(moduleName,itemName);
     const fields: Field[] = GetFields(moduleName,itemName);
     
-    console.log(fields);
+    //console.log(fields);
 
     return (
         <>
@@ -35,8 +39,8 @@ const List = () => {
 
             <div className="item">
                 <div className="info">
-                    <h1>{translate[itemName].plural}</h1>
-                    <button className="button" onClick={() => setOpen(true)}>Agregar {translate[itemName].singular}</button>
+                    <h1>{getPlural(itemName)}</h1>
+                    <button className="button" onClick={() => setOpen(true)}>Agregar {getSingular(itemName)}</button>
                 </div>
 
                 <DataTable columns={columns} rows={items} />

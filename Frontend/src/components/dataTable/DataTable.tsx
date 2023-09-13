@@ -2,11 +2,8 @@ import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { useRef,useState } from "react";
 import "./dataTable.scss"
 import { Link } from "react-router-dom";
-import DeleteItem from "../deleteItem/DeleteItem"
 
 import {GetUrlParts} from "../../Api/apiService"
-
-
 
 type Props = {
     columns: GridColDef[],
