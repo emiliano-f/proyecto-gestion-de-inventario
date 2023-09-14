@@ -1,18 +1,17 @@
-
+import { useState } from "react"
 import { Outlet } from "react-router-dom"
 
-import Navbar from "../../components/navbar/Navbar"
-import Footer from "../../components/footer/Footer"
-import Sidebar from "../../components/sidebar/Sidebar"
-
-import { useState } from "react"
 import { crudContext } from "../../data/data"
+
+import Header from "../../components/dashboardComponents/header/Header"
+import Footer from "../../components/dashboardComponents/footer/Footer"
+import Sidebar from "../../components/dashboardComponents/sidebar/Sidebar"
 
 function Dashboard() {
     const data = useState(["", false]);
     return (
         <div className="main">
-            <Navbar />
+            <Header />
             <div className="container2">
                 <div className="menuContainer">
                     <Sidebar />

@@ -1,10 +1,10 @@
-import TopBox from "../../components/topBox/TopBox"
-import ChartBox from "../../components/chartBox/ChartBox"
 import "./home.scss"
+import TopBox from "../../components/chartComponents/topBox/TopBox"
+import ChartBox from "../../components/chartComponents/chartBox/ChartBox"
+import BarChartBox from "../../components/chartComponents/barChartBox/BarChartBox"
+import { PieChartBox } from "../../components/chartComponents/pieChartBox/PieChartBox"
+import { BigChartBox } from "../../components/chartComponents/bigChartBox/BigChartBox"
 import { barChartBoxRevenue, barChartBoxVisit, chartBoxConversion, chartBoxProduct, chartBoxRevenue, chartBoxUser } from "../../data"
-import BarChartBox from "../../components/barChartBox/BarChartBox"
-import { PieChartBox } from "../../components/pieChartBox/PieChartBox"
-import { BigChartBox } from "../../components/bigChartBox/BigChartBox"
 
 function Home() {
   return (

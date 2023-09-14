@@ -3,13 +3,12 @@ import { RouteObject, createBrowserRouter, redirect } from "react-router-dom";
 import Login from "../pages/login/Login";
 import Home from "../pages/home/Home";
 import Dashboard from "../pages/dashboard/Dashboard";
-
-import List from "../pages/list/List"
-import Detail from "../components/detail/Detail"
-import Form from "../components/form/Form"
-import Delete from "../components/delete/Delete"
-
 import ServiceForm from "../pages/serviceform/ServiceForm"
+
+import List from "../components/CRUDComponents/list/List"
+import Detail from "../components/CRUDComponents/detail/Detail"
+import Form from "../components/CRUDComponents/form/Form"
+import Delete from "../components/CRUDComponents/delete/Delete"
 
 import {SECTIONS} from "../data/data.tsx";
 

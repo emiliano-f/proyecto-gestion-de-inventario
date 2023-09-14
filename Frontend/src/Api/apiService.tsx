@@ -1,6 +1,6 @@
-import axios from "axios"
 import {useEffect} from "react";
 import {useParams,useLocation} from "react-router-dom";
+import axios from "axios"
 import {backendUrls} from "../data/data.tsx"
 
 const inventarioAPI = axios.create()
