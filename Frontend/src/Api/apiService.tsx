@@ -1,6 +1,6 @@
-import axios from "axios"
 import {useEffect} from "react";
-import { Link, useParams,useLocation, ActionFunctionArgs } from "react-router-dom";
+import {useParams,useLocation} from "react-router-dom";
+import axios from "axios"
 import {backendUrls} from "../data/data.tsx"
 
 const inventarioAPI = axios.create()
@@ -21,7 +21,7 @@ export function ListItems(setItems : any, itemName : string) : any {
             .then((response) => {
                 setItems(response.data);
             })  
-            .catch((error) => {throw error});
+            .catch((error) => {return new Error});
         }
         loadItems()
     }, [setItems, itemName]);

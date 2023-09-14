@@ -1,27 +1,24 @@
 import { RouteObject, createBrowserRouter, redirect } from "react-router-dom";
 
-
-import Dashboard from "../pages/dashboard/Dashboard";
 import Login from "../pages/login/Login";
 import Home from "../pages/home/Home";
+import Dashboard from "../pages/dashboard/Dashboard";
+import ServiceForm from "../pages/serviceform/ServiceForm"
 
-/*información: https://reactrouter.com/en/main/route/route*/
+import List from "../components/CRUDComponents/list/List"
+import Detail from "../components/CRUDComponents/detail/Detail"
+import Form from "../components/CRUDComponents/form/Form"
+import Delete from "../components/CRUDComponents/delete/Delete"
 
-
-import Detail from "../components/detail/Detail"
-import List from "../pages/list/List"
-import Form from "../components/form/Form"
-import Delete from "../components/delete/Delete"
-//import Resume
-import {data as sideBarContent} from "../data/data.tsx";
+import {SECTIONS} from "../data/data.tsx";
 
 /**
  * Genera a partir de los elementos del menu lateral las url's correspondientes
  * @returns Un arreglo con todas las rutas para inventario
  */
-function getRoutes(){
+function generateRoutes(){
   var routes :RouteObject[] = [];
-  sideBarContent.forEach((section) => {
+  SECTIONS.forEach((section) => {
     section.modules.forEach((module) => {
         routes.push(
           {
@@ -29,7 +26,7 @@ function getRoutes(){
             loader: () => {return redirect(module.tables[0].url)}
           }
         );
-        module.tables?.forEach((item)=>{
+        module.tables?.forEach((item) => {
           routes = routes.concat([
             {
               path: item.url,
@@ -51,26 +48,14 @@ function getRoutes(){
         })
       });
     });
-    
     return routes;
   }
   
-
-
-/**
- * Arreglo que contiene todas lasconst backendUrls: Record<string,string>  ={
-    "insumos":"/inventario/insumos",
-    "tipos-insumo":"/inventario/tiposInsumo",
-    "Herramientas":"/inventario/herramienta",
-    "Tipo De Herramienta":"/inventario/tipoHerramienta",
-} rutas de la aplicación
- */
-var routes = [
+const routes = [
   {
     path: "/",
     element: <Dashboard />,
-    children: getRoutes().concat(
-    [
+    children: generateRoutes().concat([
       {
         index:true,
         path: "/",
@@ -81,6 +66,14 @@ var routes = [
   {
     path: "/login",
     element: <Login />
+  },
+  {
+    path: "/orden-de-servicio/login",
+    element: <Login />
+  },
+  {
+    path: "/orden-de-servicio/generate",
+    element: <ServiceForm />
   }
 ];
 

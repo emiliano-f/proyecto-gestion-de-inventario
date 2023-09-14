@@ -1,152 +1,177 @@
+import {createContext} from "react"
+import STRUCTURE from "./structure.tsx"
 
-// Hard code para unidades de medida
-export const unidadesMedida: Array<string> = [
-    "litro",
-    "metro",
-    "gramo",
-    "contable"
-]
+//==================REACT CONTEXT=============================//
+
 /**
- * Nombres en singular de modulos y en plural de tablas
+ * Contexto para compa"tarea"rtir variables entre las vistas CRUD.
+ * 
+ * Se utiliza para informar al componente List que se ha realizado
+ * una operación correcta en el ApiService y retornar el mensaje 
+ * correspondiente. 
  */
-const names : Array<string> =[
-    "inventario",
-    "tipos-insumo",
-    "insumos",
-    "tipos-herramienta",
-    "herramientas",
-    "ordenes-retiro",
-    "ajustes-stock",
-    "estados-herramienta",
-    "compra",
-    "pedidos-insumo",
-    "presupuesto",
-    "detalle-pedidos",
-    "usuario",
-    "usuarios",
-    "tarea",
-    "empleados",
-    "ordenes-servicio",
-    "encuestas-satisfaccion",
-    "tareas"
-]
+export const crudContext = createContext([]);
 
-export const translate = {
-    [names[0]]: { singular: "Inventario", plural: "Inventarios" },
-    [names[1]]: { singular: "Tipo de Insumo", plural: "Tipos de Insumo" },
-    [names[2]]: { singular: "Insumo", plural: "Insumos" },
-    [names[3]]: { singular: "Tipo de Herramienta", plural: "Tipos de Herramientas" },
-    [names[4]]: { singular: "Herramienta", plural: "Herramientas" },
-    [names[5]]: { singular: "Orden de Retiro", plural: "Ordenes de Retiro" },
-    [names[6]]: { singular: "Ajuste de Stock", plural: "Ajustes de Stock" },
-    [names[7]]: { singular: "Estado de Herramienta", plural: "Estados de Herramienta" },
-    [names[8]]: { singular: "Compra", plural: "Compras" },
-    [names[9]]: { singular: "Pedido de Insumo", plural: "Pedidos de Insumo" },
-    [names[10]]: { singular: "Presupuesto", plural: "Presupuestos" },
-    [names[11]]: { singular: "Detalle de Pedido", plural: "Detalles de Pedido" },
-    [names[12]]: { singular: "Usuario", plural: "Usuarios" },
-    [names[13]]: { singular: "Usuario", plural: "Usuarios" },
-    [names[14]]: { singular: "Tarea", plural: "Tareas" },
-    [names[15]]: { singular: "Empleado", plural: "Empleados" },
-    [names[16]]: { singular: "Orden de Servicio", plural: "Ordenes de Servicio" },
-    [names[17]]: { singular: "Encuesta de Satisfacción", plural: "Encuestas de Satisfacción" },
-    [names[18]]: { singular: "Tarea", plural: "Tareas" },
+//==================BACKEND URL'S============================//
+ 
+/**
+* Construye el diccionario en funcion de tableClumnMetaData
+* @returns Diccionario<tabla,url>
+*/
+function buildUrls() {
+    const urls: Record<string, string> = {};
+    Object.keys(STRUCTURE).forEach((module) => {
+        Object.keys(STRUCTURE[module]).forEach((entity) => {
+            urls[entity] = `/${module}/${entity}/`
+        })
+    })
+    return urls;
 }
 
 /**
- * Objeto que contiene idexadas las caracterisitcas de las columnas de cada tabla
- * [
- * boolean(indica si se muestra en las tablas),
- * string(nombre de atributo),
- * string(nombre que se muestra),
- * string(tipo del dato),
- * float(porcentaje que indica para el tamaño de la columna)
- * boolean(indica si el campo es obligatorio)
- * ]
+ * Endpoints(URL's) del backend utilizados por apiService.tsx
  */
-export const tableColumnMetaData:Record<string,Record<string,Array<Array<any>>>> = {
-    [names[0]]: {
-        [names[1]]:
-            [[true,"id","ID","number",0.05, true],
-            [true,"nombre","Nombre","string",0.15, true],
-            [false,"descripcion","Descripción","string",0.2, false]],
-        [names[2]]:
-            [[true,"id","ID","number",0.05, true],
-            [true, "descripcion", "Descripción", "string", 0.1, true],
-            [true,"tipoInsumo","Tipo de Insumo","string",0.1, true],
-            [true,"unidadMedida","Unidad de Medida","string",0.1, true],
-            [true,"cantidad","Cantidad","number",0.1, true],
-            [true,"codigo","Código","string",0.1, false],
-            [false,"observaciones","Observaciones","string",0.1, false],
-            [false,"puntoReposicion","Punto de Reposición","number",0.1, false]],
-        [names[3]]:
-            [[true,"id","ID","number",0.05, true],
-            [true,"nombre","Nombre","string",0.15, true],
-            [false,"descripcion","Descripción","string",0.2, false]], 
-        [names[4]]:
-            [[true,"id","ID","number",0.05, true],
-            [true,"nombre","Nombre","string",0.15, true],
-            [true,"tipoHerramienta","Tipo de Herramienta","number",0.05, true],
-            [true,"codigo","Código","string",0.05, false],
-            [true,"estado","Estado","string",0.15, true],
-            [false,"fechaAlta","Fecha de Creación","string",0.15, true],
-            [false,"observaciones","Observaciones","string",150, false]],
+export const backendUrls: Record<string, string> = buildUrls()
 
-        [names[5]]: [[true,"id","ID","number",0.05], [true,"insumo","Insumo","number",0.05], [true,"tarea","Tarea","number",0.05], [true,"cantidad","Cantidad","number",0.05], [false,"fechaHora","Fecha","string",0.15]], 
-        [names[6]]: [[true,"id","ID","number",0.05], [true,"insumo","Insumo","number",0.05], [true,"cantidad","Cantidad","number",0.05] ,[true,"observaciones","Observaciones","string",120], [false,"fecha","Fecha","string",0.15], "accionCantidad"], 
-        [names[7]]: [[true,"id","ID","number",0.05], [true,"herramienta","Herramienta",0.05], [false,"fecha","Fecha","string",0.15], [false,"estado","Estado","string",0.15], [true,"observaciones","Observaciones","string",120]]
-    },
-    //falta completar lo demás
-    [names[8]]: {
-        [names[9]]: ["id", "fechaHora", "observaciones"],
-        [names[10]]: ["id", "fecha", "proveedor", "total", "aprobado", "pedidoInsumo"],
-        [names[11]]: ["id", "pedidoInsumo", "insumo", "cantidad", "observacion"]
-    },
-    [names[12]]: {
-        [names[13]]: ["id", "legajo", "nombre", "apellido", "cargo", "mail", "telefono"]
-    }, 
-    [names[14]]: {
-        [names[15]]: ["id", "dni", "nombre", "apellido", "telefono", "mail", "categoria"], 
-        [names[16]]: ["id", "usuario", "tarea", "fechaGeneracion", "prioridad", "categoria", "estado"], 
-        [names[17]]: ["id", "ordenServicio", "satisfaccion", "tiempoRespuesta", "observaciones"], 
-        [names[18]]: ["id", "supTarea", "tipo", "descripcion", "fechaTentativa", "fechaInicio", "fechaFin"]
-    }
+//======================NAMES CONSTANTS==================================//
+
+function getNames(): Array<string>{
+    const Names = Object.keys(STRUCTURE);
+    Object.keys(STRUCTURE).map((module) => {
+        Names.concat(Object.keys(STRUCTURE[module]))
+    })
+    return Names
 }
 
-function createModules(){
+const names : Array<string> = getNames();
+
+//=======================SIDEBAR VARIABLES=================================//
+const translations : Record<string,Record<string,string>> = {
+    "inventario": {
+        singular: "Inventario", 
+        plural: "Inventarios"
+    },
+    "tipos-insumo": {
+        singular: "Tipo de Insumo", 
+        plural: "Tipos de Insumo"
+    },
+    "insumos": {
+        singular: "Insumo", 
+        plural: "Insumos"
+    },
+    "tipos-herramienta": {
+        singular: "Tipo de Herramienta", 
+        plural: "Tipos de Herramientas"
+    },
+    "herramientas": {
+        singular: "Herramienta", 
+        plural: "Herramientas"
+    },
+    "ordenes-retiro": {
+        singular: "Orden de Retiro", 
+        plural: "Ordenes de Retiro"
+    },
+    "ajustes-stock": {
+        singular: "Ajuste de Stock", 
+        plural: "Ajustes de Stock"
+    },
+    "estados-herramienta": {
+        singular: "Estado de Herramienta", 
+        plural: "Estados de Herramienta"
+    },
+    "compra": {
+        singular: "Compra",
+        plural: "Compras"
+    },
+    "pedidos-insumo": {
+        singular: "Pedido de Insumo", 
+        plural: "Pedidos de Insumo"
+    },
+    "presupuesto": {
+        singular: "Presupuesto", 
+        plural: "Presupuestos"
+    },
+    "detalle-pedidos": {
+        singular: "Detalle de Pedido", 
+        plural: "Detalles de Pedido"
+    },
+    "usuarios": {
+        singular: "Usuario", 
+        plural: "Usuarios"
+    },
+    "usuario": {
+        singular: "Usuario", 
+        plural: "Usuarios"
+    },
+    "tarea": {
+        singular: "Tarea", 
+        plural: "Tareas"
+    },
+    "empleados": {
+        singular: "Empleado", 
+        plural: "Empleados"
+    },
+    "ordenes-servicio": {
+        singular: "Orden de Servicio", 
+        plural: "Ordenes de Servicio"
+    },
+    "encuestas-satisfaccion": {
+        singular: "Encuesta de Satisfacción", 
+        plural: "Encuestas de Satisfacción"
+    },
+    "tareas": {
+        singular: "Tarea", 
+        plural: "Tareas"
+    },
+}
+
+export function getSingular(name: string){
+    //console.log(name)
+    return translations[name].singular
+}
+
+export function getPlural(name: string){
+    return translations[name].plural
+}
+
+//=======================SIDEBAR VARIABLES=================================//
+
+/**
+ * Una función que genera todas las secciones y entidades que se gestionan
+ * @returns Un objeto que representa la seccion de Modulos
+ */
+function buildModulesSection() {
     return {
         id: 2,
         title: "Modulos",
-        modules: 
-        Object.keys(tableColumnMetaData).map((module,index)=>{
-            return {
-                id: index,
-                title: translate[module].singular,
-                url: `/${module}/`,
-                icon: `/${module}.svg`,
-                tables: Object.keys(tableColumnMetaData[module]).map((item,index)=>{
-                    return {
-                        id: index,
-                        title: translate[item].singular,
-                        url: `/${module}/${item}`,
-                    }
-                })
-            }
-        }),
+        modules:
+            Object.keys(STRUCTURE).map((module, index) => {
+                return {
+                    id: index,
+                    title: getSingular(module),
+                    url: `/${module}/`,
+                    icon: `/${module}.svg`,
+                    tables: Object.keys(STRUCTURE[module]).map((entity, index) => {
+                        return {
+                            id: index,
+                            title: getSingular(entity),
+                            url: `/${module}/${entity}/`,
+                        }
+                    })
+                }
+            }),
     }
 }
 
 /**
- * 0-Principal,1-Modulos,2-Opciones,3-Analiticas;
- * Se utiliza para generar Routes,Sidebar y GetColumns.
- * Arreglo que contiene objetos que representan la estructura del modelo logico de la aplicacion
- * [Secciones{Modulos{Items}}]
+ * Lista de objetos que representan cada sección del panel menú
+ * lateral izquierdo de la vista Dashboard.
  */
-export const data = [
+export const SECTIONS = [
     {
         id: 1,
         title: "Principal",
-        modules:[
+        modules: [
             {
                 id: 1,
                 title: "Home",
@@ -161,7 +186,7 @@ export const data = [
             },
         ],
     },
-    createModules(),
+    buildModulesSection(),
     {
         id: 4,
         title: "Opciones",
@@ -182,7 +207,7 @@ export const data = [
     },
     {
         id: 5,
-        title: "Analiticas",
+        title: "Analíticas",
         modules: [
             {
                 id: 1,
@@ -199,20 +224,3 @@ export const data = [
         ],
     },
 ];
-
-function buildUrls(){
-    const urls: Record<string,string> = {};
-    Object.keys(tableColumnMetaData).forEach((module)=>{
-        Object.keys(tableColumnMetaData[module]).forEach((item)=>{
-            urls[item]=`/${module}/${item}`;
-        })
-    })
-    return urls;
-}
-
-export const backendUrls: Record<string,string>=buildUrls()
-
-//contexto para compartir mensajes de error entre las vistas CRUD
-import { createContext, useState } from "react"
-
-export const crudContext = createContext([]);
