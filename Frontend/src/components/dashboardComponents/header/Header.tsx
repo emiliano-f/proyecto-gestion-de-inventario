@@ -4,7 +4,7 @@ function Header() {
   return (
     <div className="header">
       <div className="logo">
-        <img src="logo.png" alt="" />
+        <img src="/logo.png" alt="" />
         <span>Mantenimiento</span>
       </div>
       <div className="icons">

@@ -3,7 +3,7 @@
 /**
  * Unidades de Medida
  */
-const mesureUnits: Record<string,string> = {
+const mesureUnits: Record<string, string> = {
     L: "litro",
     MT: "metro",
     G: "gramo",
@@ -327,7 +327,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         }
     },
     "compra": {
-        "pedidos-insumo":{
+        "pedidos-insumo": {
             "id": {
                 show: true,
                 name: "ID",
@@ -348,32 +348,9 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 show: true,
                 name: "Observaciones",
                 type: "string",
-                col_size: 0.05,"pedidos-insumo":{
-                    "id": {
-                        show: true,
-                        name: "ID",
-                        type: "number",
-                        col_size: 0.05,
-                        is_obligatory: true,
-                        enum: null
-                    },
-                    "fechaHora": {
-                        show: true,
-                        name: "Fecha",
-                        type: "string",
-                        col_size: 0.05,
-                        is_obligatory: true,
-                        enum: null
-                    },
-                    "observaciones": {
-                        show: true,
-                        name: "Observaciones",
-                        type: "string",
-                        col_size: 0.05,
-                        is_obligatory: true,
-                        enum: null
-                    },
-                }
+                col_size: 0.05,
+                is_obligatory: true,
+                enum: null
             },
         },
         "presupuesto": {
@@ -426,7 +403,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: null
             },
         },
-        "detalle-pedidos":{
+        "detalle-pedidos": {
             "id": {
                 show: true,
                 name: "ID",
@@ -541,7 +518,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "supTarea": {
                 show: true,
-                name: "ID",
+                name: "Tarea padre",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -549,7 +526,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "tipo": {
                 show: true,
-                name: "ID",
+                name: "Tipo",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -557,7 +534,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "descripcion": {
                 show: true,
-                name: "ID",
+                name: "Descripción",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -565,7 +542,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "fechaTentativa": {
                 show: true,
-                name: "ID",
+                name: "Fecha tentantiva",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -573,7 +550,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "fechaInicio": {
                 show: true,
-                name: "ID",
+                name: "Fecha de Inicio",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -581,7 +558,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "fechaFin": {
                 show: true,
-                name: "ID",
+                name: "Fecha de Finalizacion",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -607,7 +584,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "nombre": {
                 show: true,
-                name: "DNI",
+                name: "Nombre",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -615,7 +592,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "apellido": {
                 show: true,
-                name: "DNI",
+                name: "Apellido",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -623,7 +600,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "telefono": {
                 show: true,
-                name: "DNI",
+                name: "Teléfono",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -631,7 +608,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "mail": {
                 show: true,
-                name: "DNI",
+                name: "Mail",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -639,7 +616,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "categoria": {
                 show: true,
-                name: "DNI",
+                name: "Categoría",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -657,7 +634,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "usuario": {
                 show: true,
-                name: "ID",
+                name: "Usuario",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -665,7 +642,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "tarea": {
                 show: true,
-                name: "ID",
+                name: "Tarea",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -673,7 +650,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "fechaGeneracion": {
                 show: true,
-                name: "ID",
+                name: "Fecha de Generación",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -681,7 +658,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "prioridad": {
                 show: true,
-                name: "ID",
+                name: "Prioridad",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -689,7 +666,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "categoria": {
                 show: true,
-                name: "ID",
+                name: "Categoría",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -697,12 +674,12 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "estado": {
                 show: true,
-                name: "ID",
+                name: "Estado",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
                 enum: null
-            },          
+            },
         },
         "encuestas-satisfaccion": {
             "id": {
@@ -715,7 +692,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "ordenServicio": {
                 show: true,
-                name: "ID",
+                name: "Orden de Servicio",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -723,7 +700,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "satisfaccion": {
                 show: true,
-                name: "ID",
+                name: "Satisfacción",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -731,7 +708,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "tiempoRespuesta": {
                 show: true,
-                name: "ID",
+                name: "Tiempo de Respuesta",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
@@ -739,7 +716,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "tarea": {
                 show: true,
-                name: "ID",
+                name: "Tarea",
                 type: "number",
                 col_size: 0.05,
                 is_obligatory: true,
