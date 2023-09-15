@@ -11,6 +11,10 @@
     justify-content: center;
 
     .modal2 {
+        
+        position: fixed;
+        z-index: 9999;//Hace que la la ventana se mantega lo mas al frente posible
+
         padding: 50px;
         border-radius: 10px;
         background-color: $main-bg;

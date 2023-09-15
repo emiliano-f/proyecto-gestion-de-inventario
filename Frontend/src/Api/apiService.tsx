@@ -32,7 +32,7 @@ export function ReadItem(setItem:any,itemName:string) : any {
     useEffect(() => {
         async function loadItem(){
             const jsonItem = await inventarioAPI.get(
-                backendUrls[itemName]+`/${id}`
+                backendUrls[itemName]+`${id}/`
             ).catch((error) => {throw error});
             setItem(jsonItem.data)
         }
@@ -50,7 +50,7 @@ export function CreateItem(itemName: string, formData: FormData) {
 
 export function UpdateItem(itemName:string,formData:FormData,id:string|undefined){   
     async function updateData(itemName:string,id:string|undefined,formData:FormData){
-        await inventarioAPI.put(backendUrls[itemName] +`/${id}/`, formData)
+        await inventarioAPI.put(backendUrls[itemName] +`${id}/`, formData)
         .catch((error) => {throw error});
     }
     updateData(itemName, id, formData)
@@ -59,7 +59,7 @@ export function UpdateItem(itemName:string,formData:FormData,id:string|undefined
 export function DeleteItem(itemName: string, id: string) {
     async function deleteData(itemName: string, id: string) {
         //Esta funcion puede cambiar
-        await inventarioAPI.delete(backendUrls[itemName] +`/${id}/`)
+        await inventarioAPI.delete(backendUrls[itemName] +`${id}/`)
         .catch((error) => {throw error});
     }
     deleteData(itemName, id);

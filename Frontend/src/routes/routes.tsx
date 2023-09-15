@@ -26,22 +26,22 @@ function generateRoutes(){
             loader: () => {return redirect(module.tables[0].url)}
           }
         );
-        module.tables?.forEach((item) => {
+        module.tables?.forEach((table) => {
           routes = routes.concat([
             {
-              path: item.url,
+              path: table.url,
               element: <List/>,
             },
             {
-              path: item.url+"/detail/:id/",
+              path: table.url+"/detail/:id/",
               element: <Detail/>
             },
             {
-              path: item.url+"/modify/:id/",
+              path: table.url+"/modify/:id/",
               element: <Form/>,
             },
             {
-              path: item.url+"/delete/:id/",
+              path: table.url+"/delete/:id/",
               element: <Delete/>,
             }
           ]);

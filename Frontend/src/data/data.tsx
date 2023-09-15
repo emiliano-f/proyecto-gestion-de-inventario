@@ -149,13 +149,13 @@ function buildModulesSection() {
                 return {
                     id: index,
                     title: getSingular(module),
-                    url: `/${module}/`,
+                    url: `/${module}`,
                     icon: `/${module}.svg`,
                     tables: Object.keys(STRUCTURE[module]).map((entity, index) => {
                         return {
                             id: index,
                             title: getSingular(entity),
-                            url: `/${module}/${entity}/`,
+                            url: `/${module}/${entity}`,
                         }
                     })
                 }
