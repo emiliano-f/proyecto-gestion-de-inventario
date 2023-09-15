@@ -46,9 +46,8 @@ const Add = (props: Props) => {
                 <form method="post" onSubmit={handleSubmit(onSubmit)}>
                     {props.fields
                         .filter(item => item.field !== "id" && item.field !== "img")
-                        .map(field => (
-
-                            <div className="item">
+                        .map((field,index) => (
+                            <div className="item" key={index}>
                                 <label htmlFor="1">{field.headerName}</label>
                                 {(field.field === "unidadMedida") ?
                                     (<select {...register(field.field, { required: field.required })}>

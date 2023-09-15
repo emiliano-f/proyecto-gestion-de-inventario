@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useParams,useLocation} from "react-router-dom";
-import axios from "axios"
+import axios, { AxiosError, AxiosResponse } from "axios"
 import {backendUrls} from "../data/data.tsx"
 
 const inventarioAPI = axios.create()
@@ -14,53 +14,70 @@ export function GetUrlParts() : any {
     return objeto;
 }
 
-export function ListItems(setItems : any, itemName : string) : any {
-    useEffect(() => {
-        async function loadItems() {
-            await inventarioAPI.get(backendUrls[itemName])
-            .then((response) => {
-                setItems(response.data);
-            })  
-            .catch((error) => {return new Error});
-        }
-        loadItems()
-    }, [setItems, itemName]);
+export function ListItems(setItems : any, itemName : string) : Promise<AxiosResponse<any,any>> {
+    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
+        useEffect(() => {
+            async function loadItems() {
+                await inventarioAPI.get(backendUrls[itemName])
+                .then((response) => {
+                    setItems(response.data);
+                    resolve(response)
+                })
+                .catch((error)=>(reject(error)))
+            }
+            loadItems()
+        }, [setItems, itemName]);
+    });
 }
 
-export function ReadItem(setItem:any,itemName:string) : any {
+export function ReadItem(setItem:any,itemName:string) : Promise<AxiosResponse<any,any>> {
     const {id} = useParams()
-    useEffect(() => {
-        async function loadItem(){
-            const jsonItem = await inventarioAPI.get(
-                backendUrls[itemName]+`${id}/`
-            ).catch((error) => {throw error});
-            setItem(jsonItem.data)
+    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
+        useEffect(() => {
+            async function loadItem(){
+                await inventarioAPI.get(
+                    backendUrls[itemName]+`${id}/`
+                )
+                .then((response) => {
+                    setItem(response.data)
+                    resolve(response)
+                })
+                .catch((error) => reject(error));
+            }
+            loadItem()
+        }, [itemName, setItem]);
+    })
+}
+
+export function CreateItem(itemName: string, formData: FormData) : Promise<AxiosResponse<any,any>> {
+    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
+        async function createData(itemName: string, formData: FormData) {
+            await inventarioAPI.post(backendUrls[itemName], formData)
+            .then((response) => resolve(response))
+            .catch((error) => reject(error));
         }
-        loadItem()
-    }, [itemName, setItem]);
+        createData(itemName, formData);
+    })
 }
 
-export function CreateItem(itemName: string, formData: FormData) {
-    async function createData(itemName: string, formData: FormData) {
-        await inventarioAPI.post(backendUrls[itemName], formData)
-        .catch((error) => {throw error});
-    }
-    createData(itemName, formData);
+export function UpdateItem(itemName:string,formData:FormData,id:string|undefined) : Promise<AxiosResponse<any,any>> {   
+    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
+        async function updateData(itemName:string,id:string|undefined,formData:FormData){
+            await inventarioAPI.put(backendUrls[itemName] +`${id}/`, formData)
+            .then((response) => resolve(response))
+            .catch((error) => reject(error));
+        }
+        updateData(itemName, id, formData)
+    })
 }
 
-export function UpdateItem(itemName:string,formData:FormData,id:string|undefined){   
-    async function updateData(itemName:string,id:string|undefined,formData:FormData){
-        await inventarioAPI.put(backendUrls[itemName] +`${id}/`, formData)
-        .catch((error) => {throw error});
-    }
-    updateData(itemName, id, formData)
-}
-
-export function DeleteItem(itemName: string, id: string) {
-    async function deleteData(itemName: string, id: string) {
-        //Esta funcion puede cambiar
-        await inventarioAPI.delete(backendUrls[itemName] +`${id}/`)
-        .catch((error) => {throw error});
-    }
-    deleteData(itemName, id);
+export function DeleteItem(itemName: string, id: string) : Promise<AxiosResponse<any,any>> {
+    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
+        async function deleteData(itemName: string, id: string) {
+            await inventarioAPI.delete(backendUrls[itemName] +`${id}/`)
+            .then((response) => resolve(response))
+            .catch((error) => reject(error));
+        }
+        deleteData(itemName, id);
+    })
 }

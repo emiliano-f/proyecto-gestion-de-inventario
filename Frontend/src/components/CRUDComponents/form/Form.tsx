@@ -3,16 +3,18 @@ import { useState, useContext } from "react";
 import { Link, useParams, redirect, useForm } from "react-router-dom";
 
 import { GetUrlParts, UpdateItem as Update, ReadItem as Read } from "../../../Api/apiService"
-import { getSingular, crudContext } from "../../../data/data";
+import { getSingular } from "../../../data/data";
+import { setMessage } from "../messageDisplay/MessageDisplay";
 
 function Form() {
     const [row, setRow] = useState([]);
     const { item: itemName, module: moduleName } = GetUrlParts();
     const { id } = useParams();
-
-    const [msg, setMsg] = useContext(crudContext)
-
-    Read(setRow, itemName);
+    
+    Read(setRow, itemName)
+    .catch((error) => {
+        setMessage(`Ha surgido un error al buscar ${getSingular(itemName)}`, true)
+    });
 
     interface formDataType { [key: string]: FormDataEntryValue }
 
@@ -21,16 +23,15 @@ function Form() {
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
-        try {
-            Update(itemName, formData, id);
-            setMsg([`Se ha modificado el ${getSingular(itemName)} ${id} con exito`, false])
-        } catch (error) {
-            setMsg([`Ha surgido un error al modificar el ${getSingular(itemName)} ${id}`, true])
-        } finally {
-            history.back();
-        }
-
-    };
+        Update(itemName, formData, id)
+        .then(() => {
+            setMessage(`Se ha modificado ${getSingular(itemName)} con éxito`, false)
+        })
+        .catch((error) => {
+            setMessage(`Ha surgido un error al modificar ${getSingular(itemName)}`, true)
+        })
+        .finally(() => history.back());
+        };
 
     return (
         <div className="detail">

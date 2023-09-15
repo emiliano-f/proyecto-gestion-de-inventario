@@ -3,26 +3,28 @@ import { useState, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { DeleteItem, ReadItem, GetUrlParts  } from "../../../Api/apiService";
 import { crudContext, getSingular } from "../../../data/data";
+import { setMessage } from "../messageDisplay/MessageDisplay";
 
 const Delete = () => {
     const [row, setRow] = useState(null);
     const { item: itemName, module: moduleName } = GetUrlParts();
     const id = useParams().id;
 
-    const [msg, setMsg] = useContext(crudContext)
-
-    ReadItem(setRow, itemName);
+    ReadItem(setRow, itemName)
+    .catch((error) => {
+        setMessage(`Ha surgido un error al buscar ${getSingular(itemName)}`, true)
+    });
 
     const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try {
-            DeleteItem(itemName, id);
-            setMsg([`Se ha eliminado el ${getSingular(itemName)} ${id} con exito`, false])
-        } catch (error) {
-            setMsg([`Ha surgido un error al eliminar el ${getSingular(itemName)} ${id}`, true])
-        } finally {
-            history.back();
-        }
+        DeleteItem(itemName, id)
+        .then(() =>{
+            setMessage(`Se ha eliminado el ${getSingular(itemName)} ${id} con exito`, false)
+        })
+        .catch((error) => {
+            setMessage(`Ha surgido un error al eliminar el ${getSingular(itemName)} ${id}`, true)
+        })
+        .finally(() => history.back());
     };
 
     var r = <div>
