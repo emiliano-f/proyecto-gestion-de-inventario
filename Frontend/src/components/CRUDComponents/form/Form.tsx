@@ -1,13 +1,13 @@
 import "./form.scss"
-import { useState, useContext } from "react";
-import { Link, useParams, redirect, useForm } from "react-router-dom";
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 import { GetUrlParts, UpdateItem as Update, ReadItem as Read } from "../../../Api/apiService"
 import { getSingular } from "../../../data/data";
 import { setMessage } from "../messageDisplay/MessageDisplay";
 
 function Form() {
-    const [row, setRow] = useState([]);
+    const [row , setRow] : [Record<strign,any>, any] = useState([]);
     const { item: itemName, module: moduleName } = GetUrlParts();
     const { id } = useParams();
     
@@ -16,7 +16,6 @@ function Form() {
         setMessage(`Ha surgido un error al buscar ${getSingular(itemName)}`, true)
     });
 
-    interface formDataType { [key: string]: FormDataEntryValue }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         // Prevent the browser from reloading the page
@@ -31,14 +30,14 @@ function Form() {
             setMessage(`Ha surgido un error al modificar ${getSingular(itemName)}`, true)
         })
         .finally(() => history.back());
-        };
+    };
 
     return (
         <div className="detail">
             <div className="itemModal">
                 <h1>Modificar {itemName}</h1>
                 <form method="post" onSubmit={handleSubmit}>
-                    {Object.keys(row).map((key, index) => (
+                    {Object.keys(row).map((key : string, index : number) => (
                         <div className="mb-2" key={index}>
                             <label className="form-label">{key}</label>
                             <input className="form-control"

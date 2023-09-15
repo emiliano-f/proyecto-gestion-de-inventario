@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useParams,useLocation} from "react-router-dom";
-import axios, { AxiosError, AxiosResponse } from "axios"
+import axios, { AxiosResponse } from "axios"
 import {backendUrls} from "../data/data.tsx"
 
 const inventarioAPI = axios.create()
@@ -79,5 +79,16 @@ export function DeleteItem(itemName: string, id: string) : Promise<AxiosResponse
             .catch((error) => reject(error));
         }
         deleteData(itemName, id);
+    })
+}
+
+export function SendServiceRequest(formData: FormData) : Promise<AxiosResponse<any,any>> {
+    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
+        async function sendData(formData: FormData) {
+            await inventarioAPI.post(backendUrls["solicitud-mantenimiento"], formData)
+            .then((response) => resolve(response))
+            .catch((error) => reject(error));
+        }
+        sendData(formData);
     })
 }
