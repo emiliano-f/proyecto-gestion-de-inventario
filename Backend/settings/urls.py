@@ -27,4 +27,5 @@ urlpatterns = [
     path('usuario/', include('usuario.urls')),
     path('models_info/', get_models.get_models, name='models_info'),
     path('docs/', include_docs_urls(title='API docs')),
+    path('auth/', include('django.contrib.auth.urls')),
 ]

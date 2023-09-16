@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'compra',
     'usuario',
     'tarea',
-    'inventario'
+    'inventario',
+    'herramienta'
 ]
 
 MIDDLEWARE = [
