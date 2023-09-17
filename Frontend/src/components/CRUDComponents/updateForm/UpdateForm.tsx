@@ -54,9 +54,7 @@ function UpdateForm() {
                             </Form.Group>
                             
                         </div>
-                       
-                        
-                        
+                
                     ))}
                     <button className="btn btn-primary" type="submit">Modificar</button>
                     <Link to={`/${moduleName}/${itemName}`} >

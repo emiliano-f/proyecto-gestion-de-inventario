@@ -44,7 +44,7 @@ const Add = (props: Props) => {
         } catch (error) {
             setMsg([`Ha surgido un error al crear el Nuevo ${getSingular(itemName)}`, true])
         } finally {
-            // props.setOpen(false)
+            props.setOpen(false)
 
         }
     };

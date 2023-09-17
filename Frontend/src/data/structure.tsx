@@ -17,7 +17,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
     "inventario": {
         "insumos": {
             "id": {
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -109,7 +109,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "herramientas": {
             "id": {
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -167,7 +167,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "tipos-herramienta": {
             "id": {
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
