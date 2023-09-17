@@ -1,9 +1,10 @@
 import "./add.scss"
-import { useContext } from "react";
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useContext, useState } from "react";
 import { GetUrlParts, CreateItem as Create } from "../../../Api/apiService"
 import { getSingular, crudContext } from "../../../data/data";
 import { Field } from "../getColumns/GetColumns";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button'
 
 const mesureUnits = [
     "litro",
@@ -22,52 +23,73 @@ type Props = {
 const Add = (props: Props) => {
 
     const [msg, setMsg] = useContext(crudContext);
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [validated, setValidated] = useState(false);
+    
     const { item: itemName } = GetUrlParts();
 
-    const onSubmit: SubmitHandler<any> = (data) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        // Prevent the browser from reloading the page
+
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+        if (form.checkValidity() === false) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        setValidated(true);
+
         try {
-            Create(itemName, data);
+            Create(itemName, formData);
             setMsg([`Se ha creado el nuevo ${getSingular(itemName)} con exito`, false])
         } catch (error) {
             setMsg([`Ha surgido un error al crear el Nuevo ${getSingular(itemName)}`, true])
         } finally {
-            props.setOpen(false)
+            // props.setOpen(false)
 
         }
     };
-
     return (
-        <div className="addItem">
-
+        <div className="add">
             <div className="modal2">
                 <span className="close" onClick={() => props.setOpen(false)}>X</span>
                 <h1>Crear nuevo {getSingular(props.slug)}</h1>
-                <form method="post" onSubmit={handleSubmit(onSubmit)}>
+                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                
                     {props.fields
-                        .filter(item => item.field !== "id" && item.field !== "img")
-                        .map((field,index) => (
-                            <div className="item" key={index}>
-                                <label htmlFor="1">{field.headerName}</label>
-                                {(field.field === "unidadMedida") ?
-                                    (<select {...register(field.field, { required: field.required })}>
-                                        {mesureUnits.map(unidad => (
-                                            <option value={unidad} >{unidad}</option>
-                                        ))}
-                                    </select>
-                                    )
-                                    : (
-                                        <input
-                                            type={field.type}
-                                            // name={field.field}
-                                            placeholder={field.field}
-                                            {...register(field.field, { required: field.required })} />
-                                    )}
+                        .filter(item => item.field !== "id")
+                        .map(field => {
+                            return (
+                                <Form.Group className="form-group">
+                                    <Form.Label>{field.headerName}</Form.Label>
+                                    {field.field === "unidadMedida" ? (
+                                        <Form.Select className="form-select" defaultValue="" required>
+                                            <option selected value="" disabled>Elegir unidad de medida</option>
+                                            {mesureUnits.map(unidad => (
+                                                <option value={unidad} key={unidad}>{unidad}</option>
+                                            ))}
+                                        </Form.Select>
 
-                            </div>
-                        ))}
-                    <button type="submit">Crear</button>
-                </form>
+                                    ) : (
+                                        <Form.Control
+                                            required={field.required ? true : false}
+                                            type={field.type}
+                                            placeholder={`Ingrese ${field.headerName}`}
+                                        />
+
+                                    )}
+                                    {field.required ? (
+                                        <Form.Control.Feedback type="invalid">
+                                            Este campo es obligatorio
+                                        </Form.Control.Feedback>
+                                    ) : (<Form.Control.Feedback>
+
+                                    </Form.Control.Feedback>)}
+                                </Form.Group>
+                            )
+                        })
+                    }
+                    <Button type="submit" className="mt-3">Crear</Button>
+                </Form>
             </div>
         </div>
     );

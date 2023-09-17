@@ -1,21 +1,20 @@
 @import "../../../styles/variables.scss";
-.addItem {
+
+.add {
     width: 100vw;
     height: 100vh;
-    position: absolute;
+    position: fixed;
+    overflow: hidden;
     top: 0;
     left: 0;
-    background-color: rgba(0,0,0,0.724);
+    background-color: rgba(0, 0, 0, 0.724);
     display: flex;
     align-items: center;
     justify-content: center;
 
     .modal2 {
         
-        position: fixed;
-        z-index: 9999;//Hace que la la ventana se mantega lo mas al frente posible
-
-        padding: 50px;
+        padding: 40px 60px;
         border-radius: 10px;
         background-color: $main-bg;
         position: relative;
@@ -25,6 +24,7 @@
             color: $soft-color;
 
         }
+
         .close {
             position: absolute;
             top: 10px;
@@ -37,35 +37,40 @@
             flex-wrap: wrap;
             max-width: 500px;
             justify-content: space-between;
-
-            .item {
-                width: 40%;
+            
+            .form-group {
+                width: 48%;
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
+                gap: 2px;
                 margin-bottom: 20px;
-
+        
                 label {
                     font-style: 14px;
                 }
-
+        
                 input {
                     padding: 10px;
-                    background-color: transparent;
-                    color: white;
+                    //background-color: transparent;
+                    // color: white;
                     outline: none;
                     border: 1px solid $soft-color;
                     border-radius: 3px;
                 }
+        
                 select {
                     padding: 10px;
-                    background-color: transparent;
-                    color: white;
+                    // background-color: transparent;
+                    // color: white;
                     outline: none;
                     border: 1px solid $soft-color;
                     border-radius: 3px;
                 }
+                
+
             }
+            
+
             button {
                 width: 100%;
                 padding: 10px;
@@ -74,5 +79,4 @@
 
         }
     }
-
 }

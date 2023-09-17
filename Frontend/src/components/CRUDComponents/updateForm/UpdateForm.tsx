@@ -1,4 +1,4 @@
-import "./form.scss"
+import "./updateForm.scss"
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -6,10 +6,15 @@ import { GetUrlParts, UpdateItem as Update, ReadItem as Read } from "../../../Ap
 import { getSingular } from "../../../data/data";
 import { setMessage } from "../messageDisplay/MessageDisplay";
 
-function Form() {
-    const [row , setRow] : [Record<strign,any>, any] = useState([]);
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button'
+
+
+function UpdateForm() {
+    const [row , setRow] : [Record<string,any>, any] = useState([]);
     const { item: itemName, module: moduleName } = GetUrlParts();
     const { id } = useParams();
+    const [validated, setValidated] = useState(false);
     
     Read(setRow, itemName)
     .catch((error) => {
@@ -33,30 +38,37 @@ function Form() {
     };
 
     return (
-        <div className="detail">
-            <div className="itemModal">
+        <div className="updateForm">
+            <div className="modal2">
                 <h1>Modificar {itemName}</h1>
-                <form method="post" onSubmit={handleSubmit}>
-                    {Object.keys(row).map((key : string, index : number) => (
-                        <div className="mb-2" key={index}>
-                            <label className="form-label">{key}</label>
-                            <input className="form-control"
-                                type="string"
-                                name={key}
-                                //placeholder={key}
-                                defaultValue={row[key]}
-                            />
+                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                    {Object.keys(row).map((key: string, index: number) => (
+                        <div>
+                            <Form.Group className="form-group">
+                                <Form.Label>{key}</Form.Label>
+                                <Form.Control
+                                    type="string"
+                                    name={key}
+                                    defaultValue={row[key]}
+                                />
+                            </Form.Group>
+                            
                         </div>
+                       
+                        
+                        
                     ))}
                     <button className="btn btn-primary" type="submit">Modificar</button>
                     <Link to={`/${moduleName}/${itemName}`} >
                         <button className="btn btn-secondary">Atras</button>
                     </Link>
-                </form>
+
+                </Form>
+                
 
             </div>
         </div>
     );
 }
 
-export default Form; 
+export default UpdateForm; 

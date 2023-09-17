@@ -7,7 +7,7 @@ import ServiceForm from "../pages/serviceform/ServiceForm"
 
 import List from "../components/CRUDComponents/list/List"
 import Detail from "../components/CRUDComponents/detail/Detail"
-import Form from "../components/CRUDComponents/form/Form"
+import Form from "../components/CRUDComponents/updateForm/UpdateForm.tsx"
 import Delete from "../components/CRUDComponents/delete/Delete"
 
 import {SECTIONS} from "../data/data.tsx";

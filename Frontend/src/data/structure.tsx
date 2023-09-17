@@ -21,7 +21,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "descripcion": {
@@ -29,7 +29,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Descripción",
                 type: "string",
                 col_size: 0.1,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "tipoInsumo": {
@@ -37,7 +37,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Tipo de Insumo",
                 type: "string",
                 col_size: 0.1,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "unidadMedida": {
@@ -45,7 +45,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Unidad de Medida",
                 type: "string",
                 col_size: 0.1,
-                is_obligatory: true,
+                required: true,
                 enum: mesureUnits
             },
             "cantidad": {
@@ -53,7 +53,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Cantidad",
                 type: "number",
                 col_size: 0.1,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "codigo": {
@@ -61,7 +61,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Código",
                 type: "string",
                 col_size: 0.1,
-                is_obligatory: false,
+                required: false,
                 enum: null
             },
             "observaciones": {
@@ -69,7 +69,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Observaciones",
                 type: "string",
                 col_size: 0.1,
-                is_obligatory: false,
+                required: false,
                 enum: null
             },
             "puntoReposicion": {
@@ -77,7 +77,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Punto de Reposición",
                 type: "number",
                 col_size: 0.1,
-                is_obligatory: false,
+                required: false,
                 enum: null
             }
         },
@@ -87,7 +87,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null,
             },
             "nombre": {
@@ -95,7 +95,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Nombre",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "descripcion": {
@@ -103,7 +103,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Descripción",
                 type: "string",
                 col_size: 0.2,
-                is_obligatory: false,
+                required: false,
                 enum: null
             }
         },
@@ -113,7 +113,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "nombre": {
@@ -121,7 +121,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Nombre",
                 type: "string",
                 col_size: 0.15,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "tipoHerramienta": {
@@ -129,7 +129,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Tipo de Herramienta",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "codigo": {
@@ -137,7 +137,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Código",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: false,
+                required: false,
                 enum: null
             },
             "estado": {
@@ -145,7 +145,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Estado",
                 type: "string",
                 col_size: 0.15,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "fechaAlta": {
@@ -153,7 +153,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha de Creación",
                 type: "string",
                 col_size: 0.15,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "observaciones": {
@@ -161,7 +161,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Observaciones",
                 type: "string",
                 col_size: 0.15,
-                is_obligatory: false,
+                required: false,
                 enum: null
             },
         },
@@ -171,7 +171,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "nombre": {
@@ -179,7 +179,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Nombre",
                 type: "string",
                 col_size: 0.15,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "descripcion": {
@@ -187,7 +187,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Descripción",
                 type: "string",
                 col_size: 0.2,
-                is_obligatory: false,
+                required: false,
                 enum: null
             },
         },
@@ -197,7 +197,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "insumo": {
@@ -205,7 +205,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Insumo",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "tarea": {
@@ -213,7 +213,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Tarea",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "cantidad": {
@@ -221,7 +221,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Cantidad",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "fechaHora": {
@@ -229,7 +229,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha",
                 type: "string",
                 col_size: 0.15,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
         },
@@ -239,7 +239,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "insumo": {
@@ -247,7 +247,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Insumo",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "cantidad": {
@@ -255,7 +255,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Cantidad",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "observaciones": {
@@ -263,7 +263,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Observaciones",
                 type: "string",
                 col_size: 0.1,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "fecha": {
@@ -271,7 +271,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha",
                 type: "string",
                 col_size: 0.15,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "accionCantidad": {
@@ -279,7 +279,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha",
                 type: "string",
                 col_size: 0.15,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
         },
@@ -289,7 +289,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "herramienta": {
@@ -297,7 +297,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Herramienta",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "fecha": {
@@ -305,7 +305,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha",
                 type: "string",
                 col_size: 0.15,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "estado": {
@@ -313,7 +313,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Estado",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "observaciones": {
@@ -321,7 +321,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Observaciones",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
         }
@@ -333,7 +333,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "fechaHora": {
@@ -341,7 +341,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "observaciones": {
@@ -349,7 +349,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Observaciones",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
         },
@@ -359,7 +359,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "fecha": {
@@ -367,7 +367,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fechas",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "proveedor": {
@@ -375,7 +375,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Proveedor",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "total": {
@@ -383,7 +383,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Total",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "aprobado": {
@@ -391,7 +391,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Aprobado",
                 type: "boolean",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "pedidoInsumo": {
@@ -399,7 +399,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Pedido de Insumo",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
         },
@@ -409,7 +409,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "pedidoInsumo": {
@@ -417,7 +417,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Pedido de Insumo",
                 type: "n[names[18]]umber",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "insumo": {
@@ -425,7 +425,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Insumo",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "cantidad": {
@@ -433,7 +433,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Cantidad",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "observacion": {
@@ -441,7 +441,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Observacion",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
         }
@@ -453,7 +453,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "legajo": {
@@ -461,7 +461,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Leagajo",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "nombre": {
@@ -469,7 +469,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Nombre",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "apellido": {
@@ -477,7 +477,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Apellido",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "cargo": {
@@ -485,7 +485,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Cargo",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "mail": {
@@ -493,7 +493,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Mail",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "telefono": {
@@ -501,7 +501,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Teléfono",
                 type: "string",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
         }
@@ -513,7 +513,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "supTarea": {
@@ -521,7 +521,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Tarea padre",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "tipo": {
@@ -529,7 +529,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Tipo",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "descripcion": {
@@ -537,7 +537,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Descripción",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "fechaTentativa": {
@@ -545,7 +545,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha tentantiva",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "fechaInicio": {
@@ -553,7 +553,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha de Inicio",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "fechaFin": {
@@ -561,7 +561,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha de Finalizacion",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
         },
@@ -571,7 +571,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "dni": {
@@ -579,7 +579,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "DNI",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "nombre": {
@@ -587,7 +587,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Nombre",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "apellido": {
@@ -595,7 +595,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Apellido",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "telefono": {
@@ -603,7 +603,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Teléfono",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "mail": {
@@ -611,7 +611,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Mail",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "categoria": {
@@ -619,7 +619,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Categoría",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
         },
@@ -629,7 +629,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "usuario": {
@@ -637,7 +637,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Usuario",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "tarea": {
@@ -645,7 +645,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Tarea",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "fechaGeneracion": {
@@ -653,7 +653,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha de Generación",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "prioridad": {
@@ -661,7 +661,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Prioridad",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "categoria": {
@@ -669,7 +669,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Categoría",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "estado": {
@@ -677,7 +677,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Estado",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
         },
@@ -687,7 +687,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "ordenServicio": {
@@ -695,7 +695,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Orden de Servicio",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "satisfaccion": {
@@ -703,7 +703,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Satisfacción",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "tiempoRespuesta": {
@@ -711,7 +711,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Tiempo de Respuesta",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
             "tarea": {
@@ -719,7 +719,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Tarea",
                 type: "number",
                 col_size: 0.05,
-                is_obligatory: true,
+                required: true,
                 enum: null
             },
         },

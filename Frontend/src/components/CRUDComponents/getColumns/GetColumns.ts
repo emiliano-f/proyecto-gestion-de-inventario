@@ -30,7 +30,7 @@ export function GetFields(moduleName: string, itemName: String): Field[] {
                 field: key,
                 headerName: attribute.name,
                 type: attribute.type,
-                required: attribute.is_obligatory
+                required: attribute.required
             };
         });
 }
