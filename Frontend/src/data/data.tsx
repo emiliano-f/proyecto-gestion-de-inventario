@@ -45,6 +45,20 @@ function getNames(): Array<string>{
 
 const names : Array<string> = getNames();
 
+export function getUri(fieldName:string): string {
+    switch(fieldName) {
+        case "tipoInsumo":
+            return "tipos-insumo";
+            break;
+        case "tipoHerramienta":
+            return "tipos-herramienta";
+            break;
+        default:
+            throw new Error(`El campo ${fieldName} no tiene uri asignada`);
+
+    }
+}
+
 //=======================SIDEBAR VARIABLES=================================//
 const translations : Record<string,Record<string,string>> = {
     "inventario": {

@@ -21,6 +21,7 @@ export type Field = {
     headerName: string,
     type: string,
     required: boolean
+    enum: boolean;
 }
 
 export function GetFields(moduleName: string, itemName: String): Field[] {
@@ -30,7 +31,8 @@ export function GetFields(moduleName: string, itemName: String): Field[] {
                 field: key,
                 headerName: attribute.name,
                 type: attribute.type,
-                required: attribute.required
+                required: attribute.required,
+                enum: attribute.enum
             };
         });
 }

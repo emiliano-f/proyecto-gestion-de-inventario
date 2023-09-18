@@ -5,6 +5,7 @@ import { getSingular, crudContext } from "../../../data/data";
 import { Field } from "../getColumns/GetColumns";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
+import SelectList from "../selectList/SelectList";
 
 const mesureUnits = [
     "litro",
@@ -32,7 +33,6 @@ const Add = (props: Props) => {
 
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
-        console.log(formData); 
         
         if (form.checkValidity() === false) {
             e.preventDefault();
@@ -64,23 +64,27 @@ const Add = (props: Props) => {
                             return (
                                 <Form.Group className="form-group">
                                     <Form.Label>{field.headerName}</Form.Label>
-                                    {field.field === "unidadMedida" ? (
-                                        <Form.Select className="form-select" defaultValue="" required>
-                                            <option selected value="" disabled>Elegir unidad de medida</option>
-                                            {mesureUnits.map(unidad => (
-                                                <option value={unidad} key={unidad}>{unidad}</option>
-                                            ))}
-                                        </Form.Select>
-
+                                    {field.enum ? (
+                                        field.field==="unidadMedida" ? (
+                                            <Form.Select className="form-select" defaultValue="" required>
+                                                <option selected value="" disabled>Elegir unidad de medida</option>
+                                                {mesureUnits.map(unidad => (
+                                                    <option value={unidad} key={unidad}>{unidad}</option>
+                                                ))}
+                                            </Form.Select>
+                                        ) : (  
+                                            <SelectList fieldName={field.field}/>
+                                        )
                                     ) : (
                                         <Form.Control
-                                            name = {field.field}
+                                            name={field.field}
                                             required={field.required ? true : false}
                                             type={field.type}
                                             placeholder={`Ingrese ${field.headerName}`}
                                         />
 
-                                    )}
+                                    )
+                                    }
                                     {field.required ? (
                                         <Form.Control.Feedback type="invalid">
                                             Este campo es obligatorio
