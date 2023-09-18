@@ -45,6 +45,12 @@ function getNames(): Array<string>{
 
 const names : Array<string> = getNames();
 
+/**
+ *  Obtiene el nombre del final del uri correspondiente a partir del nombre de un campo.
+ * El campo debe ser una columna con referencia foránea
+ * @param fieldName 
+ * @returns 
+ */
 export function getUri(fieldName:string): string {
     switch(fieldName) {
         case "tipoInsumo":

@@ -6,7 +6,11 @@ import { getUri, getSingular} from '../../../data/data';
 type Props = {
     fieldName: string,
 }
-
+/**
+ * Componente select que retorna listado desplegable con los valores de un atributo.
+ * @param props props.fieldName es el nombre de la columna de intereés
+ * @returns 
+ */
 const SelectList = (props:Props) => {
     const [list, setList] = useState([]);
     const itemName = getUri(props.fieldName);
