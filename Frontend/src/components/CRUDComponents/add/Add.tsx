@@ -30,8 +30,10 @@ const Add = (props: Props) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         // Prevent the browser from reloading the page
 
-        const form = e.target as HTMLFormElement;
+        const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
+        console.log(formData); 
+        
         if (form.checkValidity() === false) {
             e.preventDefault();
             e.stopPropagation();
@@ -47,6 +49,7 @@ const Add = (props: Props) => {
             props.setOpen(false)
 
         }
+        
     };
     return (
         <div className="add">
@@ -71,6 +74,7 @@ const Add = (props: Props) => {
 
                                     ) : (
                                         <Form.Control
+                                            name = {field.field}
                                             required={field.required ? true : false}
                                             type={field.type}
                                             placeholder={`Ingrese ${field.headerName}`}
