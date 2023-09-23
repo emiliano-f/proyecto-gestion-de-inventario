@@ -5,7 +5,9 @@ import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 
 type Props = {
     columns: GridColDef[],
-    rows: object[]
+    rows: object[],
+    setOpenUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+    setRow: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const DataTable = (props: Props) => {
@@ -21,9 +23,9 @@ export const DataTable = (props: Props) => {
                     <Link to={`detail/${params.row.id}/`}>
                         <button className="button"><img src="/read.png" alt="" /></button>
                     </Link>
-                    <Link to={`modify/${params.row.id}/`}>
-                        <button className="button"><img src="/edit.png" alt="" /></button>
-                    </Link>
+  
+                    <button className="button" onClick={() => {props.setOpenUpdate(true); props.setRow(params.row)}}><img src="/edit.png" alt="" /></button>
+
                     <Link to={`delete/${params.row.id}/`}>
                         <button className="button" ><img src="/delete.png" alt="" /></button>
                     </Link>

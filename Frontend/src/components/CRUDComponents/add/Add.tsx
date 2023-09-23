@@ -18,7 +18,6 @@ type Props = {
     slug: string,
     fields: Field[],
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-
 }
 
 const Add = (props: Props) => {
@@ -33,7 +32,7 @@ const Add = (props: Props) => {
 
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
-        
+        console.log(formData);
         if (form.checkValidity() === false) {
             e.preventDefault();
             e.stopPropagation();
@@ -66,7 +65,7 @@ const Add = (props: Props) => {
                                     <Form.Label>{field.headerName}</Form.Label>
                                     {field.enum ? (
                                         field.field==="unidadMedida" ? (
-                                            <Form.Select className="form-select" defaultValue="" required>
+                                            <Form.Select name="unidadMedida" className="form-select" defaultValue="" required>
                                                 <option selected value="" disabled>Elegir unidad de medida</option>
                                                 {mesureUnits.map(unidad => (
                                                     <option value={unidad} key={unidad}>{unidad}</option>

@@ -12,7 +12,8 @@ a {
 }
 
 .main{
-  
+  width: 100%;
+  overflow-x: auto;
   min-height: 100vh;
   font-family: "Inter", sans-serif;
   background-color: $main-bg;
