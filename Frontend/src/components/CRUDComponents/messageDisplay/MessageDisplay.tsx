@@ -1,27 +1,31 @@
 import "./messageDisplay.scss"
-import { useContext } from "react"
-import { crudContext } from "../../../data/data"
 
-var msg, setMsg;
+type msgError = [
+    (string | boolean)[], 
+    React.Dispatch<React.SetStateAction<(string | boolean)[]>>
+]
 
-export function MessageDisplay(){    
-    [msg, setMsg] = useContext(crudContext)
-    return <div id="msg" className={(msg[0] === "")? "hidden":"visible"}>
-                <div className={msg[1] ? "alert alert-danger" : "alert alert-success"}>
-                    {msg[0]}
+var setMsg : React.Dispatch<React.SetStateAction<(string | boolean)[]>>;
+
+export function MessageDisplay(state : msgError){   
+    const [msg,is_error] = state[0] 
+    setMsg = state[1]; 
+    return <div id="msg" className={(msg === "")? "hidden":"visible"}>
+                <div className={is_error ? "alert alert-danger" : "alert alert-success"}>
+                    {msg}
                 </div>
             </div>
 }
 
 export function setMessage(message: string, is_error: boolean): void{
     setMsg([message, is_error]);
-    const elemento = document.getElementById("msg");
+    const elemento : HTMLElement | null = document.getElementById("msg");
     elemento?.classList.remove('hidden');
     elemento?.classList.add('visible');
     setTimeout(()=>setInvisible(elemento),4900)
 }
 
-function setInvisible(elemento){
+function setInvisible(elemento : HTMLElement | null ){
     elemento?.classList.remove('visible');
     elemento?.classList.add('hidden');
     setMsg(["",false])

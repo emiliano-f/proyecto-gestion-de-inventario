@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { ListItems } from '../../../Api/apiService';
 import { getUri, getSingular} from '../../../data/data';
@@ -8,7 +8,7 @@ type Props = {
 }
 /**
  * Componente select que retorna listado desplegable con los valores de un atributo.
- * @param props props.fieldName es el nombre de la columna de intereés
+ * @param props props.fieldName es el nombre de la columna de interés
  * @returns 
  */
 const SelectList = (props:Props) => {

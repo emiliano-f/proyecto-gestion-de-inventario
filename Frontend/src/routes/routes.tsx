@@ -68,11 +68,15 @@ const routes = [
     element: <Login />
   },
   {
-    path: "/orden-de-servicio/login",
+    path: "/orden-servicio/",
+    loader: () => {return redirect("/orden-servicio/generate")}
+  },
+  {
+    path: "/orden-servicio/login",
     element: <Login />
   },
   {
-    path: "/orden-de-servicio/generate",
+    path: "/orden-servicio/generate",
     element: <ServiceForm />
   }
 ];

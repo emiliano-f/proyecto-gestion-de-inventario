@@ -1,11 +1,13 @@
 import "./add.scss"
-import { useContext, useState } from "react";
+import {useState } from "react";
 import { GetUrlParts, CreateItem as Create } from "../../../Api/apiService"
-import { getSingular, crudContext } from "../../../data/data";
+import { getSingular } from "../../../data/data";
 import { Field } from "../getColumns/GetColumns";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import SelectList from "../selectList/SelectList";
+
+import { setMessage } from "../messageDisplay/MessageDisplay";
 
 const mesureUnits = [
     "litro",
@@ -22,7 +24,6 @@ type Props = {
 
 const Add = (props: Props) => {
 
-    const [msg, setMsg] = useContext(crudContext);
     const [validated, setValidated] = useState(false);
     
     const { item: itemName } = GetUrlParts();
@@ -38,17 +39,16 @@ const Add = (props: Props) => {
             e.stopPropagation();
         }
         setValidated(true);
-
-        try {
-            Create(itemName, formData);
-            setMsg([`Se ha creado el nuevo ${getSingular(itemName)} con exito`, false])
-        } catch (error) {
-            setMsg([`Ha surgido un error al crear el Nuevo ${getSingular(itemName)}`, true])
-        } finally {
+        Create(itemName, formData)
+        .then(()=>{
+            setMessage(`Se ha creado el nuevo ${getSingular(itemName)} con exito`, false)
+        })
+        .catch((error) =>{
+            setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(itemName)}`, true)
+        })
+        .finally(()=>{
             props.setOpen(false)
-
-        }
-        
+        })
     };
     return (
         <div className="add">

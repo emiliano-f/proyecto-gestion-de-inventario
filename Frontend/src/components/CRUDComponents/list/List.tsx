@@ -12,6 +12,7 @@ import { setMessage, MessageDisplay } from "../messageDisplay/MessageDisplay";
 import { getSingular, getPlural} from "../../../data/data"
 
 const List = () => {
+    const ErrorState = useState(["",false]);
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState([]);
     const { module: moduleName, item: itemName } = GetUrlParts();
@@ -26,7 +27,7 @@ const List = () => {
     
     return (
         <>
-            <MessageDisplay />
+            <MessageDisplay {...ErrorState}/>
             <div className="item">
                 <div className="info">
                     <h1>{getPlural(itemName)}</h1>
