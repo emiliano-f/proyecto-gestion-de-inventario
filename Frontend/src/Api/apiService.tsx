@@ -56,9 +56,11 @@ export function CreateItem(itemName: string, formData: FormData) : Promise<Axios
             .then((response) => resolve(response))
             .catch((error) => reject(error));
         }
+        
         createData(itemName, formData);
     })
 }
+
 
 export function UpdateItem(itemName:string,formData:FormData,id:string|undefined) : Promise<AxiosResponse<any,any>> {   
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
