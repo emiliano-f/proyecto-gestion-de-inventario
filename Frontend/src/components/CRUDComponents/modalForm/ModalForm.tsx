@@ -67,11 +67,10 @@ const ModalForm = (props: Props) => {
 
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-
+        e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
         if (form.checkValidity() === false) {
-            e.preventDefault();
             e.stopPropagation();
         }
         setValidated(true);
