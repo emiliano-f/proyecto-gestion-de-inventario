@@ -55,15 +55,14 @@ const ModalForm = (props: Props) => {
     }
 
     const createItem = (item: string, formData:FormData) => {
-        try {
-            Create(item, formData);
+        Create(item, formData)
+        .then(() => {
             setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`, false)
-        } catch (error) {
+        })
+        .catch((error) => {
             setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(item)}`, true)
-        } finally {
-            props.setOpen(false)
-
-        }
+        })
+        .finally(() => props.setOpen(false));
     }
 
 
