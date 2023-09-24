@@ -10,12 +10,18 @@ import { GetColumns, GetFields, Field } from "../getColumns/GetColumns";
 import { ListItems, GetUrlParts } from "../../../Api/apiService";
 import { setMessage, MessageDisplay } from "../messageDisplay/MessageDisplay";
 import { getSingular, getPlural} from "../../../data/data"
+import UpdateForm from "../modalForm/ModalForm";
+
+import { FormType } from "../modalForm/ModalForm";
 
 const List = () => {
-    const [open, setOpen] = useState(false);
+    const [openAdd, setOpenAdd] = useState(false);
+    const [openUpdate, setOpenUpdate] = useState(false);
+    const [row, setRow]: [Record<string, any>, any] = useState([]);
+    
     const [items, setItems] = useState([]);
     const { module: moduleName, item: itemName } = GetUrlParts();
-
+    
     ListItems(setItems, itemName)
     .catch((error) => {
         setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}`, true)
@@ -30,12 +36,13 @@ const List = () => {
             <div className="item">
                 <div className="info">
                     <h1>{getPlural(itemName)}</h1>
-                    <button className="button" onClick={() => setOpen(true)}>Agregar {getSingular(itemName)}</button>
+                    <button className="button" onClick={() => setOpenAdd(true)}>Agregar {getSingular(itemName)}</button>
                 </div>
 
-                <DataTable columns={columns} rows={items} />
+                <DataTable columns={columns} rows={items} setOpenUpdate={setOpenUpdate} setRow={setRow} />
 
-                {open && <Add slug={itemName} fields={fields} setOpen={setOpen} />}
+                {openAdd && <UpdateForm slug={itemName} fields={fields} setOpen={setOpenAdd} formType={FormType.ADD} row={null}/>}
+                {openUpdate && <UpdateForm slug={itemName} fields={fields} setOpen={setOpenUpdate} formType={FormType.UPDATE} row={row} />}
             </div>
         </>
 

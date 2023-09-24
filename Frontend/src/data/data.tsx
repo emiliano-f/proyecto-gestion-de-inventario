@@ -59,6 +59,7 @@ export function getUri(fieldName:string): string {
         case "tipoHerramienta":
             return "tipos-herramienta";
             break;
+            
         default:
             throw new Error(`El campo ${fieldName} no tiene uri asignada`);
 

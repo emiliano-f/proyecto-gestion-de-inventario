@@ -5,6 +5,7 @@ import { getUri, getSingular} from '../../../data/data';
 
 type Props = {
     fieldName: string,
+    defaultValue: string | undefined
 }
 /**
  * Componente select que retorna listado desplegable con los valores de un atributo.
@@ -12,16 +13,41 @@ type Props = {
  * @returns 
  */
 const SelectList = (props:Props) => {
-    const [list, setList] = useState([]);
+
+    interface Item {
+        id: number;
+        nombre: string;
+        [key: string]: any; // Esto permite otros atributos de cualquier tipo
+    }
+    
+    const [list, setList] = useState<Item[]>([]);
+    const [selectedValue, setSelectedValue] = useState<number | string>("");
+    
     const itemName = getUri(props.fieldName);
     
     ListItems(setList, itemName)
     
+    useEffect(() => {
+        if (props.defaultValue !== "") {
+            const object = list.find(field => field.nombre === props.defaultValue)
+            if (object) {
+                setSelectedValue(object.id);
+            }
+        }
+    }, [list])
+    
     return (
-        <Form.Select className="form-select" defaultValue="" required>
+        
+        <Form.Select
+            name={props.fieldName}
+            className="form-select"
+            // defaultValue={defaultId}
+            value={selectedValue}
+            onChange={(e) => setSelectedValue(Number(e.target.value))}
+            required>
             <option selected value="" disabled>Elegir {getSingular(itemName)}</option>
             {list.map(value => (
-                <option value={value.nombre} key={value.nombre}>{value.nombre}</option>
+                <option value={value.id} key={value.id}>{value.nombre}</option>
             ))}
         </Form.Select>
     )
