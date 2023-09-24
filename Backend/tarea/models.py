@@ -35,10 +35,10 @@ class OrdenServicio(models.Model):
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)
     tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING)
     fechaGeneracion = models.DateField(auto_now=False, auto_now_add=False)
-    sector = models.CharField(max_length=255)
-    descripcion = models.CharField(max_length=255)
-    fechaNecesidad = models.DateField(auto_now=False, auto_now_add=False)
-    comentario = models.CharField(max_length=255)
+    sector = models.CharField(max_length=255, null=True)
+    descripcion = models.CharField(max_length=255, null=True)
+    fechaNecesidad = models.DateField(auto_now=False, auto_now_add=False, null=True)
+    comentario = models.CharField(max_length=255, null=True)
 
     prioridad = models.CharField(
         max_length=3,
