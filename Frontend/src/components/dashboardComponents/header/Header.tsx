@@ -12,12 +12,18 @@ function Header() {
           <img src="https://freesvg.org/img/abstract-user-flat-4.png" alt="" />
           <span>Aldo</span>
         </div>
-        <img src="/settings.svg" alt="" className="icon" />
-
       </div>
-      
     </div>
   )
 }
+
+/*Un slider para poder cambiar el color de la pagina pero no funciona
+<div className="menu-desplegable">
+          <label className="switch">
+            <input type="checkbox" id="interruptor"/>
+            <span className="slider"></span>  
+          </label>
+        </div>
+*/
 
 export default Header

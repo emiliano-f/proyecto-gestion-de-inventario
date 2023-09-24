@@ -85,7 +85,7 @@ export function DeleteItem(itemName: string, id: string) : Promise<AxiosResponse
 export function SendServiceRequest(formData: FormData) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function sendData(formData: FormData) {
-            await inventarioAPI.post(backendUrls["solicitud-mantenimiento"], formData)
+            await inventarioAPI.post(backendUrls["ordenes-servicio"], formData)
             .then((response) => resolve(response))
             .catch((error) => reject(error));
         }

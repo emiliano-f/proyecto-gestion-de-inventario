@@ -15,6 +15,7 @@ import UpdateForm from "../modalForm/ModalForm";
 import { FormType } from "../modalForm/ModalForm";
 
 const List = () => {
+    const ErrorState = useState(["",false]);
     const [openAdd, setOpenAdd] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
     const [row, setRow]: [Record<string, any>, any] = useState([]);
@@ -32,7 +33,7 @@ const List = () => {
     
     return (
         <>
-            <MessageDisplay />
+            <MessageDisplay {...ErrorState}/>
             <div className="item">
                 <div className="info">
                     <h1>{getPlural(itemName)}</h1>

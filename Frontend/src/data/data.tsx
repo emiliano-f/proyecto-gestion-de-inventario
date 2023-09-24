@@ -1,16 +1,5 @@
-import {createContext} from "react"
+import {createContext, useState} from "react"
 import STRUCTURE from "./structure.tsx"
-
-//==================REACT CONTEXT=============================//
-
-/**
- * Contexto para compa"tarea"rtir variables entre las vistas CRUD.
- * 
- * Se utiliza para informar al componente List que se ha realizado
- * una operación correcta en el ApiService y retornar el mensaje 
- * correspondiente. 
- */
-export const crudContext = createContext([]);
 
 //==================BACKEND URL'S============================//
  
@@ -46,7 +35,7 @@ function getNames(): Array<string>{
 const names : Array<string> = getNames();
 
 /**
- *  Obtiene el nombre del final del uri correspondiente a partir del nombre de un campo.
+ * Obtiene el nombre del final del uri correspondiente a partir del nombre de un campo.
  * El campo debe ser una columna con referencia foránea
  * @param fieldName 
  * @returns 
@@ -189,7 +178,7 @@ function buildModulesSection() {
  * lateral izquierdo de la vista Dashboard.
  */
 export const SECTIONS = [
-    {
+    /*{
         id: 1,
         title: "Principal",
         modules: [
@@ -206,9 +195,9 @@ export const SECTIONS = [
                 icon: "/usuario.svg",
             },
         ],
-    },
+    },*/
     buildModulesSection(),
-    {
+    /*{
         id: 4,
         title: "Opciones",
         modules: [
@@ -243,5 +232,5 @@ export const SECTIONS = [
                 icon: "/log.svg",
             },
         ],
-    },
+    },*/
 ];

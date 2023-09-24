@@ -662,7 +662,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: 0.05,
                 required: true,
-                enum: true
+                enum: false
             },
             "categoria": {
                 show: true,
@@ -678,7 +678,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: 0.05,
                 required: true,
-                enum: true
+                enum: false
             },
         },
         "encuestas-satisfaccion": {

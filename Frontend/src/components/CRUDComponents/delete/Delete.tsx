@@ -1,8 +1,8 @@
 import "./delete.scss"
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { DeleteItem, ReadItem, GetUrlParts  } from "../../../Api/apiService";
-import { crudContext, getSingular } from "../../../data/data";
+import { getSingular } from "../../../data/data";
 import { setMessage } from "../messageDisplay/MessageDisplay";
 
 const Delete = () => {
