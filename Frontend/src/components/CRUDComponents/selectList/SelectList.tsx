@@ -22,22 +22,30 @@ const SelectList = (props:Props) => {
     
     const [list, setList] = useState<Item[]>([]);
     const [selectedValue, setSelectedValue] = useState<number | string>("");
-    
+
     const itemName = getUri(props.fieldName);
     
-    ListItems(setList, itemName)
-    
+    useEffect(() => {
+        const fetchData = async () => {
+            await ListItems(setList, itemName); 
+        };
+        fetchData();
+        
+    }, [itemName]);
     useEffect(() => {
         if (props.defaultValue !== "") {
-            const object = list.find(field => field.nombre === props.defaultValue)
+            const object = list.find(field => field.nombre === props.defaultValue);
             if (object) {
                 setSelectedValue(object.id);
             }
         }
-    }, [list])
+    },[list])
+
+
+    /*
     
-    return (
-        
+    */
+    return ( 
         <Form.Select
             name={props.fieldName}
             className="form-select"

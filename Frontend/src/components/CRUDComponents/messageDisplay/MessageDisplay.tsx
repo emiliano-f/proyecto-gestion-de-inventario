@@ -22,7 +22,7 @@ export function setMessage(message: string, is_error: boolean): void{
     const elemento : HTMLElement | null = document.getElementById("msg");
     elemento?.classList.remove('hidden');
     elemento?.classList.add('visible');
-    setTimeout(()=>setInvisible(elemento),4900)
+    setTimeout(()=>setInvisible(elemento),2900)
 }
 
 function setInvisible(elemento : HTMLElement | null ){

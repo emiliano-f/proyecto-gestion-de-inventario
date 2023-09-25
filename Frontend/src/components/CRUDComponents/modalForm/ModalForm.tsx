@@ -7,6 +7,7 @@ import { setMessage } from "../messageDisplay/MessageDisplay";
 import { Field } from "../getColumns/GetColumns";
 import Button from 'react-bootstrap/Button'
 import SelectList from "../selectList/SelectList";
+
 import Form from 'react-bootstrap/Form';
 
 const mesureUnits = [
@@ -27,6 +28,7 @@ type Props = {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
     formType: FormType,
     row: [Record<string, any>, any] | null
+    switchChange: () => void,
 }
 
 
@@ -70,10 +72,12 @@ const ModalForm = (props: Props) => {
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
+        
         if (form.checkValidity() === false) {
             e.stopPropagation();
         }
         setValidated(true);
+        
         if (props.formType === FormType.UPDATE) {
             if (props.row != null)
             updateItem(itemName, formData, props.row["id"]);
@@ -100,9 +104,9 @@ const ModalForm = (props: Props) => {
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     {props.fields
                         .filter(item => item.field !== "id")
-                        .map(field => {
+                        .map((field, index) => {
                             return (
-                                <Form.Group className="form-group">
+                                <Form.Group className="form-group" key={index}>
                                     <Form.Label>{field.headerName}</Form.Label>
                                     {field.enum ? (
                                         field.field === "unidadMedida" ? (
@@ -122,6 +126,7 @@ const ModalForm = (props: Props) => {
                                                 fieldName={field.field}
                                                 defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? 
                                                     (props.row[field.field]) : ("")} />
+                                            
                                         )
                                     ):(
                                         <Form.Control
@@ -142,33 +147,11 @@ const ModalForm = (props: Props) => {
                             )
                         })
                     }
-                    {(props.formType === FormType.ADD) && <Button type="submit" className="mt-3">Crear</Button>}
-                    {(props.formType === FormType.UPDATE) && <Button type="submit" className="mt-3">Modificar</Button>}
+                    {(props.formType === FormType.ADD) && <Button type="submit" className="mt-3" onClick={() => props.switchChange()}>Crear</Button>}
+                    {(props.formType === FormType.UPDATE) && <Button type="submit" className="mt-3" onClick={() => props.switchChange()}>Modificar</Button>}
                 </Form>
             </div>
         </div>
-        /*
-        <div className="updateForm">
-            <div className="modal2">
-                <h1>Modificar {itemName}</h1>
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                    {Object.keys(row).map((key: string, index: number) => (
-                        <div>
-                            <Form.Group className="form-group">
-                                <Form.Label>{key}</Form.Label>
-                                <Form.Control
-                                    type="string"
-                                    name={key}
-                                    defaultValue={row[key]}
-                                />
-                            </Form.Group>                 
-                        </div>
-                    ))}
-                    <button className="btn btn-primary" type="submit">Modificar</button>
-                </Form>
-            </div>
-        </div>
-        */
     );
 }
 

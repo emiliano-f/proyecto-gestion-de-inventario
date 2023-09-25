@@ -24,11 +24,11 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 required: true,
                 enum: false
             },
-            "descripcion": {
+            "nombre": {
                 show: true,
-                name: "Descripción",
+                name: "Nombre",
                 type: "string",
-                col_size: 0.1,
+                col_size: 0.15,
                 required: true,
                 enum: false
             },
