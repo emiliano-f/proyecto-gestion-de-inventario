@@ -32,7 +32,7 @@ const List = () => {
             .catch((error) => {
                 setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}`, true)
             })
-    }, [changeRef.current])
+    }, [changeRef.current, itemName])
     
     
 
