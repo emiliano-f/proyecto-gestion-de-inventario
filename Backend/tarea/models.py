@@ -20,34 +20,36 @@ class Empleado(models.Model):
                                  null=True)
 
 class OrdenServicio(models.Model):
+
     class CaracterScale(models.TextChoices):
         URGENTE = "URG"
         NORMAL = "NOR"
     class CategoriaScale(models.TextChoices):
         INDEFINIDO = "IND"
+    class StateScale(models.TextChoices):
+        EN_ESPERA = "ESP"
+        FINALIZADA = "FIN"
+        EN_PROGRESO = "PRO"
 
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)
-    tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING,null=True)
-    fechaGeneracion = models.DateField(auto_now=True, auto_now_add=False)
-    sector = models.CharField(max_length=32,default="No sector")
-    descripcion = models.CharField(max_length=255,default="No description")
-    categoria = models.CharField(
-        max_length=3,
-        choices=CategoriaScale.choices,
-        default=CategoriaScale.INDEFINIDO
-    )
+    tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING)
+    fechaGeneracion = models.DateField(auto_now=False, auto_now_add=False)
+    sector = models.CharField(max_length=255, null=True)
+    descripcion = models.CharField(max_length=255, null=True)
+    fechaNecesidad = models.DateField(auto_now=False, auto_now_add=False, null=True)
+    comentario = models.CharField(max_length=255, null=True)
+
     prioridad = models.CharField(
         max_length=3,
         choices=CaracterScale.choices,
         default=CaracterScale.NORMAL
     )
-    fechaNesesidad = models.DateField(auto_now=True)
-    comentario = models.CharField(max_length=255,default="No comment")
-    class StateScale(models.TextChoices):
-        EN_ESPERA = "ESP"
-        FINALIZADA = "FIN"
-        EN_PROGRESO = "PRO"
+    categoria = models.CharField(
+        max_length=3,
+        choices=CategoriaScale.choices,
+        default=CategoriaScale.INDEFINIDO
+    )
     estado = models.CharField(
         max_length = 3,
         choices= StateScale.choices,

@@ -18,18 +18,18 @@ class TipoHerramienta(models.Model):
 
 class Herramienta(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=32, unique=True)
+    descripcion = models.CharField(max_length=32, unique=True)
     tipoHerramienta = models.ForeignKey(TipoHerramienta, on_delete=models.DO_NOTHING)
     codigo = models.CharField(max_length=16, null=True)
-    estado = models.CharField(max_length=16, choices=ESTADO_CHOICES, default='OK')
 
     fechaAlta = models.DateTimeField(auto_now=True)
     observaciones = models.CharField(max_length=255, null=True)
+    estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default='OK')
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         texto = "{0} [{1}]"
-        return texto.format(self.nombre, self.estado)    
+        return texto.format(self.descripcion, self.estado)    
 
 class EstadoHerramienta(models.Model):
     herramienta = models.ForeignKey(Herramienta, on_delete=models.DO_NOTHING)
