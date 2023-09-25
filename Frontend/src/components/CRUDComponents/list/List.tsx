@@ -37,7 +37,7 @@ const List = () => {
             <div className="item">
                 <div className="info">
                     <h1>{getPlural(itemName)}</h1>
-                    <button className="button" onClick={() => setOpenAdd(true)}>Agregar {getSingular(itemName)}</button>
+                    <button className="btn btn-primary" onClick={() => setOpenAdd(true)}>Agregar {getSingular(itemName)}</button>
                 </div>
 
                 <DataTable columns={columns} rows={items} setOpenUpdate={setOpenUpdate} setRow={setRow} />

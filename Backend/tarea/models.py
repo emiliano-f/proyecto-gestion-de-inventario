@@ -28,18 +28,22 @@ class OrdenServicio(models.Model):
 
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)
-    tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING)
-    fechaGeneracion = models.DateField(auto_now=False, auto_now_add=False)
-    prioridad = models.CharField(
-        max_length=3,
-        choices=CaracterScale.choices,
-        default=CaracterScale.NORMAL
-    )
+    tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING,null=True)
+    fechaGeneracion = models.DateField(auto_now=True, auto_now_add=False)
+    sector = models.CharField(max_length=32,default="No sector")
+    descripcion = models.CharField(max_length=255,default="No description")
     categoria = models.CharField(
         max_length=3,
         choices=CategoriaScale.choices,
         default=CategoriaScale.INDEFINIDO
     )
+    prioridad = models.CharField(
+        max_length=3,
+        choices=CaracterScale.choices,
+        default=CaracterScale.NORMAL
+    )
+    fechaNesesidad = models.DateField(auto_now=True)
+    comentario = models.CharField(max_length=255,default="No comment")
     class StateScale(models.TextChoices):
         EN_ESPERA = "ESP"
         FINALIZADA = "FIN"
