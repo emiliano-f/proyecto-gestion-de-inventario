@@ -15,7 +15,6 @@ class HerramientaSerializer(serializers.ModelSerializer):
 class HerramientaJoinedSerializer(HerramientaSerializer):
     #tipoHerramienta = TipoHerramientaSerializer(read_only=True)
     tipoHerramienta = serializers.CharField(source='tipoHerramienta.nombre')
-    estadoHerramienta = serializers.CharField(source='estadoHerramienta.estado')
 
 class EstadoHerramientaSerializer(serializers.ModelSerializer):
     class Meta:
