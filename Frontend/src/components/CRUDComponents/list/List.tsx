@@ -30,7 +30,7 @@ const List = () => {
         .catch((error) => {
             setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}`, true)
         })    
-    },[])
+    },[itemName])
 
     const columns: GridColDef[] = GetColumns(moduleName, itemName);
     const fields: Field[] = GetFields(moduleName, itemName);
