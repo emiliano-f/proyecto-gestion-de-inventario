@@ -29,7 +29,7 @@ class Herramienta(models.Model):
 
     def __str__(self):
         texto = "{0} [{1}]"
-        return texto.format(self.nombre, self.estado)    
+        return texto.format(self.descripcion, self.estado)    
 
 class EstadoHerramienta(models.Model):
     herramienta = models.ForeignKey(Herramienta, on_delete=models.DO_NOTHING)
