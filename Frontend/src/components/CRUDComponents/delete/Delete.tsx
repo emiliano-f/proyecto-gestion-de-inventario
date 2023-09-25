@@ -37,10 +37,10 @@ const Delete = () => {
                 <h2>¿Está usted seguro de que quiere eliminar el {getSingular(itemName)} con identificador {id}?</h2>
                 <form method="post" onSubmit={handleDelete}>
                     <button className="btn btn-danger" type="submit">Eliminar</button>
+                    <Link to={`/${moduleName}/${itemName}`} >
+                        <button className="btn btn-secondary">Atrás</button>
+                    </Link>
                 </form>
-                <Link to={`/${moduleName}/${itemName}`} >
-                    <button className="btn btn-secondary">Atras</button>
-                </Link>
             </div>
         </div>
     }

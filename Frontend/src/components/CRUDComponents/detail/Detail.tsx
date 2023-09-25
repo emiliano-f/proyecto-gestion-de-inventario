@@ -15,26 +15,29 @@ const Detail = () => {
     });
     
     return (
-        <div className="card text-bg-dark mb-3">
-            <div className="card-header">
-                <h1>{getSingular(itemName)}</h1>
-                <Link to={`/${moduleName}/${itemName}/modify/${useParams().id}`} className="button"><button className="btn btn-primary">Modificar</button></Link>
+        <div className="detail">
+            <div className="card custom-card mb-3">
+                <div className="detailBotton">
+                    <Link to={`/${moduleName}/${itemName}`} >
+                        <button className="btn light" onClick={() => props.setOpen(false)}>X</button>
+                    </Link>
+                </div>
+                <div className="card-header">
+                    <h1>{getSingular(itemName)}</h1>
+                </div>
+                <div className="card-body">
+                    {row 
+                        ? Object.keys(row).map((key, index) => (
+                            <div className="row" key={index}>
+                                <span className="col1">{key} : </span>
+                                <input className="col2" type="text" placeholder={row[key]} readOnly>{}</input>
+                            </div>
+                        )) 
+                        : <h1>El {getSingular(itemName)} solicitado no se 
+                        encuentra en la base de datos con esa id</h1>
+                    }
+                </div>
             </div>
-            <div className="details card-body">
-                {row 
-                    ? Object.keys(row).map((key, index) => (
-                        <div className="mb-2" key={index}>
-                            <span className="itemTitle">{key} :</span>
-                            <span className="itemValue">{row[key]}</span>
-                        </div>
-                    )) 
-                    : <h1>El {getSingular(itemName)} solicitado no se 
-                    encuentra en la base de datos con esa id</h1>
-                }
-            </div>
-            <Link to={`/${moduleName}/${itemName}`} >
-                <button className="btn btn-secondary">Atrás</button>
-            </Link>
         </div>
     )
 }

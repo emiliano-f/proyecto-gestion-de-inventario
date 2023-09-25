@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { ListItems } from '../../../Api/apiService';
 import { getUri, getSingular} from '../../../data/data';
 
 type Props = {
     fieldName: string,
+    defaultValue: string | undefined
 }
 /**
  * Componente select que retorna listado desplegable con los valores de un atributo.
@@ -12,16 +13,48 @@ type Props = {
  * @returns 
  */
 const SelectList = (props:Props) => {
-    const [list, setList] = useState([]);
+
+    interface Item {
+        id: number;
+        nombre: string;
+        [key: string]: any; // Esto permite otros atributos de cualquier tipo
+    }
+    
+    const [list, setList] = useState<Item[]>([]);
+    const [selectedValue, setSelectedValue] = useState<number | string>("");
+
     const itemName = getUri(props.fieldName);
     
-    ListItems(setList, itemName)
+    useEffect(() => {
+        const fetchData = async () => {
+            await ListItems(setList, itemName); 
+        };
+        fetchData();
+        
+    }, [itemName]);
+    useEffect(() => {
+        if (props.defaultValue !== "") {
+            const object = list.find(field => field.nombre === props.defaultValue);
+            if (object) {
+                setSelectedValue(object.id);
+            }
+        }
+    },[list])
+
+
+    /*
     
-    return (
-        <Form.Select className="form-select" defaultValue="" required>
-            <option selected value="" disabled>Elegir {getSingular(itemName)}</option>
+    */
+    return ( 
+        <Form.Select
+            name={props.fieldName}
+            className="form-select"
+            value={selectedValue}
+            onChange={(e) => setSelectedValue(Number(e.target.value))}
+            required>
+            <option defaultValue={selectedValue} value="" disabled>Elegir {getSingular(itemName)}</option>
             {list.map(value => (
-                <option value={value.nombre} key={value.nombre}>{value.nombre}</option>
+                <option value={value.id} key={value.id}>{value.nombre}</option>
             ))}
         </Form.Select>
     )

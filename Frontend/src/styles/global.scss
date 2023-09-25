@@ -12,8 +12,8 @@ a {
 }
 
 .main{
-  width: 100%;
-  overflow-x: auto;
+  
+  
   min-height: 100vh;
   font-family: "Inter", sans-serif;
   background-color: $main-bg;
@@ -33,6 +33,7 @@ a {
 }
 
 .contentContainer {
+  overflow: auto;
   padding: 5px 20px;
   width: 100%;
 

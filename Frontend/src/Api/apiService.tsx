@@ -16,17 +16,16 @@ export function GetUrlParts() : any {
 
 export function ListItems(setItems : any, itemName : string) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
-        useEffect(() => {
-            async function loadItems() {
-                await inventarioAPI.get(backendUrls[itemName])
-                .then((response) => {
-                    setItems(response.data);
-                    resolve(response)
-                })
-                .catch((error)=>(reject(error)))
-            }
-            loadItems()
-        }, [setItems, itemName]);
+        async function loadItems() {
+            await inventarioAPI.get(backendUrls[itemName])
+            .then((response) => {
+                setItems(response.data);
+                resolve(response)
+            })
+            .catch((error)=>(reject(error)))
+        }
+        loadItems()
+        
     });
 }
 
@@ -56,9 +55,11 @@ export function CreateItem(itemName: string, formData: FormData) : Promise<Axios
             .then((response) => resolve(response))
             .catch((error) => reject(error));
         }
+        
         createData(itemName, formData);
     })
 }
+
 
 export function UpdateItem(itemName:string,formData:FormData,id:string|undefined) : Promise<AxiosResponse<any,any>> {   
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {

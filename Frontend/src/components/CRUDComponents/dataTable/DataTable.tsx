@@ -20,6 +20,7 @@ export const DataTable = (props: Props) => {
         renderCell: (params) => {
             return (
                 <div className="action">
+                    
                     <Link to={`detail/${params.row.id}/`}>
                         <button className="button"><img src="/read.png" alt="" /></button>
                     </Link>
