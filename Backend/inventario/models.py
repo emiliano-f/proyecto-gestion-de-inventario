@@ -13,7 +13,7 @@ class TipoInsumo(models.Model):
 class Insumo(models.Model):
     id = models.AutoField(primary_key=True)
     tipoInsumo = models.ForeignKey(TipoInsumo, on_delete=models.DO_NOTHING)
-    descripcion = models.CharField(max_length=32)
+    nombre = models.CharField(max_length=32)
     MEDIDA_CHOICES = (
         ('metro', 'metro'),
         ('litro', 'litro'),
