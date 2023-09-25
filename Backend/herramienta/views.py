@@ -15,9 +15,11 @@ class TipoHerramientaCRUD(CustomModelViewSet):
 class HerramientaCRUD(viewsets.ViewSet):
     def list(self, request):
         # join
-        herramienta = models.Herramienta.objects.prefetch_related('tipoHerramienta').all()
+        herramienta = models.Herramienta.objects \
+                        .filter(estado='OK') \
+                        .prefetch_related('tipoHerramienta').all()
         # serializer
-        serializer_class = serializer.HerramientaTipoHerramientaSerializer(herramienta, many=True)
+        serializer_class = serializer.HerramientaJoinedSerializer(herramienta, many=True)
         return Response(serializer_class.data)
 
     def create(self, request):
@@ -32,7 +34,7 @@ class HerramientaCRUD(viewsets.ViewSet):
             herramienta = models.Herramienta.objects.get(id=pk)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer_class = serializer.HerramientaTipoHerramientaSerializer(herramienta)
+        serializer_class = serializer.HerramientaJoinedSerializer(herramienta)
         return Response(serializer_class.data)
 
     def update(self, request, pk):
