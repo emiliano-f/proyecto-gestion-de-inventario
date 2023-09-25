@@ -1,6 +1,6 @@
 import "./list.scss"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { GridColDef } from "@mui/x-data-grid";
 import { DataTable } from "../dataTable/DataTable"
 
@@ -23,10 +23,14 @@ const List = () => {
     const [items, setItems] = useState([]);
     const { module: moduleName, item: itemName } = GetUrlParts();
     
-    ListItems(setItems, itemName)
-    .catch((error) => {
-        setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}`, true)
-    })
+    /*Por cada modificacion del estado row, se renderiza nuevamente el componente list.
+        useEffect esta evita que se cree un bucle ejecutando ListItems 1 unica vez*/
+    useEffect(()=>{
+        ListItems(setItems, itemName)
+        .catch((error) => {
+            setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}`, true)
+        })    
+    },[])
 
     const columns: GridColDef[] = GetColumns(moduleName, itemName);
     const fields: Field[] = GetFields(moduleName, itemName);

@@ -109,10 +109,10 @@ const ModalForm = (props: Props) => {
                                             <Form.Select
                                                 name="unidadMedida"
                                                 className="form-select"
-                                                defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? 
-                                                    (props.row["unidadMedida"]) : ("")}
                                                 required>
-                                                <option selected value="" disabled>Elegir unidad de medida</option>
+                                                <option defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? 
+                                                    (props.row["unidadMedida"]) : ("")}
+                                                 value="" disabled>Elegir unidad de medida</option>
                                                 {mesureUnits.map(unidad => (
                                                     <option value={unidad} key={unidad}>{unidad}</option>
                                                 ))}

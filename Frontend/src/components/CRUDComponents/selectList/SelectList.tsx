@@ -49,11 +49,10 @@ const SelectList = (props:Props) => {
         <Form.Select
             name={props.fieldName}
             className="form-select"
-            // defaultValue={defaultId}
             value={selectedValue}
             onChange={(e) => setSelectedValue(Number(e.target.value))}
             required>
-            <option selected value="" disabled>Elegir {getSingular(itemName)}</option>
+            <option defaultValue={selectedValue} value="" disabled>Elegir {getSingular(itemName)}</option>
             {list.map(value => (
                 <option value={value.id} key={value.id}>{value.nombre}</option>
             ))}
