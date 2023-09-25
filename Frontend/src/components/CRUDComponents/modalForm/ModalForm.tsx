@@ -37,12 +37,6 @@ const ModalForm = (props: Props) => {
     const { item: itemName, module: moduleName } = GetUrlParts();
 
     const [validated, setValidated] = useState(false);
-    /* 
-    Read(setRow, itemName)
-    .catch((error) => {
-        setMessage(`Ha surgido un error al buscar ${getSingular(itemName)}`, true)
-    });
-    */
 
     const updateItem = (item: string, formData: FormData, id: number) => {
         // Comentario jm: sería mejor que la función reciba un int y el casteo lo haga dentro
@@ -95,7 +89,9 @@ const ModalForm = (props: Props) => {
     return (
         <div className="add">
             <div className="modal2">
-                <span className="close" onClick={() => props.setOpen(false)}>X</span>
+                <div className="close">
+                    <button className="btn dark" onClick={() => props.setOpen(false)}>X</button>
+                </div>
                 {props.formType === FormType.ADD ? (
                     <h1>Crear nuevo {getSingular(props.slug)}</h1>
                 ):(
@@ -113,10 +109,10 @@ const ModalForm = (props: Props) => {
                                             <Form.Select
                                                 name="unidadMedida"
                                                 className="form-select"
-                                                defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? 
-                                                    (props.row["unidadMedida"]) : ("")}
                                                 required>
-                                                <option selected value="" disabled>Elegir unidad de medida</option>
+                                                <option defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? 
+                                                    (props.row["unidadMedida"]) : ("")}
+                                                 value="" disabled>Elegir unidad de medida</option>
                                                 {mesureUnits.map(unidad => (
                                                     <option value={unidad} key={unidad}>{unidad}</option>
                                                 ))}

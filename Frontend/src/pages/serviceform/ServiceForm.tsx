@@ -20,7 +20,7 @@ export default function ServiceForm(){
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
-        formData.append("user_id",user.user_id.toString())
+        formData.append("usuario",user.user_id.toString())
         SendServiceRequest(formData)
         .then(() => {
             setMessage(`Se ha enviado el formulario con éxito`,false)

@@ -9,8 +9,8 @@ class TipoInsumoSerializer(serializers.ModelSerializer):
 class TipoInsumoNombreSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.TipoInsumo
-        fields = ['nombre']
 
+# Insumo con estado
 class InsumoSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Insumo
@@ -19,6 +19,15 @@ class InsumoSerializer(serializers.ModelSerializer):
 class InsumoTipoInsumoSerializer(InsumoSerializer):
     #tipoInsumo = TipoInsumoNombreSerializer(read_only=True)
     tipoInsumo = serializers.CharField(source='tipoInsumo.nombre') 
+
+# Insumo sin estado
+class InsumoSerializerWithoutEstado(serializers.ModelSerializer):
+    class Meta:
+        model = models.Insumo
+        exclude = ['estado']
+
+class InsumoTipoInsumoWithoutEstado(InsumoSerializerWithoutEstado):
+    tipoInsumo = serializers.CharField(source='tipoInsumo.nombre')
 
 class OrdenRetiroSerializer(serializers.ModelSerializer):
     class Meta:

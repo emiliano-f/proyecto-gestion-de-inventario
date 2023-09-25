@@ -26,6 +26,13 @@ class Insumo(models.Model):
     observaciones = models.CharField(max_length=256, null=True)
     puntoReposicion = models.IntegerField(null=True)
 
+    ESTADO_CHOICES = (
+        ('OK', 'OK'),
+        ('Eliminado', 'Eliminado'),
+        ('Suspendido', 'Suspendido'),
+    )
+    estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default='OK')
+
     def __str__(self):
         texto = "{0} ({1})"
         return texto.format(self.tipoInsumo, self.cantidad)

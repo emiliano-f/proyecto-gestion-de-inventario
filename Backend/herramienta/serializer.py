@@ -12,7 +12,7 @@ class HerramientaSerializer(serializers.ModelSerializer):
         model = models.Herramienta
         fields = '__all__'
 
-class HerramientaTipoHerramientaSerializer(HerramientaSerializer):
+class HerramientaJoinedSerializer(HerramientaSerializer):
     #tipoHerramienta = TipoHerramientaSerializer(read_only=True)
     tipoHerramienta = serializers.CharField(source='tipoHerramienta.nombre')
 
