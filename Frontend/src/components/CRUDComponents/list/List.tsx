@@ -1,32 +1,40 @@
 import "./list.scss"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { GridColDef } from "@mui/x-data-grid";
 import { DataTable } from "../dataTable/DataTable"
-
-import Add from "../add/Add";
 
 import { GetColumns, GetFields, Field } from "../getColumns/GetColumns";
 import { ListItems, GetUrlParts } from "../../../Api/apiService";
 import { setMessage, MessageDisplay } from "../messageDisplay/MessageDisplay";
 import { getSingular, getPlural} from "../../../data/data"
-import UpdateForm from "../modalForm/ModalForm";
 
-import { FormType } from "../modalForm/ModalForm";
+import ModalForm, { FormType } from "../modalForm/ModalForm";
 
 const List = () => {
     const ErrorState = useState(["",false]);
     const [openAdd, setOpenAdd] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
     const [row, setRow]: [Record<string, any>, any] = useState([]);
-    
+
+    const changeRef = useRef(false);
+
+    const switchChange = () => { 
+        
+        changeRef.current = !changeRef.current;
+    }
+
     const [items, setItems] = useState([]);
     const { module: moduleName, item: itemName } = GetUrlParts();
+    useEffect(()=>{
+
+        ListItems(setItems, itemName)
+            .catch((error) => {
+                setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}`, true)
+            })
+    }, [changeRef.current])
     
-    ListItems(setItems, itemName)
-    .catch((error) => {
-        setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}`, true)
-    })
+    
 
     const columns: GridColDef[] = GetColumns(moduleName, itemName);
     const fields: Field[] = GetFields(moduleName, itemName);
@@ -42,8 +50,8 @@ const List = () => {
 
                 <DataTable columns={columns} rows={items} setOpenUpdate={setOpenUpdate} setRow={setRow} />
 
-                {openAdd && <UpdateForm slug={itemName} fields={fields} setOpen={setOpenAdd} formType={FormType.ADD} row={null}/>}
-                {openUpdate && <UpdateForm slug={itemName} fields={fields} setOpen={setOpenUpdate} formType={FormType.UPDATE} row={row} />}
+                {openAdd && <ModalForm slug={itemName} fields={fields} setOpen={setOpenAdd} formType={FormType.ADD} row={null} switchChange={switchChange} />}
+                {openUpdate && <ModalForm slug={itemName} fields={fields} setOpen={setOpenUpdate} formType={FormType.UPDATE} row={row} switchChange={switchChange} />}
             </div>
         </>
 
