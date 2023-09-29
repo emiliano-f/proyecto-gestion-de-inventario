@@ -1,0 +1,23 @@
+.hidden{
+    display: none;
+}
+
+@keyframes hideElement {
+    0% {
+        opacity: 1;
+        display: block;
+    }
+    20%,
+    40%,
+    60%,
+    80%,
+    100% {
+        opacity: 0;
+        display: none;
+    }
+  }
+
+.visible{
+    display: block;
+    animation: hideElement 2s ease 3s;
+}
