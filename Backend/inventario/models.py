@@ -59,5 +59,5 @@ class AjusteStock(models.Model):
             ("+", "+"),
             ("-", "-"),
     )
-    accionCantidad = models.CharField(max_length=1, choices=ACCION_CANTIDAD, default='+')
+    accionCantidad = models.CharField(max_length=1, choices=ACCION_CANTIDAD)
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
