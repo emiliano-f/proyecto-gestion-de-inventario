@@ -20,3 +20,6 @@ class EstadoHerramientaSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.EstadoHerramienta
         fields = '__all__'
+
+class EstadoHerramientaJoinedSerializer(EstadoHerramientaSerializer):
+    herramienta = serializers.CharField(source='herramienta.descripcion')

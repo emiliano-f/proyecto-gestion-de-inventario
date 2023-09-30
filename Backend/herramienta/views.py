@@ -57,7 +57,7 @@ class EstadoHerramientaCRUD(viewsets.ViewSet):
         # join
         estado_herramienta = models.EstadoHerramienta.objects.all()
         # serializer
-        serializer_class = serializer.EstadoHerramientaSerializer(estado_herramienta, many=True)
+        serializer_class = serializer.EstadoHerramientaJoinedSerializer(estado_herramienta, many=True)
         return Response(serializer_class.data)
 
     @transaction.atomic
@@ -73,5 +73,23 @@ class EstadoHerramientaCRUD(viewsets.ViewSet):
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    #serializer_class = serializer.EstadoHerramientaSerializer
-    #queryset = models.EstadoHerramienta.objects.all()
+    def retrieve(self, request, pk):
+        try:
+            estado_herramienta = models.EstadoHerramienta.objects.get(id=pk)
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer_class = serializer.EstadoHerramientaJoinedSerializer(estado_herramienta)
+        return Response(serializer_class.data)
+
+    def update(self, request, pk):
+        estado_herramienta = models.EstadoHerramienta.objects.get(id=pk)
+        serializer_class = serializer.EstadoHerramientaSerializer(estado_herramienta, data=request.data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response(serializer_class.data)
+        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        estado_herramienta = models.EstadoHerramienta.objects.get(id=pk)
+        estado_herramienta.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
