@@ -62,16 +62,19 @@ class EstadoHerramientaCRUD(viewsets.ViewSet):
 
     @transaction.atomic
     def create(self, request):
-        serializer_class = serializer.EstadoHerramientaSerializer(data=request.data)
-        if serializer_class.is_valid():
-            serializer_class.save()
-            # update estado from Herramienta
-            herramienta = models.Herramienta.objects.get(id=request.data.get('herramienta'))
-            herramienta.estado = request.data.get('estado')
-            herramienta.save()
+        try:
+            serializer_class = serializer.EstadoHerramientaSerializer(data=request.data)
+            if serializer_class.is_valid():
+                serializer_class.save()
+                # update estado from Herramienta
+                herramienta = models.Herramienta.objects.get(id=request.data.get('herramienta'))
+                herramienta.estado = request.data.get('estado')
+                herramienta.save()
 
-            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
-        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            transaction.set_rollback(True)
+            return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
