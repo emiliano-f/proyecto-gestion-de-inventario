@@ -25,7 +25,7 @@ urlpatterns = [
     path('compra/', include('compra.urls')),
     path('tarea/', include('tarea.urls')),
     path('usuario/', include('usuario.urls')),
-    path('models_info/', get_models.get_models, name='models_info'),
+    path('models-info/', get_models.get_models, name='models-info'),
     path('docs/', include_docs_urls(title='API docs')),
     path('auth/', include('django.contrib.auth.urls')),
 ]
