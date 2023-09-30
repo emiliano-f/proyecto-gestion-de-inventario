@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom"
 import { ReadItem, GetUrlParts } from "../../../Api/apiService";
 import { getSingular } from "../../../data/data";
 import { setMessage } from "../messageDisplay/MessageDisplay";
+import { Field } from "../getColumns/GetColumns";
 
 const Detail = () => {
     const [row, setRow] = useState(null);
