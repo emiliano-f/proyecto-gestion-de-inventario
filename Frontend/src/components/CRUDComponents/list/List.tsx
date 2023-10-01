@@ -34,7 +34,7 @@ const List = () => {
     useEffect(()=>{
         ListItems(setItems, itemName)
             .catch((error) => {
-                setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}. (${error.message}).`,error)
+                setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}.`,error)
             })
     }, [changeRef.current, itemName])
 

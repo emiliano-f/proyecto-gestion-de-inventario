@@ -13,7 +13,7 @@ const Detail = () => {
     
     ReadItem(setRow, itemName)
     .catch((error) => {
-        setMessage(`Ha surgido un error al buscar ${getSingular(itemName)}`, true)
+        setMessage(`Ha surgido un error al buscar ${getSingular(itemName)}`,error)
     });
     
     return (

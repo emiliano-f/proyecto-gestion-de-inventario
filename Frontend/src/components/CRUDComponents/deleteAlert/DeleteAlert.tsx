@@ -33,11 +33,11 @@ const DeleteAlert = (props: Props) => {
     const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         DeleteItem(itemName, props.id.toString())
-            .then(() => {
-                setMessage(`Se ha eliminado el ${getSingular(itemName)} ${id} con exito`, false)
+            .then((response) => {
+                setMessage(`Se ha eliminado el ${getSingular(itemName)} ${props.id} con exito`,null)
             })
             .catch((error) => {
-                setMessage(`Ha surgido un error al eliminar el ${getSingular(itemName)} ${id}`, true)
+                setMessage(`Ha surgido un error al eliminar el ${getSingular(itemName)} ${props.id}`, error)
             })
             .finally(() => props.setOpen(false));
     };
