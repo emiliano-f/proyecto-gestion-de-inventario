@@ -15,6 +15,9 @@ const List = () => {
     const ErrorState = useState(["",false]);
     const [openAdd, setOpenAdd] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
+    const [openRead, setOpenRead] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    
     const [row, setRow]: [Record<string, any>, any] = useState([]);
 
     const changeRef = useRef(false);
@@ -48,10 +51,12 @@ const List = () => {
                     <button className="btn btn-primary" onClick={() => setOpenAdd(true)}>Agregar {getSingular(itemName)}</button>
                 </div>
 
-                <DataTable columns={columns} rows={items} setOpenUpdate={setOpenUpdate} setRow={setRow} />
+                <DataTable columns={columns} rows={items} setOpenUpdate={setOpenUpdate} setOpenRead={setOpenRead} setOpenDelete={setOpenDelete} setRow={setRow} />
 
                 {openAdd && <ModalForm slug={itemName} fields={fields} setOpen={setOpenAdd} formType={FormType.ADD} row={null} switchChange={switchChange} />}
                 {openUpdate && <ModalForm slug={itemName} fields={fields} setOpen={setOpenUpdate} formType={FormType.UPDATE} row={row} switchChange={switchChange} />}
+                {openRead && <ModalForm slug={itemName} fields={fields} setOpen={setOpenRead} formType={FormType.READ} row={row} switchChange={switchChange} />}
+                {openDelete && <ModalForm slug={itemName} fields={fields} setOpen={setOpenDelete} formType={FormType.DELETE} row={row} switchChange={switchChange} />}
             </div>
         </>
 

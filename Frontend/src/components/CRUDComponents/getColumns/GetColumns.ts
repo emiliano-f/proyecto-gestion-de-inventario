@@ -20,7 +20,8 @@ export type Field = {
     field: string,
     headerName: string,
     type: string,
-    required: boolean
+    required: boolean,
+    editable : boolean,
     enum: boolean;
 }
 
@@ -32,6 +33,7 @@ export function GetFields(moduleName: string, itemName: String): Field[] {
                 headerName: attribute.name,
                 type: attribute.type,
                 required: attribute.required,
+                editable: attribute.editable,
                 enum: attribute.enum
             };
         });

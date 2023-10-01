@@ -1,6 +1,6 @@
 @import "../../../styles/variables.scss";
 
-.add {
+.modal-background {
     z-index: 9999;
     width: 100vw;
     height: 100vh;
@@ -13,11 +13,17 @@
     align-items: center;
     justify-content: center;
     
-    .modal2 {
+    .modal-front {
+        max-height: 90vh;
+        overflow-y: auto;     
         padding: 40px 60px;
         border-radius: 10px;
         background-color: $main-bg;
         position: relative;
+
+        p{
+            text-align: center;
+        }
 
         h1 {
             margin-bottom: 40px;
@@ -68,9 +74,7 @@
                     border-radius: 3px;
                 }
 
-
             }
-
 
             button {
                 width: 100%;

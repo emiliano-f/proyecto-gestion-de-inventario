@@ -17,6 +17,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
     "inventario": {
         "insumos": {
             "id": {
+                editable: false,
                 show: false,
                 name: "ID",
                 type: "number",
@@ -25,6 +26,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "nombre": {
+                editable: true,
                 show: true,
                 name: "Nombre",
                 type: "string",
@@ -33,6 +35,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "tipoInsumo": {
+                editable: true,
                 show: true,
                 name: "Tipo de Insumo",
                 type: "string",
@@ -41,6 +44,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: true
             },
             "unidadMedida": {
+                editable: true,
                 show: true,
                 name: "Unidad de Medida",
                 type: "string",
@@ -49,6 +53,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: true
             },
             "cantidad": {
+                editable: true,
                 show: true,
                 name: "Cantidad",
                 type: "number",
@@ -57,6 +62,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "codigo": {
+                editable: true,
                 show: true,
                 name: "Código",
                 type: "string",
@@ -65,6 +71,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "observaciones": {
+                editable: true,
                 show: true,
                 name: "Observaciones",
                 type: "string",
@@ -73,6 +80,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "puntoReposicion": {
+                editable: true,
                 show: true,
                 name: "Punto de Reposición",
                 type: "number",
@@ -83,6 +91,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "tipos-insumo": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -91,6 +100,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false,
             },
             "nombre": {
+                editable: true,
                 show: true,
                 name: "Nombre",
                 type: "string",
@@ -99,6 +109,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "descripcion": {
+                editable: true,
                 show: true,
                 name: "Descripción",
                 type: "string",
@@ -109,6 +120,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "herramientas": {
             "id": {
+                editable: false,
                 show: false,
                 name: "ID",
                 type: "number",
@@ -117,6 +129,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "nombre": {
+                editable: true,
                 show: true,
                 name: "Nombre",
                 type: "string",
@@ -125,6 +138,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "tipoHerramienta": {
+                editable: true,
                 show: true,
                 name: "Tipo de Herramienta",
                 type: "number",
@@ -133,6 +147,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: true
             },
             "codigo": {
+                editable: true,
                 show: true,
                 name: "Código",
                 type: "string",
@@ -141,6 +156,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "estado": {
+                editable: true,
                 show: true,
                 name: "Estado",
                 type: "string",
@@ -149,6 +165,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "fechaAlta": {
+                editable: false,
                 show: true,
                 name: "Fecha de Creación",
                 type: "string",
@@ -157,6 +174,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "observaciones": {
+                editable: true,
                 show: true,
                 name: "Observaciones",
                 type: "string",
@@ -167,6 +185,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "tipos-herramienta": {
             "id": {
+                editable: false,
                 show: false,
                 name: "ID",
                 type: "number",
@@ -175,6 +194,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "nombre": {
+                editable: true,
                 show: true,
                 name: "Nombre",
                 type: "string",
@@ -183,6 +203,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "descripcion": {
+                editable: true,
                 show: false,
                 name: "Descripción",
                 type: "string",
@@ -193,6 +214,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "ordenes-retiro": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -201,6 +223,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "insumo": {
+                editable: true,
                 show: true,
                 name: "Insumo",
                 type: "number",
@@ -209,6 +232,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "tarea": {
+                editable: true,
                 show: true,
                 name: "Tarea",
                 type: "number",
@@ -217,6 +241,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "cantidad": {
+                editable: true,
                 show: true,
                 name: "Cantidad",
                 type: "number",
@@ -225,6 +250,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "fechaHora": {
+                editable: false,
                 show: false,
                 name: "Fecha",
                 type: "string",
@@ -235,6 +261,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "ajustes-stock": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -243,6 +270,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "insumo": {
+                editable: true,
                 show: true,
                 name: "Insumo",
                 type: "number",
@@ -251,6 +279,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "cantidad": {
+                editable: true,
                 show: true,
                 name: "Cantidad",
                 type: "number",
@@ -259,6 +288,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "observaciones": {
+                editable: true,
                 show: true,
                 name: "Observaciones",
                 type: "string",
@@ -267,6 +297,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "fecha": {
+                editable: false,
                 show: true,
                 name: "Fecha",
                 type: "string",
@@ -275,6 +306,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "accionCantidad": {
+                editable: false,
                 show: true,
                 name: "Fecha",
                 type: "string",
@@ -285,6 +317,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "estados-herramienta": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -293,6 +326,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "herramienta": {
+                editable: true,
                 show: true,
                 name: "Herramienta",
                 type: "number",
@@ -301,6 +335,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "fecha": {
+                editable: false,
                 show: true,
                 name: "Fecha",
                 type: "string",
@@ -309,6 +344,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "estado": {
+                editable: true,
                 show: false,
                 name: "Estado",
                 type: "string",
@@ -317,6 +353,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "observaciones": {
+                editable: true,
                 show: false,
                 name: "Observaciones",
                 type: "string",
@@ -329,6 +366,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
     "compra": {
         "pedidos-insumo": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -337,6 +375,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "fechaHora": {
+                editable: false,
                 show: true,
                 name: "Fecha",
                 type: "string",
@@ -345,6 +384,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "observaciones": {
+                editable: true,
                 show: true,
                 name: "Observaciones",
                 type: "string",
@@ -355,6 +395,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "presupuesto": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -363,6 +404,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "fecha": {
+                editable: true,
                 show: true,
                 name: "Fechas",
                 type: "string",
@@ -371,6 +413,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "proveedor": {
+                editable: true,
                 show: true,
                 name: "Proveedor",
                 type: "string",
@@ -379,6 +422,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "total": {
+                editable: true,
                 show: true,
                 name: "Total",
                 type: "number",
@@ -387,6 +431,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "aprobado": {
+                editable: true,
                 show: true,
                 name: "Aprobado",
                 type: "boolean",
@@ -395,6 +440,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "pedidoInsumo": {
+                editable: true,
                 show: true,
                 name: "Pedido de Insumo",
                 type: "number",
@@ -405,6 +451,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "detalle-pedidos": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -413,6 +460,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "pedidoInsumo": {
+                editable: true,
                 show: true,
                 name: "Pedido de Insumo",
                 type: "n[names[18]]umber",
@@ -421,6 +469,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "insumo": {
+                editable: true,
                 show: true,
                 name: "Insumo",
                 type: "number",
@@ -429,6 +478,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "cantidad": {
+                editable: true,
                 show: true,
                 name: "Cantidad",
                 type: "number",
@@ -437,6 +487,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "observacion": {
+                editable: true,
                 show: true,
                 name: "Observacion",
                 type: "string",
@@ -449,6 +500,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
     "usuario": {
         "usuarios": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -457,6 +509,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "legajo": {
+                editable: true,
                 show: true,
                 name: "Leagajo",
                 type: "number",
@@ -465,6 +518,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "nombre": {
+                editable: true,
                 show: true,
                 name: "Nombre",
                 type: "string",
@@ -473,6 +527,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "apellido": {
+                editable: true,
                 show: true,
                 name: "Apellido",
                 type: "string",
@@ -481,6 +536,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "cargo": {
+                editable: true,
                 show: true,
                 name: "Cargo",
                 type: "string",
@@ -489,6 +545,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "mail": {
+                editable: true,
                 show: true,
                 name: "Mail",
                 type: "string",
@@ -497,6 +554,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "telefono": {
+                editable: true,
                 show: true,
                 name: "Teléfono",
                 type: "string",
@@ -509,6 +567,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
     "tarea": {
         "tareas": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -517,6 +576,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "supTarea": {
+                editable: true,
                 show: true,
                 name: "Tarea padre",
                 type: "number",
@@ -525,6 +585,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "tipo": {
+                editable: true,
                 show: true,
                 name: "Tipo",
                 type: "number",
@@ -533,6 +594,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "descripcion": {
+                editable: true,
                 show: true,
                 name: "Descripción",
                 type: "number",
@@ -541,6 +603,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "fechaTentativa": {
+                editable: true,
                 show: true,
                 name: "Fecha tentantiva",
                 type: "number",
@@ -549,6 +612,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "fechaInicio": {
+                editable: true,
                 show: true,
                 name: "Fecha de Inicio",
                 type: "number",
@@ -557,6 +621,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "fechaFin": {
+                editable: true,
                 show: true,
                 name: "Fecha de Finalizacion",
                 type: "number",
@@ -567,6 +632,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "empleados": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -575,6 +641,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "dni": {
+                editable: true,
                 show: true,
                 name: "DNI",
                 type: "number",
@@ -583,6 +650,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "nombre": {
+                editable: true,
                 show: true,
                 name: "Nombre",
                 type: "number",
@@ -591,6 +659,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "apellido": {
+                editable: true,
                 show: true,
                 name: "Apellido",
                 type: "number",
@@ -599,6 +668,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "telefono": {
+                editable: true,
                 show: true,
                 name: "Teléfono",
                 type: "number",
@@ -607,6 +677,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "mail": {
+                editable: true,
                 show: true,
                 name: "Mail",
                 type: "number",
@@ -615,6 +686,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "categoria": {
+                editable: true,
                 show: true,
                 name: "Categoría",
                 type: "number",
@@ -625,6 +697,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "ordenes-servicio": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -633,6 +706,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "usuario": {
+                editable: true,
                 show: true,
                 name: "Usuario",
                 type: "number",
@@ -641,6 +715,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "tarea": {
+                editable: true,
                 show: true,
                 name: "Tarea",
                 type: "number",
@@ -649,6 +724,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "fechaGeneracion": {
+                editable: false,
                 show: true,
                 name: "Fecha de Generación",
                 type: "number",
@@ -656,15 +732,26 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 required: true,
                 enum: false
             },
-            "prioridad": {
-                show: true,
-                name: "Prioridad",
-                type: "number",
-                col_size: 0.05,
-                required: true,
-                enum: false
+            "sector":{
+                editable: true,
+                show:false,
+                name:"Sector",
+                type:"string",
+                col_size:0.1,
+                required:true,
+                enum:false
+            },
+            "descripción":{
+                editable: true,
+                show:true,
+                name:"Descripción",
+                type:"string",
+                col_size:0.2,
+                required:false,
+                enum:false
             },
             "categoria": {
+                editable: true,
                 show: true,
                 name: "Categoría",
                 type: "number",
@@ -672,7 +759,35 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 required: true,
                 enum: false
             },
+            "prioridad": {
+                editable: false,
+                show: true,
+                name: "Prioridad",
+                type: "number",
+                col_size: 0.05,
+                required: true,
+                enum: false
+            },
+            "fechaNesesidad":{
+                editable: true,
+                show: true,
+                name: "Fecha de Necesidad",
+                type: "date",
+                col_size: 0.05,
+                required: false,
+                enum: false
+            },
+            "comentario":{
+                editable: true,
+                show:false,
+                name:"Descripción",
+                type:"string",
+                col_size:0.2,
+                required:false,
+                enum:false
+            },
             "estado": {
+                editable: true,
                 show: true,
                 name: "Estado",
                 type: "number",
@@ -683,6 +798,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         },
         "encuestas-satisfaccion": {
             "id": {
+                editable: false,
                 show: true,
                 name: "ID",
                 type: "number",
@@ -691,6 +807,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "ordenServicio": {
+                editable: true,
                 show: true,
                 name: "Orden de Servicio",
                 type: "number",
@@ -699,6 +816,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "satisfaccion": {
+                editable: true,
                 show: true,
                 name: "Satisfacción",
                 type: "number",
@@ -707,6 +825,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "tiempoRespuesta": {
+                editable: true,
                 show: true,
                 name: "Tiempo de Respuesta",
                 type: "number",
@@ -715,6 +834,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "tarea": {
+                editable: true,
                 show: true,
                 name: "Tarea",
                 type: "number",

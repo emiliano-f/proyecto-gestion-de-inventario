@@ -19,7 +19,9 @@ const mesureUnits = [
 
 export enum FormType {
     ADD = "add",
-    UPDATE = "update"
+    UPDATE = "update",
+    READ = "read",
+    DELETE = "delete",
 }
 
 type Props = {
@@ -33,7 +35,7 @@ type Props = {
 
 
 const ModalForm = (props: Props) => {
-    
+
     const { item: itemName, module: moduleName } = GetUrlParts();
 
     const [validated, setValidated] = useState(false);
@@ -41,24 +43,24 @@ const ModalForm = (props: Props) => {
     const updateItem = (item: string, formData: FormData, id: number) => {
         // Comentario jm: sería mejor que la función reciba un int y el casteo lo haga dentro
         Update(item, formData, id.toString())
-        .then(() => {
-            setMessage(`Se ha modificado ${getSingular(item)} con éxito`, false)
-        })
-        .catch((error) => {
-            setMessage(`Ha surgido un error al modificar ${getSingular(item)}`, true)
-        })
-        .finally(() => props.setOpen(false));
+            .then(() => {
+                setMessage(`Se ha modificado ${getSingular(item)} con éxito`, false)
+            })
+            .catch((error) => {
+                setMessage(`Ha surgido un error al modificar ${getSingular(item)}`, true)
+            })
+            .finally(() => props.setOpen(false));
     }
 
-    const createItem = (item: string, formData:FormData) => {
+    const createItem = (item: string, formData: FormData) => {
         Create(item, formData)
-        .then(() => {
-            setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`, false)
-        })
-        .catch((error) => {
-            setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(item)}`, true)
-        })
-        .finally(() => props.setOpen(false));
+            .then(() => {
+                setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`, false)
+            })
+            .catch((error) => {
+                setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(item)}`, true)
+            })
+            .finally(() => props.setOpen(false));
     }
 
 
@@ -66,42 +68,43 @@ const ModalForm = (props: Props) => {
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
-        
+
         if (form.checkValidity() === false) {
             e.stopPropagation();
         }
         setValidated(true);
-        
+
         if (props.formType === FormType.UPDATE) {
             if (props.row != null)
-            updateItem(itemName, formData, props.row["id"]);
+                updateItem(itemName, formData, props.row["id"]);
         } else {
             createItem(itemName, formData);
-        }   
+        }
     };
-    
+
     const mesureUnits = [
         "litro",
         "metro",
         "gramo",
         "contable"
     ]
+
     return (
-        <div className="add">
-            <div className="modal2">
-                <div className="close">
-                    <button className="btn dark" onClick={() => props.setOpen(false)}>X</button>
-                </div>
-                {props.formType === FormType.ADD ? (
-                    <h1>Crear nuevo {getSingular(props.slug)}</h1>
-                ):(
-                    <h1>Modificar {getSingular(props.slug)}</h1>
-                )}
+        <div className="modal-background">
+            <div className="modal-front">
+
+                <button className="close btn dark" onClick={() => props.setOpen(false)}>X</button>
+
+                {props.formType === FormType.ADD && <h1>Crear nuevo {getSingular(props.slug)}</h1>}
+                {props.formType === FormType.UPDATE && <h1>Modificar {getSingular(props.slug)}</h1>}
+                {props.formType === FormType.READ && <h1>{getSingular(props.slug)}</h1>}
+                {props.formType === FormType.DELETE && <h1>Eliminar {getSingular(props.slug)}</h1>}
+                
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                    {props.fields
-                        .filter(item => item.field !== "id")
-                        .map((field, index) => {
-                            return (
+                    {(props.formType === FormType.ADD || props.formType === FormType.UPDATE) &&
+                        props.fields
+                            .filter(item => item.editable == true)
+                            .map((field, index) => (
                                 <Form.Group className="form-group" key={index}>
                                     <Form.Label>{field.headerName}</Form.Label>
                                     {field.enum ? (
@@ -110,41 +113,75 @@ const ModalForm = (props: Props) => {
                                                 name="unidadMedida"
                                                 className="form-select"
                                                 required>
-                                                <option defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? 
-                                                    (props.row["unidadMedida"]) : ("")}
-                                                 value="" disabled>Elegir unidad de medida</option>
-                                                {mesureUnits.map(unidad => (
-                                                    <option value={unidad} key={unidad}>{unidad}</option>
-                                                ))}
+                                                <option 
+                                                    defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (props.row["unidadMedida"]) : ("")}
+                                                    value="" 
+                                                    disabled>
+                                                        Elegir unidad de medida
+                                                </option>
+                                                {mesureUnits.map(unidad => (<option value={unidad} key={unidad}>{unidad}</option>))}
                                             </Form.Select>
-                                        ):(
-                                            <SelectList 
+                                        ) : (
+                                            <SelectList
                                                 fieldName={field.field}
-                                                defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? 
+                                                defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ?
                                                     (props.row[field.field]) : ("")} />
-                                            
                                         )
-                                    ):(
+                                    ) : (
                                         <Form.Control
                                             name={field.field}
                                             required={field.required ? true : false}
                                             type={field.type}
                                             placeholder={`Ingrese ${field.headerName}`}
-                                            defaultValue={(props.formType === FormType.UPDATE && props.row!==null) ? (
-                                                props.row[field.field]):("")}
+                                            defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (
+                                                props.row[field.field]) : ("")}
                                         />
                                     )}
-                                    {field.required ? (
+                                    {field.required ?
                                         <Form.Control.Feedback type="invalid">
                                             Este campo es obligatorio
                                         </Form.Control.Feedback>
-                                    ):(<Form.Control.Feedback />)}
+                                        :
+                                        <Form.Control.Feedback />}
                                 </Form.Group>
-                            )
-                        })
+                            ))
                     }
-                    {(props.formType === FormType.ADD) && <Button type="submit" className="mt-3" onClick={() => props.switchChange()}>Crear</Button>}
-                    {(props.formType === FormType.UPDATE) && <Button type="submit" className="mt-3" onClick={() => props.switchChange()}>Modificar</Button>}
+
+                    {props.formType === FormType.READ &&
+                        props.fields
+                            .map((field, index) => (
+                                <Form.Group className="form-group" key={index}>
+                                    <Form.Label>{field.headerName}</Form.Label>
+                                    {field.enum ?
+                                        <Form.Select
+                                            name="unidadMedida"
+                                            className="form-select"
+                                            required>
+                                        </Form.Select> :
+                                        <Form.Control
+                                            name={field.field}
+                                            disabled={true}
+                                            type={field.type}
+                                            defaultValue={(props.row !== null) ? (props.row[field.field]) : ("")}
+                                        />
+                                    }
+                                </Form.Group>
+                            ))
+                    }
+
+                    {props.formType === FormType.DELETE &&
+                        <p>¿ Está usted seguro de que quiere eliminar el {getSingular(props.slug)} con identificador {props.row[props.fields[0].field]} ?</p>
+                    }
+
+                    <Button type="submit" className="mt-3"
+                        onClick={() => props.switchChange()}
+                        disabled={props.formType === FormType.READ}>
+                        {props.formType === FormType.ADD && "Crear"}
+                        {props.formType === FormType.UPDATE && "Modificar"}
+                        {props.formType === FormType.READ && "Modificar"}
+                        {props.formType === FormType.DELETE && "Eliminar"}
+                    </Button>
+
                 </Form>
             </div>
         </div>

@@ -6,9 +6,6 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import ServiceForm from "../pages/serviceform/ServiceForm"
 
 import List from "../components/CRUDComponents/list/List"
-import Detail from "../components/CRUDComponents/detail/Detail"
-import Form from "../components/CRUDComponents/modalForm/ModalForm.tsx"
-import Delete from "../components/CRUDComponents/delete/Delete"
 
 import {SECTIONS} from "../data/data.tsx";
 
@@ -32,18 +29,6 @@ function generateRoutes(){
               path: table.url,
               element: <List/>,
             },
-            {
-              path: table.url+"/detail/:id/",
-              element: <Detail/>
-            },
-            {
-              path: table.url+"/modify/:id/",
-              element: <Form/>,
-            },
-            {
-              path: table.url+"/delete/:id/",
-              element: <Delete/>,
-            }
           ]);
         })
       });
