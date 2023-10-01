@@ -10,6 +10,7 @@ import { setMessage, MessageDisplay } from "../messageDisplay/MessageDisplay";
 import { getSingular, getPlural} from "../../../data/data"
 
 import ModalForm, { FormType } from "../modalForm/ModalForm";
+import DeleteAlert from "../deleteAlert/DeleteAlert";
 
 const List = () => {
     const ErrorState = useState(["",false]);
@@ -36,8 +37,6 @@ const List = () => {
                 setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}`, true)
             })
     }, [changeRef.current, itemName])
-    
-    
 
     const columns: GridColDef[] = GetColumns(moduleName, itemName);
     const fields: Field[] = GetFields(moduleName, itemName);
@@ -56,7 +55,7 @@ const List = () => {
                 {openAdd && <ModalForm slug={itemName} fields={fields} setOpen={setOpenAdd} formType={FormType.ADD} row={null} switchChange={switchChange} />}
                 {openUpdate && <ModalForm slug={itemName} fields={fields} setOpen={setOpenUpdate} formType={FormType.UPDATE} row={row} switchChange={switchChange} />}
                 {openRead && <ModalForm slug={itemName} fields={fields} setOpen={setOpenRead} formType={FormType.READ} row={row} switchChange={switchChange} />}
-                {openDelete && <ModalForm slug={itemName} fields={fields} setOpen={setOpenDelete} formType={FormType.DELETE} row={row} switchChange={switchChange} />}
+                {openDelete && <DeleteAlert slug={itemName} id={row["id"]} setOpen={setOpenDelete} switchChange={switchChange} />}
             </div>
         </>
 

@@ -71,15 +71,18 @@ const ModalForm = (props: Props) => {
 
         if (form.checkValidity() === false) {
             e.stopPropagation();
+        } else {
+            if (props.formType === FormType.UPDATE) {
+                if (props.row != null)
+                    updateItem(itemName, formData, props.row["id"]);
+            } else {
+                createItem(itemName, formData);
+            }
+
         }
         setValidated(true);
 
-        if (props.formType === FormType.UPDATE) {
-            if (props.row != null)
-                updateItem(itemName, formData, props.row["id"]);
-        } else {
-            createItem(itemName, formData);
-        }
+        
     };
 
     const mesureUnits = [
@@ -97,9 +100,6 @@ const ModalForm = (props: Props) => {
 
                 {props.formType === FormType.ADD && <h1>Crear nuevo {getSingular(props.slug)}</h1>}
                 {props.formType === FormType.UPDATE && <h1>Modificar {getSingular(props.slug)}</h1>}
-                {props.formType === FormType.READ && <h1>{getSingular(props.slug)}</h1>}
-                {props.formType === FormType.DELETE && <h1>Eliminar {getSingular(props.slug)}</h1>}
-                
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     {(props.formType === FormType.ADD || props.formType === FormType.UPDATE) &&
                         props.fields
@@ -112,9 +112,9 @@ const ModalForm = (props: Props) => {
                                             <Form.Select
                                                 name="unidadMedida"
                                                 className="form-select"
+                                                value={(props.formType === FormType.UPDATE && props.row !== null) ? (props.row["unidadMedida"]) : ("")}
                                                 required>
                                                 <option 
-                                                    defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (props.row["unidadMedida"]) : ("")}
                                                     value="" 
                                                     disabled>
                                                         Elegir unidad de medida
@@ -169,17 +169,11 @@ const ModalForm = (props: Props) => {
                             ))
                     }
 
-                    {props.formType === FormType.DELETE &&
-                        <p>¿ Está usted seguro de que quiere eliminar el {getSingular(props.slug)} con identificador {props.row[props.fields[0].field]} ?</p>
-                    }
-
                     <Button type="submit" className="mt-3"
                         onClick={() => props.switchChange()}
                         disabled={props.formType === FormType.READ}>
                         {props.formType === FormType.ADD && "Crear"}
                         {props.formType === FormType.UPDATE && "Modificar"}
-                        {props.formType === FormType.READ && "Modificar"}
-                        {props.formType === FormType.DELETE && "Eliminar"}
                     </Button>
 
                 </Form>

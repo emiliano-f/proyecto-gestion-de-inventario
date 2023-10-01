@@ -22,7 +22,9 @@ export const DataTable = (props: Props) => {
         renderCell: (params) => {
             return (
                 <div className="action">
-                    <button className="button" onClick={() => {props.setOpenRead(true); props.setRow(params.row)}}><img src="/read.png" alt="" /></button>
+                    <Link to={`detail/${params.row.id}/`}>
+                        <button className="button"><img src="/read.png" alt="" /></button>
+                    </Link>
                     <button className="button" onClick={() => {props.setOpenUpdate(true); props.setRow(params.row)}}><img src="/edit.png" alt="" /></button>
                     <button className="button" onClick={() => {props.setOpenDelete(true); props.setRow(params.row)}}><img src="/delete.png" alt="" /></button>
                 </div>

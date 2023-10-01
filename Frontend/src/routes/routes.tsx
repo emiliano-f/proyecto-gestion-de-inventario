@@ -8,6 +8,8 @@ import ServiceForm from "../pages/serviceform/ServiceForm"
 import List from "../components/CRUDComponents/list/List"
 
 import {SECTIONS} from "../data/data.tsx";
+import Detail from "../components/CRUDComponents/detail/Detail.tsx";
+import NotFound from "../pages/notFound/NotFound.tsx";
 
 /**
  * Genera a partir de los elementos del menu lateral las url's correspondientes
@@ -29,6 +31,10 @@ function generateRoutes(){
               path: table.url,
               element: <List/>,
             },
+            {
+              path: table.url + "/detail/:id/",
+              element: <Detail/>
+            }
           ]);
         })
       });
@@ -63,6 +69,10 @@ const routes = [
   {
     path: "/orden-servicio/generate",
     element: <ServiceForm />
+  },
+  {
+    path: "*",
+    element: <NotFound />
   }
 ];
 

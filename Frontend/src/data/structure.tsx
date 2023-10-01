@@ -10,6 +10,8 @@ const mesureUnits: Record<string, string> = {
     CONT: "contable"
 }
 
+
+
 /**
  * Objeto que contiene la estructura general de los módulos del dashboard
  */
@@ -847,3 +849,19 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
 }
 
 export default STRUCTURE;
+
+export function getFullName(moduleName: string, itemName: string, fieldName: string): string | undefined {
+    let currentValue: Record<string, any> | undefined = STRUCTURE;
+
+    const properties = [moduleName, itemName, fieldName];
+
+    for (const propiedad of properties) {
+        currentValue = currentValue[propiedad];
+
+        if (!currentValue) {
+            return fieldName;
+        }
+    }
+
+    return currentValue.name;
+}
