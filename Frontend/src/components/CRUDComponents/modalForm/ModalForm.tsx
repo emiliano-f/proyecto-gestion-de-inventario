@@ -84,14 +84,12 @@ const ModalForm = (props: Props) => {
 
         
     };
-
     const mesureUnits = [
         "litro",
         "metro",
         "gramo",
         "contable"
     ]
-
     return (
         <div className="modal-background">
             <div className="modal-front">
@@ -110,10 +108,11 @@ const ModalForm = (props: Props) => {
                                             <Form.Select
                                                 name="unidadMedida"
                                                 className="form-select"
-                                                value={(props.formType === FormType.UPDATE && props.row !== null) ? (props.row["unidadMedida"]) : ("")}
+                                                defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (props.row["unidadMedida"]) : ("")}
                                                 required>
                                                 <option 
                                                     value="" 
+                                                    
                                                     disabled>
                                                         Elegir unidad de medida
                                                 </option>
@@ -126,15 +125,37 @@ const ModalForm = (props: Props) => {
                                                     (props.row[field.field]) : ("")} />
                                         )
                                     ) : (
-                                        <Form.Control
-                                            name={field.field}
-                                            required={field.required ? true : false}
-                                            type={field.type}
-                                            placeholder={`Ingrese ${field.headerName}`}
-                                            defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (
-                                                props.row[field.field]) : ("")}
-                                        />
+                                        props.formType === FormType.UPDATE && field.field === "cantidad" && props.slug === "insumos" ?
+                                        (
+                                            <div className="row">
+                                                <Form.Control
+                                                    className="col"
+                                                    name={field.field}
+                                                    required={field.required ? true : false}
+                                                    type={field.type}
+                                                    placeholder={`Ingrese ${field.headerName}`}
+                                                    defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (
+                                                        props.row[field.field]) : ("")}
+                                                    disabled={true}
+
+                                                />
+                                                <button type="button" className="button col"><img src="/edit.png" alt="" /></button>
+                                                
+                                            </div>
+                                        ) : (
+                                            <Form.Control
+                                                className="col"
+                                                name={field.field}
+                                                required={field.required ? true : false}
+                                                type={field.type}
+                                                placeholder={`Ingrese ${field.headerName}`}
+                                                defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (
+                                                    props.row[field.field]) : ("")}
+                                            />
+                                        )
+                  
                                     )}
+                                    
                                     {field.required ?
                                         <Form.Control.Feedback type="invalid">
                                             Este campo es obligatorio

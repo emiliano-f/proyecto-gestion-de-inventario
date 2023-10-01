@@ -11,7 +11,102 @@ const mesureUnits: Record<string, string> = {
 }
 
 
+export const ACTIONS: Record<string, any> ={
+    "insumos": {
+        detail: true,
+        stockAdj: true,
+        update: true,
+        delete: true,
+    },
+    "tipos-insumo": {
+        detail: false,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
+    "herramientas": {
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
+    "tipos-herramienta": {
+        detail: false,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
+    "ordenes-retiro": {
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
+    "ajustes-stock": {
+        detail: true,
+        stockAdj: false,
+        update: false,
+        delete: false,
+    },
+    "estados-herramienta": {
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
+    "pedidos-insumo": {
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
+    "presupuesto": {
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
+    "detalle-pedidos": {
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
+    "usuarios": {
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
 
+    },
+    "tareas": {
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
+    "empleados": {
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
+    "ordenes-servicio": {
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
+    "encuestas-satisfaccion": {
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
+
+    },
+
+
+}
 /**
  * Objeto que contiene la estructura general de los módulos del dashboard
  */
@@ -89,7 +184,8 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 col_size: 0.1,
                 required: false,
                 enum: false
-            }
+            },
+            
         },
         "tipos-insumo": {
             "id": {

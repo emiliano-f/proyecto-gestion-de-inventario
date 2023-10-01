@@ -50,7 +50,7 @@ const List = () => {
                     <button className="btn btn-primary" onClick={() => setOpenAdd(true)}>Agregar {getSingular(itemName)}</button>
                 </div>
 
-                <DataTable columns={columns} rows={items} setOpenUpdate={setOpenUpdate} setOpenRead={setOpenRead} setOpenDelete={setOpenDelete} setRow={setRow} />
+                <DataTable slug={itemName} columns={columns} rows={items} setOpenUpdate={setOpenUpdate} setOpenRead={setOpenRead} setOpenDelete={setOpenDelete} setRow={setRow} />
 
                 {openAdd && <ModalForm slug={itemName} fields={fields} setOpen={setOpenAdd} formType={FormType.ADD} row={null} switchChange={switchChange} />}
                 {openUpdate && <ModalForm slug={itemName} fields={fields} setOpen={setOpenUpdate} formType={FormType.UPDATE} row={row} switchChange={switchChange} />}
