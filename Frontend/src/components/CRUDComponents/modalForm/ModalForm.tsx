@@ -47,7 +47,7 @@ const ModalForm = (props: Props) => {
                 setMessage(`Se ha modificado ${getSingular(item)} con éxito`, false)
             })
             .catch((error) => {
-                setMessage(`Ha surgido un error al modificar ${getSingular(item)}`, true)
+                setMessage(`Ha surgido un error al modificar ${getSingular(item)}.`,error)
             })
             .finally(() => props.setOpen(false));
     }
@@ -55,10 +55,10 @@ const ModalForm = (props: Props) => {
     const createItem = (item: string, formData: FormData) => {
         Create(item, formData)
             .then(() => {
-                setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`, false)
+                setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`)
             })
             .catch((error) => {
-                setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(item)}`, true)
+                setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(item)}. (${error.message}).`,error)
             })
             .finally(() => props.setOpen(false));
     }
@@ -95,9 +95,7 @@ const ModalForm = (props: Props) => {
     return (
         <div className="modal-background">
             <div className="modal-front">
-
                 <button className="close btn dark" onClick={() => props.setOpen(false)}>X</button>
-
                 {props.formType === FormType.ADD && <h1>Crear nuevo {getSingular(props.slug)}</h1>}
                 {props.formType === FormType.UPDATE && <h1>Modificar {getSingular(props.slug)}</h1>}
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>

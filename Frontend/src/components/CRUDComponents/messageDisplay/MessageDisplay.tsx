@@ -17,7 +17,7 @@ export function MessageDisplay(state : msgError){
             </div>
 }
 
-export function setMessage(message: string, is_error: boolean): void{
+export function setMessage(message: string, error : | null): void{
     setMsg([message, is_error]);
     const elemento : HTMLElement | null = document.getElementById("msg");
     elemento?.classList.remove('hidden');
