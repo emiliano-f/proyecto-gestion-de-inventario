@@ -1,7 +1,7 @@
 import { RouteObject, createBrowserRouter, redirect } from "react-router-dom";
 
 import Login from "../pages/login/Login";
-import Home from "../pages/home/Home";
+import MainResume from "../pages/mainResume/MainResume";
 import Dashboard from "../pages/dashboard/Dashboard";
 import ServiceForm from "../pages/serviceform/ServiceForm"
 
@@ -59,7 +59,7 @@ const routes = [
       {
         index:true,
         path: "/",
-        element: <Home />
+        element: <MainResume />
       }
     ])
   },

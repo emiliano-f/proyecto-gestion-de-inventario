@@ -1,0 +1,76 @@
+export const inventarioReposition = {
+    title:"Punto de Reposición de Insumo",
+    content:[
+        {
+            name:"Jabón",
+            cantidad:2,
+            prioridad:"alta",
+        },
+        {
+            name:"Agua",
+            cantidad:10,
+            prioridad:"baja",
+        },
+        {
+            name:"-",
+            cantidad:0,
+            prioridad:"baja",
+        },
+        {
+            name:"-",
+            cantidad:0,
+            prioridad:"baja",
+        },
+        {
+            name:"-",
+            cantidad:0,
+            prioridad:"baja",
+        },
+        {
+            name:"-",
+            cantidad:0,
+            prioridad:"baja",
+        },
+        {
+            name:"-",
+            cantidad:0,
+            prioridad:"baja",
+        },
+        {
+            name:"-",
+            cantidad:0,
+            prioridad:"baja",
+        },
+        {
+            name:"-",
+            cantidad:0,
+            prioridad:"baja",
+        },
+        {
+            name:"-",
+            cantidad:0,
+            prioridad:"baja",
+        },
+    ]
+}
+
+export const herramientaReposition = {
+    title:"Herramientas a reparar",
+    content:[
+        {
+            name:"Toyota Hilux 1",
+            cantidad:"roto",
+            prioridad:"alta",
+        },
+        {
+            name:"-",
+            cantidad:0,
+            prioridad:"baja",
+        },
+        {
+            name:"-",
+            cantidad:0,
+            prioridad:"baja",
+        },
+    ]
+}

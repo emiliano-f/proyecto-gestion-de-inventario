@@ -178,24 +178,18 @@ function buildModulesSection() {
  * lateral izquierdo de la vista Dashboard.
  */
 export const SECTIONS = [
-    /*{
+    {
         id: 1,
         title: "Principal",
         modules: [
             {
                 id: 1,
-                title: "Home",
+                title: "Resumen",
                 url: "/",
-                icon: "/home.svg",
-            },
-            {
-                id: 2,
-                title: "Perfil",
-                url: "/users/1",
-                icon: "/usuario.svg",
+                icon: "/chart.svg",
             },
         ],
-    },*/
+    },
     buildModulesSection(),
     /*{
         id: 4,
@@ -204,18 +198,18 @@ export const SECTIONS = [
             {
                 id: 1,
                 title: "Opciones",
-                url: "/",
+                url: "/opciones",
                 icon: "/setting.svg",
             },
             {
                 id: 2,
                 title: "Backups",
-                url: "/",
+                url: "/",/home.svg
                 icon: "/backup.svg",
-            },
+            }
         ],
-    },
-    {
+    },*/
+    /*{
         id: 5,
         title: "Analíticas",
         modules: [
