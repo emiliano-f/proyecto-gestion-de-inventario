@@ -30,7 +30,7 @@ export function ListItems(setItems : any, itemName : string) : Promise<AxiosResp
 }
 
 export function ReadItem(setItem:any,itemName:string) : Promise<AxiosResponse<any,any>> {
-    const {id} = useParams()
+    const {id} = useParams();
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         useEffect(() => {
             async function loadItem(){
