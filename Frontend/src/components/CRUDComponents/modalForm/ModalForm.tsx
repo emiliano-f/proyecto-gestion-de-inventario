@@ -7,7 +7,7 @@ import { setMessage } from "../messageDisplay/MessageDisplay";
 import { Field } from "../getColumns/GetColumns";
 import Button from 'react-bootstrap/Button'
 import SelectList from "../selectList/SelectList";
-
+import SelectEnum from "../selectEnum/SelectEnum";
 import Form from 'react-bootstrap/Form';
 import StockAdjusment from "../stockAdjustment/StockAdjustment";
 

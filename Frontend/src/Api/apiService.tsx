@@ -98,9 +98,9 @@ export function GetEnums(setEnum:any) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         useEffect(() => {
             async function loadItem(){
-                await inventarioAPI.get("/table-enums")
+                await inventarioAPI.get("table-enums/")
                 .then((response) => {
-                    setEnum(response.data)
+                    setEnum(JASON.parse(response.data))
                     resolve(response)
                 })
                 .catch((error) => reject(error));

@@ -14,7 +14,7 @@ type Props = {
  * @param props props.fieldName es el nombre de la columna de interés
  * @returns 
  */
-const SelectList = (props:Props) => {
+const SelectEnum = (props:Props) => {
 
     interface Item {
         id: number;
@@ -22,22 +22,31 @@ const SelectList = (props:Props) => {
         [key: string]: any; // Esto permite otros atributos de cualquier tipo
     }
     
-    const [list, setList] = useState<Item[]>([]);
+    const [enum, setList] = useState<Item[]>([]);
     const [selectedValue, setSelectedValue] = useState<number | string>("");
 
     const itemName = getUri(props.fieldName);
     
     useEffect(() => {
         const fetchData = async () => {
-            await ListItems(setList, itemName); 
+            await GetEnums(setList); 
         };
         fetchData();
         
     }, [itemName]);
 
+    useEffect(() => {
+        if (props.defaultValue !== "") {
+            const object = list.find(field => field.nombre === props.defaultValue);
+            if (object) {
+                setSelectedValue(object.id);
+            }
+        }
+    },[list])
+
     return ( 
         <Form.Select
-            name="unidadMedida"
+            name={fieldName}
             className="form-select"
             defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (props.row["unidadMedida"]) : ("")}
             required>
