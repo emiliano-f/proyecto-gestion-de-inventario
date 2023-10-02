@@ -41,10 +41,6 @@ const SelectList = (props:Props) => {
         }
     },[list])
 
-
-    /*
-    
-    */
     return ( 
         <Form.Select
             name={props.fieldName}

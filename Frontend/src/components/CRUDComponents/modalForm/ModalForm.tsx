@@ -106,23 +106,18 @@ const ModalForm = (props: Props) => {
                                 .map((field, index) => (
                                     <Form.Group className="form-group" key={index}>
                                         <Form.Label>{field.headerName}</Form.Label>
-                                        {field.enum ? (
-                                            field.field === "unidadMedida" ? (
-                                            <div className="row g-2">
-                                                <Form.Select
-                                                    name="unidadMedida"
-                                                    className="form-select"
-                                                    defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (props.row["unidadMedida"]) : ("")}
-                                                    required>
-                                                    <option
-                                                        value=""
-
-                                                        disabled>
-                                                        Elegir unidad de medida
-                                                    </option>
-                                                    {mesureUnits.map(unidad => (<option value={unidad} key={unidad}>{unidad}</option>))}
-                                                </Form.Select>
-                                            </div>
+                                        {field.select ? (
+                                            field.enum ? (
+                                                <div className="row g-2">
+                                                    <Form.Select
+                                                        name="unidadMedida"
+                                                        className="form-select"
+                                                        defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (props.row["unidadMedida"]) : ("")}
+                                                        required>
+                                                        <option value="" disabled>Elegir unidad de medida</option>
+                                                        {mesureUnits.map(unidad => (<option value={unidad} key={unidad}>{unidad}</option>))}
+                                                    </Form.Select>
+                                                </div>
                                             ) : (
                                                 <div className="row g-2">
                                                     <SelectList
@@ -139,15 +134,12 @@ const ModalForm = (props: Props) => {
                                                             className="col"
                                                             name={field.field}
                                                             required={field.required ? true : false}
-
                                                             placeholder={`Ingrese ${field.headerName}`}
                                                             defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (
                                                                 props.row[field.field]) : ("")}
                                                             readOnly
-
                                                         />
                                                         <button type="button" className="button col" onClick={() => { setOpenStockAdj(true)}}><img src="/edit.png" alt="" /></button>
-
                                                     </div>
                                                 ) : (
                                                     <div className="row g-2">
@@ -157,8 +149,9 @@ const ModalForm = (props: Props) => {
                                                             required={field.required ? true : false}
                                                             type={field.type}
                                                             placeholder={`Ingrese ${field.headerName}`}
-                                                            defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (
-                                                                props.row[field.field]) : ("")}
+                                                            defaultValue={
+                                                                (props.formType === FormType.UPDATE && props.row !== null) ?
+                                                                (props.row[field.field]) : ("")}
                                                         />
                                                     </div>
                                                 )
@@ -169,28 +162,6 @@ const ModalForm = (props: Props) => {
                                             </Form.Control.Feedback>
                                             :
                                             <Form.Control.Feedback />}
-                                    </Form.Group>
-                                ))
-                        }
-
-                        {props.formType === FormType.READ &&
-                            props.fields
-                                .map((field, index) => (
-                                    <Form.Group className="form-group" key={index}>
-                                        <Form.Label>{field.headerName}</Form.Label>
-                                        {field.enum ?
-                                            <Form.Select
-                                                name="unidadMedida"
-                                                className="form-select"
-                                                required>
-                                            </Form.Select> :
-                                            <Form.Control
-                                                name={field.field}
-                                                disabled={true}
-                                                type={field.type}
-                                                defaultValue={(props.row !== null) ? (props.row[field.field]) : ("")}
-                                            />
-                                        }
                                     </Form.Group>
                                 ))
                         }
