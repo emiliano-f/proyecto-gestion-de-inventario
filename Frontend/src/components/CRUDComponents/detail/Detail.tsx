@@ -17,7 +17,12 @@ const Detail = () => {
     });
     
     return (
-        <div className="detail">
+        <div className="detail">    
+            <div className="detailBotton">
+                <Link to={`/${moduleName}/${itemName}`} >
+                    <button className="btn light">X</button>
+                </Link>
+            </div>       
             <div className="card custom-card mb-3">
                 <div className="card-header">
                     {row && <h2>{row.nombre}</h2>}
@@ -38,8 +43,8 @@ const Detail = () => {
                         encuentra en la base de datos con esa id</h1>
                     }
                 </div>
-                
             </div>
+
             <div className="activities">
                 <h3>Última actividad</h3>
                 <ul>
@@ -71,9 +76,7 @@ const Detail = () => {
                 </ul>
 
             </div>
-            
         </div>
-        
     )
 }
 

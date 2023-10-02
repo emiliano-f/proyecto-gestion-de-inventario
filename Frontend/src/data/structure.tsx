@@ -190,7 +190,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "tipos-insumo": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -302,7 +302,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "descripcion": {
                 editable: true,
-                show: false,
+                show: true,
                 name: "Descripción",
                 type: "string",
                 col_size: 0.2,

@@ -14,14 +14,13 @@
     justify-content: center;
     
     .modal-front {
-        
         max-height: 100vh;
         overflow-y: auto;     
         padding: 40px 60px;
         border-radius: 10px;
         background-color: $main-bg;
         position: relative;
-
+        
         p{
             text-align: center;
         }

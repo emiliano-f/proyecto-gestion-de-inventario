@@ -162,9 +162,7 @@ const ModalForm = (props: Props) => {
                                                         />
                                                     </div>
                                                 )
-
                                         )}
-
                                         {field.required ?
                                             <Form.Control.Feedback type="invalid">
                                                 Este campo es obligatorio
