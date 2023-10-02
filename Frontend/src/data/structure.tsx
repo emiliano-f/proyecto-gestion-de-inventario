@@ -49,7 +49,7 @@ export const ACTIONS: Record<string, any> ={
     },
     "ajustes-stock": {
         add: false,
-        detail: true,
+        detail: false,
         stockAdj: false,
         update: false,
         delete: false,
@@ -422,7 +422,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             "cantidad": {
                 editable: true,
                 show: true,
-                name: "Cantidad",
+                name: "Ajuste realizado",
                 type: "number",
                 col_size: 0.05,
                 required: true,
@@ -444,16 +444,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 show: true,
                 name: "Fecha",
                 type: "date",
-                col_size: 0.15,
+                col_size: 0.03,
                 required: true,
                 select : false,
                 enum: false
             },
             "accionCantidad": {
                 editable: false,
-                show: true,
-                name: "Fecha",
-                type: "date",
+                show: false,
+                name: "Accion",
+                type: "string",
                 col_size: 0.15,
                 required: true,
                 select : false,
@@ -655,7 +655,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Observacion",
                 type: "string",
                 col_size: 0.05,
-                required: true,
+                required: false,
                 select : false,
                 enum: false
             },

@@ -1,10 +1,10 @@
 @import "../../../styles/variables.scss";
 
 .detail{
-    
+    display:flex;
     
     .detailBotton{
-        display: block;
+        display: none;
         margin-left: 92%;
         height: min-content;
         .btn{
