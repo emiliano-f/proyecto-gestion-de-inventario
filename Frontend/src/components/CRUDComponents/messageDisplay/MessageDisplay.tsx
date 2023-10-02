@@ -26,13 +26,17 @@ export function MessageDisplay(state : msgError){
 }
 
 export function setMessage(message: string, error : Promise<AxiosResponse<any,any>>| null): void{
-    console.log(error)
     var errorDesc = null;
     if(error === null){
         setMsg([message, false]);
     }else{
         console.log(error.code)
+        console.log(Object.keys(error.request.responseText))
         switch(error.code){
+            case "ERR_BAD_REQUEST":
+                const dicc = JSON.parse(error.request.response);
+                errorDesc = Object.keys(dicc).map(field => (`${field}: ${dicc[field]}`)).join('; ')
+                break;
             case "ERR_NETWORK":
                 errorDesc = "Error de conección con base de datos"
                 break;
