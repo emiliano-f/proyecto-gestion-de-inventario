@@ -31,11 +31,11 @@ const List = () => {
 
     const [items, setItems] = useState([]);
     const { module: moduleName, item: itemName } = GetUrlParts();
-    useEffect(()=>{
 
+    useEffect(()=>{
         ListItems(setItems, itemName)
             .catch((error) => {
-                setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}`, true)
+                setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}.`,error)
             })
     }, [changeRef.current, itemName])
 

@@ -46,10 +46,10 @@ const ModalForm = (props: Props) => {
         // Comentario jm: sería mejor que la función reciba un int y el casteo lo haga dentro
         Update(item, formData, id.toString())
             .then(() => {
-                setMessage(`Se ha modificado ${getSingular(item)} con éxito`, false)
+                setMessage(`Se ha modificado ${getSingular(item)} con éxito`,null)
             })
             .catch((error) => {
-                setMessage(`Ha surgido un error al modificar ${getSingular(item)}`, true)
+                setMessage(`Ha surgido un error al modificar ${getSingular(item)}.`,error)
             })
             .finally(() => props.setOpen(false));
     }
@@ -57,10 +57,10 @@ const ModalForm = (props: Props) => {
     const createItem = (item: string, formData: FormData) => {
         Create(item, formData)
             .then(() => {
-                setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`, false)
+                setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`,null)
             })
             .catch((error) => {
-                setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(item)}`, true)
+                setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(item)}.`,error)
             })
             .finally(() => props.setOpen(false));
     }
