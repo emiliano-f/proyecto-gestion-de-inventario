@@ -43,7 +43,7 @@ const ChartBox = (props: Props) => {
                 >
                     {props.percentage}
                 </span>
-                <span className="duration">this month</span>
+                <span className="duration">este mes</span>
             </div>
         </div>
     </div>
