@@ -32,10 +32,21 @@ const StockAdjusment = (props: Props) => {
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
+        formData.append("insumo", props.id.toString());
+        formData.append('accionCantidad', '+');
+        
 
         if (form.checkValidity() === false) {
             e.stopPropagation();
         } else {
+            Create('ajustes-stock', formData)
+                .then(() => {
+                    setMessage(`Se ha creado el nuevo ${getSingular(itemName)} con exito`, null)
+                })
+                .catch((error) => {
+                    setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(itemName)}.`, error)
+                })
+                .finally(() => props.setOpen(false));
             console.log("Ajuste de stock realizado");
 
         }
@@ -96,7 +107,7 @@ const StockAdjusment = (props: Props) => {
                             <Form.Control
                                 as="textarea"
                                 rows={3}
-                                name="observacion"
+                                name="observaciones"
                                 required
                                 type="text"
                                 placeholder="Ingrese motivo"
