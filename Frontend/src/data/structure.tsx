@@ -753,7 +753,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Tarea padre",
                 type: "number",
                 col_size: 0.05,
-                required: true,
+                required: false,
                 select : true,
                 enum: false
             },

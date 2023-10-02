@@ -122,6 +122,7 @@ const ModalForm = (props: Props) => {
                                                 <div className="row g-2">
                                                     <SelectList
                                                         fieldName={field.field}
+                                                        required={field.required}
                                                         defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ?
                                                             (props.row[field.field]) : ("")} />
                                                 </div>
