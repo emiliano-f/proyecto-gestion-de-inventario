@@ -21,3 +21,6 @@ __pycache__
 # Archivos
 *.dot
 *.png
+
+# migrations
+Backend/*/migrations/*
