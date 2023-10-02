@@ -1,6 +1,6 @@
 import "./modalForm.scss"
 import { useState } from "react";
-
+import React from "react";
 import { GetUrlParts, UpdateItem as Update, CreateItem as Create } from "../../../Api/apiService"
 import { getSingular } from "../../../data/data";
 import { setMessage } from "../messageDisplay/MessageDisplay";
@@ -8,6 +8,8 @@ import { Field } from "../getColumns/GetColumns";
 import Button from 'react-bootstrap/Button'
 import SelectList from "../selectList/SelectList";
 import SelectEnum from "../selecEnum/SelectEnum";
+import { SiBetfair } from 'react-icons/si'
+
 import Form from 'react-bootstrap/Form';
 import StockAdjusment from "../stockAdjustment/StockAdjustment";
 
@@ -132,7 +134,7 @@ const ModalForm = (props: Props) => {
                                                     className="col"
                                                     name={field.field}
                                                     required={field.required}
-                                                    type={field.type}
+                                                    
                                                     placeholder={`Ingrese ${field.headerName}`}
                                                     defaultValue={
                                                         (props.formType === FormType.UPDATE && props.row !== null) ?
@@ -140,7 +142,11 @@ const ModalForm = (props: Props) => {
                                                     readOnly={props.formType === FormType.UPDATE && field.field === "cantidad" && props.slug === "insumos"}
                                                 />
                                                 {props.formType === FormType.UPDATE && field.field === "cantidad" && props.slug === "insumos" &&
-                                                <button type="button" className="button col" onClick={() => { setOpenStockAdj(true)}}><img src="/edit.png" alt="" /></button>
+                                                <div className="col-3">
+                                                            <button type="button" className="btn btn-light col" onClick={() => { setOpenStockAdj(true) }}><SiBetfair /></button>
+                                                </div>
+
+                                                
                                                 }
                                             </div>
                                         )}

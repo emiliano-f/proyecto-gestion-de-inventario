@@ -10,7 +10,7 @@ import {getFullName} from "../../../data/structure";
 const Detail = () => {
     const [row, setRow] = useState(null);
     const { item: itemName, module: moduleName } = GetUrlParts();
-    
+    console.log(itemName);
     ReadItem(setRow, itemName)
     .catch((error) => {
         setMessage(`Ha surgido un error al buscar ${getSingular(itemName)}`,error)
@@ -18,14 +18,11 @@ const Detail = () => {
     
     return (
         <div className="detail">    
-            <div className="detailBotton">
-                <Link to={`/${moduleName}/${itemName}`} >
-                    <button className="btn light">X</button>
-                </Link>
-            </div>       
+                
             <div className="card custom-card mb-3">
                 <div className="card-header">
-                    {row && <h2>{row.nombre}</h2>}
+                    {row && <h2>{row["nombre"] ? row["nombre"] : `${getSingular(itemName)} ${row["id"]}`}</h2>}
+                    
                 </div>
                 <div className="card-body">
                     {row 

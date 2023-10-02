@@ -1,32 +1,23 @@
 @import "../../../styles/variables.scss";
 
 .detail{
-    display:flex;
-    
-    .detailBotton{
-        display: none;
-        margin-left: 92%;
-        height: min-content;
-        .btn{
-            color: white;
-            font-size: 15px;
-        }
-    }
+    display: flex;
 
     .custom-card {
-        display: flex; 
+        
         margin-right: 20px;
         border: none;
         background-color:$main-bg;
         color:white;
+        flex: 1;
 
         .card-header {
             background-color: #03030323;   
         }
 
         .card-body {  
-                    
             .row {
+                display: flex;
                 margin-left: 5px;
                 font-size: large;
                 .title {
