@@ -110,14 +110,10 @@ const ModalForm = (props: Props) => {
                                         {field.select ? (
                                             field.enum ? (
                                                 <div className="row g-2">
-                                                    <Form.Select
-                                                        name="unidadMedida"
-                                                        className="form-select"
-                                                        defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (props.row["unidadMedida"]) : ("")}
-                                                        required>
-                                                        <option value="" disabled>Elegir unidad de medida</option>
-                                                        {mesureUnits.map(unidad => (<option value={unidad} key={unidad}>{unidad}</option>))}
-                                                    </Form.Select>
+                                                    <SelectEnum
+                                                        field = {filed}
+
+                                                    />
                                                 </div>
                                             ) : (
                                                 <div className="row g-2">
