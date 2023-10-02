@@ -127,34 +127,22 @@ const ModalForm = (props: Props) => {
                                                 </div>
                                             )
                                         ) : (
-                                            props.formType === FormType.UPDATE && field.field === "cantidad" && props.slug === "insumos" ?
-                                                (
-                                                    <div className="row g-2">
-                                                        <Form.Control
-                                                            className="col"
-                                                            name={field.field}
-                                                            required={field.required ? true : false}
-                                                            placeholder={`Ingrese ${field.headerName}`}
-                                                            defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (
-                                                                props.row[field.field]) : ("")}
-                                                            readOnly
-                                                        />
-                                                        <button type="button" className="button col" onClick={() => { setOpenStockAdj(true)}}><img src="/edit.png" alt="" /></button>
-                                                    </div>
-                                                ) : (
-                                                    <div className="row g-2">
-                                                        <Form.Control
-                                                            className="col"
-                                                            name={field.field}
-                                                            required={field.required ? true : false}
-                                                            type={field.type}
-                                                            placeholder={`Ingrese ${field.headerName}`}
-                                                            defaultValue={
-                                                                (props.formType === FormType.UPDATE && props.row !== null) ?
-                                                                (props.row[field.field]) : ("")}
-                                                        />
-                                                    </div>
-                                                )
+                                            <div className="row g-2">
+                                                <Form.Control
+                                                    className="col"
+                                                    name={field.field}
+                                                    required={field.required}
+                                                    type={field.type}
+                                                    placeholder={`Ingrese ${field.headerName}`}
+                                                    defaultValue={
+                                                        (props.formType === FormType.UPDATE && props.row !== null) ?
+                                                        (props.row[field.field]) : ("")}
+                                                    readOnly={props.formType === FormType.UPDATE && field.field === "cantidad" && props.slug === "insumos"}
+                                                />
+                                                {props.formType === FormType.UPDATE && field.field === "cantidad" && props.slug === "insumos" &&
+                                                <button type="button" className="button col" onClick={() => { setOpenStockAdj(true)}}><img src="/edit.png" alt="" /></button>
+                                                }
+                                            </div>
                                         )}
                                         {field.required ?
                                             <Form.Control.Feedback type="invalid">
