@@ -38,3 +38,6 @@ class AjusteStockSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.AjusteStock
         fields = '__all__'
+
+class AjusteStockJoinedSerializer(AjusteStockSerializer):
+    insumo = serializers.CharField(source='insumo.nombre')
