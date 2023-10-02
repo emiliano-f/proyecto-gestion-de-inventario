@@ -8,6 +8,7 @@ type Props = {
     required: boolean,
     defaultValue: string | undefined
 }
+
 /**
  * Componente select que retorna listado desplegable con los valores de un atributo.
  * @param props props.fieldName es el nombre de la columna de interés
@@ -33,7 +34,7 @@ const SelectList = (props:Props) => {
         fetchData();
         
     }, [itemName]);
-
+    
     useEffect(() => {
         if (props.defaultValue !== "") {
             const object = list.find(field => field.nombre === props.defaultValue);
@@ -51,14 +52,7 @@ const SelectList = (props:Props) => {
             onChange={(e) => setSelectedValue(Number(e.target.value))}
             required={props.required}>
             <option defaultValue={selectedValue} value="" disabled>Elegir {getSingular(itemName)}</option>
-            {list.map(vclassName="form-select"
-            value={selectedValue}
-            onChange={(e) => setSelectedValue(Number(e.target.value))}
-            required={props.required}>
-            <option defaultValue={selectedValue} value="" disabled>Elegir {getSingular(itemName)}</option>
             {list.map(value => (
-                <option value={value.id} key={value.id}>{value.nombre}</option>
-            ))}alue => (
                 <option value={value.id} key={value.id}>{value.nombre}</option>
             ))}
         </Form.Select>

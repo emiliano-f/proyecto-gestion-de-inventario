@@ -42,7 +42,7 @@ const names : Array<string> = getNames();
  */
 export function getUri(fieldName:string): string {
     var name;
-    console.log(fieldName)
+    //console.log(fieldName)
     switch(fieldName) {
         case "insumo":{
             name = "insumos";

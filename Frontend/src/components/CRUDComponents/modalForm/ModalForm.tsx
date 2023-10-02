@@ -7,7 +7,7 @@ import { setMessage } from "../messageDisplay/MessageDisplay";
 import { Field } from "../getColumns/GetColumns";
 import Button from 'react-bootstrap/Button'
 import SelectList from "../selectList/SelectList";
-import SelectEnum from "../selectEnum/SelectEnum";
+import SelectEnum from "../selecEnum/SelectEnum";
 import Form from 'react-bootstrap/Form';
 import StockAdjusment from "../stockAdjustment/StockAdjustment";
 
@@ -111,8 +111,10 @@ const ModalForm = (props: Props) => {
                                             field.enum ? (
                                                 <div className="row g-2">
                                                     <SelectEnum
-                                                        field = {filed}
-
+                                                         fieldName={field.field}
+                                                         required={field.required}
+                                                         defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ?
+                                                            (props.row[field.field]) : ("")}
                                                     />
                                                 </div>
                                             ) : (

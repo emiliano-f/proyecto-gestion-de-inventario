@@ -55,7 +55,6 @@ export function CreateItem(itemName: string, formData: FormData) : Promise<Axios
             .then((response) => resolve(response))
             .catch((error) => reject(error));
         }
-        
         createData(itemName, formData);
     })
 }
@@ -96,16 +95,14 @@ export function SendServiceRequest(formData: FormData) : Promise<AxiosResponse<a
 
 export function GetEnums(setEnum:any) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
-        useEffect(() => {
             async function loadItem(){
                 await inventarioAPI.get("table-enums/")
                 .then((response) => {
-                    setEnum(JASON.parse(response.data))
+                    setEnum(response.data)
                     resolve(response)
                 })
                 .catch((error) => reject(error));
             }
             loadItem()
-        }, [setEnum]);
-    })
+        });
 }

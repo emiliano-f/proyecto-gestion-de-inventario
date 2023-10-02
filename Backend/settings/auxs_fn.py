@@ -45,17 +45,17 @@ def enums_models(request):
     
     apps_names = ["inventario", "compra", "usuario", "tarea", "herramienta"]
     enums = {
-            'insumo': {
+            'insumos': {
                 'unidadMedida': ['metro', 'litro', 'gramo', 'contable'],
                 'estado': ['OK', 'Eliminado', 'Suspendido']
                 },
-            'ajustestock': {
+            'ajustes-stock': {
                 'accionCantidad': ['+', '-']
                 },
-            'herramienta': {
+            'herramientas': {
                 'estado': ['OK', 'En reparación', 'Mal estado']
             },
-            'estadoherramienta': {
+            'estados-herramienta': {
                 'estado': ['OK', 'En reparación', 'Mal estado']
                 },
             'empleado': {
@@ -70,9 +70,16 @@ def enums_models(request):
                     'satisfaccion': ['EXCELENTE', 'BUENO', 'DEFICIENTE', 'MALO', 'INDEFINIDO'],
                     'tiempoRespuesta': ['EXCELENTE', 'BUENO', 'DEFICIENTE', 'MALO', 'INDEFINIDO'],
                 },
-            'tarea': {
+            'tareas': {
                 'tipo': ['INDEFINIDO']
-                }
+                },
+            'ordenes-servicio':{
+                'estado':['ACEPTADA','NO ACEPTADA','EN REVISIÓN'],
+                'categoria':['FABRICACIÓN','MOVIMIENTO DE MATERIALES / TRASLADOS','MODIFICACIÓN/ADECUACIÓN']
+            },
+            'presupuesto':{
+                'aprobado': ['Si','No']
+            }
     }
     """
      enums = {'inventario': {
