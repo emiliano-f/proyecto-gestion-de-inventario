@@ -41,18 +41,61 @@ const names : Array<string> = getNames();
  * @returns 
  */
 export function getUri(fieldName:string): string {
+    var name;
+    //console.log(fieldName)
     switch(fieldName) {
-        case "tipoInsumo":
-            return "tipos-insumo";
+        case "insumo":{
+            name = "insumos";
             break;
-        case "tipoHerramienta":
-            return "tipos-herramienta";
+        }case "tipoInsumo":{
+            name = "tipos-insumo";
             break;
-            
+        }case "herramienta":{
+            name = "herramientas";
+            break;
+        }case "tipoHerramienta":{
+            name = "tipos-herramienta";
+            break;
+        }case "ordenRetiro":{
+            name = "ordenes-retiro";
+            break;
+        }case "ajusteStock":{
+            name = "ajustes-stock";
+            break;
+        }case "estadoHerramienta":{
+            name = "estados-herramienta";
+            break;
+        }case "pedidoInsumo":{
+            name = "pedidos-insumo";
+            break;
+        }case "presupuesto":{
+            name = "presupuesto";
+            break;
+        }case "detallePedido":{
+            name = "detalle-pedidos";
+            break;
+        }case "usuario":{
+            name = "usuarios";
+            break;
+        }case "tarea":{
+            name = "tareas";
+            break;
+        }case "empleado":{
+            name = "empleados";
+            break;
+        }case "ordenServicio":{
+            name = "ordenes-servicio";
+            break;
+        }case "encuestaSatisfaccion":
+            name = "encuestas-satisfaccion";
+            break;
+        case "supTarea":
+            name = "tarea";
+            break;    
         default:
             throw new Error(`El campo ${fieldName} no tiene uri asignada`);
-
     }
+    return name;
 }
 
 //=======================SIDEBAR VARIABLES=================================//
@@ -178,24 +221,18 @@ function buildModulesSection() {
  * lateral izquierdo de la vista Dashboard.
  */
 export const SECTIONS = [
-    /*{
+    {
         id: 1,
         title: "Principal",
         modules: [
             {
                 id: 1,
-                title: "Home",
+                title: "Resumen",
                 url: "/",
-                icon: "/home.svg",
-            },
-            {
-                id: 2,
-                title: "Perfil",
-                url: "/users/1",
-                icon: "/usuario.svg",
+                icon: "/chart.svg",
             },
         ],
-    },*/
+    },
     buildModulesSection(),
     /*{
         id: 4,
@@ -204,18 +241,18 @@ export const SECTIONS = [
             {
                 id: 1,
                 title: "Opciones",
-                url: "/",
+                url: "/opciones",
                 icon: "/setting.svg",
             },
             {
                 id: 2,
                 title: "Backups",
-                url: "/",
+                url: "/",/home.svg
                 icon: "/backup.svg",
-            },
+            }
         ],
-    },
-    {
+    },*/
+    /*{
         id: 5,
         title: "Analíticas",
         modules: [

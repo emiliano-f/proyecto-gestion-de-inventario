@@ -44,7 +44,45 @@ def enabled_methods(request):
 def enums_models(request):
     
     apps_names = ["inventario", "compra", "usuario", "tarea", "herramienta"]
-    enums = {'inventario': {
+    enums = {
+            'insumos': {
+                'unidadMedida': ['metro', 'litro', 'gramo', 'contable'],
+                'estado': ['OK', 'Eliminado', 'Suspendido']
+                },
+            'ajustes-stock': {
+                'accionCantidad': ['+', '-']
+                },
+            'herramientas': {
+                'estado': ['OK', 'En reparación', 'Mal estado']
+            },
+            'estados-herramienta': {
+                'estado': ['OK', 'En reparación', 'Mal estado']
+                },
+            'empleados': {
+                'categoria': ['EJ1', 'EJ2'] 
+                },
+            'ordenservicio': {
+                'prioridad': ['URGENTE', 'NORMAL'],
+                'categoria': ['INDEFINIDO'],
+                'estado': ['EN_ESPERA', 'FINALIZADA', 'EN_PROGRESO']
+                },
+            'encuestasatisfaccion': {
+                    'satisfaccion': ['EXCELENTE', 'BUENO', 'DEFICIENTE', 'MALO', 'INDEFINIDO'],
+                    'tiempoRespuesta': ['EXCELENTE', 'BUENO', 'DEFICIENTE', 'MALO', 'INDEFINIDO'],
+                },
+            'tareas': {
+                'tipo': ['INDEFINIDO']
+                },
+            'ordenes-servicio':{
+                'estado':['ACEPTADA','NO ACEPTADA','EN REVISIÓN'],
+                'categoria':['FABRICACIÓN','MOVIMIENTO DE MATERIALES / TRASLADOS','MODIFICACIÓN/ADECUACIÓN']
+            },
+            'presupuesto':{
+                'aprobado': ['Si','No']
+            }
+    }
+    """
+     enums = {'inventario': {
                 'insumo': {
                     'unidadMedida': ['metro', 'litro', 'gramo', 'contable'],
                     'estado': ['OK', 'Eliminado', 'Suspendido']
@@ -79,4 +117,6 @@ def enums_models(request):
                     }
                  }
              }
+    """
+   
     return JsonResponse(enums)

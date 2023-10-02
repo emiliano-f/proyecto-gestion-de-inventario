@@ -1,6 +1,7 @@
 @import "../../../styles/variables.scss";
 
-.modal-background {
+
+.modal-background2 {
     z-index: 9999;
     width: 100vw;
     height: 100vh;
@@ -12,25 +13,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    .modal-front {
-        min-width: 40vh;
-        max-width: 70vh !important;
-        max-height: 100vh;
-        overflow-y: auto;     
+    backdrop-filter: blur(3px);
+
+    .modal-front2 {
+        height:fit-content;
+        max-height: 90vh;
+        overflow-y: auto;
         padding: 40px 60px;
         border-radius: 10px;
         background-color: $main-bg;
         position: relative;
         
-        p{
+
+        p {
             text-align: center;
         }
 
         h1 {
             margin-bottom: 40px;
             color: $soft-color;
-            //font-size: 4dvw;
+
         }
 
         .close {
@@ -38,28 +40,26 @@
             top: 10px;
             right: 10px;
             cursor: pointer;
-            
+
         }
 
         form {
-            display: flex;
+            
             flex-wrap: wrap;
+            max-width: 50vw;
             
             justify-content: space-between;
 
             .form-group {
-                width: 48%;
-                display: flex;
-                flex-direction: column;
+                                
                 gap: 2px;
                 margin-bottom: 20px;
 
                 label {
-                    font-size: 14px;
+                    font-style: 14px;
                 }
 
                 input {
-                    margin-right: null;
                     padding: 10px;
                     //background-color: transparent;
                     // color: white;

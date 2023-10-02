@@ -23,10 +23,10 @@ export default function ServiceForm(){
         formData.append("usuario",user.user_id.toString())
         SendServiceRequest(formData)
         .then(() => {
-            setMessage(`Se ha enviado el formulario con éxito`,false)
+            setMessage(`Se ha enviado el formulario con éxito`,null)
         })
         .catch((error) => {
-            setMessage(`Ha surgido un error al enviar el formulario`,true)
+            setMessage(`Ha surgido un error al enviar el formulario`,error)
         })
     };
 

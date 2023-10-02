@@ -1,16 +1,15 @@
 import { RouteObject, createBrowserRouter, redirect } from "react-router-dom";
 
 import Login from "../pages/login/Login";
-import Home from "../pages/home/Home";
+import MainResume from "../pages/mainResume/MainResume";
 import Dashboard from "../pages/dashboard/Dashboard";
 import ServiceForm from "../pages/serviceform/ServiceForm"
 
 import List from "../components/CRUDComponents/list/List"
-import Detail from "../components/CRUDComponents/detail/Detail"
-import Form from "../components/CRUDComponents/modalForm/ModalForm.tsx"
-import Delete from "../components/CRUDComponents/delete/Delete"
 
 import {SECTIONS} from "../data/data.tsx";
+import Detail from "../components/CRUDComponents/detail/Detail.tsx";
+import NotFound from "../pages/notFound/NotFound.tsx";
 
 /**
  * Genera a partir de los elementos del menu lateral las url's correspondientes
@@ -33,16 +32,8 @@ function generateRoutes(){
               element: <List/>,
             },
             {
-              path: table.url+"/detail/:id/",
+              path: table.url + "/detail/:id/",
               element: <Detail/>
-            },
-            {
-              path: table.url+"/modify/:id/",
-              element: <Form/>,
-            },
-            {
-              path: table.url+"/delete/:id/",
-              element: <Delete/>,
             }
           ]);
         })
@@ -59,7 +50,7 @@ const routes = [
       {
         index:true,
         path: "/",
-        element: <Home />
+        element: <MainResume />
       }
     ])
   },
@@ -78,6 +69,10 @@ const routes = [
   {
     path: "/orden-servicio/generate",
     element: <ServiceForm />
+  },
+  {
+    path: "*",
+    element: <NotFound />
   }
 ];
 
