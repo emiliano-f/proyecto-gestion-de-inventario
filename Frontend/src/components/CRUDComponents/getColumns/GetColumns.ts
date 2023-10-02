@@ -5,11 +5,14 @@ export function GetColumns(moduleName: string, itemName: String): GridColDef[] {
     return Object.entries(STRUCTURE[moduleName][itemName])
         .filter(([key, attribute]) => attribute.show === true)
         .map(([key, attribute]) => {
+            var getter =  attribute.type === "date" ? 
+            params => {console.log(params.value);return new Date(params.value)} : null
             return {
                 field: key,
                 headerName: attribute.name,
                 type: attribute.type,
-                flex: attribute.col_size
+                flex: attribute.col_size,
+                valueGetter: getter
             };
         });
 }
@@ -22,6 +25,7 @@ export type Field = {
     type: string,
     required: boolean,
     editable : boolean,
+    select: boolean,
     enum: boolean;
 }
 
@@ -34,6 +38,7 @@ export function GetFields(moduleName: string, itemName: String): Field[] {
                 type: attribute.type,
                 required: attribute.required,
                 editable: attribute.editable,
+                select: attribute.select,
                 enum: attribute.enum
             };
         });

@@ -5,6 +5,7 @@ import { getUri, getSingular} from '../../../data/data';
 
 type Props = {
     fieldName: string,
+    required: boolean,
     defaultValue: string | undefined
 }
 /**
@@ -41,16 +42,13 @@ const SelectList = (props:Props) => {
         }
     },[list])
 
-    /*
-    
-    */
     return ( 
         <Form.Select
             name={props.fieldName}
             className="form-select"
             value={selectedValue}
             onChange={(e) => setSelectedValue(Number(e.target.value))}
-            required>
+            required={props.required}>
             <option defaultValue={selectedValue} value="" disabled>Elegir {getSingular(itemName)}</option>
             {list.map(value => (
                 <option value={value.id} key={value.id}>{value.nombre}</option>

@@ -49,9 +49,7 @@ const List = () => {
             <div className="item">
                 <div className="info">
                     <h1>{getPlural(itemName)}</h1>
-                    {ACTIONS[itemName].create &&
-                        <button className="btn btn-primary" onClick={() => setOpenAdd(true)}>Agregar {getSingular(itemName)}</button>
-                    }
+                    {(ACTIONS[itemName].add) && <button className="btn btn-primary" onClick={() => setOpenAdd(true)}>Agregar {getSingular(itemName)}</button>}
                 </div>
 
                 <DataTable slug={itemName} columns={columns} rows={items} setOpenUpdate={setOpenUpdate} setOpenRead={setOpenRead} setOpenDelete={setOpenDelete} setRow={setRow} />
