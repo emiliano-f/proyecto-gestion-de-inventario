@@ -6,7 +6,7 @@ export function GetColumns(moduleName: string, itemName: String): GridColDef[] {
         .filter(([key, attribute]) => attribute.show === true)
         .map(([key, attribute]) => {
             var getter =  attribute.type === "date" ? 
-            params => {console.log(params.value);return new Date(params.value)} : null
+            params => {return new Date(params.value)} : null
             return {
                 field: key,
                 headerName: attribute.name,

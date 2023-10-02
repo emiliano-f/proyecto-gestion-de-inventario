@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import get_models
+from . import auxs_fn
 from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
@@ -25,7 +25,9 @@ urlpatterns = [
     path('compra/', include('compra.urls')),
     path('tarea/', include('tarea.urls')),
     path('usuario/', include('usuario.urls')),
-    path('models_info/', get_models.get_models, name='models_info'),
+    path('models-info/', auxs_fn.get_models, name='models-info'),
+    path('enabled-methods/', auxs_fn.enabled_methods, name='enabled-methods'),
+    path('table-enums/', auxs_fn.enums_models, name='table-enums'),
     path('docs/', include_docs_urls(title='API docs')),
     path('auth/', include('django.contrib.auth.urls')),
 ]

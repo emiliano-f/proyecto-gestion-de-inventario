@@ -8,6 +8,7 @@ type Props = {
     required: boolean,
     defaultValue: string | undefined
 }
+
 /**
  * Componente select que retorna listado desplegable con los valores de un atributo.
  * @param props props.fieldName es el nombre de la columna de interés
@@ -33,6 +34,7 @@ const SelectList = (props:Props) => {
         fetchData();
         
     }, [itemName]);
+    
     useEffect(() => {
         if (props.defaultValue !== "") {
             const object = list.find(field => field.nombre === props.defaultValue);

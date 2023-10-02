@@ -7,6 +7,7 @@ import { setMessage } from "../messageDisplay/MessageDisplay";
 import { Field } from "../getColumns/GetColumns";
 import Button from 'react-bootstrap/Button'
 import SelectList from "../selectList/SelectList";
+import SelectEnum from "../selecEnum/SelectEnum";
 import { SiBetfair } from 'react-icons/si'
 
 import Form from 'react-bootstrap/Form';
@@ -111,14 +112,12 @@ const ModalForm = (props: Props) => {
                                         {field.select ? (
                                             field.enum ? (
                                                 <div className="row g-2">
-                                                    <Form.Select
-                                                        name="unidadMedida"
-                                                        className="form-select"
-                                                        defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ? (props.row["unidadMedida"]) : ("")}
-                                                        required>
-                                                        <option value="" disabled>Elegir unidad de medida</option>
-                                                        {mesureUnits.map(unidad => (<option value={unidad} key={unidad}>{unidad}</option>))}
-                                                    </Form.Select>
+                                                    <SelectEnum
+                                                         fieldName={field.field}
+                                                         required={field.required}
+                                                         defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ?
+                                                            (props.row[field.field]) : ("")}
+                                                    />
                                                 </div>
                                             ) : (
                                                 <div className="row g-2">
