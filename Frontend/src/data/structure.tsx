@@ -349,7 +349,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "ordenes-retiro": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -401,7 +401,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "ajustes-stock": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -463,7 +463,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "estados-herramienta": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -507,7 +507,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Observaciones",
                 type: "string",
                 col_size: 0.05,
-                required: true,
+                required: false,
                 select : false,
                 enum: false
             },
@@ -517,7 +517,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "pedidos-insumo": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -549,7 +549,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "presupuesto": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -611,7 +611,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "detalle-pedidos": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -665,7 +665,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "usuarios": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -739,7 +739,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "tareas": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -811,7 +811,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "empleados": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -883,7 +883,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "ordenes-servicio": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
@@ -992,7 +992,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "encuestas-satisfaccion": {
             "id": {
                 editable: false,
-                show: true,
+                show: false,
                 name: "ID",
                 type: "number",
                 col_size: 0.05,
