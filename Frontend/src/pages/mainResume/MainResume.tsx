@@ -6,14 +6,14 @@ import ChartBox from "../../components/chartComponents/chartBox/ChartBox"
 import BarChartBox from "../../components/chartComponents/barChartBox/BarChartBox"
 import { PieChartBox } from "../../components/chartComponents/pieChartBox/PieChartBox"
 import { BigChartBox } from "../../components/chartComponents/bigChartBox/BigChartBox"
-import { barChartBoxRevenue, barChartBoxVisit, chartBoxConversion, chartBoxProduct, chartBoxRevenue, chartBoxUser } from "../../data/resumeData"
+import { chartBoxUser, chartBoxUser2 } from "../../data/resumeData"
 
 function MainResume() {
   return (
     <div className="home">
       <div className="box box1"><TopBox /></div>
       <div className="box box2"><ChartBox {...chartBoxUser} /></div>
-      <div className="box box2"><ChartBox {...chartBoxUser} /></div>
+      <div className="box box2"><ChartBox {...chartBoxUser2} /></div>
       <div className="box box4"><PieChartBox /></div>
       <div className="box box7"><BigChartBox /></div>
     </div>
