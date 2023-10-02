@@ -18,6 +18,7 @@ const List = () => {
     const [openUpdate, setOpenUpdate] = useState(false);
     const [openRead, setOpenRead] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
+    const [openStockAdj, setOpenStockAdj] = useState(false);
     
     const [row, setRow]: [Record<string, any>, any] = useState([]);
 
