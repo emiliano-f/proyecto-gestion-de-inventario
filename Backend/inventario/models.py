@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class TipoInsumo(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=32, unique=True)
-    descripcion = models.CharField(max_length=256, null=True)
+    descripcion = models.CharField(max_length=256, null=True, editable=False)
 
     def __str__(self):
         texto = "{0}"
@@ -59,5 +59,5 @@ class AjusteStock(models.Model):
             ("+", "+"),
             ("-", "-"),
     )
-    accionCantidad = models.CharField(max_length=1, choices=ACCION_CANTIDAD, default='+')
+    accionCantidad = models.CharField(max_length=1, choices=ACCION_CANTIDAD)
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)

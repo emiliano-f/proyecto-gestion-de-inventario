@@ -7,7 +7,7 @@ router = routers.DefaultRouter()
 router.register(r'tipos-insumo', views.TipoInsumoCRUD, 'tipos-insumo')
 #router.register(r'insumos', views.InsumoCRUD, 'insumos')
 router.register(r'ordenes-retiro', views.OrdenRetiroCRUD, 'ordenes-retiro')
-router.register(r'ajustes-stock', views.AjusteStockCRUD, 'ajustes-stock')
+#router.register(r'ajustes-stock', views.AjusteStockCRUD, 'ajustes-stock')
 
 # Herramienta app
 router.register(r'tipos-herramienta', views_herramienta.TipoHerramientaCRUD, 'tipos-herramienta')
@@ -20,5 +20,8 @@ urlpatterns = [
         path('herramientas/', views_herramienta.HerramientaCRUD.as_view({'get':'list', 'post':'create'}), name='herramientas'),
         path('herramientas/<int:pk>/', views_herramienta.HerramientaCRUD.as_view({'get':'retrieve','put':'update','delete':'destroy'}), name='herramientas-id'),
         path('estados-herramienta/', views_herramienta.EstadoHerramientaCRUD.as_view({'get':'list', 'post':'create'}), name='estados-herramienta'),
+        path('estados-herramienta/<int:pk>', views_herramienta.EstadoHerramientaCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='estados-herramienta'),
     path('', include(router.urls)),
+        path('ajustes-stock/', views.AjusteStockCRUD.as_view({'get':'list', 'post':'create'}), name='ajustes-stock'),
+        path('ajustes-stock/<int:pk>', views.AjusteStockCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='ajustes-stock-id'),
 ]

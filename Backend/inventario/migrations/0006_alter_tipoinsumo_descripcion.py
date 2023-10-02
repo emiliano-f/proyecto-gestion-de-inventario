@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tarea', '0004_alter_ordenservicio_comentario_and_more'),
+        ('inventario', '0005_merge_20230930_0226'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='ordenservicio',
-            name='comentario',
-            field=models.CharField(max_length=255, null=True),
+            model_name='tipoinsumo',
+            name='descripcion',
+            field=models.CharField(editable=False, max_length=256, null=True),
         ),
     ]
