@@ -41,10 +41,10 @@ const StockAdjusment = (props: Props) => {
         } else {
             Create('ajustes-stock', formData)
                 .then(() => {
-                    setMessage(`Se ha creado el nuevo ${getSingular(itemName)} con exito`, null)
+                    setMessage(`El ajuste de stock sobre ${props.slug} se ha realizado con exito`, null)
                 })
                 .catch((error) => {
-                    setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(itemName)}.`, error)
+                    setMessage(`Ha surgido un error al realizar el ajuste de stock sobre ${props.slug}.`, error)
                 })
                 .finally(() => props.setOpen(false));
             console.log("Ajuste de stock realizado");
