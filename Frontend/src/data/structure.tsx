@@ -876,8 +876,8 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: 0.05,
                 required: true,
-                select : false,
-                enum: false
+                select : true,
+                enum: true
             },
         },
         "ordenes-servicio": {
@@ -907,7 +907,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Tarea",
                 type: "number",
                 col_size: 0.05,
-                required: true,
+                required: false,
                 select : true,
                 enum: false
             },
@@ -972,7 +972,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             "comentario":{
                 editable: true,
                 show:false,
-                name:"Descripción",
+                name:"Comentario",
                 type:"string",
                 col_size:0.2,
                 required:false,

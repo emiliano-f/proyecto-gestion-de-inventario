@@ -58,7 +58,7 @@ def enums_models(request):
             'estados-herramienta': {
                 'estado': ['OK', 'En reparación', 'Mal estado']
                 },
-            'empleado': {
+            'empleados': {
                 'categoria': ['EJ1', 'EJ2'] 
                 },
             'ordenservicio': {
