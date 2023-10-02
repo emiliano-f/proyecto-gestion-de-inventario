@@ -41,7 +41,6 @@ const SelectList = (props:Props) => {
         }
     },[list])
 
-
     /*
     
     */

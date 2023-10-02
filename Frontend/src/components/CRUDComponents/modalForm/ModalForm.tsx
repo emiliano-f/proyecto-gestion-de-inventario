@@ -55,6 +55,7 @@ const ModalForm = (props: Props) => {
     }
 
     const createItem = (item: string, formData: FormData) => {
+        console.log(formData);
         Create(item, formData)
             .then(() => {
                 setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`,null)
@@ -116,7 +117,6 @@ const ModalForm = (props: Props) => {
                                                     required>
                                                     <option
                                                         value=""
-
                                                         disabled>
                                                         Elegir unidad de medida
                                                     </option>
