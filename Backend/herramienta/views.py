@@ -13,7 +13,14 @@ class TipoHerramientaCRUD(CustomModelViewSet):
     serializer_class = serializer.TipoHerramientaSerializer
     queryset = models.TipoHerramienta.objects.all()
 
+    def __table__():
+        return 'tipoherramienta'
+
 class HerramientaCRUD(viewsets.ViewSet):
+
+    def __table__():
+        return 'herramienta'
+
     def list(self, request):
         # join
         herramienta = models.Herramienta.objects \
@@ -53,6 +60,10 @@ class HerramientaCRUD(viewsets.ViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class EstadoHerramientaCRUD(viewsets.ViewSet):
+
+    def __table__():
+        return 'estadoherramienta'
+
     def list(self, request):
         # join
         estado_herramienta = models.EstadoHerramienta.objects.all()

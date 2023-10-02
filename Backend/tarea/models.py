@@ -58,13 +58,13 @@ class OrdenServicio(models.Model):
     
 class EncuestaSatisfaccion(models.Model):
     class EscalaSatisfaccion(models.TextChoices):
-        EXELENTE = "EXT"
+        EXCELENTE = "EXT"
         BUENO = "BNO"
         DEFICIENTE = "DFI"
         MALO = "MLO"
         INDEFINIDO = "IND"
     class TiempoRespuesta(models.TextChoices):
-        EXELENTE = "EXT"
+        EXCELENTE = "EXT"
         BUENO = "BNO"
         DEFICIENTE = "DFI"
         MALO = "MLO"
