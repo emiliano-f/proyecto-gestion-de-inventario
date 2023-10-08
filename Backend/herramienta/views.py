@@ -16,8 +16,8 @@ class TipoHerramientaCRUD(CustomModelViewSet):
 class HerramientaCRUD(viewsets.ViewSet):
     def list(self, request):
         # join
+                        #.filter(estado='OK') \
         herramienta = models.Herramienta.objects \
-                        .filter(estado='OK') \
                         .prefetch_related('tipoHerramienta').all()
         # serializer
         serializer_class = serializer.HerramientaJoinedSerializer(herramienta, many=True)

@@ -134,7 +134,7 @@ const ModalForm = (props: Props) => {
                                                     className="col"
                                                     name={field.field}
                                                     required={field.required}
-                                                    
+                                                    type={field.type}
                                                     placeholder={`Ingrese ${field.headerName}`}
                                                     defaultValue={
                                                         (props.formType === FormType.UPDATE && props.row !== null) ?
