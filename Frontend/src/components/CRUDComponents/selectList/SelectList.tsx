@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { ListItems } from '../../../Api/apiService';
 import { getUri, getSingular} from '../../../data/data';
+import { setMessage } from '../messageDisplay/MessageDisplay';
 
 type Props = {
     fieldName: string,
@@ -29,7 +30,8 @@ const SelectList = (props:Props) => {
     
     useEffect(() => {
         const fetchData = async () => {
-            await ListItems(setList, itemName); 
+            await ListItems(setList, itemName)
+            .catch((error) => {setMessage("Se ha producido un error al crear el campo select",error)}) 
         };
         fetchData();
         

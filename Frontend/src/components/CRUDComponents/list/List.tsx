@@ -42,7 +42,7 @@ const List = () => {
 
     const columns: GridColDef[] = GetColumns(moduleName, itemName);
     const fields: Field[] = GetFields(moduleName, itemName);
-    
+    console.log(items)
     return (
         <>
             <MessageDisplay {...ErrorState}/>

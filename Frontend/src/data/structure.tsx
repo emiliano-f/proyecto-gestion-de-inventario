@@ -52,7 +52,7 @@ export const ACTIONS: Record<string, any> ={
         detail: false,
         stockAdj: false,
         update: false,
-        delete: false,
+        delete: true,
     },
     "estados-herramienta": {
         add: true,
@@ -893,9 +893,9 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "usuario": {
                 editable: true,
-                show: true,
+                show: false,
                 name: "Usuario",
-                type: "number",
+                type: "string",
                 col_size: 0.05,
                 required: true,
                 select : true,
@@ -930,7 +930,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 required:true,
                 enum:false
             },
-            "descripción":{
+            "descripcion":{
                 editable: true,
                 show:true,
                 name:"Descripción",
