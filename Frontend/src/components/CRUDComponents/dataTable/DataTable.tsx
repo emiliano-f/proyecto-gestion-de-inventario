@@ -16,18 +16,22 @@ type Props = {
 
 export const DataTable = (props: Props) => {
     const containerRef = useRef(null);
-
+    
     const actionColumn: GridColDef = {
         field: "action",
-        headerAlign: 'center',
-        headerName: "Action",
-        minWidth: 150,
-        flex:1,
-        align: 'right',
+        headerName: "Acciones ",
+        width: 150,
         renderCell: (params) => {
             return (
                 <div className="action">
-                    {ACTIONS[props.slug].detail && 
+                    {
+                        props.slug === "ordenes-servicio" &&
+                        <Link to={`crear-tarea/`}>
+                            <button className="button"><img src="/read.png" alt="" /></button>
+                        </Link>
+                    }
+                    {
+                        ACTIONS[props.slug].detail && 
                         <Link to={`detail/${params.row.id}/`}>
                             <button className="button"><img src="/read.png" alt="" /></button>
                         </Link>

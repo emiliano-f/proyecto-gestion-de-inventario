@@ -25,8 +25,7 @@ const List = () => {
 
     const changeRef = useRef(false);
 
-    const switchChange = () => { 
-        
+    const switchChange = () => {
         changeRef.current = !changeRef.current;
     }
 
