@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { GetEnums, GetUrlParts } from '../../../Api/apiService';
-import { getUri, getSingular} from '../../../data/data';
-
 
 type Props = {
     fieldName: string,
-    row: any[],
     required: boolean,
     defaultValue: string | undefined
 }
@@ -19,7 +16,6 @@ type Props = {
 const SelectEnum = (props:Props) => {
     
     const [enums, setEnum] = useState("");
-    
     const {item : itemName} =  GetUrlParts()
 
     useEffect(() => {

@@ -24,8 +24,6 @@ const SelectList = (props:Props) => {
     }
     
     const [list, setList] = useState<Item[]>([]);
-    const [selectedValue, setSelectedValue] = useState<number | string>("");
-
     const itemName = getUri(props.fieldName);
     
     useEffect(() => {
@@ -34,28 +32,24 @@ const SelectList = (props:Props) => {
             .catch((error) => {setMessage("Se ha producido un error al crear el campo select",error)}) 
         };
         fetchData();
-        
     }, [itemName]);
-    
-    useEffect(() => {
-        if (props.defaultValue !== "") {
-            const object = list.find(field => field.nombre === props.defaultValue);
-            if (object) {
-                setSelectedValue(object.id);
-            }
-        }
-    },[list])
 
     return ( 
         <Form.Select
             name={props.fieldName}
             className="form-select"
-            value={selectedValue}
-            onChange={(e) => setSelectedValue(Number(e.target.value))}
+            defaultValue={props.defaultValue}
             required={props.required}>
-            <option defaultValue={selectedValue} value="" disabled>Elegir {getSingular(itemName)}</option>
+            <option value="" disabled>Elegir {getSingular(itemName)}</option>
             {list.map(value => (
+                value.nombre!?
+                value.nombre === props.defaultValue ?
+                <option value={value.id} key={value.id} selected>{value.nombre}</option> :
                 <option value={value.id} key={value.id}>{value.nombre}</option>
+                :
+                String(value.id) === props.defaultValue ?
+                <option value={value.id} key={value.id} selected>{value.id}</option> :
+                <option value={value.id} key={value.id}>{value.id}</option>
             ))}
         </Form.Select>
     )
