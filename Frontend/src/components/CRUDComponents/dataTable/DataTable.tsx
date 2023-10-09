@@ -19,8 +19,11 @@ export const DataTable = (props: Props) => {
 
     const actionColumn: GridColDef = {
         field: "action",
+        headerAlign: 'center',
         headerName: "Action",
-        width: 150,
+        minWidth: 150,
+        flex:1,
+        align: 'right',
         renderCell: (params) => {
             return (
                 <div className="action">

@@ -11,7 +11,7 @@ export function GetColumns(moduleName: string, itemName: String): GridColDef[] {
                 field: key,
                 headerName: attribute.name,
                 type: attribute.type,
-                flex: attribute.col_size,
+                width: attribute.col_size,
                 valueGetter: getter
             };
         });
