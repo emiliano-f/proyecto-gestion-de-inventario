@@ -91,7 +91,7 @@ export const ACTIONS: Record<string, any> ={
 
     },
     "tareas": {
-        add: true,
+        add: false,
         detail: true,
         stockAdj: false,
         update: true,
