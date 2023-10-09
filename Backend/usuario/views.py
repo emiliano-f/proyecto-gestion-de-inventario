@@ -9,3 +9,6 @@ class CustomModelViewSet(viewsets.ModelViewSet):
 class UsuarioCRUD(CustomModelViewSet):
     serializer_class = serializer.UsuarioSerializer
     queryset = models.Usuario.objects.all()
+
+    def __table__():
+        return 'usuario'
