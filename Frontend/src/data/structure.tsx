@@ -105,11 +105,11 @@ export const ACTIONS: Record<string, any> ={
         delete: true,
     },
     "ordenes-servicio": {
-        add: true,
-        detail: true,
+        add: false,
+        detail: false,
         stockAdj: false,
-        update: true,
-        delete: true,
+        update: false,
+        delete: false,
     },
     "encuestas-satisfaccion": {
         add: false,
