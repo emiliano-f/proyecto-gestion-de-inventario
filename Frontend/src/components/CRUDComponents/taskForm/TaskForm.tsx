@@ -50,7 +50,7 @@ const TaskForm = () => {
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridNombre">
                                 <Form.Label>Nombre</Form.Label>
-                                <Form.Control disabled type="string" value={row["usuarioNombre"]} />
+                                <Form.Control disabled type="string" value={"Aldo"/*row["usuarioNombre"]*/} />
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridApellido">
