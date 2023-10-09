@@ -11,10 +11,10 @@ class Empleado(models.Model):
     mail = models.EmailField()
 
     class CategoriaScale(models.TextChoices):
-        CATEGORIA1= "EJ1"
-        CATEGORIA2= "EJ2"
+        CATEGORIA1= "CATEGORIA1"
+        CATEGORIA2= "CATEGORIA2"
     
-    categoria = models.CharField(max_length=3,
+    categoria = models.CharField(max_length=15,
                                  choices=CategoriaScale.choices,
                                  default=CategoriaScale.CATEGORIA1,
                                  null=True)
@@ -22,14 +22,14 @@ class Empleado(models.Model):
 class OrdenServicio(models.Model):
 
     class CaracterScale(models.TextChoices):
-        URGENTE = "URG"
-        NORMAL = "NOR"
+        URGENTE = "URGENTE"
+        NORMAL = "NORMAL"
     class CategoriaScale(models.TextChoices):
-        INDEFINIDO = "IND"
+        INDEFINIDO = "INDEFINIDO"
     class StatusScale(models.TextChoices):
-        EN_ESPERA = "ESP"
-        FINALIZADA = "FIN"
-        EN_PROGRESO = "PRO"
+        EN_ESPERA = "EN_ESPERA"
+        FINALIZADA = "FINALIZADA"
+        EN_PROGRESO = "EN_PROGRESO"
 
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)
@@ -41,43 +41,43 @@ class OrdenServicio(models.Model):
     comentario = models.CharField(max_length=255, null=True)
 
     prioridad = models.CharField(
-        max_length=3,
+        max_length=15,
         choices=CaracterScale.choices,
         default=CaracterScale.NORMAL
     )
     categoria = models.CharField(
-        max_length=3,
+        max_length=15,
         choices=CategoriaScale.choices,
         default=CategoriaScale.INDEFINIDO
     )
     estado = models.CharField(
-        max_length = 3,
+        max_length = 15,
         choices= StatusScale.choices,
         default= StatusScale.EN_ESPERA
     )
     
 class EncuestaSatisfaccion(models.Model):
     class SatisfactionScale(models.TextChoices):
-        EXCELENTE = "EXT"
-        BUENO = "BNO"
-        DEFICIENTE = "DFI"
-        MALO = "MLO"
-        INDEFINIDO = "IND"
+        EXCELENTE = "EXCELENTE"
+        BUENO = "BUENO"
+        DEFICIENTE = "DEFICIENTE"
+        MALO = "MALO"
+        INDEFINIDO = "INDEFINIDO"
     class ResponseTimeScale(models.TextChoices):
-        EXCELENTE = "EXT"
-        BUENO = "BNO"
-        DEFICIENTE = "DFI"
-        MALO = "MLO"
-        INDEFINIDO = "IND"
+        EXCELENTE = "EXCELENTE"
+        BUENO = "BUENO"
+        DEFICIENTE = "DEFICIENTE"
+        MALO = "MALO"
+        INDEFINIDO = "INDEFINIDO"
 
     ordenServicio = models.ForeignKey(OrdenServicio, on_delete=models.DO_NOTHING)
     satisfaccion = models.CharField(
-        max_length=3,
+        max_length=15,
         choices=SatisfactionScale.choices,
         default=SatisfactionScale.INDEFINIDO
     )
     tiempoRespuesta = models.CharField(
-        max_length=3,
+        max_length=15,
         choices=ResponseTimeScale.choices,
         default=ResponseTimeScale.INDEFINIDO
     )
@@ -86,14 +86,14 @@ class EncuestaSatisfaccion(models.Model):
 class Tarea(models.Model):
 
     class TypeScale(models.TextChoices):
-        INDEFINIDO = "IND"
+        INDEFINIDO = "INDEFINIDO"
 
     id = models.AutoField(primary_key=True)
     empleado = models.ManyToManyField("tarea.Empleado",blank=False)
     supTarea = models.OneToOneField("tarea.Tarea", verbose_name=("Tarea padre"), on_delete=models.DO_NOTHING, null=True)
     #legajo = models.IntegerField(unique=True)
     tipo = models.CharField(
-        max_length=3,
+        max_length=15,
         choices=TypeScale.choices,
         default=TypeScale.INDEFINIDO
     )
