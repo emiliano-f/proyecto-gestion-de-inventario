@@ -68,7 +68,7 @@ export const ACTIONS: Record<string, any> ={
         update: true,
         delete: true,
     },
-    "presupuesto": {
+    "presupuestos": {
         add: true,
         detail: true,
         stockAdj: false,
@@ -249,110 +249,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             }
         },
-        "herramientas": {
-            "id": {
-                editable: false,
-                show: false,
-                name: "ID",
-                type: "number",
-                col_size: SIZE.TINY,
-                required: true,
-                select : false,
-                enum: false
-            },
-            "nombre": {
-                editable: true,
-                show: true,
-                name: "Nombre",
-                type: "string",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : false,
-                enum: false
-            },
-            "tipoHerramienta": {
-                editable: true,
-                show: true,
-                name: "Tipo de Herramienta",
-                type: "number",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : true,
-                enum: false
-            },
-            "codigo": {
-                editable: true,
-                show: true,
-                name: "Código",
-                type: "string",
-                col_size: SIZE.TINY,
-                required: false,
-                select : false,
-                enum: false
-            },
-            "estado": {
-                editable: true,
-                show: true,
-                name: "Estado",
-                type: "string",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : true,
-                enum: true
-            },
-            "fechaAlta": {
-                editable: false,
-                show: true,
-                name: "Fecha de Creación",
-                type: "date",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : false,
-                enum: false
-            },
-            "observaciones": {
-                editable: true,
-                show: true,
-                name: "Observaciones",
-                type: "string",
-                col_size: SIZE.BIG,
-                required: false,
-                select : false,
-                enum: false
-            },
-        },
-        "tipos-herramienta": {
-            "id": {
-                editable: false,
-                show: false,
-                name: "ID",
-                type: "number",
-                col_size: SIZE.TINY,
-                required: true,
-                select : false,
-                enum: false
-            },
-            "nombre": {
-                editable: true,
-                show: true,
-                name: "Nombre",
-                type: "string",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : false,
-                enum: false
-            },
-            "descripcion": {
-                editable: true,
-                show: true,
-                name: "Descripción",
-                type: "string",
-                col_size: SIZE.BIG,
-                required: false,
-                select : false,
-                enum: false
-            },
-        },
         "ordenes-retiro": {
             "id": {
                 editable: false,
@@ -467,6 +363,110 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
         },
+        "herramientas": {
+            "id": {
+                editable: false,
+                show: false,
+                name: "ID",
+                type: "number",
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,
+                enum: false
+            },
+            "nombre": {
+                editable: true,
+                show: true,
+                name: "Nombre",
+                type: "string",
+                col_size: SIZE.SMALL,
+                required: true,
+                select : false,
+                enum: false
+            },
+            "tipoHerramienta": {
+                editable: true,
+                show: true,
+                name: "Tipo de Herramienta",
+                type: "number",
+                col_size: SIZE.SMALL,
+                required: true,
+                select : true,
+                enum: false
+            },
+            "codigo": {
+                editable: true,
+                show: true,
+                name: "Código",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: false,
+                select : false,
+                enum: false
+            },
+            "estado": {
+                editable: true,
+                show: true,
+                name: "Estado",
+                type: "string",
+                col_size: SIZE.SMALL,
+                required: true,
+                select : true,
+                enum: true
+            },
+            "fechaAlta": {
+                editable: false,
+                show: true,
+                name: "Fecha de Creación",
+                type: "date",
+                col_size: SIZE.SMALL,
+                required: true,
+                select : false,
+                enum: false
+            },
+            "observaciones": {
+                editable: true,
+                show: true,
+                name: "Observaciones",
+                type: "string",
+                col_size: SIZE.BIG,
+                required: false,
+                select : false,
+                enum: false
+            },
+        },
+        "tipos-herramienta": {
+            "id": {
+                editable: false,
+                show: false,
+                name: "ID",
+                type: "number",
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,
+                enum: false
+            },
+            "nombre": {
+                editable: true,
+                show: true,
+                name: "Nombre",
+                type: "string",
+                col_size: SIZE.SMALL,
+                required: true,
+                select : false,
+                enum: false
+            },
+            "descripcion": {
+                editable: true,
+                show: true,
+                name: "Descripción",
+                type: "string",
+                col_size: SIZE.BIG,
+                required: false,
+                select : false,
+                enum: false
+            },
+        },
         "estados-herramienta": {
             "id": {
                 editable: false,
@@ -544,7 +544,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "observaciones": {
                 editable: true,
-                show: true,
+                show: false,
                 name: "Observaciones",
                 type: "string",
                 col_size: SIZE.MEDIUM,
@@ -552,8 +552,59 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
+            //"detalle-pedidos": {
+            "id-detalle-pedidos": {
+                editable: false,
+                show: false,
+                name: "ID",
+                type: "number",
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,
+                enum: false
+            },
+            "pedidoInsumo": {
+                editable: true,
+                show: false,
+                name: "Pedido de Insumo",
+                type: "number",
+                col_size: SIZE.SMALL,
+                required: true,
+                select : true,
+                enum: false
+            },
+            "insumo": {
+                editable: true,
+                show: true,
+                name: "Insumo",
+                type: "number",
+                col_size: SIZE.SMALL,
+                required: true,
+                select : true,
+                enum: false
+            },
+            "cantidad": {
+                editable: true,
+                show: true,
+                name: "Cantidad",
+                type: "number",
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,
+                enum: false
+            },
+            "observacion": {
+                editable: true,
+                show: true,
+                name: "Observacion",
+                type: "string",
+                col_size: SIZE.BIG,
+                required: false,
+                select : false,
+                enum: false
+            },
         },
-        "presupuesto": {
+        "presupuestos": {
             "id": {
                 editable: false,
                 show: false,
@@ -614,58 +665,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : true,
                 enum: false
             },
-        },
-        "detalle-pedidos": {
-            "id": {
-                editable: false,
-                show: false,
-                name: "ID",
-                type: "number",
-                col_size: SIZE.TINY,
-                required: true,
-                select : false,
-                enum: false
-            },
-            "pedidoInsumo": {
-                editable: true,
-                show: true,
-                name: "Pedido de Insumo",
-                type: "number",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : true,
-                enum: false
-            },
-            "insumo": {
-                editable: true,
-                show: true,
-                name: "Insumo",
-                type: "number",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : true,
-                enum: false
-            },
-            "cantidad": {
-                editable: true,
-                show: true,
-                name: "Cantidad",
-                type: "number",
-                col_size: SIZE.TINY,
-                required: true,
-                select : false,
-                enum: false
-            },
-            "observacion": {
-                editable: true,
-                show: false,
-                name: "Observacion",
-                type: "string",
-                col_size: SIZE.SMALL,
-                required: false,
-                select : false,
-                enum: false
-            },
         }
     },
     "usuario": {
@@ -724,7 +723,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: true,
                 name: "Mail",
-                type: "string",
+                type: "email",
                 col_size: SIZE.SMALL,
                 required: true,
                 select : false,
@@ -734,7 +733,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: true,
                 name: "Teléfono",
-                type: "string",
+                type: "tel",
                 col_size: SIZE.SMALL,
                 required: true,
                 select : false,
@@ -778,7 +777,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: false,
                 name: "Descripción",
-                type: "number",
+                type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
                 select : false,
@@ -860,7 +859,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: true,
                 name: "Teléfono",
-                type: "number",
+                type: "tel",
                 col_size: SIZE.SMALL,
                 required: true,
                 select : false,
@@ -870,7 +869,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: true,
                 name: "Mail",
-                type: "number",
+                type: "email",
                 col_size: SIZE.SMALL,
                 required: true,
                 select : false,

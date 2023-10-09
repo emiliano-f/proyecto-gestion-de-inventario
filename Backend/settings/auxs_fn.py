@@ -77,7 +77,7 @@ def enums_models(request):
                 'estado':['ACEPTADA','NO ACEPTADA','EN REVISIÓN'],
                 'categoria':['FABRICACIÓN','MOVIMIENTO DE MATERIALES / TRASLADOS','MODIFICACIÓN/ADECUACIÓN']
             },
-            'presupuesto':{
+            'presupuestos':{
                 'aprobado': ['Si','No']
             }
     }

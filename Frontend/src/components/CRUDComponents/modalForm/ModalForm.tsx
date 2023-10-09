@@ -48,10 +48,10 @@ const ModalForm = (props: Props) => {
         // Comentario jm: sería mejor que la función reciba un int y el casteo lo haga dentro
         Update(item, formData, id.toString())
             .then(() => {
-                setMessage(`Se ha modificado ${getSingular(item)} con éxito`,null)
+                setMessage(`Se ha modificado ${getSingular(item)} con éxito`, null)
             })
             .catch((error) => {
-                setMessage(`Ha surgido un error al modificar ${getSingular(item)}.`,error)
+                setMessage(`Ha surgido un error al modificar ${getSingular(item)}.`, error)
             })
             .finally(() => props.setOpen(false));
     }
@@ -60,10 +60,10 @@ const ModalForm = (props: Props) => {
         console.log(formData);
         Create(item, formData)
             .then(() => {
-                setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`,null)
+                setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`, null)
             })
             .catch((error) => {
-                setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(item)}.`,error)
+                setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(item)}.`, error)
             })
             .finally(() => props.setOpen(false));
     }
@@ -87,7 +87,7 @@ const ModalForm = (props: Props) => {
         }
         setValidated(true);
 
-        
+
     };
     const mesureUnits = [
         "litro",
@@ -95,6 +95,9 @@ const ModalForm = (props: Props) => {
         "gramo",
         "contable"
     ]
+
+    var Tag = SelectEnum;
+    
     return (
         <>
             <div className="modal-background">
@@ -102,62 +105,68 @@ const ModalForm = (props: Props) => {
                     <button className="close btn dark" onClick={() => props.setOpen(false)}>X</button>
                     {props.formType === FormType.ADD && <h1>Crear nuevo {getSingular(props.slug)}</h1>}
                     {props.formType === FormType.UPDATE && <h1>Modificar {getSingular(props.slug)}</h1>}
+
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                        {(props.formType === FormType.ADD || props.formType === FormType.UPDATE) &&
-                            props.fields
-                                .filter(item => item.editable == true)
-                                .map((field, index) => (
-                                    <Form.Group className="form-group" key={index}>
-                                        <Form.Label>{field.headerName}</Form.Label>
+                        {props.fields
+                            .filter(item => item.editable == true)
+                            .map((field, index) => (
+                                <Form.Group className="form-group" key={index}>
+                                    <Form.Label>{field.headerName}</Form.Label>
+                                    <div className="row g-2">
+                                        <>
+                                        {console.log(field.field,":",field.required)}
+                                        </>
                                         {field.select ? (
-                                            field.enum ? (
-                                                <div className="row g-2">
-                                                    <SelectEnum
-                                                         fieldName={field.field}
-                                                         required={field.required}
-                                                         defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ?
-                                                            (props.row[field.field]) : ("")}
-                                                    />
-                                                </div>
-                                            ) : (
-                                                <div className="row g-2">
-                                                    <SelectList
-                                                        fieldName={field.field}
-                                                        required={field.required}
-                                                        defaultValue={(props.formType === FormType.UPDATE && props.row !== null) ?
-                                                            (props.row[field.field]) : ("")} />
-                                                </div>
-                                            )
+                                            <>
+                                                {Tag = field.enum ? SelectEnum : SelectList}
+                                                <Tag
+                                                    fieldName={field.field}
+                                                    required={field.required}
+                                                    defaultValue={
+                                                        (props.formType === FormType.UPDATE && props.row !== null) ?
+                                                            (props.row[field.field]) : ("")
+                                                    }
+                                                />
+                                            </>
                                         ) : (
-                                            <div className="row g-2">
+                                            <>
                                                 <Form.Control
                                                     className="col"
                                                     name={field.field}
                                                     required={field.required}
                                                     type={field.type}
                                                     placeholder={`Ingrese ${field.headerName}`}
+                                                    readOnly={
+                                                        props.formType === FormType.UPDATE &&
+                                                        field.field === "cantidad" &&
+                                                        props.slug === "insumos"
+                                                    }
                                                     defaultValue={
                                                         (props.formType === FormType.UPDATE && props.row !== null) ?
-                                                        (props.row[field.field]) : ("")}
-                                                    readOnly={props.formType === FormType.UPDATE && field.field === "cantidad" && props.slug === "insumos"}
+                                                            (props.row[field.field]) : ("")
+                                                    }
                                                 />
-                                                {props.formType === FormType.UPDATE && field.field === "cantidad" && props.slug === "insumos" &&
-                                                <div className="col-3">
-                                                            <button type="button" className="btn btn-light col" onClick={() => { setOpenStockAdj(true) }}><SiBetfair /></button>
-                                                </div>
-
-                                                
+                                                {
+                                                    props.formType === FormType.UPDATE && field.field === "cantidad" &&
+                                                    props.slug === "insumos" && <div className="col-3">
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-light col"
+                                                            onClick={() => { setOpenStockAdj(true) }}
+                                                        ><SiBetfair /></button>
+                                                    </div>
                                                 }
-                                            </div>
-                                        )}
-                                        {field.required ?
-                                            <Form.Control.Feedback type="invalid">
-                                                Este campo es obligatorio
-                                            </Form.Control.Feedback>
-                                            :
-                                            <Form.Control.Feedback />}
-                                    </Form.Group>
-                                ))
+                                            </>
+                                        )
+                                        }
+                                    </div>
+                                    {field.required ?
+                                        <Form.Control.Feedback type="invalid">
+                                            Este campo es obligatorio
+                                        </Form.Control.Feedback> : <Form.Control.Feedback />
+                                    }
+                                </Form.Group>
+                            ))
                         }
 
                         <Button type="submit" className="mt-3"
@@ -169,14 +178,17 @@ const ModalForm = (props: Props) => {
 
                     </Form>
                 </div>
-                
-
-
             </div>
-            {(openStockAdj && props.row !== null) && <StockAdjusment slug={props.row["nombre"]} setOpen={setOpenStockAdj} id={props.row["id"]} switchChange={props.switchChange} currentValue={props.row["cantidad"]} />}
-            
+            {(openStockAdj && props.row !== null) &&
+                <StockAdjusment
+                    slug={props.row["nombre"]}
+                    setOpen={setOpenStockAdj}
+                    id={props.row["id"]}
+                    switchChange={props.switchChange}
+                    currentValue={props.row["cantidad"]}
+                />
+            }
         </>
-        
     );
 }
 
