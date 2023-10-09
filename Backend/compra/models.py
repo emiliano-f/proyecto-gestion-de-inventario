@@ -9,8 +9,8 @@ class PedidoInsumo(models.Model):
 class Presupuesto(models.Model):
 
     class StatusScale(models.TextChoices):
-        SI = 'si'
-        NO = 'no'
+        SI = 'Si'
+        NO = 'No'
 
     id = models.AutoField(primary_key = True)
     #imagen = models.ImageField(upload_to="images/")

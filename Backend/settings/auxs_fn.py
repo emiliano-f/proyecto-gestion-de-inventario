@@ -89,6 +89,6 @@ def enums_models(request):
 
     tmp = {}
     tmp['aprobado'] = [att for att in dir(com.Presupuesto().StatusScale) if not isMethod(att) and att.isupper()]
-    enums['presupuesto'] = tmp
+    enums['presupuestos'] = tmp
 
     return JsonResponse(enums)
