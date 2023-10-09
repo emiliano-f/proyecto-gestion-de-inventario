@@ -1,16 +1,5 @@
 //======================ENUMS==================================//
 
-/**
- * Unidades de Medida
- */
-const mesureUnits: Record<string, string> = {
-    L: "litro",
-    MT: "metro",
-    G: "gramo",
-    CONT: "contable"
-}
-
-
 export const ACTIONS: Record<string, any> ={
     "insumos": {
         add: true,
@@ -91,7 +80,7 @@ export const ACTIONS: Record<string, any> ={
 
     },
     "tareas": {
-        add: true,
+        add: false,
         detail: true,
         stockAdj: false,
         update: true,
