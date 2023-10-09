@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import {ACTIONS} from "../../../data/structure.tsx"
+import { BsPlusCircle } from "react-icons/bs";
 
 type Props = {
     slug: string;
@@ -26,8 +27,8 @@ export const DataTable = (props: Props) => {
                 <div className="action">
                     {
                         props.slug === "ordenes-servicio" &&
-                        <Link to={`crear-tarea/`}>
-                            <button className="button"><img src="/read.png" alt="" /></button>
+                        <Link to={`/tarea/crear-tarea/${params.row.id}/`}>
+                                <button className="button"><BsPlusCircle /></button>
                         </Link>
                     }
                     {
