@@ -63,6 +63,7 @@ class EncuestaSatisfaccion(models.Model):
         DEFICIENTE = "DFI"
         MALO = "MLO"
         INDEFINIDO = "IND"
+
     class ResponseTimeScale(models.TextChoices):
         EXCELENTE = "EXT"
         BUENO = "BNO"
