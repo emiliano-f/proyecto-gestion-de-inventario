@@ -58,7 +58,7 @@ class OrdenServicio(models.Model):
     
 class EncuestaSatisfaccion(models.Model):
     class SatisfactionScale(models.TextChoices):
-        EXCELENTE = "EXelente"
+        EXCELENTE = "Excelente"
         BUENO = "Bueno"
         DEFICIENTE = "Deficiente"
         MALO = "Malo"
