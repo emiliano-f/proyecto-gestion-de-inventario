@@ -13,7 +13,14 @@ class TipoInsumoCRUD(CustomModelViewSet):
     serializer_class = serializer.TipoInsumoSerializer
     queryset = models.TipoInsumo.objects.all()
 
+    def __table__():
+        return 'tipoinsumo'
+
 class InsumoCRUD(viewsets.ViewSet):
+
+    def __table__():
+        return 'insumo'
+
     def list(self, request):
         # join
         insumo = models.Insumo.objects.filter(estado='OK').prefetch_related('tipoInsumo').all()
@@ -53,7 +60,14 @@ class OrdenRetiroCRUD(CustomModelViewSet):
     serializer_class = serializer.OrdenRetiroSerializer
     queryset = models.OrdenRetiro.objects.all()
 
+    def __table__():
+        return 'ordenretiro'
+
 class AjusteStockCRUD(viewsets.ViewSet):
+
+    def __table__():
+        return 'ajustestock'
+    
     def list(self, request):
         # join
         ajuste_stock = models.AjusteStock.objects.all()
@@ -71,14 +85,14 @@ class AjusteStockCRUD(viewsets.ViewSet):
                 insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
                 
                 ## sum quantities
-                if request.data.get('accionCantidad') == '+':
+                if request.data.get('accionCantidad') == 'SUMAR':
                     quant = insumo.cantidad + int(request.data.get('cantidad'))
                 else:
                     quant = insumo.cantidad - int(request.data.get('cantidad'))
 
                 ## check quant
-                if quant < 0:
-                    raise Exception("Negative Quantity")
+                #if quant < 0:
+                #    raise Exception("Negative Quantity")
 
                 insumo.cantidad = quant
                 insumo.save()

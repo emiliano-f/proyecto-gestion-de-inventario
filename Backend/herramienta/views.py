@@ -13,11 +13,18 @@ class TipoHerramientaCRUD(CustomModelViewSet):
     serializer_class = serializer.TipoHerramientaSerializer
     queryset = models.TipoHerramienta.objects.all()
 
+    def __table__():
+        return 'tipoherramienta'
+
 class HerramientaCRUD(viewsets.ViewSet):
+
+    def __table__():
+        return 'herramienta'
+
     def list(self, request):
         # join
+                        #.filter(estado='OK') \
         herramienta = models.Herramienta.objects \
-                        .filter(estado='OK') \
                         .prefetch_related('tipoHerramienta').all()
         # serializer
         serializer_class = serializer.HerramientaJoinedSerializer(herramienta, many=True)
@@ -53,6 +60,10 @@ class HerramientaCRUD(viewsets.ViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class EstadoHerramientaCRUD(viewsets.ViewSet):
+
+    def __table__():
+        return 'estadoherramienta'
+
     def list(self, request):
         # join
         estado_herramienta = models.EstadoHerramienta.objects.all()

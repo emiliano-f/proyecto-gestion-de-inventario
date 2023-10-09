@@ -2,6 +2,10 @@ from django.apps import apps
 from django.http import JsonResponse
 import inspect
 import inventario.models as inv
+import tarea.models as tar
+import compra.models as com
+import herramienta.models as her
+import usuario.models as usu
 
 def get_models(request):
     # Get apps
@@ -42,81 +46,49 @@ def enabled_methods(request):
     return JsonResponse(models_dict)
 
 def enums_models(request):
-    
-    apps_names = ["inventario", "compra", "usuario", "tarea", "herramienta"]
-    enums = {
-            'insumos': {
-                'unidadMedida': ['metro', 'litro', 'gramo', 'contable'],
-                'estado': ['OK', 'Eliminado', 'Suspendido']
-                },
-            'ajustes-stock': {
-                'accionCantidad': ['+', '-']
-                },
-            'herramientas': {
-                'estado': ['OK', 'En reparación', 'Mal estado']
-            },
-            'estados-herramienta': {
-                'estado': ['OK', 'En reparación', 'Mal estado']
-                },
-            'empleados': {
-                'categoria': ['EJ1', 'EJ2'] 
-                },
-            'ordenservicio': {
-                'prioridad': ['URGENTE', 'NORMAL'],
-                'categoria': ['INDEFINIDO'],
-                'estado': ['EN_ESPERA', 'FINALIZADA', 'EN_PROGRESO']
-                },
-            'encuestasatisfaccion': {
-                    'satisfaccion': ['EXCELENTE', 'BUENO', 'DEFICIENTE', 'MALO', 'INDEFINIDO'],
-                    'tiempoRespuesta': ['EXCELENTE', 'BUENO', 'DEFICIENTE', 'MALO', 'INDEFINIDO'],
-                },
-            'tareas': {
-                'tipo': ['INDEFINIDO']
-                },
-            'ordenes-servicio':{
-                'estado':['ACEPTADA','NO ACEPTADA','EN REVISIÓN'],
-                'categoria':['FABRICACIÓN','MOVIMIENTO DE MATERIALES / TRASLADOS','MODIFICACIÓN/ADECUACIÓN']
-            },
-            'presupuesto':{
-                'aprobado': ['Si','No']
-            }
-    }
-    """
-     enums = {'inventario': {
-                'insumo': {
-                    'unidadMedida': ['metro', 'litro', 'gramo', 'contable'],
-                    'estado': ['OK', 'Eliminado', 'Suspendido']
-                    },
-                'ajustestock': {
-                    'accionCantidad': ['+', '-']
-                    },
-                },
-             'herramienta': {
-                'herramienta': {
-                    'estado': ['OK', 'En reparación', 'Mal estado']
-                    },
-                'estadoherramienta': {
-                    'estado': ['OK', 'En reparación', 'Mal estado']
-                    }
-                 },
-             'tarea': {
-                'empleado': {
-                    'categoria': ['EJ1', 'EJ2'] 
-                    },
-                'ordenservicio': {
-                    'prioridad': ['URGENTE', 'NORMAL'],
-                    'categoria': ['INDEFINIDO'],
-                    'estado': ['EN_ESPERA', 'FINALIZADA', 'EN_PROGRESO']
-                    },
-                'encuestasatisfaccion': {
-                        'satisfaccion': ['EXCELENTE', 'BUENO', 'DEFICIENTE', 'MALO', 'INDEFINIDO'],
-                        'tiempoRespuesta': ['EXCELENTE', 'BUENO', 'DEFICIENTE', 'MALO', 'INDEFINIDO'],
-                    },
-                'tarea': {
-                    'tipo': ['INDEFINIDO']
-                    }
-                 }
-             }
-    """
-   
+
+    def isMethod(att):
+        return True if len(att) > 3 and att[-2:] == "__" and att[:2] == '__' else False
+
+    def getClasses(dirs):
+        return [name.lower() for name in dirs if not isMethod(name)]
+
+    enums = {}
+    tmp = {}
+    tmp['unidadMedida'] = [getattr(inv.Insumo().MeasuresScale, att) for att in dir(inv.Insumo().MeasuresScale) if not isMethod(att) and att.isupper()]
+    tmp['estado'] = [getattr(inv.Insumo().StatusScale, att) for att in dir(inv.Insumo().StatusScale) if not isMethod(att) and att.isupper()]
+    enums['insumos'] = tmp
+
+    tmp = {}
+    tmp['accionCantidad'] = [getattr(inv.AjusteStock().ActionScale, att) for att in dir(inv.AjusteStock().ActionScale) if not isMethod(att) and att.isupper()]
+    enums['ajustes-stock'] = tmp
+
+    tmp = {}
+    tmp['estado'] = [getattr(her.StatusScale, att) for att in dir(her.StatusScale) if not isMethod(att) and att.isupper()]
+    enums['herramientas'] = tmp
+    enums['estados-herramienta'] = tmp
+
+    tmp = {}
+    tmp['categoria'] = [getattr(tar.Empleado().CategoriaScale, att) for att in dir(tar.Empleado().CategoriaScale) if not isMethod(att) and att.isupper()]
+    enums['empleados'] = tmp
+
+    tmp = {}
+    tmp['prioridad'] = [getattr(tar.OrdenServicio().CaracterScale, att) for att in dir(tar.OrdenServicio().CaracterScale) if not isMethod(att) and att.isupper()]
+    tmp['categoria'] = [getattr(tar.OrdenServicio().CategoriaScale, att) for att in dir(tar.OrdenServicio().CategoriaScale) if not isMethod(att) and att.isupper()]
+    tmp['estado'] = [getattr(tar.OrdenServicio().StatusScale, att) for att in dir(tar.OrdenServicio().StatusScale) if not isMethod(att) and att.isupper()]
+    enums['ordenes-servicio'] = tmp
+
+    tmp = {}
+    tmp['satisfaccion'] = [getattr(tar.EncuestaSatisfaccion().SatisfactionScale, att) for att in dir(tar.EncuestaSatisfaccion().SatisfactionScale) if not isMethod(att) and att.isupper()]
+    tmp['tiempoRespuesta'] = [getattr(tar.EncuestaSatisfaccion().ResponseTimeScale, att) for att in dir(tar.EncuestaSatisfaccion().ResponseTimeScale) if not isMethod(att) and att.isupper()]
+    enums['encuestasatisfaccion'] = tmp
+
+    tmp = {}
+    tmp['tipo'] = [getattr(tar.Tarea().TypeScale, att) for att in dir(tar.Tarea().TypeScale) if not isMethod(att) and att.isupper()]
+    enums['tareas'] = tmp
+
+    tmp = {}
+    tmp['aprobado'] = [att for att in dir(com.Presupuesto().StatusScale) if not isMethod(att) and att.isupper()]
+    enums['presupuestos'] = tmp
+
     return JsonResponse(enums)

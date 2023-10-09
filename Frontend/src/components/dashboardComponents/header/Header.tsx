@@ -4,7 +4,7 @@ function Header() {
   return (
     <div className="header">
       <div className="logo">
-        <img src="/logo.png" alt="" />
+        <img className="transparent" src="https://ingenieria.uncuyo.edu.ar/images/ingenieriablanco2016.png" alt="" />
         <span>Mantenimiento</span>
       </div>
       <div className="icons">

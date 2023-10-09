@@ -10,90 +10,93 @@ class Empleado(models.Model):
     telefono = models.CharField(max_length=255)
     mail = models.EmailField()
 
-    class Categoria(models.TextChoices):
-        CATEGORIA1= "EJ1"
-        CATEGORIA2= "EJ2"
+    class CategoriaScale(models.TextChoices):
+        CATEGORIA1= "CATEGORIA1"
+        CATEGORIA2= "CATEGORIA2"
     
-    categoria = models.CharField(max_length=3,
-                                 choices=Categoria.choices,
-                                 default=Categoria.CATEGORIA1,
+    categoria = models.CharField(max_length=15,
+                                 choices=CategoriaScale.choices,
+                                 default=CategoriaScale.CATEGORIA1,
                                  null=True)
 
 class OrdenServicio(models.Model):
 
     class CaracterScale(models.TextChoices):
-        URGENTE = "URG"
-        NORMAL = "NOR"
+        URGENTE = "URGENTE"
+        NORMAL = "NORMAL"
     class CategoriaScale(models.TextChoices):
-        INDEFINIDO = "IND"
-    class StateScale(models.TextChoices):
-        EN_ESPERA = "ESP"
-        FINALIZADA = "FIN"
-        EN_PROGRESO = "PRO"
+        INDEFINIDO = "INDEFINIDO"
+    class StatusScale(models.TextChoices):
+        EN_ESPERA = "EN_ESPERA"
+        FINALIZADA = "FINALIZADA"
+        EN_PROGRESO = "EN_PROGRESO"
 
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)
     tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING, null=True)
-    fechaGeneracion = models.DateField(auto_now=False, auto_now_add=False)
+    fechaGeneracion = models.DateField(auto_now={True}, auto_now_add=False)
     sector = models.CharField(max_length=255, null=True)
     descripcion = models.CharField(max_length=255, null=True)
     fechaNecesidad = models.DateField(auto_now=False, auto_now_add=False, null=True)
     comentario = models.CharField(max_length=255, null=True)
 
     prioridad = models.CharField(
-        max_length=3,
+        max_length=15,
         choices=CaracterScale.choices,
         default=CaracterScale.NORMAL
     )
     categoria = models.CharField(
-        max_length=3,
+        max_length=15,
         choices=CategoriaScale.choices,
         default=CategoriaScale.INDEFINIDO
     )
     estado = models.CharField(
-        max_length = 3,
-        choices= StateScale.choices,
-        default= StateScale.EN_ESPERA
+        max_length = 15,
+        choices= StatusScale.choices,
+        default= StatusScale.EN_ESPERA
     )
     
 class EncuestaSatisfaccion(models.Model):
-    class EscalaSatisfaccion(models.TextChoices):
-        EXELENTE = "EXT"
-        BUENO = "BNO"
-        DEFICIENTE = "DFI"
-        MALO = "MLO"
-        INDEFINIDO = "IND"
-    class TiempoRespuesta(models.TextChoices):
-        EXELENTE = "EXT"
-        BUENO = "BNO"
-        DEFICIENTE = "DFI"
-        MALO = "MLO"
-        INDEFINIDO = "IND"
+    class SatisfactionScale(models.TextChoices):
+        EXCELENTE = "Excelente"
+        BUENO = "Bueno"
+        DEFICIENTE = "Deficiente"
+        MALO = "Malo"
+        INDEFINIDO = "Indefinido"
+    class ResponseTimeScale(models.TextChoices):
+        EXCELENTE = "Excelente"
+        BUENO = "Bueno"
+        DEFICIENTE = "Deficiente"
+        MALO = "Malo"
+        INDEFINIDO = "Indefinido"
 
     ordenServicio = models.ForeignKey(OrdenServicio, on_delete=models.DO_NOTHING)
     satisfaccion = models.CharField(
-        max_length=3,
-        choices=EscalaSatisfaccion.choices,
-        default=EscalaSatisfaccion.INDEFINIDO
+        max_length=15,
+        choices=SatisfactionScale.choices,
+        default=SatisfactionScale.INDEFINIDO
     )
     tiempoRespuesta = models.CharField(
-        max_length=3,
-        choices=TiempoRespuesta.choices,
-        default=TiempoRespuesta.INDEFINIDO
+        max_length=15,
+        choices=ResponseTimeScale.choices,
+        default=ResponseTimeScale.INDEFINIDO
     )
     observaciones = models.CharField(max_length=255, null=True)
 
 class Tarea(models.Model):
+
+    class TypeScale(models.TextChoices):
+        REPARACION = "Reparación"
+        INDEFINIDO = "Indefinido"
+
     id = models.AutoField(primary_key=True)
     empleado = models.ManyToManyField("tarea.Empleado",blank=False)
     supTarea = models.OneToOneField("tarea.Tarea", verbose_name=("Tarea padre"), on_delete=models.DO_NOTHING, null=True)
     #legajo = models.IntegerField(unique=True)
-    class TipoTarea(models.TextChoices):
-        INDEFINIDO = "IND"
     tipo = models.CharField(
-        max_length=3,
-        choices=TipoTarea.choices,
-        default=TipoTarea.INDEFINIDO
+        max_length=15,
+        choices=TypeScale.choices,
+        default=TypeScale.INDEFINIDO
     )
     descripcion = models.CharField(max_length=255, null=True)
     fechaTentativa = models.DateField(auto_now=False, auto_now_add=False)

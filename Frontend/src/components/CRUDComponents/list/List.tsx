@@ -25,8 +25,7 @@ const List = () => {
 
     const changeRef = useRef(false);
 
-    const switchChange = () => { 
-        
+    const switchChange = () => {
         changeRef.current = !changeRef.current;
     }
 
@@ -42,7 +41,7 @@ const List = () => {
 
     const columns: GridColDef[] = GetColumns(moduleName, itemName);
     const fields: Field[] = GetFields(moduleName, itemName);
-    
+    //console.log(items)
     return (
         <>
             <MessageDisplay {...ErrorState}/>
