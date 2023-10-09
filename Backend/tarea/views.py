@@ -12,13 +12,22 @@ class EmpleadoCRUD(CustomModelViewSet):
     serializer_class = serializer.EmpleadoSerializer
     queryset = models.Empleado.objects.all()
 
+    def __table__():
+        return 'empleado'
+
 class EncuestaSatisfaccionCRUD(CustomModelViewSet):
     serializer_class = serializer.EncuestaSatisfaccionSerializer
     queryset = models.EncuestaSatisfaccion.objects.all()
 
+    def __table__():
+        return 'encuestasatisfaccion'
+
 class TareaCRUD(CustomModelViewSet):
     serializer_class = serializer.TareaSerializer
     queryset = models.Tarea.objects.all()
+
+    def __table__():
+        return 'tarea'
 
 """
 class OrdenServicioCRUD(CustomModelViewSet):
@@ -27,6 +36,10 @@ class OrdenServicioCRUD(CustomModelViewSet):
 """
 
 class OrdenServicioCRUD(viewsets.ViewSet):
+
+    def __table__():
+        return 'ordenservicio'
+
     def list(self, request):
         # join
         orden_servicio = models.OrdenServicio.objects.prefetch_related('usuario').all()
