@@ -83,11 +83,12 @@ class AjusteStockCRUD(viewsets.ViewSet):
                 serializer_class.save()
                 # update cantidad from Insumo
                 insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
+                
                 ## sum quantities
                 if request.data.get('accionCantidad') == '+':
-                    quant = insumo.cantidad + request.data.get('cantidad')
+                    quant = insumo.cantidad + int(request.data.get('cantidad'))
                 else:
-                    quant = insumo.cantidad - request.data.get('cantidad')
+                    quant = insumo.cantidad - int(request.data.get('cantidad'))
 
                 ## check quant
                 if quant < 0:

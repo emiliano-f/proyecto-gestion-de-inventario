@@ -19,5 +19,24 @@
 
 .visible{
     display: block;
-    animation: hideElement 2s ease 3s;
+    animation: hideElement 10s ease 9s;
+}
+
+.alert {
+    .icon{
+        display: block;
+        margin-top: 8px;
+        margin-left: 20px;
+    } 
+    .title{
+        font-weight: bold;
+        font-size: larger;
+        display: flex;
+        text-align: left;
+        flex:2
+    }
+    .desc{
+        display: block;
+        text-align: left;
+    }
 }

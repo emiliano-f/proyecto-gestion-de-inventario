@@ -3,53 +3,59 @@ import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "rec
 
 const data = [
     {
-        name: "Sun",
-        books: 4000,
-        clothes: 2400,
-        electronic: 2400,
+        name: "Enero",
+        Bidón_Agúa: 30,
+        Jabón: 50,
+        Papel_Higenico: 75,
     },
     {
-        name: "Mon",
-        books: 3000,
-        clothes: 1398,
-        electronic: 2210,
+        name: "Febrero",
+        Bidón_Agúa: 33,
+        Jabón: 60,
+        Papel_Higenico: 80,
     },
     {
-        name: "Tue",
-        books: 2000,
-        clothes: 9800,
-        electronic: 2290,
+        name: "Marzo",
+        Bidón_Agúa: 35,
+        Jabón: 55,
+        Papel_Higenico: 90,
     },
     {
-        name: "Wed",
-        books: 2780,
-        clothes: 3908,
-        electronic: 2000,
+        name: "Abril",
+        Bidón_Agúa: 28,
+        Jabón: 52,
+        Papel_Higenico: 70,
     },
     {
-        name: "Thu",
-        books: 1890,
-        clothes: 4800,
-        electronic: 2181,
+        name: "Mayo",
+        Bidón_Agúa: 32,
+        Jabón: 48,
+        Papel_Higenico: 85,
     },
     {
-        name: "Fri",
-        books: 2390,
-        clothes: 3800,
-        electronic: 2500,
+        name: "Junio",
+        Bidón_Agúa: 36,
+        Jabón: 58,
+        Papel_Higenico: 78,
     },
     {
-        name: "Sat",
-        books: 3490,
-        clothes: 4300,
-        electronic: 2100,
+        name: "Agosto",
+        Bidón_Agúa: 31,
+        Jabón: 54,
+        Papel_Higenico: 88,
+    },
+    {
+        name: "Septiembre",
+        Bidón_Agúa: 29,
+        Jabón: 62,
+        Papel_Higenico: 72,
     },
 ];
 
 export const BigChartBox = () => {
   return (
     <div className="bigChartBox">
-        <h1>Revenue Analytics</h1>
+        <h1>Insumos más consumidos (Anual)</h1>
         <div className="chart">
             <ResponsiveContainer width="99%" height="100%">
                 <AreaChart
@@ -64,9 +70,9 @@ export const BigChartBox = () => {
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
-                    <Area type="monotone" dataKey="electronic" stackId="1" stroke="#8884d8" fill="#8884d8" />
-                    <Area type="monotone" dataKey="clothes" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
-                    <Area type="monotone" dataKey="books" stackId="1" stroke="#ffc658" fill="#ffc658" />
+                    <Area type="monotone" dataKey="Bidón_Agúa" stackId="1" stroke="#8884d8" fill="#8884d8" />
+                    <Area type="monotone" dataKey="Jabón" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
+                    <Area type="monotone" dataKey="Papel_Higenico" stackId="1" stroke="#ffc658" fill="#ffc658" />
                 </AreaChart>
             </ResponsiveContainer>
         </div>
