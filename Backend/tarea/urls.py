@@ -11,5 +11,5 @@ router.register(r'tareas', views.TareaCRUD, 'tareas')
 urlpatterns = [
     path('', include(router.urls)),
     path('ordenes-servicio/', views.OrdenServicioCRUD.as_view({'get':'list', 'post':'create'}), name='ordenes-servicio'),
-    path('ordenes-servicio/<int:pk>/', views.OrdenServicioCRUD.as_view({'get':'retrieve', 'put':'create', 'delete':'destroy'}), name='ordenes-servicio-id'),
+    path('ordenes-servicio/<int:pk>/', views.OrdenServicioCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='ordenes-servicio-id'),
 ]
