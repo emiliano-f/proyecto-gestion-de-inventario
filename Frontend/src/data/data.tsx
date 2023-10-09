@@ -90,7 +90,7 @@ export function getUri(fieldName:string): string {
             name = "encuestas-satisfaccion";
             break;
         case "supTarea":
-            name = "tarea";
+            name = "tareas";
             break;    
         default:
             throw new Error(`El campo ${fieldName} no tiene uri asignada`);

@@ -30,7 +30,8 @@ const SelectEnum = (props:Props) => {
             name={props.fieldName}
             className="form-select"
             defaultValue={props.defaultValue}
-            required={props.required}>
+            required={props.required}
+        >
             <option value="" disabled>Elegir {props.fieldName}</option>
             {enums!==""?
             enums[itemName][props.fieldName].map(unidad => (

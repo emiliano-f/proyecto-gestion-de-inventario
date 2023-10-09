@@ -57,12 +57,12 @@ const ModalForm = (props: Props) => {
     }
 
     const createItem = (item: string, formData: FormData) => {
-        console.log(formData);
         Create(item, formData)
             .then(() => {
                 setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`, null)
             })
             .catch((error) => {
+                console.log(error)
                 setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(item)}.`, error)
             })
             .finally(() => props.setOpen(false));
@@ -73,7 +73,7 @@ const ModalForm = (props: Props) => {
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
-
+        console.log(formData)
         if (form.checkValidity() === false) {
             e.stopPropagation();
         } else {
@@ -113,9 +113,6 @@ const ModalForm = (props: Props) => {
                                 <Form.Group className="form-group" key={index}>
                                     <Form.Label>{field.headerName}</Form.Label>
                                     <div className="row g-2">
-                                        <>
-                                        {console.log(field.field,":",field.required)}
-                                        </>
                                         {field.select ? (
                                             <>
                                                 {Tag = field.enum ? SelectEnum : SelectList}

@@ -30,7 +30,6 @@ export function setMessage(message: string, error : Promise<AxiosResponse<any,an
     if(error === null){
         setMsg([message, false]);
     }else{
-        console.log(error)
         var dicc : any;
         switch(error.code){
             case "ERR_BAD_RESPONSE":
@@ -41,7 +40,7 @@ export function setMessage(message: string, error : Promise<AxiosResponse<any,an
                     dicc = JSON.parse(error.request.response);
                     errorDesc = Object.keys(dicc).map(field => (`${field}: ${dicc[field]}`)).join('; ')
                 }catch{
-
+                    errorDesc = "Error en el formulario enviado"
                 }
                 break;
             case "ERR_NETWORK":

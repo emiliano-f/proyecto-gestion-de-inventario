@@ -899,12 +899,43 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "usuario": {
                 editable: true,
-                show: true,
+                show: false,
                 name: "Usuario",
                 type: "string",
                 col_size: SIZE.TINY,
                 required: true,
                 select : true,
+                enum: false
+            },
+            //Estos se han agregado ya que recibimos los datos dle usuario desde el back
+            "usuarioID": {
+                editable: false,
+                show: false,
+                name: "ID de usuario",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: false,
+                select: false,
+                enum: false
+            },
+            "usuarioNombre": {
+                editable: false,
+                show: true,
+                name: "Usuario",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: false,
+                select: false,
+                enum: false
+            },
+            "usuarioApellido": {
+                editable: false,
+                show: true,
+                name: "Apellido",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: false,
+                select: false,
                 enum: false
             },
             "tarea": {
@@ -965,7 +996,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : true,
                 enum: true
             },
-            "fechaNesesidad":{
+            "fechaNecesidad":{
                 editable: true,
                 show: true,
                 name: "Fecha de Necesidad",
