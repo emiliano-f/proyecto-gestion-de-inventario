@@ -77,8 +77,8 @@ class AjusteStockCRUD(viewsets.ViewSet):
                     quant = insumo.cantidad - int(request.data.get('cantidad'))
 
                 ## check quant
-                if quant < 0:
-                    raise Exception("Negative Quantity")
+                #if quant < 0:
+                #    raise Exception("Negative Quantity")
 
                 insumo.cantidad = quant
                 insumo.save()
