@@ -85,7 +85,7 @@ class AjusteStockCRUD(viewsets.ViewSet):
                 insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
                 
                 ## sum quantities
-                if request.data.get('accionCantidad') == '+':
+                if request.data.get('accionCantidad') == 'SUMAR':
                     quant = insumo.cantidad + int(request.data.get('cantidad'))
                 else:
                     quant = insumo.cantidad - int(request.data.get('cantidad'))

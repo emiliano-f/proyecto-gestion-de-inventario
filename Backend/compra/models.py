@@ -7,12 +7,17 @@ class PedidoInsumo(models.Model):
     observaciones = models.CharField(max_length=255, null=True)
 
 class Presupuesto(models.Model):
+
+    class StatusScale(models.TextChoices):
+        SI = 'Si'
+        NO = 'No'
+
     id = models.AutoField(primary_key = True)
     #imagen = models.ImageField(upload_to="images/")
     fecha = models.DateField()
     proveedor = models.CharField(max_length = 255)
     total = models.FloatField()
-    aprobado = models.BooleanField(default=False)
+    aprobado = models.CharField(max_length=2, choices=StatusScale.choices)
     pedidoInsumo = models.ForeignKey(PedidoInsumo, on_delete=models.DO_NOTHING)
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 

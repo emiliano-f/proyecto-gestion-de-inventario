@@ -1,5 +1,5 @@
 import "./modalForm.scss"
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import React from "react";
 import { GetUrlParts, UpdateItem as Update, CreateItem as Create } from "../../../Api/apiService"
 import { getSingular } from "../../../data/data";
@@ -89,15 +89,9 @@ const ModalForm = (props: Props) => {
 
 
     };
-    const mesureUnits = [
-        "litro",
-        "metro",
-        "gramo",
-        "contable"
-    ]
 
     var Tag = SelectEnum;
-    
+    //console.log(Tag)
     return (
         <>
             <div className="modal-background">
