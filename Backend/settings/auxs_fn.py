@@ -55,36 +55,36 @@ def enums_models(request):
 
     enums = {}
     tmp = {}
-    tmp['unidadMedida'] = [att for att in dir(inv.Insumo().MeasuresScale) if not isMethod(att) and att.isupper()]
-    tmp['estado'] = [att for att in dir(inv.Insumo().StatusScale) if not isMethod(att) and att.isupper()]
+    tmp['unidadMedida'] = [getattr(inv.Insumo().MeasuresScale, att) for att in dir(inv.Insumo().MeasuresScale) if not isMethod(att) and att.isupper()]
+    tmp['estado'] = [getattr(inv.Insumo().StatusScale, att) for att in dir(inv.Insumo().StatusScale) if not isMethod(att) and att.isupper()]
     enums['insumos'] = tmp
 
     tmp = {}
-    tmp['accionCantidad'] = [att for att in dir(inv.AjusteStock().ActionScale) if not isMethod(att) and att.isupper()]
+    tmp['accionCantidad'] = [getattr(inv.AjusteStock().ActionScale, att) for att in dir(inv.AjusteStock().ActionScale) if not isMethod(att) and att.isupper()]
     enums['ajustes-stock'] = tmp
 
     tmp = {}
-    tmp['estado'] = [att for att in dir(her.StatusScale) if not isMethod(att) and att.isupper()]
+    tmp['estado'] = [getattr(her.StatusScale, att) for att in dir(her.StatusScale) if not isMethod(att) and att.isupper()]
     enums['herramientas'] = tmp
     enums['estados-herramienta'] = tmp
 
     tmp = {}
-    tmp['categoria'] = [att for att in dir(tar.Empleado().CategoriaScale) if not isMethod(att) and att.isupper()]
+    tmp['categoria'] = [getattr(tar.Empleado().CategoriaScale, att) for att in dir(tar.Empleado().CategoriaScale) if not isMethod(att) and att.isupper()]
     enums['empleados'] = tmp
 
     tmp = {}
-    tmp['prioridad'] = [att for att in dir(tar.OrdenServicio().CaracterScale) if not isMethod(att) and att.isupper()]
-    tmp['categoria'] = [att for att in dir(tar.OrdenServicio().CategoriaScale) if not isMethod(att) and att.isupper()]
-    tmp['estado'] = [att for att in dir(tar.OrdenServicio().StatusScale) if not isMethod(att) and att.isupper()]
+    tmp['prioridad'] = [getattr(tar.OrdenServicio().CaracterScale, att) for att in dir(tar.OrdenServicio().CaracterScale) if not isMethod(att) and att.isupper()]
+    tmp['categoria'] = [getattr(tar.OrdenServicio().CategoriaScale, att) for att in dir(tar.OrdenServicio().CategoriaScale) if not isMethod(att) and att.isupper()]
+    tmp['estado'] = [getattr(tar.OrdenServicio().StatusScale, att) for att in dir(tar.OrdenServicio().StatusScale) if not isMethod(att) and att.isupper()]
     enums['ordenes-servicio'] = tmp
 
     tmp = {}
-    tmp['satisfaccion'] = [att for att in dir(tar.EncuestaSatisfaccion().SatisfactionScale) if not isMethod(att) and att.isupper()]
-    tmp['tiempoRespuesta'] = [att for att in dir(tar.EncuestaSatisfaccion().ResponseTimeScale) if not isMethod(att) and att.isupper()]
+    tmp['satisfaccion'] = [getattr(tar.EncuestaSatisfaccion().SatisfactionScale, att) for att in dir(tar.EncuestaSatisfaccion().SatisfactionScale) if not isMethod(att) and att.isupper()]
+    tmp['tiempoRespuesta'] = [getattr(tar.EncuestaSatisfaccion().ResponseTimeScale, att) for att in dir(tar.EncuestaSatisfaccion().ResponseTimeScale) if not isMethod(att) and att.isupper()]
     enums['encuestasatisfaccion'] = tmp
 
     tmp = {}
-    tmp['tipo'] = [att for att in dir(tar.Tarea().TypeScale) if not isMethod(att) and att.isupper()]
+    tmp['tipo'] = [getattr(tar.Tarea().TypeScale, att) for att in dir(tar.Tarea().TypeScale) if not isMethod(att) and att.isupper()]
     enums['tareas'] = tmp
 
     tmp = {}
