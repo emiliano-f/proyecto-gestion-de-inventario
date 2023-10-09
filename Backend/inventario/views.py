@@ -13,7 +13,14 @@ class TipoInsumoCRUD(CustomModelViewSet):
     serializer_class = serializer.TipoInsumoSerializer
     queryset = models.TipoInsumo.objects.all()
 
+    def __table__():
+        return 'tipoinsumo'
+
 class InsumoCRUD(viewsets.ViewSet):
+
+    def __table__():
+        return 'insumo'
+
     def list(self, request):
         # join
         insumo = models.Insumo.objects.filter(estado='OK').prefetch_related('tipoInsumo').all()
@@ -53,7 +60,14 @@ class OrdenRetiroCRUD(CustomModelViewSet):
     serializer_class = serializer.OrdenRetiroSerializer
     queryset = models.OrdenRetiro.objects.all()
 
+    def __table__():
+        return 'ordenretiro'
+
 class AjusteStockCRUD(viewsets.ViewSet):
+
+    def __table__():
+        return 'ajustestock'
+    
     def list(self, request):
         # join
         ajuste_stock = models.AjusteStock.objects.all()
