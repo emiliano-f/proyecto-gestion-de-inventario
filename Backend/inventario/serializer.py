@@ -24,7 +24,7 @@ class InsumoTipoInsumoSerializer(InsumoSerializer):
 class InsumoSerializerWithoutEstado(serializers.ModelSerializer):
     class Meta:
         model = models.Insumo
-        exclude = ['estado']
+        exclude = ['baja']
 
 class InsumoTipoInsumoWithoutEstado(InsumoSerializerWithoutEstado):
     tipoInsumo = serializers.CharField(source='tipoInsumo.nombre')
