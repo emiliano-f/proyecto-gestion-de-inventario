@@ -113,8 +113,8 @@ export const ACTIONS: Record<string, any> ={
 }
 
 enum SIZE{
-    TINY = 75,
-    SMALL = 150,
+    TINY = 150,
+    SMALL = 200,
     MEDIUM = 250,
     BIG = 350,
 }
