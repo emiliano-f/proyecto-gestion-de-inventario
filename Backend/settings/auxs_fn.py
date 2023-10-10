@@ -56,7 +56,6 @@ def enums_models(request):
     enums = {}
     tmp = {}
     tmp['unidadMedida'] = [getattr(inv.Insumo().MeasuresScale, att) for att in dir(inv.Insumo().MeasuresScale) if not isMethod(att) and att.isupper()]
-    tmp['estado'] = [getattr(inv.Insumo().StatusScale, att) for att in dir(inv.Insumo().StatusScale) if not isMethod(att) and att.isupper()]
     enums['insumos'] = tmp
 
     tmp = {}

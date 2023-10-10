@@ -17,12 +17,13 @@ class Insumo(models.Model):
         LITRO = 'Litro'
         GRAMO = 'Gramo'
         CONTABLE = 'Contable'
-
+    """
     class StatusScale(models.TextChoices):
         OK = 'Ok'
         ELIMINADO = 'Eliminado'
         SUSPENDIDO = 'Suspendido'
-        
+    """
+    
     id = models.AutoField(primary_key=True)
     tipoInsumo = models.ForeignKey(TipoInsumo, on_delete=models.DO_NOTHING)
     nombre = models.CharField(max_length=32)
@@ -31,7 +32,8 @@ class Insumo(models.Model):
     codigo = models.CharField(max_length=16, null=True)
     observaciones = models.CharField(max_length=256, null=True)
     puntoReposicion = models.IntegerField(null=True)
-    estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.OK)
+    baja = models.BooleanField(default=False)
+    # estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.OK)
 
     def __str__(self):
         texto = "{0} ({1})"
