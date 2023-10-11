@@ -144,31 +144,29 @@ class AjusteStockCRUD(viewsets.ViewSet):
     def create(self, request):
         try:
             serializer_class = serializer.AjusteStockSerializer(data=request.data)
-            if serializer_class.is_valid():
-                serializer_class.save()
-                # update cantidad from Insumo
-                insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
-                
-                ## check positive value
-                if int(request.data.get('cantidad')) <= 0:
-                    raise Exception("Negative or zero quantity")
 
-                ## sum quantities
-                if request.data.get('accionCantidad') == 'SUMAR':
-                    quant = insumo.cantidad + int(request.data.get('cantidad'))
-                else:
-                    quant = insumo.cantidad - int(request.data.get('cantidad'))
+            serializer_class.is_valid(raise_exception=True)
+            serializer_class.save()
+            # update cantidad from Insumo
+            insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
+            
+            ## check positive value
+            if int(request.data.get('cantidad')) <= 0:
+                raise Exception("Negative or zero quantity")
 
-                # check quant
-                if quant < 0:
-                    raise Exception("Excedeed Quantity")
-
-                insumo.cantidad = quant
-                insumo.save()
-                return Response(serializer_class.data, status=status.HTTP_201_CREATED)
-
+            ## sum quantities
+            if request.data.get('accionCantidad') == 'SUMAR':
+                quant = insumo.cantidad + int(request.data.get('cantidad'))
             else:
-                return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+                quant = insumo.cantidad - int(request.data.get('cantidad'))
+
+            # check quant
+            if quant < 0:
+                raise Exception("Excedeed Quantity")
+
+            insumo.cantidad = quant
+            insumo.save()
+            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             transaction.set_rollback(True)
@@ -179,18 +177,26 @@ class AjusteStockCRUD(viewsets.ViewSet):
             ajuste_stock = models.AjusteStock.objects.get(id=pk)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
+
         serializer_class = serializer.AjusteStockJoinedSerializer(ajuste_stock)
         return Response(serializer_class.data)
 
     def update(self, request, pk):
-        ajuste_stock = models.AjusteStock.objects.get(id=pk)
+        try:
+            ajuste_stock = models.AjusteStock.objects.get(id=pk)
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         serializer_class = serializer.AjusteStockSerializer(ajuste_stock, data=request.data)
-        if serializer_class.is_valid():
-            serializer_class.save()
-            return Response(serializer_class.data)
-        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer_class.is_valid(raise_exception=True)
+        serializer_class.save()
+        return Response(serializer_class.data)
 
     def destroy(self, request, pk):
-        ajuste_stock = models.AjusteStock.objects.get(id=pk)
+        try:
+            ajuste_stock = models.AjusteStock.objects.get(id=pk)
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
         ajuste_stock.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
