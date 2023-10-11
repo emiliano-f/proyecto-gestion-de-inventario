@@ -80,7 +80,7 @@ class OrdenRetiroCRUD(viewsets.ViewSet):
 
                 ## check positive value
                 if int(request.data.get('cantidad')) <= 0:
-                    raise Exception("Negative quantity")
+                    raise Exception("Negative or zero quantity")
                 
                 ## update quantities
                 quant = insumo.cantidad - int(request.data.get('cantidad'))
@@ -144,7 +144,7 @@ class AjusteStockCRUD(viewsets.ViewSet):
                 
                 ## check positive value
                 if int(request.data.get('cantidad')) <= 0:
-                    raise Exception("Negative quantity")
+                    raise Exception("Negative or zero quantity")
 
                 ## sum quantities
                 if request.data.get('accionCantidad') == 'SUMAR':
