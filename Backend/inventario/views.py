@@ -142,15 +142,19 @@ class AjusteStockCRUD(viewsets.ViewSet):
                 # update cantidad from Insumo
                 insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
                 
+                ## check positive value
+                if int(request.data.get('cantidad')) <= 0:
+                    raise Exception("Negative quantity")
+
                 ## sum quantities
                 if request.data.get('accionCantidad') == 'SUMAR':
                     quant = insumo.cantidad + int(request.data.get('cantidad'))
                 else:
                     quant = insumo.cantidad - int(request.data.get('cantidad'))
 
-                ## check quant
-                #if quant < 0:
-                #    raise Exception("Negative Quantity")
+                # check quant
+                if quant < 0:
+                    raise Exception("Excedeed Quantity")
 
                 insumo.cantidad = quant
                 insumo.save()
