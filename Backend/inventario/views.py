@@ -56,12 +56,49 @@ class InsumoCRUD(viewsets.ViewSet):
         insumo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class OrdenRetiroCRUD(CustomModelViewSet):
-    serializer_class = serializer.OrdenRetiroSerializer
-    queryset = models.OrdenRetiro.objects.all()
+class OrdenRetiroCRUD(viewsets.ViewSet):
 
     def __table__():
         return 'ordenretiro'
+
+    def list(self, request):
+        # join
+        orden_retiro = models.OrdenRetiro.objects.all()
+        # serializer
+        serializer_class = serializer.OrdenRetiroFkReplacedSerializer(orden_retiro, many=True)
+        return Response(serializer_class.data)
+
+    @transaction.atomic
+    def create(self, request):
+        try:
+            serializer_class = serializer.OrdenRetiroSerializer(data=request.data)
+            if serializer_class.is_valid():
+                serializer_class.save()
+
+                # update cantidad from Insumo
+                insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
+
+                ## check positive value
+                if int(request.data.get('cantidad')) <= 0:
+                    raise Exception("Negative quantity")
+                
+                ## update quantities
+                quant = insumo.cantidad - int(request.data.get('cantidad'))
+
+                ## check quant
+                if quant < 0:
+                    raise Exception("Excedeed Quantity")
+
+                insumo.cantidad = quant
+                insumo.save()
+                return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+
+            else:
+                return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            transaction.set_rollback(True)
+            return Response({"error":str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class AjusteStockCRUD(viewsets.ViewSet):
 

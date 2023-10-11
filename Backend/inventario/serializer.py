@@ -63,7 +63,7 @@ class OrdenRetiroSerializer(serializers.ModelSerializer):
         model = models.OrdenRetiro
         fields = '__all__'
 
-class OrdenRetiroInsumoSerializer(OrdenRetiroSerializer):
+class OrdenRetiroFkReplacedSerializer(OrdenRetiroSerializer):
     """
     Add attribute to OrdenRetiro for replacing 
     foreign key by Insumo.nombre
