@@ -56,12 +56,20 @@ class InsumoTipoInsumoWithoutEstado(InsumoSerializerWithoutEstado):
 
 class OrdenRetiroSerializer(serializers.ModelSerializer):
     """
-    Retrieves all fields in TipoInsumo
+    Retrieves all fields in OrdenRetiro
     """
 
     class Meta:
         model = models.OrdenRetiro
         fields = '__all__'
+
+class OrdenRetiroInsumoSerializer(OrdenRetiroSerializer):
+    """
+    Add attribute to OrdenRetiro for replacing 
+    foreign key by Insumo.nombre
+    """
+
+    insumo = serializers.CharField(source='insumo.nombre')
 
 class AjusteStockSerializer(serializers.ModelSerializer):
     """
