@@ -72,29 +72,28 @@ class OrdenRetiroCRUD(viewsets.ViewSet):
     def create(self, request):
         try:
             serializer_class = serializer.OrdenRetiroSerializer(data=request.data)
-            if serializer_class.is_valid():
-                serializer_class.save()
 
-                # update cantidad from Insumo
-                insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
+            ## check data types
+            serializer_class.is_valid(raise_exception=True)
+            serializer_class.save()
 
-                ## check positive value
-                if int(request.data.get('cantidad')) <= 0:
-                    raise Exception("Negative or zero quantity")
-                
-                ## update quantities
-                quant = insumo.cantidad - int(request.data.get('cantidad'))
+            ## update cantidad from Insumo
+            insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
 
-                ## check quant
-                if quant < 0:
-                    raise Exception("Excedeed Quantity")
+            ## check positive value
+            if int(request.data.get('cantidad')) <= 0:
+                raise Exception("Negative or zero quantity")
+            
+            ## update quantities
+            quant = insumo.cantidad - int(request.data.get('cantidad'))
 
-                insumo.cantidad = quant
-                insumo.save()
-                return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+            ## check quant
+            if quant < 0:
+                raise Exception("Excedeed Quantity")
 
-            else:
-                return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+            insumo.cantidad = quant
+            insumo.save()
+            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             transaction.set_rollback(True)
@@ -105,19 +104,27 @@ class OrdenRetiroCRUD(viewsets.ViewSet):
             orden_retiro = models.OrdenRetiro.objects.get(id=pk)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
+
         serializer_class = serializer.OrdenRetiroFkReplacedSerializer(orden_retiro)
         return Response(serializer_class.data)
 
     def update(self, request, pk):
-        orden_retiro = models.OrdenRetiro.objects.get(id=pk)
+        try:
+            orden_retiro = models.OrdenRetiro.objects.get(id=pk)
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         serializer_class = serializer.OrdenRetiroSerializer(orden_retiro, data=request.data)
-        if serializer_class.is_valid():
-            serializer_class.save()
-            return Response(serializer_class.data)
-        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer_class.is_valid(raise_exception=True)
+        serializer_class.save()
+        return Response(serializer_class.data)
 
     def destroy(self, request, pk):
-        orden_retiro = models.OrdenRetiro.objects.get(id=pk)
+        try:
+            orden_retiro = models.OrdenRetiro.objects.get(id=pk)
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         orden_retiro.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
