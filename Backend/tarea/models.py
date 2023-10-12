@@ -91,7 +91,6 @@ class Tarea(models.Model):
 
     id = models.AutoField(primary_key=True)
     empleado = models.ManyToManyField("tarea.Empleado",blank=False)
-    supTarea = models.OneToOneField("tarea.Tarea", verbose_name=("Tarea padre"), on_delete=models.DO_NOTHING, null=True)
     #legajo = models.IntegerField(unique=True)
     tipo = models.CharField(
         max_length=15,
