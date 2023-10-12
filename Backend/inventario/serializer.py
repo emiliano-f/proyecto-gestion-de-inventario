@@ -30,7 +30,7 @@ class InsumoSerializer(serializers.ModelSerializer):
 
 class InsumoTipoInsumoSerializer(InsumoSerializer):
     """
-    Add attribute to InsumoSerializer for replacing foreign key by TipoInsumo.nombre
+    Adds attribute to InsumoSerializer for replacing foreign key by TipoInsumo.nombre
     """
 
     #tipoInsumo = TipoInsumoNombreSerializer(read_only=True)
@@ -48,7 +48,7 @@ class InsumoSerializerWithoutEstado(serializers.ModelSerializer):
 
 class InsumoTipoInsumoWithoutEstado(InsumoSerializerWithoutEstado):
     """
-    Add attribute to InsumoSerializerWithoutEstado for replacing 
+    Adds attribute to InsumoSerializerWithoutEstado for replacing 
     foreign key by TipoInsumo.nombre
     """
 
@@ -65,7 +65,7 @@ class OrdenRetiroSerializer(serializers.ModelSerializer):
 
 class OrdenRetiroFkReplacedSerializer(OrdenRetiroSerializer):
     """
-    Add attribute to OrdenRetiro for replacing 
+    Adds attribute to OrdenRetiro for replacing 
     foreign key by Insumo.nombre
     """
 
@@ -82,7 +82,7 @@ class AjusteStockSerializer(serializers.ModelSerializer):
 
 class AjusteStockJoinedSerializer(AjusteStockSerializer):
     """
-    Add attribute to AjusteStockSerializer for replacing 
+    Adds attribute to AjusteStockSerializer for replacing 
     foreign key by Insumo.nombre
     """
 
