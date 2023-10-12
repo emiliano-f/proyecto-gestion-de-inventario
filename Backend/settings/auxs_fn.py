@@ -80,7 +80,7 @@ def enums_models(request):
         :return: a list with the attribute's values
         """
 
-        return [getattr(scale_class), att) for att in dir(scale_class) if not is_method(att) and att.isupper()]
+        return [getattr((scale_class), att) for att in dir(scale_class) if not is_method(att) and att.isupper()]
 
 
     enums = {}

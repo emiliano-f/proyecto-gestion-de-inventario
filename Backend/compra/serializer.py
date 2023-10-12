@@ -1,19 +1,6 @@
 from rest_framework import serializers
 from . import models
 
-class PedidoInsumoSerializer(serializers.ModelSerializer):
-    """
-    Retrieves all fields in PedidoInsumo
-
-    Adds attribute to PedidoInsumoSerializer for get 
-    DetallePedido.*
-    """
-    detalles = DetallePedidoSerializer(read_only=True)
-
-    class Meta:
-        model = models.PedidoInsumo
-        fields = '__all__'
-
 class PresupuestoSerializer(serializers.ModelSerializer):
     """
     Retrieves all fields in Presupuesto
@@ -38,6 +25,19 @@ class DetallePedidoFkReplacedSerializer(serializers.ModelSerializer):
     PedidoInsumo.*
     """
  
-    fechaHora = serializers.Charfield(source='pedidoInsumo.fechaHora') 
-    observaciones = serializers.Charfield(source='pedidoInsumo.observaciones') 
-    recibido = serializers.Charfield(source='pedidoInsumo.recibido') 
+    fechaHora = serializers.CharField(source='pedidoInsumo.fechaHora') 
+    observaciones = serializers.CharField(source='pedidoInsumo.observaciones') 
+    recibido = serializers.CharField(source='pedidoInsumo.recibido') 
+
+class PedidoInsumoSerializer(serializers.ModelSerializer):
+    """
+    Retrieves all fields in PedidoInsumo
+
+    Adds attribute to PedidoInsumoSerializer for get 
+    DetallePedido.*
+    """
+    detalles = DetallePedidoSerializer(read_only=True)
+
+    class Meta:
+        model = models.PedidoInsumo
+        fields = '__all__'

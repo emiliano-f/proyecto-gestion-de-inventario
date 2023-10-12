@@ -30,7 +30,7 @@ class InsumoCRUD(viewsets.ViewSet):
 
     def create(self, request):
         serializer_class = serializer.InsumoSerializer(data=request.data)
-        serializer_class.is_valid(raise_exception=True):
+        serializer_class.is_valid(raise_exception=True)
         serializer_class.save()
         return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
@@ -50,7 +50,7 @@ class InsumoCRUD(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         serializer_class = serializer.InsumoSerializer(insumo, data=request.data)
-        serializer_class.is_valid(raise_exception=True):
+        serializer_class.is_valid(raise_exception=True)
         serializer_class.save()
         return Response(serializer_class.data)
 
