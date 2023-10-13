@@ -1,5 +1,5 @@
 @import "./variables.scss";
-
+@import "./responsive.scss";
 * {
   margin: 0;
   padding: 0;
@@ -21,8 +21,7 @@ a {
 }
 
 .container2{
-
-  display: flex;
+  display: flex;  
 }
 
 .menuContainer{
@@ -30,6 +29,11 @@ a {
   padding: 5px 20px;
   border-right: 2px solid $soft-bg;
   min-height: 82vh;
+
+  @include lg{
+    width: max-content;
+  }
+  
 
 }
 

@@ -10,6 +10,7 @@ import List from "../components/CRUDComponents/list/List"
 import {SECTIONS} from "../data/data.tsx";
 import Detail from "../components/CRUDComponents/detail/Detail.tsx";
 import NotFound from "../pages/notFound/NotFound.tsx";
+import TaskForm from "../components/CRUDComponents/taskForm/TaskForm.tsx";
 
 /**
  * Genera a partir de los elementos del menu lateral las url's correspondientes
@@ -25,7 +26,9 @@ function generateRoutes(){
             loader: () => {return redirect(module.tables[0].url)}
           }
         );
+      
         module.tables?.forEach((table) => {
+          
           routes = routes.concat([
             {
               path: table.url,
@@ -36,7 +39,15 @@ function generateRoutes(){
               element: <Detail/>
             }
           ]);
-        })
+        });
+        if (module.title==="Tarea"){
+          routes = routes.concat([
+            {
+              path: "/tarea/crear-tarea/:id/",
+              element: <TaskForm />
+            }
+          ]);
+        }
       });
     });
     return routes;
@@ -55,21 +66,18 @@ const routes = [
     ])
   },
   {
-    path: "/login",
-    element: <Login />
-  },
-  {
     path: "/orden-servicio/",
     loader: () => {return redirect("/orden-servicio/generate")}
   },
   {
-    path: "/orden-servicio/login",
+    path: "/login",
     element: <Login />
   },
   {
     path: "/orden-servicio/generate",
     element: <ServiceForm />
   },
+  
   {
     path: "*",
     element: <NotFound />

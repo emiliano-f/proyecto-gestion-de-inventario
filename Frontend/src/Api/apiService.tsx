@@ -15,6 +15,7 @@ export function GetUrlParts() : any {
 }
 
 export function ListItems(setItems : any, itemName : string) : Promise<AxiosResponse<any,any>> {
+    //console.log(itemName,backendUrls[itemName])
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function loadItems() {
             await inventarioAPI.get(backendUrls[itemName])

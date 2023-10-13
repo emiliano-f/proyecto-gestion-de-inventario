@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import {ACTIONS} from "../../../data/structure.tsx"
+import { BsPlusCircle } from "react-icons/bs";
 
 type Props = {
     slug: string;
@@ -16,15 +17,22 @@ type Props = {
 
 export const DataTable = (props: Props) => {
     const containerRef = useRef(null);
-
+    
     const actionColumn: GridColDef = {
         field: "action",
-        headerName: "Action",
+        headerName: "Acciones ",
         width: 150,
         renderCell: (params) => {
             return (
                 <div className="action">
-                    {ACTIONS[props.slug].detail && 
+                    {
+                        props.slug === "ordenes-servicio" &&
+                        <Link to={`/tarea/crear-tarea/${params.row.id}/`}>
+                                <button className="button"><BsPlusCircle /></button>
+                        </Link>
+                    }
+                    {
+                        ACTIONS[props.slug].detail && 
                         <Link to={`detail/${params.row.id}/`}>
                             <button className="button"><img src="/read.png" alt="" /></button>
                         </Link>

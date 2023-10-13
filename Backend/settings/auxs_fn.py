@@ -8,6 +8,12 @@ import herramienta.models as her
 import usuario.models as usu
 
 def get_models(request):
+    """
+    Captures names of apps, models and their attributes
+
+    :return: dict with fields
+    """
+
     # Get apps
     apps_names = ["inventario", "compra", "usuario", "tarea", "herramienta"]
 
@@ -27,6 +33,9 @@ def get_models(request):
     return JsonResponse(models_dict)
 
 def enabled_methods(request):
+    """
+    This function was not implemented
+    """
 
     apps_names = ["inventario", "compra", "usuario", "tarea", "herramienta"]
 
@@ -46,49 +55,75 @@ def enabled_methods(request):
     return JsonResponse(models_dict)
 
 def enums_models(request):
+    """
+    Gets the scale (enums) in each attribute model
+    
+    :return: dict with the enums
+    """
 
-    def isMethod(att):
+    def is_method(att):
+        """
+        Checks if the value returned by dir() corresponds to a method
+        Note: the models defined in */models.py don't have their own methods"
+        """
+
         return True if len(att) > 3 and att[-2:] == "__" and att[:2] == '__' else False
 
-    def getClasses(dirs):
-        return [name.lower() for name in dirs if not isMethod(name)]
+    def get_classes(dirs):
+        return [name.lower() for name in dirs if not is_method(name)]
+
+    def get_scales(scale_class):
+        """
+        Gets the scales (enums) in the given parameter class
+
+        :param scale_class: the class that contains the enum
+        :return: a list with the attribute's values
+        """
+
+        return [getattr((scale_class), att) for att in dir(scale_class) if not is_method(att) and att.isupper()]
+
 
     enums = {}
     tmp = {}
-    tmp['unidadMedida'] = [getattr(inv.Insumo().MeasuresScale, att) for att in dir(inv.Insumo().MeasuresScale) if not isMethod(att) and att.isupper()]
-    tmp['estado'] = [getattr(inv.Insumo().StatusScale, att) for att in dir(inv.Insumo().StatusScale) if not isMethod(att) and att.isupper()]
+    tmp['unidadMedida'] = get_scales(inv.Insumo().MeasuresScale)
+    tmp['estado'] = get_scales(inv.Insumo().StatusScale)
     enums['insumos'] = tmp
 
     tmp = {}
-    tmp['accionCantidad'] = [getattr(inv.AjusteStock().ActionScale, att) for att in dir(inv.AjusteStock().ActionScale) if not isMethod(att) and att.isupper()]
+    tmp['accionCantidad'] = get_scales(inv.AjusteStock().ActionScale)
     enums['ajustes-stock'] = tmp
 
     tmp = {}
-    tmp['estado'] = [getattr(her.StatusScale, att) for att in dir(her.StatusScale) if not isMethod(att) and att.isupper()]
+    tmp['estado'] = get_scales(her.StatusScale)
     enums['herramientas'] = tmp
     enums['estados-herramienta'] = tmp
 
     tmp = {}
-    tmp['categoria'] = [getattr(tar.Empleado().CategoriaScale, att) for att in dir(tar.Empleado().CategoriaScale) if not isMethod(att) and att.isupper()]
+    tmp['categoria'] = get_scales(tar.Empleado().CategoriaScale)
     enums['empleados'] = tmp
 
     tmp = {}
-    tmp['prioridad'] = [getattr(tar.OrdenServicio().CaracterScale, att) for att in dir(tar.OrdenServicio().CaracterScale) if not isMethod(att) and att.isupper()]
-    tmp['categoria'] = [getattr(tar.OrdenServicio().CategoriaScale, att) for att in dir(tar.OrdenServicio().CategoriaScale) if not isMethod(att) and att.isupper()]
-    tmp['estado'] = [getattr(tar.OrdenServicio().StatusScale, att) for att in dir(tar.OrdenServicio().StatusScale) if not isMethod(att) and att.isupper()]
+    tmp['prioridad'] = get_scales(tar.OrdenServicio().CaracterScale)
+    tmp['categoria'] = get_scales(tar.OrdenServicio().CategoriaScale)
+    tmp['estado'] = get_scales(tar.OrdenServicio().StatusScale)
     enums['ordenes-servicio'] = tmp
 
     tmp = {}
-    tmp['satisfaccion'] = [getattr(tar.EncuestaSatisfaccion().SatisfactionScale, att) for att in dir(tar.EncuestaSatisfaccion().SatisfactionScale) if not isMethod(att) and att.isupper()]
-    tmp['tiempoRespuesta'] = [getattr(tar.EncuestaSatisfaccion().ResponseTimeScale, att) for att in dir(tar.EncuestaSatisfaccion().ResponseTimeScale) if not isMethod(att) and att.isupper()]
+    tmp['satisfaccion'] = get_scales(tar.EncuestaSatisfaccion().SatisfactionScale)
+    tmp['tiempoRespuesta'] = get_scales(tar.EncuestaSatisfaccion().ResponseTimeScale)
     enums['encuestasatisfaccion'] = tmp
 
     tmp = {}
-    tmp['tipo'] = [getattr(tar.Tarea().TypeScale, att) for att in dir(tar.Tarea().TypeScale) if not isMethod(att) and att.isupper()]
+    tmp['tipo'] = get_scales(tar.Tarea().TypeScale)
     enums['tareas'] = tmp
 
     tmp = {}
-    tmp['aprobado'] = [getattr(com.Presupuesto().StatusScale, att) for att in dir(com.Presupuesto().StatusScale) if not isMethod(att) and att.isupper()]
-    enums['presupuesto'] = tmp
+    tmp['aprobado'] = get_scales(com.StatusScale)
+    enums['presupuestos'] = tmp
+
+    aux = tmp['aprobado']
+    tmp = {}
+    tmp['recibido'] = aux
+    enums['pedidos-insumo'] = tmp
 
     return JsonResponse(enums)

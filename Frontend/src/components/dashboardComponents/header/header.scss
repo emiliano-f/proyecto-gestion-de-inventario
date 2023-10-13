@@ -10,11 +10,12 @@
     .logo {
         display: flex;
         align-items: center;
+        font-size: medium;
         font-weight: bold;
         gap: 10px;
         img {
-            height: 30px;
-            width: 30px;
+            height: 40px;
+            
         }
     }
     .icons {

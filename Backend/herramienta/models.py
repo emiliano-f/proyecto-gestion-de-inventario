@@ -2,9 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class StatusScale(models.TextChoices):
-    OK = 'OK'
-    EN_REPARACION = 'EN_REPARACION'
-    MAL_ESTADO = 'MAL_ESTADO'
+    OK = 'Ok'
+    EN_REPARACION = 'En reparación'
+    MAL_ESTADO = 'En mal estado'
 
 class TipoHerramienta(models.Model):
     id = models.AutoField(primary_key=True)

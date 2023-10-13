@@ -13,15 +13,15 @@ class TipoInsumo(models.Model):
 class Insumo(models.Model):
 
     class MeasuresScale(models.TextChoices):
-        METRO = 'METRO'
-        LITRO = 'LITRO'
-        GRAMO = 'GRAMO'
-        CONTABLE = 'CONTABLE'
+        METRO = 'Metro'
+        LITRO = 'Litro'
+        GRAMO = 'Gramo'
+        CONTABLE = 'Contable'
 
     class StatusScale(models.TextChoices):
-        OK = 'OK'
-        ELIMINADO = 'ELIMINADO'
-        SUSPENDIDO = 'SUSPENDIDO'
+        OK = 'Ok'
+        ELIMINADO = 'Eliminado'
+        SUSPENDIDO = 'Suspendido'
         
     id = models.AutoField(primary_key=True)
     tipoInsumo = models.ForeignKey(TipoInsumo, on_delete=models.DO_NOTHING)
@@ -51,8 +51,8 @@ class OrdenRetiro(models.Model):
 class AjusteStock(models.Model):
 
     class ActionScale(models.TextChoices):
-        SUMAR = 'SUMAR'
-        RESTAR = 'RESTAR'
+        SUMAR = 'Sumar'
+        RESTAR = 'Restar'
 
     id = models.AutoField(primary_key=True)
     insumo = models.ForeignKey(Insumo, on_delete=models.DO_NOTHING)

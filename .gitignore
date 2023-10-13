@@ -4,6 +4,7 @@
 .venv
 venv
 venv/
+Backend/ven/
 
 # db
 *.sqlite3

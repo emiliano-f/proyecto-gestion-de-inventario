@@ -34,7 +34,7 @@ class OrdenServicio(models.Model):
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)
     tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING, null=True)
-    fechaGeneracion = models.DateField(auto_now=False, auto_now_add=False)
+    fechaGeneracion = models.DateField(auto_now={True}, auto_now_add=False)
     sector = models.CharField(max_length=255, null=True)
     descripcion = models.CharField(max_length=255, null=True)
     fechaNecesidad = models.DateField(auto_now=False, auto_now_add=False, null=True)
@@ -58,17 +58,17 @@ class OrdenServicio(models.Model):
     
 class EncuestaSatisfaccion(models.Model):
     class SatisfactionScale(models.TextChoices):
-        EXCELENTE = "EXCELENTE"
-        BUENO = "BUENO"
-        DEFICIENTE = "DEFICIENTE"
-        MALO = "MALO"
-        INDEFINIDO = "INDEFINIDO"
+        EXCELENTE = "Excelente"
+        BUENO = "Bueno"
+        DEFICIENTE = "Deficiente"
+        MALO = "Malo"
+        INDEFINIDO = "Indefinido"
     class ResponseTimeScale(models.TextChoices):
-        EXCELENTE = "EXCELENTE"
-        BUENO = "BUENO"
-        DEFICIENTE = "DEFICIENTE"
-        MALO = "MALO"
-        INDEFINIDO = "INDEFINIDO"
+        EXCELENTE = "Excelente"
+        BUENO = "Bueno"
+        DEFICIENTE = "Deficiente"
+        MALO = "Malo"
+        INDEFINIDO = "Indefinido"
 
     ordenServicio = models.ForeignKey(OrdenServicio, on_delete=models.DO_NOTHING)
     satisfaccion = models.CharField(
@@ -86,11 +86,11 @@ class EncuestaSatisfaccion(models.Model):
 class Tarea(models.Model):
 
     class TypeScale(models.TextChoices):
-        INDEFINIDO = "INDEFINIDO"
+        REPARACION = "Reparación"
+        INDEFINIDO = "Indefinido"
 
     id = models.AutoField(primary_key=True)
     empleado = models.ManyToManyField("tarea.Empleado",blank=False)
-    supTarea = models.OneToOneField("tarea.Tarea", verbose_name=("Tarea padre"), on_delete=models.DO_NOTHING, null=True)
     #legajo = models.IntegerField(unique=True)
     tipo = models.CharField(
         max_length=15,

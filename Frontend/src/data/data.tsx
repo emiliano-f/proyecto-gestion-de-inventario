@@ -69,7 +69,7 @@ export function getUri(fieldName:string): string {
             name = "pedidos-insumo";
             break;
         }case "presupuesto":{
-            name = "presupuesto";
+            name = "presupuestos";
             break;
         }case "detallePedido":{
             name = "detalle-pedidos";
@@ -90,7 +90,7 @@ export function getUri(fieldName:string): string {
             name = "encuestas-satisfaccion";
             break;
         case "supTarea":
-            name = "tarea";
+            name = "tareas";
             break;    
         default:
             throw new Error(`El campo ${fieldName} no tiene uri asignada`);
@@ -140,7 +140,7 @@ const translations : Record<string,Record<string,string>> = {
         singular: "Pedido de Insumo", 
         plural: "Pedidos de Insumo"
     },
-    "presupuesto": {
+    "presupuestos": {
         singular: "Presupuesto", 
         plural: "Presupuestos"
     },

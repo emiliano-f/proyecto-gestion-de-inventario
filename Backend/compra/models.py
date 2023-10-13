@@ -1,16 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class StatusScale(models.TextChoices):
+    """
+    Values for recibido (PedidoInsumo) and aprobado (Presupuesto)
+    """
+
+    SI = 'Si'
+    NO = 'No'
+
 class PedidoInsumo(models.Model):
-    id = models.AutoField(primary_key=True)
+
+    id = models.AutoField(primary_key=True);
     fechaHora = models.DateTimeField(auto_now=True)
+    recibido = models.CharField(max_length=2, choices=StatusScale.choices, default=StatusScale.NO)
     observaciones = models.CharField(max_length=255, null=True)
 
 class Presupuesto(models.Model):
-
-    class StatusScale(models.TextChoices):
-        SI = 'SI'
-        NO = 'NO'
 
     id = models.AutoField(primary_key = True)
     #imagen = models.ImageField(upload_to="images/")
