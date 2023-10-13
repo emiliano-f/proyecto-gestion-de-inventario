@@ -36,7 +36,7 @@ class PedidoInsumoSerializer(serializers.ModelSerializer):
     Adds attribute to PedidoInsumoSerializer for get 
     DetallePedido.*
     """
-    detalles = DetallePedidoSerializer(read_only=True)
+    detalles = DetallePedidoSerializer(many=True, required=False)
 
     class Meta:
         model = models.PedidoInsumo

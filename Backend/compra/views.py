@@ -1,10 +1,18 @@
 from django.db import transaction
 from rest_framework import viewsets
+from rest_framework import status
+from rest_framework.response import Response
 from . import serializer
 from . import models
+from inventario.models import Insumo
 
 class CustomModelViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+
+class CompraCommonLogic:
+    def detalle_pedido_logic(quantity):
+        ## check positive value
+        if quantity <= 0: raise Exception('Negative or zero: invalid quantity')
 
 class PedidoInsumoCRUD(viewsets.ViewSet):
 
@@ -15,35 +23,47 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
         # join
         pedido_insumo = models.PedidoInsumo.objects.all()
         # serializer
-        serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo, many=True)
+        serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo, many=True, read_only=True)
         return Response(serializer_class.data)
 
     @transaction.atomic
     def create(self, request):
         try:
-            serializer_class = serializer.PedidoInsumoSerializer(data=request.data)
+
+            ## check if detalles is empty
+            detalles_data = request.data.pop('detalles', [])
+            if detalles_data is None:
+                raise Exception("Details empty")
+
+            serializer_pedido = serializer.PedidoInsumoSerializer(data=request.data)
 
             ## check data types
-            serializer_class.is_valid(raise_exception=True)
-            serializer_class.save()
+            serializer_pedido.is_valid(raise_exception=True)
+            pedido_insumo = serializer_pedido.save()
 
-            ## update cantidad from Insumo
-            insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
+            ## check for detalles
+            serializers_detalles = []
+            for detalle in detalles_data:
+                detalle['pedidoInsumo'] = pedido_insumo.id
+                serializers_detalles.append(serializer.DetallePedidoSerializer(data=detalle))
 
-            ## check positive value
-            if int(request.data.get('cantidad')) <= 0:
-                raise Exception("Negative or zero quantity")
-            
-            ## update quantities
-            quant = insumo.cantidad - int(request.data.get('cantidad'))
+            ### check validity, logic and save
+            detalle_pedido_models = []
+            for serializer_detalle in serializers_detalles:
+                serializer_detalle.is_valid(raise_exception=True)
+                CompraCommonLogic.detalle_pedido_logic(serializer_detalle.validated_data.get('cantidad'))
+                detalle_pedido_models.append(serializer_detalle.save())
 
-            ## check quant
-            if quant < 0:
-                raise Exception("Excedeed Quantity")
+            ## check if PedidoInsumo was received
+            if pedido_insumo.recibido == 'Si':
+                for detalle_pedido in detalle_pedido_models:
+                    insumo = Insumo.objects.get(id=detalle_pedido.id)
 
-            insumo.cantidad = quant
-            insumo.save()
-            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+                    ## update quantities
+                    insumo.cantidad += detalle_pedido.cantidad
+                    insumo.save()
+
+            return Response(serializer_pedido.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             transaction.set_rollback(True)
@@ -104,9 +124,8 @@ class DetallePedidoCRUD(viewsets.ViewSet):
             ## check data types
             serializer_class.is_valid(raise_exception=True)
 
-            ## check positive value
-            if int(request.data.get('cantidad')) <= 0:
-                raise Exception("Negative or zero quantity")
+            ## check logic
+            CompraCommonLogic.detalle_pedido_logic(serializer_class.data.get('cantidad'))
 
             serializer_class.save()
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
