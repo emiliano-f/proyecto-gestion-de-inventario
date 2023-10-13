@@ -18,6 +18,14 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
 
     def __table__():
         return 'pedidoinsumo'
+    
+    def __update_insumo__(detalles):
+        for detalle_pedido in detalles:
+            insumo = Insumo.objects.get(id=detalle_pedido['insumo'])
+            ## update quantities
+            insumo.cantidad += detalle_pedido['cantidad']
+            insumo.save()
+
 
     def list(self, request):
         # join
@@ -56,12 +64,7 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
 
             ## check if PedidoInsumo was received
             if pedido_insumo.recibido == 'Si':
-                for detalle_pedido in detalle_pedido_models:
-                    insumo = Insumo.objects.get(id=detalle_pedido.insumo.id)
-
-                    ## update quantities
-                    insumo.cantidad += detalle_pedido.cantidad
-                    insumo.save()
+                PedidoInsumoCRUD.__update_insumo__(detalle_pedido_models)
 
             return Response(serializer_pedido.data, status=status.HTTP_201_CREATED)
 
@@ -71,31 +74,39 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
 
     def retrieve(self, request, pk):
         try:
-            orden_retiro = models.OrdenRetiro.objects.get(id=pk)
+            pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer_class = serializer.OrdenRetiroFkReplacedSerializer(orden_retiro)
+        serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo)
         return Response(serializer_class.data)
 
+    @transaction.atomic
     def update(self, request, pk):
         try:
-            orden_retiro = models.OrdenRetiro.objects.get(id=pk)
+            pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer_class = serializer.OrdenRetiroSerializer(orden_retiro, data=request.data)
-        serializer_class.is_valid(raise_exception=True)
-        serializer_class.save()
-        return Response(serializer_class.data)
+        serializer_pedido = serializer.PedidoInsumoSerializer(pedido_insumo, data=request.data)
+        serializer_pedido.is_valid(raise_exception=True)
+        serializer_pedido.save()
+
+        if serializer_pedido.validated_data.get('recibido') == 'Si':
+            serializer_detalles = serializer.DetallePedidoSerializer(
+                                                models.DetallePedido.objects.filter(pedidoInsumo=pk).all(),
+                                                many=True)
+            PedidoInsumoCRUD.__update_insumo__(serializer_detalles.data)
+
+        return Response(serializer_pedido.data)
 
     def destroy(self, request, pk):
         try:
-            orden_retiro = models.OrdenRetiro.objects.get(id=pk)
+            pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        orden_retiro.delete()
+        pedido_insumo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 class PresupuestoCRUD(CustomModelViewSet):

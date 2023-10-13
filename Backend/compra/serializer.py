@@ -19,7 +19,7 @@ class DetallePedidoSerializer(serializers.ModelSerializer):
         model = models.DetallePedido
         fields = '__all__'
 
-class DetallePedidoFkReplacedSerializer(serializers.ModelSerializer):
+class DetallePedidoFkReplacedSerializer(DetallePedidoSerializer):
     """
     Adds attributes to DetallePedidoSerializer for get 
     PedidoInsumo.*
