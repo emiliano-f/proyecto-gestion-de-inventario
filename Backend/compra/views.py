@@ -57,7 +57,7 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
             ## check if PedidoInsumo was received
             if pedido_insumo.recibido == 'Si':
                 for detalle_pedido in detalle_pedido_models:
-                    insumo = Insumo.objects.get(id=detalle_pedido.id)
+                    insumo = Insumo.objects.get(id=detalle_pedido.insumo.id)
 
                     ## update quantities
                     insumo.cantidad += detalle_pedido.cantidad
