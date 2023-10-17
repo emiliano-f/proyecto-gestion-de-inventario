@@ -2,16 +2,18 @@ import "./list.scss"
 
 import { useEffect, useRef, useState } from "react"
 import { GridColDef } from "@mui/x-data-grid";
+
 import { DataTable } from "../dataTable/DataTable"
-
-import { GetColumns, GetFields, Field } from "../getColumns/GetColumns";
-import { ListItems, GetUrlParts } from "../../../Api/apiService";
+import { ListItems } from "../../../Api/apiService";
 import { setMessage, MessageDisplay } from "../messageDisplay/MessageDisplay";
-import { getSingular, getPlural} from "../../../data/data"
-
 import ModalForm, { FormType } from "../modalForm/ModalForm";
 import DeleteAlert from "../deleteAlert/DeleteAlert";
-import { ACTIONS } from "../../../data/structure";
+
+import { GetUrlParts } from "../../../data/FRONTURLS";
+import { GetColumns, GetFields, Field } from "../../../data/STRUCTURE";
+import { getSingular, getPlural} from "../../../data/TRANSLATIONS"
+import { ACTIONS } from "../../../data/ACTIONS";
+
 
 const List = () => {
     const ErrorState = useState(["",false]);

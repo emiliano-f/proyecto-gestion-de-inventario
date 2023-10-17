@@ -1,24 +1,15 @@
 import {useEffect} from "react";
-import {useParams,useLocation} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import axios, { AxiosResponse } from "axios"
-import {backendUrls} from "../data/data.tsx"
+import {BACKENDURLS,BASEURL} from "../data/BACKENDURLS"
 
 const inventarioAPI = axios.create()
-inventarioAPI.defaults.baseURL = "http://127.0.0.1:8000"
-
-export function GetUrlParts() : any {
-    const location = useLocation()
-    const parts = location.pathname.split("/").filter(part => part !== '');
-    const keys = ["module","item","id"]
-    const objeto = Object.assign({}, ...parts.map((valor, index) => ({ [keys[index]]: valor })));
-    return objeto;
-}
+inventarioAPI.defaults.baseURL = BASEURL
 
 export function ListItems(setItems : any, itemName : string) : Promise<AxiosResponse<any,any>> {
-    //console.log(itemName,backendUrls[itemName])
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function loadItems() {
-            await inventarioAPI.get(backendUrls[itemName])
+            await inventarioAPI.get(BACKENDURLS[itemName])
             .then((response) => {
                 setItems(response.data);
                 resolve(response)
@@ -36,7 +27,7 @@ export function ReadItem(setItem:any,itemName:string) : Promise<AxiosResponse<an
         useEffect(() => {
             async function loadItem(){
                 await inventarioAPI.get(
-                    backendUrls[itemName]+`${id}/`
+                    BACKENDURLS[itemName]+`${id}/`
                 )
                 .then((response) => {
                     setItem(response.data)
@@ -52,7 +43,7 @@ export function ReadItem(setItem:any,itemName:string) : Promise<AxiosResponse<an
 export function CreateItem(itemName: string, formData: FormData) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function createData(itemName: string, formData: FormData) {
-            await inventarioAPI.post(backendUrls[itemName], formData)
+            await inventarioAPI.post(BACKENDURLS[itemName], formData)
             .then((response) => resolve(response))
             .catch((error) => reject(error));
         }
@@ -64,7 +55,7 @@ export function CreateItem(itemName: string, formData: FormData) : Promise<Axios
 export function UpdateItem(itemName:string,formData:FormData,id:string|undefined) : Promise<AxiosResponse<any,any>> {   
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function updateData(itemName:string,id:string|undefined,formData:FormData){
-            await inventarioAPI.put(backendUrls[itemName] +`${id}/`, formData)
+            await inventarioAPI.put(BACKENDURLS[itemName] +`${id}/`, formData)
             .then((response) => resolve(response))
             .catch((error) => reject(error));
         }
@@ -75,7 +66,7 @@ export function UpdateItem(itemName:string,formData:FormData,id:string|undefined
 export function DeleteItem(itemName: string, id: string) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function deleteData(itemName: string, id: string) {
-            await inventarioAPI.delete(backendUrls[itemName] +`${id}/`)
+            await inventarioAPI.delete(BACKENDURLS[itemName] +`${id}/`)
             .then((response) => resolve(response))
             .catch((error) => reject(error));
         }
@@ -86,7 +77,7 @@ export function DeleteItem(itemName: string, id: string) : Promise<AxiosResponse
 export function SendServiceRequest(formData: FormData) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function sendData(formData: FormData) {
-            await inventarioAPI.post(backendUrls["ordenes-servicio"], formData)
+            await inventarioAPI.post(BACKENDURLS["ordenes-servicio"], formData)
             .then((response) => resolve(response))
             .catch((error) => reject(error));
         }
@@ -97,7 +88,7 @@ export function SendServiceRequest(formData: FormData) : Promise<AxiosResponse<a
 export function GetEnums(setEnum:any) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
             async function loadItem(){
-                await inventarioAPI.get("table-enums/")
+                await inventarioAPI.get(BACKENDURLS["enums"])
                 .then((response) => {
                     setEnum(response.data)
                     resolve(response)

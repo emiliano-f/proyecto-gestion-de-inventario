@@ -1,5 +1,6 @@
 import "./messageDisplay.scss"
 import {FiAlertTriangle, FiAlertCircle} from "react-icons/fi"
+
 type msgError = [
     (string | boolean)[], 
     React.Dispatch<React.SetStateAction<(string | boolean)[]>>

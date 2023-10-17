@@ -1,26 +1,25 @@
 import "./detail.scss"
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom"
-import { ReadItem, GetUrlParts } from "../../../Api/apiService";
-import { getSingular } from "../../../data/data";
+import { ReadItem } from "../../../Api/apiService";
+import { GetUrlParts } from "../../../data/FRONTURLS";
+import { getSingular } from "../../../data/TRANSLATIONS";
 import { setMessage } from "../messageDisplay/MessageDisplay";
-import { Field } from "../getColumns/GetColumns";
-import {getFullName} from "../../../data/structure";
+import { getFullName } from "../../../data/STRUCTURE";
 
 const Detail = () => {
     const [row, setRow] = useState(null);
-    const { item: itemName, module: moduleName } = GetUrlParts();
+    const {group,entity} = GetUrlParts();
     
-    ReadItem(setRow, itemName)
+    ReadItem(setRow, entity)
     .catch((error) => {
-        setMessage(`Ha surgido un error al buscar ${getSingular(itemName)}`,error)
+        setMessage(`Ha surgido un error al buscar ${getSingular(entity)}`,error)
     });
     
     return (
         <div className="detail">
             <div className="card custom-card mb-3">
                 <div className="card-header">
-                    {row && <h2>{row["nombre"] ? row["nombre"] : `${getSingular(itemName)} ${row["id"]}`}</h2>}
+                    {row && <h2>{row["nombre"] ? row["nombre"] : `${getSingular(entity)} ${row["id"]}`}</h2>}
                 </div>
                 <div className="card-body">
                     {row 
@@ -28,12 +27,12 @@ const Detail = () => {
                             (key !== "id" && key !== "nombre") && 
                             (
                                 <div className="row" key={index}>
-                                    <span className="title">{getFullName(moduleName, itemName, key)} : </span>
+                                    <span className="title">{getFullName(group, entity, key)} : </span>
                                     <span className="value">{row[key]}</span>
                                 </div>
                             )
                         )) 
-                        : <h1>El {getSingular(itemName)} solicitado no se 
+                        : <h1>El {getSingular(entity)} solicitado no se 
                         encuentra en la base de datos con esa id</h1>
                     }
                 </div>

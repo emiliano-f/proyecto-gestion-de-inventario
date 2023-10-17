@@ -1,14 +1,13 @@
 import "./stockAdjustment.scss";
 import { useState } from "react";
 
-import { GetUrlParts, UpdateItem as Update, CreateItem as Create } from "../../../Api/apiService"
-import { getSingular } from "../../../data/data";
+import { GetUrlParts } from "../../../data/FRONTURLS";
+
+import { UpdateItem as Update, CreateItem as Create } from "../../../Api/apiService"
 import { setMessage } from "../messageDisplay/MessageDisplay";
-import { Field } from "../getColumns/GetColumns";
-import Button from 'react-bootstrap/Button'
-import SelectList from "../selectList/SelectList";
 
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button'
 
 
 
@@ -23,10 +22,10 @@ type Props = {
 
 const StockAdjusment = (props: Props) => {
 
-    const { item: itemName, module: moduleName } = GetUrlParts();
+    const { entity: entityName} = GetUrlParts();
 
     const [validated, setValidated] = useState(false);
-    console.log(itemName);
+    console.log(entityName);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

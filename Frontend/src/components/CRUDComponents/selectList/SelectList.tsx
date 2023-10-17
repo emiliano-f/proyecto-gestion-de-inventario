@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { ListItems } from '../../../Api/apiService';
-import { getUri, getSingular} from '../../../data/data';
 import { setMessage } from '../messageDisplay/MessageDisplay';
+import { getUri } from '../../../data/FOREINGENTITY';
+import { getSingular } from '../../../data/TRANSLATIONS';
 
 type Props = {
     fieldName: string,
@@ -15,8 +16,7 @@ type Props = {
  * @param props props.fieldName es el nombre de la columna de interés
  * @returns 
  */
-const SelectList = (props:Props) => {
-
+const SelectList = ({props}:Props) => {
     interface Item {
         id: number;
         nombre: string;

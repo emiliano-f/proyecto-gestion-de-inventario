@@ -4,62 +4,68 @@ import Login from "../pages/login/Login";
 import MainResume from "../pages/mainResume/MainResume";
 import Dashboard from "../pages/dashboard/Dashboard";
 import ServiceForm from "../pages/serviceform/ServiceForm"
-
-import List from "../components/CRUDComponents/list/List"
-
-import {SECTIONS} from "../data/data.tsx";
 import Detail from "../components/CRUDComponents/detail/Detail.tsx";
 import NotFound from "../pages/notFound/NotFound.tsx";
 import TaskForm from "../components/CRUDComponents/taskForm/TaskForm.tsx";
+import List from "../components/CRUDComponents/list/List"
+
+import SECTIONS from "../data/SECTIONS.tsx";
+
 
 /**
  * Genera a partir de los elementos del menu lateral las url's correspondientes
+ * (getter + function) generateRoutes(): devuelve un arreglo de objetos que representan las rutas
+ * del frontend, en función de los objetos definidos en la variable SECTIONS.
+ * Las url's creadas indirectamente a partir de los grupos y entidades de la variable STRUCTURE.
  * @returns Un arreglo con todas las rutas para inventario
  */
-function generateRoutes(){
-  var routes :RouteObject[] = [];
+function generateRoutes() {
+  var routes: RouteObject[] = [];
   SECTIONS.forEach((section) => {
-    section.modules.forEach((module) => {
-        routes.push(
-          {
-            path:module.url,
-            loader: () => {return redirect(module.tables[0].url)}
-          }
-        );
-      
-        module.tables?.forEach((table) => {
-          
-          routes = routes.concat([
-            {
-              path: table.url,
-              element: <List/>,
-            },
-            {
-              path: table.url + "/detail/:id/",
-              element: <Detail/>
-            }
-          ]);
-        });
-        if (module.title==="Tarea"){
-          routes = routes.concat([
-            {
-              path: "/tarea/crear-tarea/:id/",
-              element: <TaskForm />
-            }
-          ]);
+    section.modules.forEach((group) => {
+
+      routes.push(
+        {
+          path: group.url,
+          loader: () => { return redirect(group.tables[0].url) }
         }
+      );
+
+      group.tables?.forEach((table) => {
+
+        routes = routes.concat([
+          {
+            path: table.url,
+            element: <List />,
+          },
+          {
+            path: table.url + "/detail/:id/",
+            element: <Detail />
+          }
+        ]);
       });
+
+      if (group.title === "Tarea") {
+        routes = routes.concat([
+          {
+            path: "/tarea/crear-tarea/:id/",
+            element: <TaskForm />
+          }
+        ]);
+      }
+
     });
-    return routes;
-  }
-  
+  });
+  return routes;
+}
+
 const routes = [
   {
     path: "/",
     element: <Dashboard />,
     children: generateRoutes().concat([
       {
-        index:true,
+        index: true,
         path: "/",
         element: <MainResume />
       }
@@ -67,7 +73,7 @@ const routes = [
   },
   {
     path: "/orden-servicio/",
-    loader: () => {return redirect("/orden-servicio/generate")}
+    loader: () => { return redirect("/orden-servicio/generate") }
   },
   {
     path: "/login",
@@ -77,7 +83,6 @@ const routes = [
     path: "/orden-servicio/generate",
     element: <ServiceForm />
   },
-  
   {
     path: "*",
     element: <NotFound />
