@@ -30,6 +30,12 @@ class OrdenServicio(models.Model):
         EN_ESPERA = "EN_ESPERA"
         FINALIZADA = "FINALIZADA"
         EN_PROGRESO = "EN_PROGRESO"
+    class EdificioScale(models.TextChoices):
+        INDEFINIDO = "INDEFINIDO"
+        AULAS = "AULAS"
+        GOBIERNO = "GOBIERNO"
+        DETI_I = "DETI-I"
+        DETI_II = "DETI-II"
 
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)
@@ -54,6 +60,12 @@ class OrdenServicio(models.Model):
         max_length = 15,
         choices= StatusScale.choices,
         default= StatusScale.EN_ESPERA
+    )
+
+    edificio = models.CharField(
+        max_length = 15,
+        choices = EdificioScale,
+        default = EdificioScale.INDEFINIDO
     )
     
 class EncuestaSatisfaccion(models.Model):
