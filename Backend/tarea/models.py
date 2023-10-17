@@ -11,13 +11,18 @@ class Empleado(models.Model):
     mail = models.EmailField()
 
     class CategoriaScale(models.TextChoices):
-        CATEGORIA1= "CATEGORIA1"
-        CATEGORIA2= "CATEGORIA2"
+        CAT1 = "1"
+        CAT2 = "2"
+        CAT3 = "3"
+        CAT4 = "4"
+        CAT5 = "5"
+        CAT6 = "6"
+        CAT7 = "7"
+        CONTRATADO = "CONTRATADO"
     
     categoria = models.CharField(max_length=15,
                                  choices=CategoriaScale.choices,
-                                 default=CategoriaScale.CATEGORIA1,
-                                 null=True)
+                                 default=CategoriaScale.CAT1)
 
 class OrdenServicio(models.Model):
 
@@ -64,7 +69,7 @@ class OrdenServicio(models.Model):
 
     edificio = models.CharField(
         max_length = 15,
-        choices = EdificioScale,
+        choices = EdificioScale.choices,
         default = EdificioScale.INDEFINIDO
     )
     
@@ -102,7 +107,7 @@ class Tarea(models.Model):
         INDEFINIDO = "Indefinido"
 
     id = models.AutoField(primary_key=True)
-    empleado = models.ManyToManyField("tarea.Empleado",blank=False)
+    empleado = models.ManyToManyField(Empleado, through='Tiempo', blank=False)
     #legajo = models.IntegerField(unique=True)
     tipo = models.CharField(
         max_length=15,
@@ -115,3 +120,9 @@ class Tarea(models.Model):
     fechaFin = models.DateField(auto_now=False, auto_now_add=False, null=True)
     herramienta = models.ManyToManyField("herramienta.Herramienta")
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+
+class Tiempo(models.Model):
+    tarea = models.ForeignKey(Tarea, on_delete=models.DO_NOTHING)
+    empleado = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING)
+    horasEstimadas = models.IntegerField()
+    horasTotales = models.IntegerField()
