@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
 
-import STRUCTURE
- from "../structure";
+import STRUCTURE from "./STRUCTURE";
 /**
 * Construye las url's del frontend, en función de la los grupos lógicos
 * y las entidades que se reflejan en la variable STRUCTURE.

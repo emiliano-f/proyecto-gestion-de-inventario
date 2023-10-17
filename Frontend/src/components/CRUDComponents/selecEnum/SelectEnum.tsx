@@ -17,7 +17,7 @@ type Props = {
 const SelectEnum = ({props}:Props) => {
     const [enums, setEnum] = useState("");
     const {entity : entityName} =  GetUrlParts()
-
+    
     useEffect(() => {
         const fetchData = async () => {
             await GetEnums(setEnum); 
@@ -25,22 +25,28 @@ const SelectEnum = ({props}:Props) => {
         fetchData();
     }, [entityName]);
 
+    const [currOption,setCurrOption] =  useState("");    
+    useState(()=>{setCurrOption(props.defaultValue.toLowerCase())},[enums]);
+    const changeHandler = e => setCurrOption(e.target.value);
+
     return ( 
         <Form.Select
             name={props.fieldName}
             className="form-select"
-            defaultValue={props.defaultValue}
+            value={currOption}
             required={props.required}
+            onChange={changeHandler}
         >
             <option value="" disabled>Elegir {props.fieldName}</option>
+            {}
             {enums!==""?
             enums[entityName][props.fieldName].map(unidad => (
-                unidad == props.defaultValue ?
-                <option value={unidad} key={unidad} selected>{unidad}</option>:
-                <option value={unidad} key={unidad}>{unidad}</option>
+                <option value={unidad.toLowerCase()} key={unidad}>{unidad}</option>
             ))
             :null}
         </Form.Select>
     )
 }
+
+
 export default SelectEnum;

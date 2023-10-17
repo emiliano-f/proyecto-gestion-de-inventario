@@ -1,5 +1,5 @@
 import STRUCTURE from "./STRUCTURE";
-import FRONTURLS from "./FRONTURLS";
+import {FRONTURLS} from "./FRONTURLS";
 import { getSingular } from "./TRANSLATIONS";
 
 /**

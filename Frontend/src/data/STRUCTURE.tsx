@@ -102,6 +102,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
+            "baja":{
+                editable:false,
+                show:false,
+                name: "Dado de Baja",
+                type: "string",
+                col_size:SIZE.TINY,
+                required : false,
+                select: false,
+                enum: false,
+            }
             
         },
         "tipos-insumo": {
@@ -980,7 +990,12 @@ export default STRUCTURE;
  * @returns Devuelve el valor que se encuentra en el meta-atributo name de un atributo.
  */
 export function getFullName(group: string, entity: string, attribute: string): string | undefined {
-    return STRUCTURE[group][entity][attribute]["name"];
+    try{
+        return STRUCTURE[group][entity][attribute]["name"];
+    }catch{
+        throw new Error(`No se encuentra el atributo 
+        ${group} ${entity} ${attribute}`)
+    }
 }
 
 import { GridColDef } from "@mui/x-data-grid";
@@ -1012,7 +1027,7 @@ export function GetColumns(group: string, entity: String): GridColDef[] {
 }
 
 export type Field = {
-    entity: string,
+    field: string,
     headerName: string,
     type: string,
     required: boolean,
@@ -1025,7 +1040,7 @@ export function GetFields(group: string, entity: String): Field[] {
     return Object.entries(STRUCTURE[group][entity])
         .map(([key, attribute]) => {
             return {
-                entity: key,
+                field: key,
                 headerName: attribute.name,
                 type: attribute.type,
                 required: attribute.required,

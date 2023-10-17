@@ -88,9 +88,17 @@ const TRANSLATION : Record<string,Record<string,string>> = {
 //================GETTERS Y FUNCIONES================//
 
 export function getSingular(name: string){
-    return TRANSLATION[name].singular
+    try{
+        return TRANSLATION[name].singular
+    }catch(e){
+        throw new Error(`No existe ${name} en el diccionario`)
+    }
 }
 
 export function getPlural(name: string){
-    return TRANSLATION[name].plural
+    try{
+        return TRANSLATION[name].plural
+    }catch(e){
+        throw new Error(`No existe ${name} en el diccionario`)
+    }
 }

@@ -32,33 +32,33 @@ const List = () => {
     }
 
     const [items, setItems] = useState([]);
-    const { module: moduleName, item: itemName } = GetUrlParts();
+    const { group: groupName, entity: entityName } = GetUrlParts();
 
     useEffect(()=>{
-        ListItems(setItems, itemName)
+        ListItems(setItems, entityName)
             .catch((error) => {
-                setMessage(`Ha surgido un error al buscar ${getPlural(itemName)}.`,error)
+                setMessage(`Ha surgido un error al buscar ${getPlural(entityName)}.`,error)
             })
-    }, [changeRef.current, itemName])
+    }, [changeRef.current, entityName])
 
-    const columns: GridColDef[] = GetColumns(moduleName, itemName);
-    const fields: Field[] = GetFields(moduleName, itemName);
-    //console.log(items)
+    const columns: GridColDef[] = GetColumns(groupName, entityName);
+    const fields: Field[] = GetFields(groupName, entityName);
+    
     return (
         <>
             <MessageDisplay {...ErrorState}/>
             <div className="item">
                 <div className="info">
-                    <h1>{getPlural(itemName)}</h1>
-                    {(ACTIONS[itemName].add) && <button className="btn btn-primary" onClick={() => setOpenAdd(true)}>Agregar {getSingular(itemName)}</button>}
+                    <h1>{getPlural(entityName)}</h1>
+                    {(ACTIONS[entityName].add) && <button className="btn btn-primary" onClick={() => setOpenAdd(true)}>Agregar {getSingular(entityName)}</button>}
                 </div>
 
-                <DataTable slug={itemName} columns={columns} rows={items} setOpenUpdate={setOpenUpdate} setOpenRead={setOpenRead} setOpenDelete={setOpenDelete} setRow={setRow} />
+                <DataTable slug={entityName} columns={columns} rows={items} setOpenUpdate={setOpenUpdate} setOpenRead={setOpenRead} setOpenDelete={setOpenDelete} setRow={setRow} />
 
-                {openAdd && <ModalForm slug={itemName} fields={fields} setOpen={setOpenAdd} formType={FormType.ADD} row={null} switchChange={switchChange} />}
-                {openUpdate && <ModalForm slug={itemName} fields={fields} setOpen={setOpenUpdate} formType={FormType.UPDATE} row={row} switchChange={switchChange} />}
-                {openRead && <ModalForm slug={itemName} fields={fields} setOpen={setOpenRead} formType={FormType.READ} row={row} switchChange={switchChange} />}
-                {openDelete && <DeleteAlert slug={itemName} id={row["id"]} setOpen={setOpenDelete} switchChange={switchChange} />}
+                {openAdd && <ModalForm slug={entityName} fields={fields} setOpen={setOpenAdd} formType={FormType.ADD} row={null} switchChange={switchChange} />}
+                {openUpdate && <ModalForm slug={entityName} fields={fields} setOpen={setOpenUpdate} formType={FormType.UPDATE} row={row} switchChange={switchChange} />}
+                {openRead && <ModalForm slug={entityName} fields={fields} setOpen={setOpenRead} formType={FormType.READ} row={row} switchChange={switchChange} />}
+                {openDelete && <DeleteAlert slug={entityName} id={row["id"]} setOpen={setOpenDelete} switchChange={switchChange} />}
             </div>
         </>
 

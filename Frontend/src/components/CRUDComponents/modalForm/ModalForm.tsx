@@ -34,6 +34,7 @@ type Props = {
 }
 
 function CreateSelect({field,props}) {
+    //console.log(field)
     const selectAtt = {
         fieldName: field.field,
         required: field.required,
@@ -77,7 +78,7 @@ function CreateControl({field,props}) {
 
 const ModalForm = (props: Props) => {
 
-    const {entityName} = GetUrlParts();
+    const {entity : entityName} = GetUrlParts();
     const [openStockAdj, setOpenStockAdj] = useState(false);
     const [validated, setValidated] = useState(false);
 

@@ -25,3 +25,10 @@ function buildURLs(){
  * Depende de los grupos, y las entidades del MER definidas en STRUCTURE.
  */
 export const BACKENDURLS: Record<string, string> = buildURLs();
+export function getBackendUrl(name){
+    try{
+        return BACKENDURLS[name];
+    }catch{
+        throw new Error(`No existe url en el backend para ${name}`);
+    }
+}
