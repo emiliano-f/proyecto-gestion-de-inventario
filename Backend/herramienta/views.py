@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.views import APIView
@@ -56,19 +57,28 @@ class HerramientaCRUD(viewsets.ViewSet):
             herramienta = models.Herramienta.objects.get(id=pk)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
+
         serializer_class = serializer.HerramientaJoinedSerializer(herramienta)
         return Response(serializer_class.data)
 
     def update(self, request, pk):
-        herramienta = models.Herramienta.objects.get(id=pk)
-        serializer_class = serializer.HerramientaSerializer(herramienta, data=request.data)
-        if serializer_class.is_valid():
+        try:
+            herramienta = models.Herramienta.objects.get(id=pk)
+            serializer_class = serializer.HerramientaSerializer(herramienta, data=request.data)
+            serializer_class.is_valid(raise_exception=True)
             serializer_class.save()
             return Response(serializer_class.data)
-        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
-        herramienta = models.Herramienta.objects.get(id=pk)
+        try:
+            herramienta = models.Herramienta.objects.get(id=pk)
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         herramienta.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -99,23 +109,28 @@ class EstadoHerramientaCRUD(viewsets.ViewSet):
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             transaction.set_rollback(True)
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
             estado_herramienta = models.EstadoHerramienta.objects.get(id=pk)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
+
         serializer_class = serializer.EstadoHerramientaJoinedSerializer(estado_herramienta)
         return Response(serializer_class.data)
 
     def update(self, request, pk):
-        estado_herramienta = models.EstadoHerramienta.objects.get(id=pk)
-        serializer_class = serializer.EstadoHerramientaSerializer(estado_herramienta, data=request.data)
-        if serializer_class.is_valid():
+        try:
+            estado_herramienta = models.EstadoHerramienta.objects.get(id=pk)
+            serializer_class = serializer.EstadoHerramientaSerializer(estado_herramienta, data=request.data)
+            serializer_class.is_valid(raise_exception=True)
             serializer_class.save()
             return Response(serializer_class.data)
-        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
         estado_herramienta = models.EstadoHerramienta.objects.get(id=pk)
