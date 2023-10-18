@@ -47,10 +47,13 @@ class OrdenServicio(models.Model):
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)
     tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING, null=True)
-    fechaGeneracion = models.DateField(auto_now={True}, auto_now_add=False)
+    fechaGeneracion = models.DateField(auto_now=True)
     sector = models.CharField(max_length=255, null=True)
     descripcion = models.CharField(max_length=255, null=True)
-    fechaNecesidad = models.DateField(auto_now=False, auto_now_add=False, null=True)
+    fechaNecesidad = models.DateField(
+            validators=[MinValueValidator(limit_value=date.today())],
+            help_text='Fecha debe ser igual o posterior a la actual'
+    )
     comentario = models.CharField(max_length=255, null=True)
 
     prioridad = models.CharField(
@@ -118,21 +121,15 @@ class Tarea(models.Model):
     )
     descripcion = models.CharField(max_length=255, null=True)
     fechaTentativa = models.DateField(
-            auto_now=False, 
-            auto_now_add=False,
             validators=[MinValueValidator(limit_value=date.today())],
             help_text='Fecha debe ser igual o posterior a la actual'
     )
     fechaInicio = models.DateField(
-            auto_now=False, 
-            auto_now_add=False,
             validators=[MinValueValidator(limit_value=date.today(),
                                           message='Fecha debe ser igual o posterior a la actual')],
             null=True
     )
     fechaFin = models.DateField(
-            auto_now=False, 
-            auto_now_add=False,
             validators=[MinValueValidator(limit_value=date.today(),
                                           message='Fecha debe ser igual o posterior a la actual')],
             null=True

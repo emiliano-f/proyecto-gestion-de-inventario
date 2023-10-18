@@ -38,10 +38,10 @@ class HerramientaCRUD(viewsets.ViewSet):
             herramienta = serializer_class.save()
 
             # estado creation
-            estado_data = {"herramienta": herramienta.id,
-                           "fecha": herramienta.fechaAlta,
-                           "estado": herramienta.estado,
-                           "observaciones": "Alta de herramienta"}
+            estado_data = {'herramienta': herramienta.id,
+                           'fecha': herramienta.fechaAlta,
+                           'estado': herramienta.estado,
+                           'observaciones': 'Alta de herramienta'}
             estado_serializer = serializer.EstadoHerramientaSerializer(data=estado_data)
             estado_serializer.is_valid(raise_exception=True)
             estado_serializer.save()
@@ -88,14 +88,15 @@ class EstadoHerramientaCRUD(viewsets.ViewSet):
     def create(self, request):
         try:
             serializer_class = serializer.EstadoHerramientaSerializer(data=request.data)
-            if serializer_class.is_valid():
-                serializer_class.save()
-                # update estado from Herramienta
-                herramienta = models.Herramienta.objects.get(id=request.data.get('herramienta'))
-                herramienta.estado = request.data.get('estado')
-                herramienta.save()
+            serializer_class.is_valid(raise_exception=True)
+            estado = serializer_class.save()
 
-                return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+            # update estado from Herramienta
+            herramienta = models.Herramienta.objects.get(id=estado.herramienta.id)
+            herramienta.estado = estado.estado
+            herramienta.save()
+
+            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             transaction.set_rollback(True)
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

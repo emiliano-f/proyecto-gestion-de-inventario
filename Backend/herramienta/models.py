@@ -22,7 +22,7 @@ class Herramienta(models.Model):
     tipoHerramienta = models.ForeignKey(TipoHerramienta, on_delete=models.DO_NOTHING)
     codigo = models.CharField(max_length=16, unique=True, null=True)
 
-    fechaAlta = models.DateTimeField(auto_now=True)
+    fechaAlta = models.DateField(auto_now_add=True)
     observaciones = models.CharField(max_length=255, null=True)
     estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.OK)
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
@@ -32,19 +32,8 @@ class Herramienta(models.Model):
         return texto.format(self.descripcion, self.estado)    
 
 class EstadoHerramienta(models.Model):
-
-    def date_newer(self, value):
-        """
-        Fecha must be newer than last entry
-        """
-        print("hola")
-        last_date = EstadoHerramienta.objects.filter(herramienta=self.herramienta).latest('fecha')
-        if last_date > value:
-            raise ValidationError("%(value)s debe ser posterior al último registro de la herramienta: %(date)s",
-                                  params={"value":value, "date":last_date})
-
     herramienta = models.ForeignKey(Herramienta, on_delete=models.DO_NOTHING)
-    fecha = models.DateTimeField(auto_now=True, validators=[date_newer])
+    fecha = models.DateField(auto_now_add=True)
     estado = models.CharField(max_length=16, choices=StatusScale.choices, default=StatusScale.OK)
     observaciones = models.CharField(max_length=255, null=True)
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
