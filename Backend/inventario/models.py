@@ -46,7 +46,7 @@ class Insumo(models.Model):
     def update_quantity(self, cantidad, accion=ActionScale.SUMAR):
         if accion == ActionScale.SUMAR:
             self.cantidad += abs(cantidad)
-        else if accion == ActionScale.RESTAR:
+        elif accion == ActionScale.RESTAR:
             self.cantidad -= abs(cantidad)
         else:
             raise Exception("Acción desconocida sobre cantidad")
