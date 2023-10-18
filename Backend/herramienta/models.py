@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.db import models
 
 class StatusScale(models.TextChoices):
     OK = 'Ok'
@@ -31,9 +32,19 @@ class Herramienta(models.Model):
         return texto.format(self.descripcion, self.estado)    
 
 class EstadoHerramienta(models.Model):
+
+    def date_newer(self, value):
+        """
+        Fecha must be newer than last entry
+        """
+        print("hola")
+        last_date = EstadoHerramienta.objects.filter(herramienta=self.herramienta).latest('fecha')
+        if last_date > value:
+            raise ValidationError("%(value)s debe ser posterior al último registro de la herramienta: %(date)s",
+                                  params={"value":value, "date":last_date})
+
     herramienta = models.ForeignKey(Herramienta, on_delete=models.DO_NOTHING)
-    # fecha must be newer than last entry
-    fecha = models.DateTimeField(auto_now=True)
+    fecha = models.DateTimeField(auto_now=True, validators=[date_newer])
     estado = models.CharField(max_length=16, choices=StatusScale.choices, default=StatusScale.OK)
     observaciones = models.CharField(max_length=255, null=True)
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
