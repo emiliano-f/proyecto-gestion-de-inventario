@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
 
 class TipoInsumo(models.Model):
     id = models.AutoField(primary_key=True)
@@ -27,10 +28,11 @@ class Insumo(models.Model):
     tipoInsumo = models.ForeignKey(TipoInsumo, on_delete=models.DO_NOTHING)
     nombre = models.CharField(max_length=32)
     unidadMedida = models.CharField(max_length=16, choices=MeasuresScale.choices, default=MeasuresScale.CONTABLE)
-    cantidad = models.IntegerField()
+    cantidad = models.IntegerField(validators=[MinValueValidator(0, message='El valor no puede ser menor a cero')])
     codigo = models.CharField(max_length=16, null=True)
     observaciones = models.CharField(max_length=256, null=True)
-    puntoReposicion = models.IntegerField(null=True)
+    puntoReposicion = models.IntegerField(validators=[MinValueValidator(0, message='El valor no puede ser menor a cero')],
+                                          null=True)
     estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.OK)
 
     def __str__(self):
@@ -41,7 +43,7 @@ class OrdenRetiro(models.Model):
     id = models.AutoField(primary_key=True)
     insumo = models.ForeignKey(Insumo, on_delete=models.DO_NOTHING)
     tarea = models.ForeignKey('tarea.Tarea', on_delete=models.DO_NOTHING)
-    cantidad = models.IntegerField()
+    cantidad = models.IntegerField(validators=[MinValueValidator(1, message='El valor no puede ser menor a uno')])
     fechaHora = models.DateTimeField(auto_now=True)
 
     def __str__(self):
