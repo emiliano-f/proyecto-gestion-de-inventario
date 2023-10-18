@@ -126,15 +126,15 @@ class Tarea(models.Model):
     fechaInicio = models.DateField(
             auto_now=False, 
             auto_now_add=False,
-            validators=[MinValueValidator(limit_value=date.today())],
-            help_text='Fecha debe ser igual o posterior a la actual',
+            validators=[MinValueValidator(limit_value=date.today(),
+                                          message='Fecha debe ser igual o posterior a la actual')],
             null=True
     )
     fechaFin = models.DateField(
             auto_now=False, 
             auto_now_add=False,
-            validators=[MinValueValidator(limit_value=date.today())],
-            help_text='Fecha debe ser igual o posterior a la actual',
+            validators=[MinValueValidator(limit_value=date.today(),
+                                          message='Fecha debe ser igual o posterior a la actual')],
             null=True
     )
     herramientas = models.ManyToManyField("herramienta.Herramienta")
@@ -143,5 +143,13 @@ class Tarea(models.Model):
 class Tiempo(models.Model):
     tarea = models.ForeignKey(Tarea, on_delete=models.DO_NOTHING)
     empleado = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING)
-    horasEstimadas = models.IntegerField()
-    horasTotales = models.IntegerField()
+    horasEstimadas = models.IntegerField(
+            validators=[MinValueValidator(0,
+                        message='El valor no puede ser menor a cero')],
+            null=True
+    )
+    horasTotales = models.IntegerField(
+            validators=[MinValueValidator(0,
+                        message='El valor no puede ser menor a cero')],
+            null=True
+    )

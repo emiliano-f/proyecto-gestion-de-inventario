@@ -27,7 +27,7 @@ class TareaSerializer(serializers.ModelSerializer):
     """
 
     class Meta:
-        model = models.Tarea
+        model = models.Tiempo
         fields = '__all__'
 
 class TareaJoinedSerializer(TareaSerializer):
@@ -54,3 +54,12 @@ class OrdenServicioUsuarioSerializer(serializers.ModelSerializer):
                   'descripcion', 'fechaNecesidad', 'comentario',
                   'prioridad', 'categoria', 'estado',
                   'usuarioNombre', 'usuarioApellido', 'usuarioID']
+
+class TiempoSerializer(serializers.ModelSerializer):
+    """
+    Retrieves all fields in Tiempo
+    """
+
+    class Meta:
+        model = models.Tiempo
+        fields = '__all__'

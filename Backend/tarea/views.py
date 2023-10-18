@@ -47,9 +47,24 @@ class TareaCRUD(viewsets.ViewSet):
             # check and create tarea
             serializer_tarea = serializer.TareaJoinedSerializer(data=request.data)
             serializer_tarea.is_valid(raise_exception=True)
-            serializer_tarea.save()
+            tarea = serializer_tarea.save()
 
-            # update empleados, herramientas, insumos
+            # update empleados (Tiempo)
+            for empleado in empleados_data:
+                # dict
+                tiempo_entry = []
+                tiempo_entry['empleado'] = empleado['id']
+                tiempo_entry['tarea'] = tarea.id
+                tiempo_entry['horasEstimadas'] = empleado.get('horasEstimadas')
+                # serializer
+                tiempo_serializer = serializer.TiempoSerializer(data=tiempo_entry)
+                tiempo_serializer.is_valid(raise_exception=True)
+                # saving
+                tiempo_serializer.save()
+
+            # update herramientas
+
+            # update insumos
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
