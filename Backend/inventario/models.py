@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 
+class ActionScale(models.TextChoices):
+    SUMAR = 'Sumar'
+    RESTAR = 'Restar'
+
 class TipoInsumo(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=32, unique=True)
@@ -39,6 +43,14 @@ class Insumo(models.Model):
         texto = "{0} ({1})"
         return texto.format(self.tipoInsumo, self.cantidad)
 
+    def update_quantity(self, cantidad, accion=ActionScale.SUMAR):
+        if accion == ActionScale.SUMAR:
+            self.cantidad += abs(cantidad)
+        else if accion == ActionScale.RESTAR:
+            self.cantidad -= abs(cantidad)
+        else:
+            raise Exception("Acción desconocida sobre cantidad")
+
 class OrdenRetiro(models.Model):
     id = models.AutoField(primary_key=True)
     insumo = models.ForeignKey(Insumo, on_delete=models.DO_NOTHING)
@@ -51,10 +63,6 @@ class OrdenRetiro(models.Model):
         return texto.format(self.id, self.cantidad)
 
 class AjusteStock(models.Model):
-
-    class ActionScale(models.TextChoices):
-        SUMAR = 'Sumar'
-        RESTAR = 'Restar'
 
     id = models.AutoField(primary_key=True)
     insumo = models.ForeignKey(Insumo, on_delete=models.DO_NOTHING)
