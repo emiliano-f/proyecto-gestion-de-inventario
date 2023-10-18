@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.db import models
 
 class StatusScale(models.TextChoices):
-    OK = 'Ok'
+    DISPONIBLE = 'Disponible'
+    EN_USO = 'En uso'
     EN_REPARACION = 'En reparación'
     MAL_ESTADO = 'En mal estado'
 
@@ -24,16 +24,19 @@ class Herramienta(models.Model):
 
     fechaAlta = models.DateField(auto_now_add=True)
     observaciones = models.CharField(max_length=255, null=True)
-    estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.OK)
+    estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         texto = "{0} [{1}]"
         return texto.format(self.descripcion, self.estado)    
+    
+    def is_available(self):
+        return self.estado == StatusScale.DISPONIBLE
 
 class EstadoHerramienta(models.Model):
     herramienta = models.ForeignKey(Herramienta, on_delete=models.DO_NOTHING)
     fecha = models.DateField(auto_now_add=True)
-    estado = models.CharField(max_length=16, choices=StatusScale.choices, default=StatusScale.OK)
+    estado = models.CharField(max_length=16, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)
     observaciones = models.CharField(max_length=255, null=True)
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)

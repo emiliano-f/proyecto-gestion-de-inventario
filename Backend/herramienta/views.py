@@ -10,6 +10,17 @@ from . import models
 class CustomModelViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
+class HerramientaCommonLogic:
+    def create_estado_entry(herramienta):
+        # estado creation
+        estado_data = {'herramienta': herramienta.id,
+                       'fecha': herramienta.fechaAlta,
+                       'estado': herramienta.estado,
+                       'observaciones': 'Alta de herramienta'}
+        estado_serializer = serializer.EstadoHerramientaSerializer(data=estado_data)
+        estado_serializer.is_valid(raise_exception=True)
+        estado_serializer.save()
+
 class TipoHerramientaCRUD(CustomModelViewSet):
     serializer_class = serializer.TipoHerramientaSerializer
     queryset = models.TipoHerramienta.objects.all()
@@ -39,13 +50,7 @@ class HerramientaCRUD(viewsets.ViewSet):
             herramienta = serializer_class.save()
 
             # estado creation
-            estado_data = {'herramienta': herramienta.id,
-                           'fecha': herramienta.fechaAlta,
-                           'estado': herramienta.estado,
-                           'observaciones': 'Alta de herramienta'}
-            estado_serializer = serializer.EstadoHerramientaSerializer(data=estado_data)
-            estado_serializer.is_valid(raise_exception=True)
-            estado_serializer.save()
+            HerramientaCommonLogic.create_estado_entry(herramienta)
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
