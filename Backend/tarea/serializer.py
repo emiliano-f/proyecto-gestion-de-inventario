@@ -45,6 +45,14 @@ class OrdenServicioSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class OrdenServicioUsuarioSerializer(serializers.ModelSerializer):
+    """
+    Retrieves fields from OrdenServicio
+    Add fields for get:
+    Usuario.apellido
+    Usuario.nombre
+    Usuario.id
+    """
+
     usuarioApellido = serializers.CharField(source='usuario.apellido')
     usuarioNombre = serializers.CharField(source='usuario.nombre')
     usuarioID = serializers.IntegerField(source='usuario.id')

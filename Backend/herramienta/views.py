@@ -47,9 +47,9 @@ class HerramientaCRUD(viewsets.ViewSet):
             estado_serializer.save()
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
-        except:
+        except Exception as e:
             transaction.set_rollback(True)
-            return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
@@ -98,7 +98,7 @@ class EstadoHerramientaCRUD(viewsets.ViewSet):
                 return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             transaction.set_rollback(True)
-            return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
