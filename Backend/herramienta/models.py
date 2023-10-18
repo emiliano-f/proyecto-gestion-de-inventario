@@ -19,7 +19,7 @@ class Herramienta(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=32, unique=True)
     tipoHerramienta = models.ForeignKey(TipoHerramienta, on_delete=models.DO_NOTHING)
-    codigo = models.CharField(max_length=16, null=True)
+    codigo = models.CharField(max_length=16, unique=True, null=True)
 
     fechaAlta = models.DateTimeField(auto_now=True)
     observaciones = models.CharField(max_length=255, null=True)
@@ -32,6 +32,7 @@ class Herramienta(models.Model):
 
 class EstadoHerramienta(models.Model):
     herramienta = models.ForeignKey(Herramienta, on_delete=models.DO_NOTHING)
+    # fecha must be newer than last entry
     fecha = models.DateTimeField(auto_now=True)
     estado = models.CharField(max_length=16, choices=StatusScale.choices, default=StatusScale.OK)
     observaciones = models.CharField(max_length=255, null=True)
