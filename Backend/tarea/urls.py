@@ -12,4 +12,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('ordenes-servicio/', views.OrdenServicioCRUD.as_view({'get':'list', 'post':'create'}), name='ordenes-servicio'),
     path('ordenes-servicio/<int:pk>/', views.OrdenServicioCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='ordenes-servicio-id'),
+    path('tareas/', views.TareaCRUD.as_view({'get':'list', 'post':'create'}), name='tareas'),
+    path('tareas/<int:pk>/', views.TareaCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='tareas-id'),
 ]

@@ -1,5 +1,7 @@
-from django.db import models
+from datetime import date
+from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User
+from django.db import models
 
 # Create your models here.
 
@@ -107,7 +109,7 @@ class Tarea(models.Model):
         INDEFINIDO = "Indefinido"
 
     id = models.AutoField(primary_key=True)
-    empleado = models.ManyToManyField(Empleado, through='Tiempo', blank=False)
+    empleados = models.ManyToManyField(Empleado, through='Tiempo', blank=False)
     #legajo = models.IntegerField(unique=True)
     tipo = models.CharField(
         max_length=15,
@@ -115,10 +117,27 @@ class Tarea(models.Model):
         default=TypeScale.INDEFINIDO
     )
     descripcion = models.CharField(max_length=255, null=True)
-    fechaTentativa = models.DateField(auto_now=False, auto_now_add=False)
-    fechaInicio = models.DateField(auto_now=False, auto_now_add=False, null=True)
-    fechaFin = models.DateField(auto_now=False, auto_now_add=False, null=True)
-    herramienta = models.ManyToManyField("herramienta.Herramienta")
+    fechaTentativa = models.DateField(
+            auto_now=False, 
+            auto_now_add=False,
+            validators=[MinValueValidator(limit_value=date.today())],
+            help_text='Fecha debe ser igual o posterior a la actual'
+    )
+    fechaInicio = models.DateField(
+            auto_now=False, 
+            auto_now_add=False,
+            validators=[MinValueValidator(limit_value=date.today())],
+            help_text='Fecha debe ser igual o posterior a la actual',
+            null=True
+    )
+    fechaFin = models.DateField(
+            auto_now=False, 
+            auto_now_add=False,
+            validators=[MinValueValidator(limit_value=date.today())],
+            help_text='Fecha debe ser igual o posterior a la actual',
+            null=True
+    )
+    herramientas = models.ManyToManyField("herramienta.Herramienta")
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
 class Tiempo(models.Model):

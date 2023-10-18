@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.views import APIView
@@ -22,19 +23,60 @@ class EncuestaSatisfaccionCRUD(CustomModelViewSet):
     def __table__():
         return 'encuestasatisfaccion'
 
-class TareaCRUD(CustomModelViewSet):
-    serializer_class = serializer.TareaSerializer
-    queryset = models.Tarea.objects.all()
+class TareaCRUD(viewsets.ViewSet):
 
     def __table__():
         return 'tarea'
 
-"""
-class OrdenServicioCRUD(CustomModelViewSet):
-    serializer_class = serializer.OrdenServicioSerializer
-    queryset = models.OrdenServicio.objects.all()
-"""
+    def list(self, request):
+        # join
+        #tarea = models.Tarea.objects.prefetch_related('empleados', 'herramientas', 'retiros_insumos').all()
+        tarea = models.Tarea.objects.prefetch_related('empleados', 'herramientas').all()
+        # serializer
+        serializer_class = serializer.TareaJoinedSerializer(tarea, many=True, read_only=True)
+        return Response(serializer_class.data)
 
+    @transaction.atomic
+    def create(self, request):
+        try:
+            # get empleados, herramientas, insumos
+            empleados_data = request.data.pop('empleados', [])
+            herramientas_data = request.data.pop('herramientas', [])
+            insumos_data = request.data.pop('empleados', [])
+
+            # check and create tarea
+            serializer_tarea = serializer.TareaJoinedSerializer(data=request.data)
+            serializer_tarea.is_valid(raise_exception=True)
+            serializer_tarea.save()
+
+            # update empleados, herramientas, insumos
+
+            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            transaction.set_rollback(True)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk):
+        try:
+            orden_servicio = models.OrdenServicio.objects.get(id=pk)
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer_class = serializer.OrdenServicioUsuarioSerializer(orden_servicio)
+        return Response(serializer_class.data)
+
+    def update(self, request, pk):
+        orden_servicio = models.OrdenServicio.objects.get(id=pk)
+        serializer_class = serializer.OrdenServicioSerializer(orden_servicio, data=request.data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response(serializer_class.data)
+        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        orden_servicio = models.OrdenServicio.objects.get(id=pk)
+        orden_servicio.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
 class OrdenServicioCRUD(viewsets.ViewSet):
 
     def __table__():
