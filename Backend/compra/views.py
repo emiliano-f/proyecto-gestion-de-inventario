@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
@@ -70,7 +71,7 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
 
         except Exception as e:
             transaction.set_rollback(True)
-            return Response({"error":str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error':str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
@@ -85,20 +86,22 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
     def update(self, request, pk):
         try:
             pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
-        except: 
+            serializer_pedido = serializer.PedidoInsumoSerializer(pedido_insumo, data=request.data)
+            serializer_pedido.is_valid(raise_exception=True)
+            serializer_pedido.save()
+
+            if serializer_pedido.validated_data.get('recibido') == 'Si':
+                serializer_detalles = serializer.DetallePedidoSerializer(
+                                                    models.DetallePedido.objects.filter(pedidoInsumo=pk).all(),
+                                                    many=True)
+                PedidoInsumoCRUD.__update_insumo__(serializer_detalles.data)
+
+            return Response(serializer_pedido.data)
+
+        except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer_pedido = serializer.PedidoInsumoSerializer(pedido_insumo, data=request.data)
-        serializer_pedido.is_valid(raise_exception=True)
-        serializer_pedido.save()
-
-        if serializer_pedido.validated_data.get('recibido') == 'Si':
-            serializer_detalles = serializer.DetallePedidoSerializer(
-                                                models.DetallePedido.objects.filter(pedidoInsumo=pk).all(),
-                                                many=True)
-            PedidoInsumoCRUD.__update_insumo__(serializer_detalles.data)
-
-        return Response(serializer_pedido.data)
+        except Exception as e:
+            return Response({'error':str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
         try:
@@ -142,7 +145,7 @@ class DetallePedidoCRUD(viewsets.ViewSet):
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
-            return Response({"error":str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error':str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
@@ -156,13 +159,15 @@ class DetallePedidoCRUD(viewsets.ViewSet):
     def update(self, request, pk):
         try:
             detalle_pedido = models.DetallePedido.objects.get(id=pk)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            serializer_class = serializer.DetallePedidoSerializer(detalle_pedido, data=request.data)
+            serializer_class.is_valid(raise_exception=True)
+            serializer_class.save()
+            return Response(serializer_class.data)
 
-        serializer_class = serializer.DetallePedidoSerializer(detalle_pedido, data=request.data)
-        serializer_class.is_valid(raise_exception=True)
-        serializer_class.save()
-        return Response(serializer_class.data)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
         try:
