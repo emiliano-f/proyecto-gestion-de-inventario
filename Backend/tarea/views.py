@@ -13,6 +13,25 @@ from herramienta.views import HerramientaCommonLogic
 class CustomModelViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
+class TareaCommonLogic:
+    def update_herramienta(herramientas_data, status=None):
+        # update herramientas and estado
+        for herramienta_data in herramientas_data:
+            ## update herramienta
+            herramienta = herramienta_models.Herramienta.objects.get(id=herramienta_data['id'])
+            if not herramienta.is_available():
+                raise Exception('La herramienta no está disponible')
+
+            if status is None:
+                herramienta.estado = herramienta_data['estado']
+            else:
+                herramienta.estado = status
+
+            herramienta.save()
+
+            ## create estado entry
+            HerramientaCommonLogic.create_estado_entry(herramienta)
+
 class EmpleadoCRUD(CustomModelViewSet):
     serializer_class = serializer.EmpleadoSerializer
     queryset = models.Empleado.objects.all()
@@ -67,16 +86,7 @@ class TareaCRUD(viewsets.ViewSet):
                 tiempo_serializer.save()
 
             # update herramientas and estado
-            for herramienta_data in herramientas_data:
-                ## update herramienta
-                herramienta = herramienta_models.Herramienta.objects.get(id=herramienta_data['id'])
-                if not herramienta.is_available():
-                    raise Exception('La herramienta no está disponible')
-                herramienta.estado = herramienta_models.StatusScale.EN_USO
-                herramienta.save()
-
-                ## create estado entry
-                HerramientaCommonLogic.create_estado_entry(herramienta)
+            TareaCommonLogic.update_herramienta(herramientas_data, herramienta_models.StatusScale.EN_USO)
 
             # update insumos
             for insumo_data in insumos_data:
@@ -92,34 +102,52 @@ class TareaCRUD(viewsets.ViewSet):
 
     def retrieve(self, request, pk):
         try:
-            orden_servicio = models.OrdenServicio.objects.get(id=pk)
+            tarea = models.Tarea.objects.get(id=pk)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer_class = serializer.OrdenServicioUsuarioSerializer(orden_servicio)
+        serializer_class = serializer.TareaJoinedSerializer(tarea)
         return Response(serializer_class.data)
 
     def update(self, request, pk):
         try:
-            orden_servicio = models.OrdenServicio.objects.get(id=pk)
-            orden_servicio = models.OrdenServicio.objects.get(id=pk)
-            serializer_class = serializer.OrdenServicioSerializer(orden_servicio, data=request.data)
-            serializer_class.is_valid(raise_exception=True)
-            serializer_class.save()
-            return Response(serializer_class.data)
+            tarea = models.Tarea.objects.get(id=pk)
+            tarea_serializer = serializer.TareaSerializer(tarea, data=request.data)
+            tarea_serializer.is_valid(raise_exception=True)
+            tarea_serializer.save()
+            return Response(tarea_serializer.data)
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'errer': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
         try:
-            orden_servicio = models.OrdenServicio.objects.get(id=pk)
-            orden_servicio.delete()
+            tarea = models.Tarea.objects.get(id=pk)
+            tarea.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
     
+class TareaHerramientaCRUD(viewsets.ViewSet):
+    def update(self, request, pk):
+        try:
+            herramientas_data = request.data.pop('herramientas', [])
+
+            tarea = models.Tarea.objects.get(id=pk)
+            tarea_serializer = serializer.TareaSerializer(tarea, data=request.data)
+            tarea_serializer.is_valid(raise_exception=True)
+            tarea_serializer.save()
+
+            # update herramientas and estado
+            TareaCommonLogic.update_herramienta(herramientas_data)
+
+            return Response(tarea_serializer.data)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 class OrdenServicioCRUD(viewsets.ViewSet):
 
     def __table__():
