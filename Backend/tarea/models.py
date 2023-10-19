@@ -1,5 +1,7 @@
-from django.db import models
+from datetime import date
+from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User
+from django.db import models
 
 # Create your models here.
 
@@ -45,10 +47,13 @@ class OrdenServicio(models.Model):
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)
     tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING, null=True)
-    fechaGeneracion = models.DateField(auto_now={True}, auto_now_add=False)
+    fechaGeneracion = models.DateField(auto_now=True)
     sector = models.CharField(max_length=255, null=True)
     descripcion = models.CharField(max_length=255, null=True)
-    fechaNecesidad = models.DateField(auto_now=False, auto_now_add=False, null=True)
+    fechaNecesidad = models.DateField(
+            validators=[MinValueValidator(limit_value=date.today())],
+            help_text='Fecha debe ser igual o posterior a la actual'
+    )
     comentario = models.CharField(max_length=255, null=True)
 
     prioridad = models.CharField(
@@ -107,7 +112,7 @@ class Tarea(models.Model):
         INDEFINIDO = "Indefinido"
 
     id = models.AutoField(primary_key=True)
-    empleado = models.ManyToManyField(Empleado, through='Tiempo', blank=False)
+    empleados = models.ManyToManyField(Empleado, through='Tiempo', blank=False)
     #legajo = models.IntegerField(unique=True)
     tipo = models.CharField(
         max_length=15,
@@ -115,14 +120,33 @@ class Tarea(models.Model):
         default=TypeScale.INDEFINIDO
     )
     descripcion = models.CharField(max_length=255, null=True)
-    fechaTentativa = models.DateField(auto_now=False, auto_now_add=False)
-    fechaInicio = models.DateField(auto_now=False, auto_now_add=False, null=True)
-    fechaFin = models.DateField(auto_now=False, auto_now_add=False, null=True)
-    herramienta = models.ManyToManyField("herramienta.Herramienta")
+    fechaTentativa = models.DateField(
+            validators=[MinValueValidator(limit_value=date.today())],
+            help_text='Fecha debe ser igual o posterior a la actual'
+    )
+    fechaInicio = models.DateField(
+            validators=[MinValueValidator(limit_value=date.today(),
+                                          message='Fecha debe ser igual o posterior a la actual')],
+            null=True
+    )
+    fechaFin = models.DateField(
+            validators=[MinValueValidator(limit_value=date.today(),
+                                          message='Fecha debe ser igual o posterior a la actual')],
+            null=True
+    )
+    herramientas = models.ManyToManyField("herramienta.Herramienta")
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
 class Tiempo(models.Model):
     tarea = models.ForeignKey(Tarea, on_delete=models.DO_NOTHING)
     empleado = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING)
-    horasEstimadas = models.IntegerField()
-    horasTotales = models.IntegerField()
+    horasEstimadas = models.IntegerField(
+            validators=[MinValueValidator(0,
+                        message='El valor no puede ser menor a cero')],
+            null=True
+    )
+    horasTotales = models.IntegerField(
+            validators=[MinValueValidator(0,
+                        message='El valor no puede ser menor a cero')],
+            null=True
+    )
