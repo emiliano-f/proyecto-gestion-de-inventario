@@ -14,7 +14,7 @@ class CustomModelViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
 class TareaCommonLogic:
-    def update_herramienta(herramientas_data, status=None):
+    def update_herramientas(herramientas_data, status=None):
         # update herramientas and estado
         for herramienta_data in herramientas_data:
             ## update herramienta
@@ -31,6 +31,47 @@ class TareaCommonLogic:
 
             ## create estado entry
             HerramientaCommonLogic.create_estado_entry(herramienta)
+
+    def update_insumos(insumos_data):
+        for insumo_data in insumos_data:
+            insumo = inventario_models.Insumo.objects.get(id=insumo_data['id'])
+            insumo.update_quantity(insumo_data['cantidad'], 
+                                   accion=inventario_models.ActionScale.RESTAR)
+            insumo.save()
+        
+
+    def create_empleados_relation(empleados_data, tarea_pk):
+        for empleado in empleados_data:
+            ## dict
+            tiempo_entry = []
+            tiempo_entry['empleado'] = empleado['id']
+            tiempo_entry['tarea'] = tarea_pk
+            tiempo_entry['horasEstimadas'] = empleado.get('horasEstimadas')
+            ## serializer
+            tiempo_serializer = serializer.TiempoSerializer(data=tiempo_entry)
+            tiempo_serializer.is_valid(raise_exception=True)
+            ## saving
+            tiempo_serializer.save()
+
+    def update_empleados_relation(empleados_data, tarea_pk):
+        tarea_empleados = model.Tiempo.objects.filter(tarea=tarea_pk).all()
+        new_empleados = []
+
+        # update empleados
+        for empleado in empleados_data:
+            tiempo_model = next((model for model in tarea_empleados if model.empleado == empleado['id']), None)
+            if tiempo_model is None:
+                new_empleados.append(empleado)
+            else:
+                if 'horasEstimadas' in empleado:
+                    tiempo_model.horasEstimadas = empleado['horasEstimadas']
+                if 'horasTotales' in empleado:
+                    tiempo_model.horasTotales = empleado['horasTotales']
+                tiempo_model.save()
+
+        # add empleados
+        if not new_empleados:
+            create_empleados_relation(new_empleados, tarea_pk)
 
 class EmpleadoCRUD(CustomModelViewSet):
     serializer_class = serializer.EmpleadoSerializer
@@ -68,32 +109,18 @@ class TareaCRUD(viewsets.ViewSet):
             insumos_data = request.data.pop('empleados', [])
 
             # check and create tarea
-            serializer_tarea = serializer.TareaJoinedSerializer(data=request.data)
+            serializer_tarea = serializer.TareaSerializer(data=request.data)
             serializer_tarea.is_valid(raise_exception=True)
             tarea = serializer_tarea.save()
 
-            # update empleados (Tiempo)
-            for empleado in empleados_data:
-                ## dict
-                tiempo_entry = []
-                tiempo_entry['empleado'] = empleado['id']
-                tiempo_entry['tarea'] = tarea.id
-                tiempo_entry['horasEstimadas'] = empleado.get('horasEstimadas')
-                ## serializer
-                tiempo_serializer = serializer.TiempoSerializer(data=tiempo_entry)
-                tiempo_serializer.is_valid(raise_exception=True)
-                ## saving
-                tiempo_serializer.save()
+            # create empleados relation (Tiempo)
+            TareaCommonLogic.create_empleados_relation(empleados_data, tarea.id)
 
             # update herramientas and estado
-            TareaCommonLogic.update_herramienta(herramientas_data, herramienta_models.StatusScale.EN_USO)
+            TareaCommonLogic.update_herramientas(herramientas_data, herramienta_models.StatusScale.EN_USO)
 
             # update insumos
-            for insumo_data in insumos_data:
-                insumo = inventario_models.Insumo.objects.get(id=insumo_data['id'])
-                insumo.update_quantity(insumo_data['cantidad'], 
-                                       accion=inventario_models.ActionScale.RESTAR)
-                insumo.save()
+            TareaCommonLogic.update_insumos(insumos_data)
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -109,27 +136,7 @@ class TareaCRUD(viewsets.ViewSet):
         serializer_class = serializer.TareaJoinedSerializer(tarea)
         return Response(serializer_class.data)
 
-    def update(self, request, pk):
-        try:
-            tarea = models.Tarea.objects.get(id=pk)
-            tarea_serializer = serializer.TareaSerializer(tarea, data=request.data)
-            tarea_serializer.is_valid(raise_exception=True)
-            tarea_serializer.save()
-            return Response(tarea_serializer.data)
-        except ObjectDoesNotExist: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-    def destroy(self, request, pk):
-        try:
-            tarea = models.Tarea.objects.get(id=pk)
-            tarea.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
-    
-class TareaHerramientaCRUD(viewsets.ViewSet):
+    @transaction.atomic
     def update(self, request, pk):
         try:
             herramientas_data = request.data.pop('herramientas', [])
@@ -140,14 +147,30 @@ class TareaHerramientaCRUD(viewsets.ViewSet):
             tarea_serializer.save()
 
             # update herramientas and estado
-            TareaCommonLogic.update_herramienta(herramientas_data)
+            TareaCommonLogic.update_herramientas(herramientas_data)
+
+            # update empleados relation (Tiempo)
+            TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id)
+
+            # update insumos
+            TareaCommonLogic.update_insumos(insumos_data)
 
             return Response(tarea_serializer.data)
         except ObjectDoesNotExist: 
+            transaction.set_rollback(True)
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
+            transaction.set_rollback(True)
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    def destroy(self, request, pk):
+        try:
+            tarea = models.Tarea.objects.get(id=pk)
+            tarea.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    
 class OrdenServicioCRUD(viewsets.ViewSet):
 
     def __table__():
