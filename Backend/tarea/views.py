@@ -122,7 +122,7 @@ class TareaCRUD(viewsets.ViewSet):
             # update insumos
             TareaCommonLogic.update_insumos(insumos_data)
 
-            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+            return Response(serializer_tarea.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             transaction.set_rollback(True)
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
