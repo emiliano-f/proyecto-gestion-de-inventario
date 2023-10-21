@@ -27,7 +27,7 @@ class TareaSerializer(serializers.ModelSerializer):
     """
 
     class Meta:
-        model = models.Tiempo
+        model = models.Tarea
         fields = '__all__'
 
 class TareaJoinedSerializer(TareaSerializer):

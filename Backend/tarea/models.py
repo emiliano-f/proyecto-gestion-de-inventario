@@ -33,7 +33,9 @@ class OrdenServicio(models.Model):
         URGENTE = "URGENTE"
         NORMAL = "NORMAL"
     class CategoriaScale(models.TextChoices):
-        INDEFINIDO = "INDEFINIDO"
+        MODIFICACION = "MODIF/ADEC"
+        FABRICACION = "FABRICACION"
+        TRASLADOS = "TRASLADOS"
     class StatusScale(models.TextChoices):
         EN_ESPERA = "EN_ESPERA"
         FINALIZADA = "FINALIZADA"
@@ -67,7 +69,7 @@ class OrdenServicio(models.Model):
     categoria = models.CharField(
         max_length=15,
         choices=CategoriaScale.choices,
-        default=CategoriaScale.INDEFINIDO
+        default=CategoriaScale.MODIFICACION
     )
     estado = models.CharField(
         max_length = 15,
@@ -132,7 +134,7 @@ class Tarea(models.Model):
 
 
     id = models.AutoField(primary_key=True)
-    empleados = models.ManyToManyField(Empleado, through='Tiempo', blank=False)
+    empleados = models.ManyToManyField(Empleado, through='Tiempo', blank=True)
     #legajo = models.IntegerField(unique=True)
     tipo = models.CharField(
         max_length=15,
@@ -153,7 +155,7 @@ class Tarea(models.Model):
                                           message='Fecha debe ser igual o posterior a la actual')],
             null=True
     )
-    herramientas = models.ManyToManyField("herramienta.Herramienta")
+    herramientas = models.ManyToManyField("herramienta.Herramienta", blank=True)
     clasificacion = models.CharField(
             max_length=15,
             choices=ClassificationScale.choices

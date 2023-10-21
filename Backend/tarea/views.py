@@ -41,6 +41,7 @@ class TareaCommonLogic:
         
 
     def create_empleados_relation(empleados_data, tarea_pk):
+        print(empleados_data)
         for empleado in empleados_data:
             ## dict
             tiempo_entry = []
@@ -109,11 +110,13 @@ class TareaCRUD(viewsets.ViewSet):
             # get empleados, herramientas, insumos
             empleados_data = request.data.pop('empleados', [])
             herramientas_data = request.data.pop('herramientas', [])
-            insumos_data = request.data.pop('empleados', [])
+            insumos_data = request.data.pop('retiros_insumos', [])
 
             # check and create tarea
+            print(request.data)
             serializer_tarea = serializer.TareaSerializer(data=request.data)
             serializer_tarea.is_valid(raise_exception=True)
+            print(empleados_data)
             tarea = serializer_tarea.save()
 
             # create empleados relation (Tiempo)
