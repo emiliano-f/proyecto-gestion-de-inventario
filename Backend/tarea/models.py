@@ -29,6 +29,7 @@ class Empleado(models.Model):
 class OrdenServicio(models.Model):
 
     class CaracterScale(models.TextChoices):
+        CRITICO = "CRITICO"
         URGENTE = "URGENTE"
         NORMAL = "NORMAL"
     class CategoriaScale(models.TextChoices):
@@ -37,6 +38,8 @@ class OrdenServicio(models.Model):
         EN_ESPERA = "EN_ESPERA"
         FINALIZADA = "FINALIZADA"
         EN_PROGRESO = "EN_PROGRESO"
+        RECHAZADA = "RECHAZADA"
+        APROBADA = "APROBADA"
     class EdificioScale(models.TextChoices):
         INDEFINIDO = "INDEFINIDO"
         AULAS = "AULAS"
@@ -71,7 +74,6 @@ class OrdenServicio(models.Model):
         choices= StatusScale.choices,
         default= StatusScale.EN_ESPERA
     )
-
     edificio = models.CharField(
         max_length = 15,
         choices = EdificioScale.choices,
@@ -160,6 +162,11 @@ class Tarea(models.Model):
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
 class Tiempo(models.Model):
+
+    class CategoryScale(models.TextField):
+        SI = "Si"
+        NO = "No"
+
     tarea = models.ForeignKey(Tarea, on_delete=models.DO_NOTHING)
     empleado = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING)
     horasEstimadas = models.IntegerField(
@@ -171,4 +178,9 @@ class Tiempo(models.Model):
             validators=[MinValueValidator(0,
                         message='El valor no puede ser menor a cero')],
             null=True
+    )
+    responsable = models.CharField(
+            max_length=2,
+            choices=CategoryScale.choices,
+            default=CategoryScale.NO
     )
