@@ -1,24 +1,21 @@
 import "./modalForm.scss"
-import { ReactElement, useState } from "react";
 import React from "react";
-import { GetUrlParts, UpdateItem as Update, CreateItem as Create } from "../../../Api/apiService"
-import { getSingular } from "../../../data/data";
-import { setMessage } from "../messageDisplay/MessageDisplay";
-import { Field } from "../getColumns/GetColumns";
+import { useState } from "react";
+import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
-import SelectList from "../selectList/SelectList";
-import SelectEnum from "../selecEnum/SelectEnum";
 import { SiBetfair } from 'react-icons/si'
 
-import Form from 'react-bootstrap/Form';
+import { UpdateItem as Update, CreateItem as Create } from "../../../Api/apiService"
+import { setMessage } from "../messageDisplay/MessageDisplay";
+import SelectList from "../selectList/SelectList";
+import SelectEnum from "../selecEnum/SelectEnum";
 import StockAdjusment from "../stockAdjustment/StockAdjustment";
 
-const mesureUnits = [
-    "litro",
-    "metro",
-    "gramo",
-    "contable"
-]
+
+import { GetUrlParts } from "../../../data/FRONTURLS";
+import { getSingular } from "../../../data/TRANSLATIONS";
+import { Field } from "../../../data/STRUCTURE";
+
 
 export enum FormType {
     ADD = "add",
@@ -36,34 +33,76 @@ type Props = {
     switchChange: () => void,
 }
 
+function CreateSelect({field,props}) {
+    //console.log(field)
+    const selectAtt = {
+        fieldName: field.field,
+        required: field.required,
+        defaultValue:
+            (props.formType === FormType.UPDATE && props.row !== null) ?
+                (props.row[field.field]) : "",
+    };
+    return (field.enum ? <SelectEnum props={selectAtt} /> : <SelectList props={selectAtt} />);
+}
+
+function CreateControl({field,props}) {
+    return <>
+        <Form.Control
+            className="col"
+            name={field.field}
+            required={field.required}
+            type={field.type}
+            placeholder={`Ingrese ${field.headerName}`}
+            readOnly={
+                props.formType === FormType.UPDATE &&
+                field.field === "cantidad" &&
+                props.slug === "insumos"
+            }
+            defaultValue={
+                (props.formType === FormType.UPDATE && props.row !== null) ?
+                    (props.row[field.field]) : ("")
+            }
+        />
+        {
+            props.formType === FormType.UPDATE && field.field === "cantidad" &&
+            props.slug === "insumos" && <div className="col-3">
+                <button
+                    type="button"
+                    className="btn btn-light col"
+                    onClick={() => { setOpenStockAdj(true) }}
+                ><SiBetfair /></button>
+            </div>
+        }
+    </>
+}
 
 const ModalForm = (props: Props) => {
 
-    const { item: itemName, module: moduleName } = GetUrlParts();
+    const {entity : entityName} = GetUrlParts();
     const [openStockAdj, setOpenStockAdj] = useState(false);
     const [validated, setValidated] = useState(false);
 
 
-    const updateItem = (item: string, formData: FormData, id: number) => {
+    const updateItem = (entity: string, formData: FormData, id: number) => {
         // Comentario jm: sería mejor que la función reciba un int y el casteo lo haga dentro
-        Update(item, formData, id.toString())
+        Update(entity, formData, id.toString())
             .then(() => {
-                setMessage(`Se ha modificado ${getSingular(item)} con éxito`, null)
+                setMessage(`Se ha modificado ${getSingular(entity)} con éxito`, null)
             })
             .catch((error) => {
-                setMessage(`Ha surgido un error al modificar ${getSingular(item)}.`, error)
+                setMessage(`Ha surgido un error al modificar ${getSingular(entity)}.`, error)
             })
             .finally(() => props.setOpen(false));
     }
 
-    const createItem = (item: string, formData: FormData) => {
-        Create(item, formData)
+    const createItem = (entity: string, formData: FormData) => {
+        Create(entity, formData)
             .then(() => {
-                setMessage(`Se ha creado el nuevo ${getSingular(item)} con exito`, null)
+                setMessage(`Se ha creado el nuevo ${getSingular(entity)} con exito`, null)
             })
             .catch((error) => {
                 console.log(error)
-                setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(item)}.`, error)
+                setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(entity)}.`, error)
             })
             .finally(() => props.setOpen(false));
     }
@@ -79,9 +118,9 @@ const ModalForm = (props: Props) => {
         } else {
             if (props.formType === FormType.UPDATE) {
                 if (props.row != null)
-                    updateItem(itemName, formData, props.row["id"]);
+                    updateItem(entityName, formData, props.row["id"]);
             } else {
-                createItem(itemName, formData);
+                createItem(entityName, formData);
             }
 
         }
@@ -90,8 +129,6 @@ const ModalForm = (props: Props) => {
 
     };
 
-    var Tag = SelectEnum;
-    //console.log(Tag)
     return (
         <>
             <div className="modal-background">
@@ -106,55 +143,20 @@ const ModalForm = (props: Props) => {
                             .map((field, index) => (
                                 <Form.Group className="form-group" key={index}>
                                     <Form.Label>{field.headerName}</Form.Label>
-                                    <div className="row g-2">
-                                        {field.select ? (
-                                            <>
-                                                {Tag = field.enum ? SelectEnum : SelectList}
-                                                <Tag
-                                                    fieldName={field.field}
-                                                    required={field.required}
-                                                    defaultValue={
-                                                        (props.formType === FormType.UPDATE && props.row !== null) ?
-                                                            (props.row[field.field]) : ("")
-                                                    }
-                                                />
-                                            </>
+                                    <div className="row g-2">{
+                                        field.select ? (
+                                            <CreateSelect field={field} props={props} />
                                         ) : (
-                                            <>
-                                                <Form.Control
-                                                    className="col"
-                                                    name={field.field}
-                                                    required={field.required}
-                                                    type={field.type}
-                                                    placeholder={`Ingrese ${field.headerName}`}
-                                                    readOnly={
-                                                        props.formType === FormType.UPDATE &&
-                                                        field.field === "cantidad" &&
-                                                        props.slug === "insumos"
-                                                    }
-                                                    defaultValue={
-                                                        (props.formType === FormType.UPDATE && props.row !== null) ?
-                                                            (props.row[field.field]) : ("")
-                                                    }
-                                                />
-                                                {
-                                                    props.formType === FormType.UPDATE && field.field === "cantidad" &&
-                                                    props.slug === "insumos" && <div className="col-3">
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-light col"
-                                                            onClick={() => { setOpenStockAdj(true) }}
-                                                        ><SiBetfair /></button>
-                                                    </div>
-                                                }
-                                            </>
+                                            <CreateControl field={field} props={props} />
                                         )
-                                        }
-                                    </div>
-                                    {field.required ?
-                                        <Form.Control.Feedback type="invalid">
-                                            Este campo es obligatorio
-                                        </Form.Control.Feedback> : <Form.Control.Feedback />
+                                    }</div>
+                                    {field.required ?(
+                                            <Form.Control.Feedback type="invalid">
+                                                Este campo es obligatorio
+                                            </Form.Control.Feedback> 
+                                        ) :(
+                                            <Form.Control.Feedback />
+                                        ) 
                                     }
                                 </Form.Group>
                             ))
@@ -170,7 +172,8 @@ const ModalForm = (props: Props) => {
                     </Form>
                 </div>
             </div>
-            {(openStockAdj && props.row !== null) &&
+            {
+                (openStockAdj && props.row !== null) &&
                 <StockAdjusment
                     slug={props.row["nombre"]}
                     setOpen={setOpenStockAdj}

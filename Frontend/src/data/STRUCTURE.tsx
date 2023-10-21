@@ -1,117 +1,3 @@
-//======================ENUMS==================================//
-
-export const ACTIONS: Record<string, any> ={
-    "insumos": {
-        add: true,
-        detail: true,
-        stockAdj: true,
-        update: true,
-        delete: true,
-    },
-    "tipos-insumo": {
-        add: true,
-        detail: false,
-        stockAdj: false,
-        update: true,
-        delete: true,
-    },
-    "herramientas": {
-        add: true,
-        detail: true,
-        stockAdj: false,
-        update: true,
-        delete: true,
-    },
-    "tipos-herramienta": {
-        add: true,
-        detail: false,
-        stockAdj: false,
-        update: true,
-        delete: true,
-    },
-    "ordenes-retiro": {
-        add: true,
-        detail: true,
-        stockAdj: false,
-        update: true,
-        delete: true,
-    },
-    "ajustes-stock": {
-        add: false,
-        detail: false,
-        stockAdj: false,
-        update: false,
-        delete: true,
-    },
-    "estados-herramienta": {
-        add: true,
-        detail: true,
-        stockAdj: false,
-        update: true,
-        delete: true,
-    },
-    "pedidos-insumo": {
-        add: true,
-        detail: true,
-        stockAdj: false,
-        update: true,
-        delete: true,
-    },
-    "presupuestos": {
-        add: true,
-        detail: true,
-        stockAdj: false,
-        update: true,
-        delete: true,
-    },
-    "detalle-pedidos": {
-        add: true,
-        detail: true,
-        stockAdj: false,
-        update: true,
-        delete: true,
-    },
-    "usuarios": {
-        add: true,
-        detail: true,
-        stockAdj: false,
-        update: true,
-        delete: true,
-
-    },
-    "tareas": {
-        add: false,
-        detail: true,
-        stockAdj: false,
-        update: true,
-        delete: true,
-    },
-    "empleados": {
-        add: true,
-        detail: true,
-        stockAdj: false,
-        update: true,
-        delete: true,
-    },
-    "ordenes-servicio": {
-        add: false,
-        detail: false,
-        stockAdj: false,
-        update: false,
-        delete: false,
-    },
-    "encuestas-satisfaccion": {
-        add: false,
-        detail: true,
-        stockAdj: false,
-        update: true,
-        delete: true,
-
-    },
-
-
-}
-
 enum SIZE{
     TINY = 150,
     SMALL = 200,
@@ -119,7 +5,19 @@ enum SIZE{
     BIG = 350,
 }
 /**
- * Objeto que contiene la estructura general de los módulos del dashboard
+ * Constante que depende del MER del back-end y refleja:
+ * - grupos de entidades
+ * - atributos de cada entidad
+ * - meta-atributos de cada atributo (relacionados con las columnas de las tablas)
+ * La estructura es:
+ * "grupo":{
+ *      "entidad":{
+ *          "atributo":{
+ *             meta_atributo;
+ *          }
+ *      }
+ * }
+ * Depende de el nombre de las entidades, y el nombre de los atributos del MER.
  */
 const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any>>>> = {
     "inventario": {
@@ -204,6 +102,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
+            "baja":{
+                editable:false,
+                show:false,
+                name: "Dado de Baja",
+                type: "string",
+                col_size:SIZE.TINY,
+                required : false,
+                select: false,
+                enum: false,
+            }
             
         },
         "tipos-insumo": {
@@ -1072,18 +980,73 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
 
 export default STRUCTURE;
 
-export function getFullName(moduleName: string, itemName: string, fieldName: string): string | undefined {
-    let currentValue: Record<string, any> | undefined = STRUCTURE;
+//================GETTERS Y FUNCIONES================//
 
-    const properties = [moduleName, itemName, fieldName];
-
-    for (const propiedad of properties) {
-        currentValue = currentValue[propiedad];
-
-        if (!currentValue) {
-            return fieldName;
-        }
+/**
+ * (getter) getFullName: devuelve el meta-atributo name de STRUCTURE
+ * @param group Nombre del grupo de la estructura
+ * @param entity Nombre de la entidad
+ * @param attribute Nombre del atributo
+ * @returns Devuelve el valor que se encuentra en el meta-atributo name de un atributo.
+ */
+export function getFullName(group: string, entity: string, attribute: string): string | undefined {
+    try{
+        return STRUCTURE[group][entity][attribute]["name"];
+    }catch{
+        throw new Error(`No se encuentra el atributo 
+        ${group} ${entity} ${attribute}`)
     }
+}
 
-    return currentValue.name;
+import { GridColDef } from "@mui/x-data-grid";
+/**
+ * (getter + function) GetColumns: devuelve un arreglo con objetos
+ * que contiene atributos de las columnas de la tabla los cuales están en función
+ * de los meta-atributos de los atributos de cada entidad definida
+ * en la variable STRUCTURE.
+ * @param group nombre grupo al que pertenece la entidad
+ * @param entity nombre de la entidad
+ * @returns 
+ */
+export function GetColumns(group: string, entity: String): GridColDef[] {
+    return Object.entries(STRUCTURE[group][entity])
+        .filter(([key, attribute]) => attribute.show === true)
+        .map(([key, attribute]) => {
+            
+            var getter =  attribute.type === "date" ? 
+            (params) => {return new Date(params.value)} : null
+
+            return {
+                field: key,
+                headerName: attribute.name,
+                type: attribute.type,
+                width: attribute.col_size,
+                valueGetter: getter
+            };
+        });
+}
+
+export type Field = {
+    field: string,
+    headerName: string,
+    type: string,
+    required: boolean,
+    editable : boolean,
+    select: boolean,
+    enum: boolean;
+}
+
+export function GetFields(group: string, entity: String): Field[] {
+    return Object.entries(STRUCTURE[group][entity])
+        .map(([key, attribute]) => {
+            return {
+                field: key,
+                headerName: attribute.name,
+                type: attribute.type,
+                required: attribute.required,
+                editable: attribute.editable,
+                select: attribute.select,
+                enum: attribute.enum
+            };
+        });
 }

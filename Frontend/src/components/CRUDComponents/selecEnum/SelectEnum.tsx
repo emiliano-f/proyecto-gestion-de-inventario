@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import { GetEnums, GetUrlParts } from '../../../Api/apiService';
+import { GetEnums} from '../../../Api/apiService';
+import { GetUrlParts } from '../../../data/FRONTURLS';
 
 type Props = {
     fieldName: string,
@@ -13,34 +14,39 @@ type Props = {
  * @param props props.fieldName es el nombre de la columna de interés
  * @returns 
  */
-const SelectEnum = (props:Props) => {
-    
+const SelectEnum = ({props}:Props) => {
     const [enums, setEnum] = useState("");
-    const {item : itemName} =  GetUrlParts()
-
+    const {entity : entityName} =  GetUrlParts()
+    
     useEffect(() => {
         const fetchData = async () => {
             await GetEnums(setEnum); 
         };
         fetchData();
-    }, [itemName]);
+    }, [entityName]);
+
+    const [currOption,setCurrOption] =  useState("");    
+    useState(()=>{setCurrOption(props.defaultValue.toLowerCase())},[enums]);
+    const changeHandler = e => setCurrOption(e.target.value);
 
     return ( 
         <Form.Select
             name={props.fieldName}
             className="form-select"
-            defaultValue={props.defaultValue}
+            value={currOption}
             required={props.required}
+            onChange={changeHandler}
         >
             <option value="" disabled>Elegir {props.fieldName}</option>
+            {}
             {enums!==""?
-            enums[itemName][props.fieldName].map(unidad => (
-                unidad == props.defaultValue ?
-                <option value={unidad} key={unidad} selected>{unidad}</option>:
-                <option value={unidad} key={unidad}>{unidad}</option>
+            enums[entityName][props.fieldName].map(unidad => (
+                <option value={unidad.toLowerCase()} key={unidad}>{unidad}</option>
             ))
             :null}
         </Form.Select>
     )
 }
+
+
 export default SelectEnum;

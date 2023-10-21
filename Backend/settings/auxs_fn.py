@@ -86,7 +86,7 @@ def enums_models(request):
     enums = {}
     tmp = {}
     tmp['unidadMedida'] = get_scales(inv.Insumo().MeasuresScale)
-    tmp['estado'] = get_scales(inv.Insumo().StatusScale)
+    #tmp['estado'] = get_scales(inv.Insumo().StatusScale)
     enums['insumos'] = tmp
 
     tmp = {}

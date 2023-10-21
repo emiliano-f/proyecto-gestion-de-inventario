@@ -1,22 +1,25 @@
+import "./taskForm.scss";
+
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { GetUrlParts, ReadItem } from '../../../Api/apiService';
 
-import "./taskForm.scss";
+import { ReadItem } from '../../../Api/apiService';
 import { setMessage } from '../messageDisplay/MessageDisplay';
-import { getSingular } from '../../../data/data';
+
+import { getSingular } from '../../../data/TRANSLATIONS';
+import { GetUrlParts } from '../../../data/FRONTURLS';
 
 const TaskForm = () => {
     const [row, setRow] = useState(null);
-    const itemName = "ordenes-servicio";
+    const {entity: entityName} = GetUrlParts();
 
-    ReadItem(setRow, itemName)
+    ReadItem(setRow, entityName)
         .then((response)=>console.log("response"))
         .catch((error) => {
-            setMessage(`Ha surgido un error al buscar ${getSingular(itemName)}`, error)
+            setMessage(`Ha surgido un error al buscar ${getSingular(entityName)}`, error)
         });
     // Array de empleados
     const [empList, setEmpList] = useState([{employee:''}]);

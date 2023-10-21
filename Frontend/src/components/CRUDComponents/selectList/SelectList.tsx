@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { ListItems } from '../../../Api/apiService';
-import { getUri, getSingular} from '../../../data/data';
 import { setMessage } from '../messageDisplay/MessageDisplay';
+import { getUri } from '../../../data/FOREINGENTITY';
+import { getSingular } from '../../../data/TRANSLATIONS';
 
 type Props = {
     fieldName: string,
@@ -15,14 +16,13 @@ type Props = {
  * @param props props.fieldName es el nombre de la columna de interés
  * @returns 
  */
-const SelectList = (props:Props) => {
-
+const SelectList = ({props}:Props) => {
     interface Item {
         id: number;
         nombre: string;
         [key: string]: any; // Esto permite otros atributos de cualquier tipo
     }
-    
+
     const [list, setList] = useState<Item[]>([]);
     const itemName = getUri(props.fieldName);
     
@@ -33,23 +33,25 @@ const SelectList = (props:Props) => {
         };
         fetchData();
     }, [itemName]);
+    
+    const [currOption,setCurrOption] =  useState("");    
+    useState(()=>{setCurrOption(props.defaultValue.toLowerCase().replace("_"," "))},[list]);
+    const changeHandler = e => setCurrOption(e.target.value);
 
     return ( 
         <Form.Select
             name={props.fieldName}
             className="form-select"
-            defaultValue={props.defaultValue}
-            required={props.required}>
+            value={currOption}
+            required={props.required}
+            onChange={changeHandler}
+            >
             <option value="" disabled>Elegir {getSingular(itemName)}</option>
             {list.map(value => (
                 value.nombre!?
-                value.nombre === props.defaultValue ?
-                <option value={value.id} key={value.id} selected>{value.nombre}</option> :
-                <option value={value.id} key={value.id}>{value.nombre}</option>
+                    <option value={value.nombre.toLocaleLowerCase().replace("_"," ")} key={value.id}>{value.nombre}</option>
                 :
-                String(value.id) === props.defaultValue ?
-                <option value={value.id} key={value.id} selected>{value.id}</option> :
-                <option value={value.id} key={value.id}>{value.id}</option>
+                    <option value={value.id} key={value.id}>{value.id}</option>
             ))}
         </Form.Select>
     )

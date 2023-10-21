@@ -1,22 +1,11 @@
 import "./deleteAlert.scss"
-import { useState } from "react";
 
-import { GetUrlParts, UpdateItem as Update, CreateItem as Create, DeleteItem } from "../../../Api/apiService"
-import { getSingular } from "../../../data/data";
+import { UpdateItem as Update, CreateItem as Create, DeleteItem } from "../../../Api/apiService"
+import { GetUrlParts } from "../../../data/FRONTURLS";
+import { getSingular } from "../../../data/TRANSLATIONS";
 import { setMessage } from "../messageDisplay/MessageDisplay";
-import { Field } from "../getColumns/GetColumns";
+
 import Button from 'react-bootstrap/Button'
-import SelectList from "../selectList/SelectList";
-
-import Form from 'react-bootstrap/Form';
-
-const mesureUnits = [
-    "litro",
-    "metro",
-    "gramo",
-    "contable"
-]
-
 
 type Props = {
     slug: string,
@@ -28,16 +17,16 @@ type Props = {
 
 const DeleteAlert = (props: Props) => {
 
-    const { item: itemName, module: moduleName } = GetUrlParts();
+    const {entity} = GetUrlParts();
 
     const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        DeleteItem(itemName, props.id.toString())
+        DeleteItem(entity, props.id.toString())
             .then((response) => {
-                setMessage(`Se ha eliminado el ${getSingular(itemName)} ${props.id} con exito`,null)
+                setMessage(`Se ha eliminado el ${getSingular(entity)} ${props.id} con exito`,null)
             })
             .catch((error) => {
-                setMessage(`Ha surgido un error al eliminar el ${getSingular(itemName)} ${props.id}`, error)
+                setMessage(`Ha surgido un error al eliminar el ${getSingular(entity)} ${props.id}`, error)
             })
             .finally(() => props.setOpen(false));
     };
@@ -51,7 +40,7 @@ const DeleteAlert = (props: Props) => {
                 <h1>Eliminar {getSingular(props.slug)}</h1>
                 
                 <div className="deleteAlert">
-                    <p>¿ Está usted seguro de que eliminar el {getSingular(props.slug)} con identificador {props.id} ?</p>
+                    <p>¿Está usted seguro de que eliminar el {getSingular(props.slug)} con identificador {props.id}?</p>
 
                     <form method="post" onSubmit={handleDelete}>
                         <Button type="submit" className="btn btn-danger"

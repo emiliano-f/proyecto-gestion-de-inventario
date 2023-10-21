@@ -3,7 +3,7 @@ import "./sidebar.scss"
 import { Link } from "react-router-dom"
 import {Accordion} from "react-bootstrap";
 
-import {SECTIONS} from "../../../data/data";
+import SECTIONS from "../../../data/SECTIONS";
 
 function Sidebar() {
     return (
