@@ -137,7 +137,6 @@ class Tarea(models.Model):
     tipo = models.CharField(
         max_length=15,
         choices=TypeScale.choices,
-        default=TypeScale.INDEFINIDO
     )
     descripcion = models.CharField(max_length=255, null=True)
     fechaTentativa = models.DateField(
@@ -163,7 +162,7 @@ class Tarea(models.Model):
 
 class Tiempo(models.Model):
 
-    class CategoryScale(models.TextField):
+    class CategoryScale(models.TextChoices):
         SI = "Si"
         NO = "No"
 
