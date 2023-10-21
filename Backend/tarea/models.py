@@ -29,14 +29,19 @@ class Empleado(models.Model):
 class OrdenServicio(models.Model):
 
     class CaracterScale(models.TextChoices):
+        CRITICO = "CRITICO"
         URGENTE = "URGENTE"
         NORMAL = "NORMAL"
     class CategoriaScale(models.TextChoices):
-        INDEFINIDO = "INDEFINIDO"
+        MODIFICACION = "MODIF/ADEC"
+        FABRICACION = "FABRICACION"
+        TRASLADOS = "TRASLADOS"
     class StatusScale(models.TextChoices):
         EN_ESPERA = "EN_ESPERA"
         FINALIZADA = "FINALIZADA"
         EN_PROGRESO = "EN_PROGRESO"
+        RECHAZADA = "RECHAZADA"
+        APROBADA = "APROBADA"
     class EdificioScale(models.TextChoices):
         INDEFINIDO = "INDEFINIDO"
         AULAS = "AULAS"
@@ -64,14 +69,13 @@ class OrdenServicio(models.Model):
     categoria = models.CharField(
         max_length=15,
         choices=CategoriaScale.choices,
-        default=CategoriaScale.INDEFINIDO
+        default=CategoriaScale.MODIFICACION
     )
     estado = models.CharField(
         max_length = 15,
         choices= StatusScale.choices,
         default= StatusScale.EN_ESPERA
     )
-
     edificio = models.CharField(
         max_length = 15,
         choices = EdificioScale.choices,
@@ -108,16 +112,33 @@ class EncuestaSatisfaccion(models.Model):
 class Tarea(models.Model):
 
     class TypeScale(models.TextChoices):
-        REPARACION = "Reparación"
-        INDEFINIDO = "Indefinido"
+        PREVENTIVO = "Preventivo"
+        CORRECTIVO = "Correctivo"
+        MEJORA = "Mejora"
+        PRODUCCION = "Produccion"
+
+    class ClassificationScale(models.TextChoices):
+        SANITARIOS = "Sanitarios"
+        ELECTRICIDAD = "Electricidad"
+        ALBAÑILERIA = "Albañileria"
+        CARPINTERIA = "Carpinteria"
+        REFRIGERACION = "Refrig/Calefacc"
+        GAS = "Gas"
+        MECANICA = "Mecanica"
+        SYM = "S&M"
+        PINTURA = "Pintura"
+        JARDINERIA = "Jardineria"
+        METALURGIA = "Metalurgia"
+        AGUA = "Agua/Cloacas"
+        OTROS = "Otros"
+
 
     id = models.AutoField(primary_key=True)
-    empleados = models.ManyToManyField(Empleado, through='Tiempo', blank=False)
+    empleados = models.ManyToManyField(Empleado, through='Tiempo', blank=True)
     #legajo = models.IntegerField(unique=True)
     tipo = models.CharField(
         max_length=15,
         choices=TypeScale.choices,
-        default=TypeScale.INDEFINIDO
     )
     descripcion = models.CharField(max_length=255, null=True)
     fechaTentativa = models.DateField(
@@ -134,10 +155,19 @@ class Tarea(models.Model):
                                           message='Fecha debe ser igual o posterior a la actual')],
             null=True
     )
-    herramientas = models.ManyToManyField("herramienta.Herramienta")
+    herramientas = models.ManyToManyField("herramienta.Herramienta", blank=True)
+    clasificacion = models.CharField(
+            max_length=15,
+            choices=ClassificationScale.choices
+    )
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
 class Tiempo(models.Model):
+
+    class CategoryScale(models.TextChoices):
+        SI = "Si"
+        NO = "No"
+
     tarea = models.ForeignKey(Tarea, on_delete=models.DO_NOTHING)
     empleado = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING)
     horasEstimadas = models.IntegerField(
@@ -149,4 +179,9 @@ class Tiempo(models.Model):
             validators=[MinValueValidator(0,
                         message='El valor no puede ser menor a cero')],
             null=True
+    )
+    responsable = models.CharField(
+            max_length=2,
+            choices=CategoryScale.choices,
+            default=CategoryScale.NO
     )

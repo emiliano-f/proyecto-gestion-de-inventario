@@ -33,20 +33,24 @@ class TareaCommonLogic:
             HerramientaCommonLogic.create_estado_entry(herramienta)
 
     def update_insumos(insumos_data):
+        """
+        Esto está mal. Aquí debería crear una entrada a OrdenRetiro
+        """
         for insumo_data in insumos_data:
             insumo = inventario_models.Insumo.objects.get(id=insumo_data['id'])
             insumo.update_quantity(insumo_data['cantidad'], 
                                    accion=inventario_models.ActionScale.RESTAR)
             insumo.save()
-        
 
     def create_empleados_relation(empleados_data, tarea_pk):
+        print(empleados_data)
         for empleado in empleados_data:
             ## dict
             tiempo_entry = []
             tiempo_entry['empleado'] = empleado['id']
             tiempo_entry['tarea'] = tarea_pk
             tiempo_entry['horasEstimadas'] = empleado.get('horasEstimadas')
+            tiempo_entry['responsable'] = empleado.get('responsable')
             ## serializer
             tiempo_serializer = serializer.TiempoSerializer(data=tiempo_entry)
             tiempo_serializer.is_valid(raise_exception=True)
@@ -67,6 +71,8 @@ class TareaCommonLogic:
                     tiempo_model.horasEstimadas = empleado['horasEstimadas']
                 if 'horasTotales' in empleado:
                     tiempo_model.horasTotales = empleado['horasTotales']
+                if 'responsable' in empleado:
+                    tiempo_model.responsable = empleado['responsable']
                 tiempo_model.save()
 
         # add empleados
@@ -93,12 +99,26 @@ class TareaCRUD(viewsets.ViewSet):
         return 'tarea'
 
     def list(self, request):
-        # join
-        #tarea = models.Tarea.objects.prefetch_related('empleados', 'herramientas', 'retiros_insumos').all()
-        tarea = models.Tarea.objects.prefetch_related('empleados', 'herramientas').all()
-        # serializer
-        serializer_class = serializer.TareaJoinedSerializer(tarea, many=True, read_only=True)
-        return Response(serializer_class.data)
+        try:
+            # join
+            tarea = models.Tarea.objects.prefetch_related('empleados', 'herramientas').all()
+            # serializer
+            serializer_class = serializer.TareaJoinedSerializer(tarea, many=True, read_only=True)
+
+            # inverse relation (get OrdenRetiro)
+            for tarea_instance in tarea:
+                insumos = tarea_instance.insumos_retirados.all()
+                tarea_data = next(tarea_data 
+                                  for tarea_data in serializer_class.data 
+                                  if tarea_data['id'] == tarea_instance.id)
+                tarea_data['retiros_insumos'] = [
+                        {'insumo': inventario_models.Insumo.objects.get(pk=insumo.id).nombre,
+                         'fechaHora': insumo.fechaHora,
+                         'cantidad': insumo.cantidad} for insumo in insumos
+                ]
+            return Response(serializer_class.data)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @transaction.atomic
     def create(self, request):
@@ -106,11 +126,13 @@ class TareaCRUD(viewsets.ViewSet):
             # get empleados, herramientas, insumos
             empleados_data = request.data.pop('empleados', [])
             herramientas_data = request.data.pop('herramientas', [])
-            insumos_data = request.data.pop('empleados', [])
+            insumos_data = request.data.pop('retiros_insumos', [])
 
             # check and create tarea
+            print(request.data)
             serializer_tarea = serializer.TareaSerializer(data=request.data)
             serializer_tarea.is_valid(raise_exception=True)
+            print(empleados_data)
             tarea = serializer_tarea.save()
 
             # create empleados relation (Tiempo)
@@ -120,7 +142,9 @@ class TareaCRUD(viewsets.ViewSet):
             TareaCommonLogic.update_herramientas(herramientas_data, herramienta_models.StatusScale.EN_USO)
 
             # update insumos
-            TareaCommonLogic.update_insumos(insumos_data)
+            ## Deshabilitado para que el front haga un pedido directamente a
+            ## la url de OrdenRetiro
+            ##TareaCommonLogic.update_insumos(insumos_data)
 
             return Response(serializer_tarea.data, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -219,3 +243,10 @@ class OrdenServicioCRUD(viewsets.ViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+class TiempoCRUD(CustomModelViewSet):
+    serializer_class = serializer.TiempoSerializer
+    queryset = models.Tiempo.objects.all()
+
+    def __table__():
+        return 'tiempo'

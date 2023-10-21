@@ -6,7 +6,8 @@ router = routers.DefaultRouter()
 router.register(r'empleados', views.EmpleadoCRUD, 'empleados')
 #router.register(r'ordenes-servicio', views.OrdenServicioCRUD, 'ordenes-servicio')
 router.register(r'encuestas-satisfaccion', views.EncuestaSatisfaccionCRUD, 'encuestas-satisfaccion')
-router.register(r'tareas', views.TareaCRUD, 'tareas')
+#router.register(r'tareas', views.TareaCRUD, 'tareas')
+router.register(r'tiempos', views.TiempoCRUD, 'tiempos')
 
 urlpatterns = [
     path('', include(router.urls)),

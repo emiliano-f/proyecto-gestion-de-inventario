@@ -106,6 +106,7 @@ def enums_models(request):
     tmp['prioridad'] = get_scales(tar.OrdenServicio().CaracterScale)
     tmp['categoria'] = get_scales(tar.OrdenServicio().CategoriaScale)
     tmp['estado'] = get_scales(tar.OrdenServicio().StatusScale)
+    tmp['edificio'] = get_scales(tar.OrdenServicio().EdificioScale)
     enums['ordenes-servicio'] = tmp
 
     tmp = {}
@@ -115,7 +116,12 @@ def enums_models(request):
 
     tmp = {}
     tmp['tipo'] = get_scales(tar.Tarea().TypeScale)
+    tmp['clasificacion'] = get_scales(tar.Tarea().ClassificationScale)
     enums['tareas'] = tmp
+
+    tmp = {}
+    tmp['responsable'] = get_scales(tar.Tiempo().CategoryScale)
+    enums['tiempo'] = tmp
 
     tmp = {}
     tmp['aprobado'] = get_scales(com.StatusScale)

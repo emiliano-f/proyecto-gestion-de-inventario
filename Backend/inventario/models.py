@@ -54,7 +54,7 @@ class Insumo(models.Model):
 class OrdenRetiro(models.Model):
     id = models.AutoField(primary_key=True)
     insumo = models.ForeignKey(Insumo, on_delete=models.DO_NOTHING)
-    tarea = models.ForeignKey('tarea.Tarea', on_delete=models.DO_NOTHING)
+    tarea = models.ForeignKey('tarea.Tarea', on_delete=models.DO_NOTHING, related_name='insumos_retirados')
     cantidad = models.IntegerField(validators=[MinValueValidator(1, message='El valor no puede ser menor a uno')])
     fechaHora = models.DateTimeField(auto_now=True)
 
