@@ -47,6 +47,7 @@ class TareaCommonLogic:
             tiempo_entry['empleado'] = empleado['id']
             tiempo_entry['tarea'] = tarea_pk
             tiempo_entry['horasEstimadas'] = empleado.get('horasEstimadas')
+            tiempo_entry['responsable'] = empleado.get('responsable')
             ## serializer
             tiempo_serializer = serializer.TiempoSerializer(data=tiempo_entry)
             tiempo_serializer.is_valid(raise_exception=True)
@@ -67,6 +68,8 @@ class TareaCommonLogic:
                     tiempo_model.horasEstimadas = empleado['horasEstimadas']
                 if 'horasTotales' in empleado:
                     tiempo_model.horasTotales = empleado['horasTotales']
+                if 'responsable' in empleado:
+                    tiempo_model.responsable = empleado['responsable']
                 tiempo_model.save()
 
         # add empleados
@@ -219,3 +222,10 @@ class OrdenServicioCRUD(viewsets.ViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+class TiempoCRUD(CustomModelViewSet):
+    serializer_class = serializer.TiempoSerializer
+    queryset = models.Tiempo.objects.all()
+
+    def __table__():
+        return 'tiempo'
