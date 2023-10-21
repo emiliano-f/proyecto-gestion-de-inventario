@@ -25,7 +25,7 @@ const TaskForm = () => {
     const handleEmpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number)=>{
         const {name, value} = e.target;
         const list = [...empList];
-        list[index][name]= value;
+        (list[index] as { [key: string]: string })[name] = value;
         setEmpList(list);
 
     }
