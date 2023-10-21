@@ -108,8 +108,26 @@ class EncuestaSatisfaccion(models.Model):
 class Tarea(models.Model):
 
     class TypeScale(models.TextChoices):
-        REPARACION = "Reparación"
-        INDEFINIDO = "Indefinido"
+        PREVENTIVO = "Preventivo"
+        CORRECTIVO = "Correctivo"
+        MEJORA = "Mejora"
+        PRODUCCION = "Produccion"
+
+    class ClassificationScale(models.TextChoices):
+        SANITARIOS = "Sanitarios"
+        ELECTRICIDAD = "Electricidad"
+        ALBAÑILERIA = "Albañileria"
+        CARPINTERIA = "Carpinteria"
+        REFRIGERACION = "Refrig/Calefacc"
+        GAS = "Gas"
+        MECANICA = "Mecanica"
+        SYM = "S&M"
+        PINTURA = "Pintura"
+        JARDINERIA = "Jardineria"
+        METALURGIA = "Metalurgia"
+        AGUA = "Agua/Cloacas"
+        OTROS = "Otros"
+
 
     id = models.AutoField(primary_key=True)
     empleados = models.ManyToManyField(Empleado, through='Tiempo', blank=False)
@@ -135,6 +153,10 @@ class Tarea(models.Model):
             null=True
     )
     herramientas = models.ManyToManyField("herramienta.Herramienta")
+    clasificacion = models.CharField(
+            max_length=15,
+            choices=ClassificationScale.choices
+    )
     userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
 
 class Tiempo(models.Model):
