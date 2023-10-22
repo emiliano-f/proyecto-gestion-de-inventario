@@ -32,6 +32,12 @@ export const DataTable = (props: Props) => {
                         </Link>
                     }
                     {
+                        props.slug === "pedidos-insumo" &&
+                        <Link to={`/compra/pedidos-insumo/${params.row.id}/`}>
+                            <button className="button"><BsPlusCircle /></button>
+                        </Link>
+                    }
+                    {
                         ACTIONS[props.slug].detail && 
                         <Link to={`detail/${params.row.id}/`}>
                             <button className="button"><img src="/read.png" alt="" /></button>

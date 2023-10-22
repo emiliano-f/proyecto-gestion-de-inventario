@@ -13,6 +13,7 @@ import { GetUrlParts } from "../../../data/FRONTURLS";
 import { GetColumns, GetFields, Field } from "../../../data/STRUCTURE";
 import { getSingular, getPlural} from "../../../data/TRANSLATIONS"
 import { ACTIONS } from "../../../data/ACTIONS";
+import { Link } from "react-router-dom";
 
 
 const List = () => {
