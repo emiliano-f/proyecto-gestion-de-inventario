@@ -9,6 +9,7 @@ from . import models
 import herramienta.models as herramienta_models
 import inventario.models as inventario_models
 from herramienta.views import HerramientaCommonLogic
+from inventario.views import InventarioCommonLogic
 
 class CustomModelViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
@@ -33,14 +34,12 @@ class TareaCommonLogic:
             HerramientaCommonLogic.create_estado_entry(herramienta)
 
     def update_insumos(insumos_data):
-        """
-        Esto está mal. Aquí debería crear una entrada a OrdenRetiro
-        """
         for insumo_data in insumos_data:
-            insumo = inventario_models.Insumo.objects.get(id=insumo_data['id'])
-            insumo.update_quantity(insumo_data['cantidad'], 
-                                   accion=inventario_models.ActionScale.RESTAR)
-            insumo.save()
+            
+            serializer_insumo = inventario_serializer.OrdenRetiroSerializer(data=insumo_data)
+            serializer_insumo.is_valid(raise_exception=True)
+            serializer_insumo.save()
+            InventarioCommonLogic.create_orden_retiro(insumo_data)
 
     def create_empleados_relation(empleados_data, tarea_pk):
         print(empleados_data)
@@ -142,9 +141,7 @@ class TareaCRUD(viewsets.ViewSet):
             TareaCommonLogic.update_herramientas(herramientas_data, herramienta_models.StatusScale.EN_USO)
 
             # update insumos
-            ## Deshabilitado para que el front haga un pedido directamente a
-            ## la url de OrdenRetiro
-            ##TareaCommonLogic.update_insumos(insumos_data)
+            TareaCommonLogic.update_insumos(insumos_data)
 
             return Response(serializer_tarea.data, status=status.HTTP_201_CREATED)
         except Exception as e:

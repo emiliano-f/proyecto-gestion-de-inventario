@@ -9,6 +9,19 @@ from . import models
 class CustomModelViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
+class InventarioCommonLogic:
+    def create_orden_retiro(data):
+            ## check data types
+            serializer_class = serializer.OrdenRetiroSerializer(data=data)
+            serializer_class.is_valid(raise_exception=True)
+            serializer_class.save()
+
+            ## update cantidad from Insumo
+            insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
+            insumo.update_quantity(data['cantidad'], models.ActionScale.RESTAR)
+            insumo.save()
+
+
 class TipoInsumoCRUD(CustomModelViewSet):
     serializer_class = serializer.TipoInsumoSerializer
     queryset = models.TipoInsumo.objects.all()
@@ -79,28 +92,7 @@ class OrdenRetiroCRUD(viewsets.ViewSet):
     @transaction.atomic
     def create(self, request):
         try:
-            serializer_class = serializer.OrdenRetiroSerializer(data=request.data)
-
-            ## check data types
-            serializer_class.is_valid(raise_exception=True)
-            serializer_class.save()
-
-            ## update cantidad from Insumo
-            insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
-
-            ## check positive value
-            if int(request.data.get('cantidad')) <= 0:
-                raise Exception("Negative or zero quantity")
-            
-            ## update quantities
-            quant = insumo.cantidad - int(request.data.get('cantidad'))
-
-            ## check quant
-            if quant < 0:
-                raise Exception("Excedeed Quantity")
-
-            insumo.cantidad = quant
-            insumo.save()
+            InventarioCommonLogic.create_orden_retiro(request.data)
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
