@@ -199,7 +199,7 @@ class OrdenServicioCRUD(viewsets.ViewSet):
 
     def list(self, request):
         # join
-        orden_servicio = models.OrdenServicio.objects.prefetch_related('usuario').all()
+        orden_servicio = models.OrdenServicio.objects.prefetch_related('usuario', 'sector').all()
         # serializer
         serializer_class = serializer.OrdenServicioUsuarioSerializer(orden_servicio, many=True)
         return Response(serializer_class.data)
@@ -241,16 +241,38 @@ class OrdenServicioCRUD(viewsets.ViewSet):
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+class SectorCRUD(viewsets.ViewSet):
+    def __table__():
+        return 'sector'
+
+    def list(self, request):
+        # join
+        edificio = models.Sector.objects.all()
+        # serializer
+        serializer_class = serializer.SectorEdificioSerializer(edificio, many=True)
+        return Response(serializer_class.data)
+
+    def create(self, request):
+        try:
+            serializer_class = serializer.SectorSerializer(data=request.data)
+            serializer_class.is_valid(raise_exception=True)
+            serializer_class.save()
+            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk):
+        try:
+            edificio_model = models.Sector.objects.get(id=pk)
+            sectores = models.Sector.objects.filter(edificio=edificio_model.edificio).all()
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer_class = serializer.SectorSubsectorSerializer(sectores, many=True)
+        return Response(serializer_class.data)
+    
 class TiempoCRUD(CustomModelViewSet):
     serializer_class = serializer.TiempoSerializer
     queryset = models.Tiempo.objects.all()
 
     def __table__():
         return 'tiempo'
-
-class SectorCRUD(CustomModelViewSet):
-    serializer_class = serializer.SectorSerializer
-    queryset = models.Sector.objects.all()
-
-    def __table__():
-        return 'sector'

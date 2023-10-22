@@ -51,17 +51,22 @@ class OrdenServicioUsuarioSerializer(serializers.ModelSerializer):
     Usuario.apellido
     Usuario.nombre
     Usuario.id
+    Sector.edificio
+    Sector.subsector
     """
 
     usuarioApellido = serializers.CharField(source='usuario.apellido')
     usuarioNombre = serializers.CharField(source='usuario.nombre')
     usuarioID = serializers.IntegerField(source='usuario.id')
+    edificio = serializers.CharField(source='sector.edificio')
+    sector = serializers.CharField(source='sector.subsector')
     class Meta:
         model = models.OrdenServicio
-        fields = ['id', 'tarea', 'fechaGeneracion', 'sector', 
+        fields = ['id', 'tarea', 'fechaGeneracion', 
                   'descripcion', 'fechaNecesidad', 'comentario',
                   'prioridad', 'categoria', 'estado',
-                  'usuarioNombre', 'usuarioApellido', 'usuarioID']
+                  'usuarioNombre', 'usuarioApellido', 'usuarioID',
+                  'edificio', 'sector']
 
 class TiempoSerializer(serializers.ModelSerializer):
     """
@@ -72,11 +77,25 @@ class TiempoSerializer(serializers.ModelSerializer):
         model = models.Tiempo
         fields = '__all__'
 
-class SectorSerializer(serializers.ModelSerializer):
+class SectorEdificioSerializer(serializers.ModelSerializer):
     """
-    Retrieves all fields in Sector
+    Exclude subsector field in Sector
     """
 
+    class Meta:
+        model = models.Sector
+        exclude = ['subsector']
+
+class SectorSubsectorSerializer(serializers.ModelSerializer):
+    """
+    Exclude edificio field in Sector
+    """
+
+    class Meta:
+        model = models.Sector
+        exclude = ['edificio']
+
+class SectorSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Sector
         fields = '__all__'
