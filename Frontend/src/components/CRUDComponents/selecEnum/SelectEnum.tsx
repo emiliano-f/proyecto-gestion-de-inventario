@@ -26,7 +26,7 @@ const SelectEnum = ({props}:Props) => {
     }, [entityName]);
 
     const [currOption,setCurrOption] =  useState("");    
-    useState(()=>{setCurrOption(props.defaultValue.toLowerCase())},[enums]);
+    useState(()=>{setCurrOption(props.defaultValue)},[enums]);
     const changeHandler = e => setCurrOption(e.target.value);
 
     return ( 
@@ -41,7 +41,7 @@ const SelectEnum = ({props}:Props) => {
             {}
             {enums!==""?
             enums[entityName][props.fieldName].map(unidad => (
-                <option value={unidad.toLowerCase()} key={unidad}>{unidad}</option>
+                <option value={unidad} key={unidad}>{unidad}</option>
             ))
             :null}
         </Form.Select>
