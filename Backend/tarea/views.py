@@ -241,7 +241,7 @@ class OrdenServicioCRUD(viewsets.ViewSet):
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-class SectorCRUD(viewsets.ViewSet):
+class SectorListCRUD(viewsets.ViewSet):
     def __table__():
         return 'sector'
 
