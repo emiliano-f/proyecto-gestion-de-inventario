@@ -30,7 +30,7 @@ class Presupuesto(models.Model):
 
 class DetallePedido(models.Model):
     id = models.AutoField(primary_key = True)
-    pedidoInsumo = models.ForeignKey(PedidoInsumo, on_delete=models.DO_NOTHING)
+    pedidoInsumo = models.ForeignKey(PedidoInsumo, on_delete=models.DO_NOTHING, related_name='detalles_pedido')
     insumo = models.ForeignKey("inventario.Insumo", on_delete=models.DO_NOTHING)
     cantidad = models.IntegerField(validators=[MinValueValidator(0, message='El valor no puede ser menor a cero')])
     observacion = models.CharField(max_length=255, null=True)
