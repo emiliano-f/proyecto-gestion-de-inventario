@@ -19,21 +19,48 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
 
     def __table__():
         return 'pedidoinsumo'
-    
+
     def __update_insumo__(detalles):
         for detalle_pedido in detalles:
-            insumo = Insumo.objects.get(id=detalle_pedido['insumo'])
+            insumo = Insumo.objects.get(id=detalle_pedido['insumo'].id)
             ## update quantities
             insumo.cantidad += detalle_pedido['cantidad']
             insumo.save()
 
+    def __get_detalles__(serializer_, pedido_insumo, many=True):
+        new_data = {}
+        if many:
+            for pedido_instance in pedido_insumo:
+                detalles = pedido_instance.detalles_pedido.all()
+                pedido_data = next(pedido_data
+                                   for pedido_data in serializer_.data
+                                   if pedido_data['id'] == pedido_instance.id)
+                pedido_data['detalles'] = [{'insumo': Insumo.objects.get(pk=detalle.insumo.id).nombre,
+                                            'cantidad': detalle.cantidad,
+                                            'observacion': detalle.observacion}
+                                           for detalle in detalles]
+        else:
+            detalles = pedido_insumo.detalles_pedido.all()
+            new_data = serializer_.data.copy()
+            new_data['detalles'] = [{'insumo': Insumo.objects.get(pk=detalle.insumo.id).nombre,
+                                        'cantidad': detalle.cantidad,
+                                        'observacion': detalle.observacion}
+                                       for detalle in detalles]
+        return new_data
 
     def list(self, request):
-        # join
-        pedido_insumo = models.PedidoInsumo.objects.all()
-        # serializer
-        serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo, many=True, read_only=True)
-        return Response(serializer_class.data)
+        try:
+            # join
+            pedido_insumo = models.PedidoInsumo.objects.all()
+            # serializer
+            serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo, many=True, read_only=True)
+
+            # reverse relation (get DetallePedido)
+            PedidoInsumoCRUD.__get_detalles__(serializer_class, pedido_insumo)
+
+            return Response(serializer_class.data)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @transaction.atomic
     def create(self, request):
@@ -41,7 +68,7 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
 
             ## check if detalles is empty
             detalles_data = request.data.pop('detalles', [])
-            if detalles_data is None:
+            if not detalles_data:
                 raise Exception("Details empty")
 
             serializer_pedido = serializer.PedidoInsumoSerializer(data=request.data)
@@ -76,11 +103,15 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
     def retrieve(self, request, pk):
         try:
             pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo)
 
-        serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo)
-        return Response(serializer_class.data)
+            # reverse relation (get DetallePedido)
+            data = PedidoInsumoCRUD.__get_detalles__(serializer_class, pedido_insumo, many=False)
+            return Response(data)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error':str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def update(self, request, pk):
