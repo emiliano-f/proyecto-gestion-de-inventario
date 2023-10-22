@@ -421,7 +421,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "pedidos-insumo": {
             "id": {
                 editable: false,
-                show: false,
+                show: true,
                 name: "ID",
                 type: "number",
                 col_size: SIZE.TINY,
@@ -432,24 +432,13 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             "fechaHora": {
                 editable: false,
                 show: true,
-                name: "Fecha",
+                name: "Fecha de creación",
                 type: "date",
                 col_size: SIZE.TINY,
                 required: true,
                 select : false,
                 enum: false
             },
-            "observaciones": {
-                editable: true,
-                show: false,
-                name: "Observaciones",
-                type: "string",
-                col_size: SIZE.MEDIUM,
-                required: true,
-                select : false,
-                enum: false
-            },
-            //"detalle-pedidos": {
             "id-detalle-pedidos": {
                 editable: false,
                 show: false,
@@ -460,20 +449,10 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
-            "pedidoInsumo": {
-                editable: true,
-                show: false,
-                name: "Pedido de Insumo",
-                type: "number",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : true,
-                enum: false
-            },
             "insumo": {
                 editable: true,
                 show: true,
-                name: "Insumo",
+                name: "Insumo pedido",
                 type: "number",
                 col_size: SIZE.SMALL,
                 required: true,
@@ -492,10 +471,20 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "observacion": {
                 editable: true,
-                show: true,
+                show: false,
                 name: "Observacion",
                 type: "string",
                 col_size: SIZE.BIG,
+                required: false,
+                select : false,
+                enum: false
+            },
+            "recibido": {
+                editable: true,
+                show: true,
+                name: "recibido",
+                type: "string",
+                col_size: SIZE.TINY,
                 required: false,
                 select : false,
                 enum: false
@@ -510,6 +499,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 col_size: SIZE.TINY,
                 required: true,
                 select : false,
+                enum: false
+            },
+            "pedidoInsumo": {
+                editable: true,
+                show: true,
+                name: "Pedido de Insumo",
+                type: "number",
+                col_size: SIZE.TINY,
+                required: true,
+                select : true,
                 enum: false
             },
             "fecha": {
@@ -551,16 +550,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 required: true,
                 select : true,
                 enum: true
-            },
-            "pedidoInsumo": {
-                editable: true,
-                show: true,
-                name: "Pedido de Insumo",
-                type: "number",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : true,
-                enum: false
             },
         }
     },

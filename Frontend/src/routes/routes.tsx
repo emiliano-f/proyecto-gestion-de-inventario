@@ -44,18 +44,19 @@ function generateRoutes() {
           }
         ]);
       });
-
-      if (group.title === "Tarea") {
-        routes = routes.concat([
-          {
-            path: "/tarea/crear-tarea/:id/",
-            element: <TaskForm />
-          }
-        ]);
-      }
-
     });
   });
+  //Special url's
+  routes = routes.concat([
+    {
+      path: "/tarea/crear-tarea/:id/",
+      element: <TaskForm />
+    },
+    {
+      path: "/compra/pedidos-insumo/:id/",
+      element: <TaskForm />
+    }
+  ]);
   return routes;
 }
 

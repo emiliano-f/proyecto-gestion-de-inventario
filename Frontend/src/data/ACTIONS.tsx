@@ -60,7 +60,7 @@ export const ACTIONS: Record<string, any> ={
         delete: true,
     },
     "presupuestos": {
-        add: true,
+        add: false,
         detail: true,
         stockAdj: false,
         update: true,

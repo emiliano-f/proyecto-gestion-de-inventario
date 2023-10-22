@@ -125,3 +125,10 @@ export function GetEnums(setEnum:any) : Promise<AxiosResponse<any,any>> {
             loadItem()
         });
 }
+
+export function login(){
+
+}
+export function register(){
+    
+}
