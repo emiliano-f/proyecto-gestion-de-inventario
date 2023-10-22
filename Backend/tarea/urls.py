@@ -7,17 +7,18 @@ router = routers.DefaultRouter()
 router.register(r'empleados', views.EmpleadoCRUD, 'empleados')
 #router.register(r'ordenes-servicio', views.OrdenServicioCRUD, 'ordenes-servicio')
 router.register(r'encuestas-satisfaccion', views.EncuestaSatisfaccionCRUD, 'encuestas-satisfaccion')
-router.register(r'tareas', views.TareaCRUD, 'tareas')
+#router.register(r'tareas', views.TareaCRUD, 'tareas')
+router.register(r'tiempos', views.TiempoCRUD, 'tiempos')
+#router.register(r'sectores', views.SectorCRUD, 'sector')
 
 
 urlpatterns = [
     path('', include(router.urls)),
     path('ordenes-servicio/', views.OrdenServicioCRUD.as_view({'get':'list', 'post':'create'}), name='ordenes-servicio'),
     path('ordenes-servicio/<int:pk>/', views.OrdenServicioCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='ordenes-servicio-id'),
-    #MAQUETA#
-    path('edificio/',views.EdificioCRUD.as_view({'get':'list'}),name="edificio"),
-    #path('sector/')
-    path('sector/<int:edificio_id>',views.SectorCRUD.as_view({'get':'retrieve'}),name="sector")
-    #FIN MAQUETA#
+    path('tareas/', views.TareaCRUD.as_view({'get':'list', 'post':'create'}), name='tareas'),
+    path('tareas/<int:pk>/', views.TareaCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='tareas-id'),
+    path('sectores/', views.SectorCRUD.as_view({'get':'list', 'post':'create'}), name='sectores'),
+    path('sectores/<int:pk>/', views.SectorCRUD.as_view({'get':'retrieve'}), name='sectores-id'),
 ]
 
