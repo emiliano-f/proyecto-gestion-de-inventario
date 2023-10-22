@@ -28,8 +28,8 @@ class Empleado(models.Model):
 
 class Sector(models.Model):
     id = models.AutoField(primary_key=True)
-    edificio = models.CharField(max_length=30, unique=True)
-    subsector = models.CharField(max_length=30, unique=True)
+    edificio = models.CharField(max_length=30)
+    subsector = models.CharField(max_length=30)
 
 class OrdenServicio(models.Model):
 
