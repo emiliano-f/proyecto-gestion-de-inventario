@@ -37,7 +37,7 @@ const SelectList = ({props}:Props) => {
     const [currOption,setCurrOption] =  useState("");    
     useState(()=>{setCurrOption(props.defaultValue.toLowerCase().replace("_"," "))},[list]);
     const changeHandler = e => setCurrOption(e.target.value);
-
+    
     return ( 
         <Form.Select
             name={props.fieldName}

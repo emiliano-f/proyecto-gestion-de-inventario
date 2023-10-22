@@ -18,6 +18,7 @@ function buildURLs(){
         })
     })
     urls["enums"] = "/table-enums/";
+    urls["edificios"] = "tarea/sector/edificios/";
     return urls;
 }
 /**

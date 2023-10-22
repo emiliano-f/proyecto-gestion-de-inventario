@@ -18,7 +18,7 @@ urlpatterns = [
     path('ordenes-servicio/<int:pk>/', views.OrdenServicioCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='ordenes-servicio-id'),
     path('tareas/', views.TareaCRUD.as_view({'get':'list', 'post':'create'}), name='tareas'),
     path('tareas/<int:pk>/', views.TareaCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='tareas-id'),
-    path('sectores/edificios/', views.SectorListCRUD.as_view({'get':'list', 'post':'create'}), name='sectores-list'),
-    path('sectores/subsectores/<int:pk>/', views.SectorListCRUD.as_view({'get':'retrieve'}), name='sectores-list-id'),
+    path('sector/edificios/', views.SectorListCRUD.as_view({'get':'list', 'post':'create'}), name='sectores-list'),
+    path('sector/subsectores/<int:pk>/', views.SectorListCRUD.as_view({'get':'retrieve'}), name='sectores-list-id'),
 ]
 

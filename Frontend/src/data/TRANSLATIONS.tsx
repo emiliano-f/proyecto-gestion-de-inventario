@@ -86,7 +86,11 @@ const TRANSLATION : Record<string,Record<string,string>> = {
     "sectores":{
         singular: "Sector", 
         plural: "Sectores"
-    }
+    },
+    "edificios":{
+        singular: "Edificio", 
+        plural: "Edificios"
+    },
 }
 
 //================GETTERS Y FUNCIONES================//

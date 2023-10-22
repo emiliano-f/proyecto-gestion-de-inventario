@@ -923,7 +923,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
-            "edificio": {
+            "nombre": {
                 editable: true,
                 show: true,
                 name: "Edificio",
@@ -938,7 +938,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 show: true,
                 name: "Sector",
                 type: "string",
-                col_size: SIZE.TINY,
+                col_size: SIZE.SMALL,
                 required: true,
                 select : false,
                 enum: false

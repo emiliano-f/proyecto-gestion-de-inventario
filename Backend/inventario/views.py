@@ -36,7 +36,7 @@ class InsumoCRUD(viewsets.ViewSet):
 
     def list(self, request):
         # join
-        insumo = models.Insumo.objects.filter(baja=False).prefetch_related('tipoInsumo').all()
+        insumo = models.Insumo.objects.prefetch_related('tipoInsumo').all()
         # serializer
         serializer_class = serializer.InsumoTipoInsumoWithoutEstado(insumo, many=True)
         return Response(serializer_class.data)

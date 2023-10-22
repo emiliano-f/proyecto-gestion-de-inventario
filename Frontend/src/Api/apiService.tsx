@@ -76,7 +76,7 @@ export function DeleteItem(itemName: string, id: string) : Promise<AxiosResponse
 export function getEdificios(setEdificios : any) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function listEdificios() {
-            await inventarioAPI.get("tarea/sectores/edificios")
+            await inventarioAPI.get("tarea/sector/edificios")
             .then((response) => {
                 setEdificios(response.data);
                 resolve(response);
@@ -90,7 +90,7 @@ export function getEdificios(setEdificios : any) : Promise<AxiosResponse<any,any
 export function getSectors(setSectors : any,edificio_id : number) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function listSectors() {
-            await inventarioAPI.get(`tarea/sectores/subsectores/${edificio_id}`)
+            await inventarioAPI.get(`tarea/sector/subsectores/${edificio_id}`)
             .then((response) => {
                 setSectors(response.data);
                 resolve(response);

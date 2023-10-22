@@ -19,7 +19,7 @@ const FOREINGENTITY : Record<string,string> ={
     "ordenServicio":"ordenes-servicio",
     "encuestaSatisfaccion":"encuestas-satisfaccion",
     "supTarea":"tareas",
-    "edificio":"sectores/edificios",
+    "nombre":"edificios",
 }
 /**
  * (getter) getUri: en función del nombre de la columna de una tabla que representa una entidad_B, la cual representa
