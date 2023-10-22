@@ -74,6 +74,7 @@ export default function ServiceForm(){
         setEdificioID(edificioSelect.current.value);
     }
 
+    console.log(sectors)
     return (
         <>
         <Header/>
@@ -94,11 +95,11 @@ export default function ServiceForm(){
                         <div className="two-fields">
                             <select required ref={edificioSelect} className="form-select" name="edificio" defaultValue={""} onChange={changeID}>
                                 <option value="" disabled selected>Selecciona un Edificio</option>
-                                {edificios.map((edificio)=><option key={edificio.id} value={edificio.id}>{edificio.name}</option>)}
+                                {edificios.map((obj)=><option key={obj.id} value={obj.id}>{obj.edificio}</option>)}
                             </select>
                             <select required ref={sectorSelect} className="form-select" name="sector" defaultValue={""}>
                                 <option value="" disabled selected>Selecciona un Sector</option>
-                                {sectors.map((sectors)=><option key={sectors.id} value={sectors.id}>{sectors.name}</option>)}
+                                {sectors.map((obj)=><option key={obj.id} value={obj.id}>{obj.subsector}</option>)}
                             </select>
                         </div>
                     </div>

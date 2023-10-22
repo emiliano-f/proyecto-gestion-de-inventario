@@ -912,6 +912,39 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: true
             },
         },
+        "sectores": {
+            "id": {
+                editable: false,
+                show: false,
+                name: "ID",
+                type: "number",
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,
+                enum: false
+            },
+            "edificio": {
+                editable: true,
+                show: true,
+                name: "Edificio",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: true,
+                select : true,
+                enum: false
+            },
+            "subsector": {
+                editable: true,
+                show: true,
+                name: "Sector",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,
+                enum: false
+            },
+        }
+        /*
         "encuestas-satisfaccion": {
             "id": {
                 editable: false,
@@ -964,6 +997,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
         },
+        */
     }
 }
 

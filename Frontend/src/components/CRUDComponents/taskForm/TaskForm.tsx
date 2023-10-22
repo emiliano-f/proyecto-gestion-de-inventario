@@ -42,6 +42,7 @@ const TaskForm = () => {
         list.splice(index,1);
         setEmpList(list);
     }
+
     return (
         
         <div className="task-form">
