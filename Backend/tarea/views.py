@@ -199,7 +199,7 @@ class OrdenServicioCRUD(viewsets.ViewSet):
 
     def list(self, request):
         # join
-        orden_servicio = models.OrdenServicio.objects.prefetch_related('usuario').all()
+        orden_servicio = models.OrdenServicio.objects.prefetch_related('usuario', 'sector').all()
         # serializer
         serializer_class = serializer.OrdenServicioUsuarioSerializer(orden_servicio, many=True)
         return Response(serializer_class.data)

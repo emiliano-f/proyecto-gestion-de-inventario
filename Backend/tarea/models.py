@@ -47,18 +47,11 @@ class OrdenServicio(models.Model):
         EN_PROGRESO = "EN_PROGRESO"
         RECHAZADA = "RECHAZADA"
         APROBADA = "APROBADA"
-    class EdificioScale(models.TextChoices):
-        INDEFINIDO = "INDEFINIDO"
-        AULAS = "AULAS"
-        GOBIERNO = "GOBIERNO"
-        DETI_I = "DETI-I"
-        DETI_II = "DETI-II"
 
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)
     tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING, null=True)
     fechaGeneracion = models.DateField(auto_now=True)
-    sector = models.CharField(max_length=255, null=True)
     descripcion = models.CharField(max_length=255, null=True)
     fechaNecesidad = models.DateField(
             validators=[MinValueValidator(limit_value=date.today())],
@@ -80,11 +73,6 @@ class OrdenServicio(models.Model):
         max_length = 15,
         choices= StatusScale.choices,
         default= StatusScale.EN_ESPERA
-    )
-    edificio = models.CharField(
-        max_length = 15,
-        choices = EdificioScale.choices,
-        default = EdificioScale.INDEFINIDO
     )
     sector = models.ForeignKey(Sector, on_delete=models.DO_NOTHING)
     
