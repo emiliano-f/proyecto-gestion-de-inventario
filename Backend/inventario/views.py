@@ -11,15 +11,15 @@ class CustomModelViewSet(viewsets.ModelViewSet):
 
 class InventarioCommonLogic:
     def create_orden_retiro(data):
-            ## check data types
-            serializer_class = serializer.OrdenRetiroSerializer(data=data)
-            serializer_class.is_valid(raise_exception=True)
-            serializer_class.save()
+        ## check data types
+        serializer_class = serializer.OrdenRetiroSerializer(data=data)
+        serializer_class.is_valid(raise_exception=True)
+        serializer_class.save()
 
-            ## update cantidad from Insumo
-            insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
-            insumo.update_quantity(data['cantidad'], models.ActionScale.RESTAR)
-            insumo.save()
+        ## update cantidad from Insumo
+        insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
+        insumo.update_quantity(data['cantidad'], models.ActionScale.RESTAR)
+        insumo.save()
 
 
 class TipoInsumoCRUD(CustomModelViewSet):

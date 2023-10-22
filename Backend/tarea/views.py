@@ -247,3 +247,10 @@ class TiempoCRUD(CustomModelViewSet):
 
     def __table__():
         return 'tiempo'
+
+class SectorCRUD(CustomModelViewSet):
+    serializer_class = serializer.SectorSerializer
+    queryset = models.Sector.objects.all()
+
+    def __table__():
+        return 'sector'
