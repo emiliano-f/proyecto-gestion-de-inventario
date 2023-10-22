@@ -241,7 +241,7 @@ class OrdenServicioCRUD(viewsets.ViewSet):
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-class SectorCRUD(viewsets.ViewSet):
+class SectorListCRUD(viewsets.ViewSet):
     def __table__():
         return 'sector'
 
@@ -270,6 +270,13 @@ class SectorCRUD(viewsets.ViewSet):
         serializer_class = serializer.SectorSubsectorSerializer(sectores, many=True)
         return Response(serializer_class.data)
     
+class SectorCRUD(CustomModelViewSet):
+    serializer_class = serializer.SectorSerializer
+    queryset = models.Sector.objects.all()
+
+    def __table__():
+        return 'sector'
+
 class TiempoCRUD(CustomModelViewSet):
     serializer_class = serializer.TiempoSerializer
     queryset = models.Tiempo.objects.all()
