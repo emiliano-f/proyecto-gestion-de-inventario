@@ -8,7 +8,7 @@ router.register(r'empleados', views.EmpleadoCRUD, 'empleados')
 router.register(r'encuestas-satisfaccion', views.EncuestaSatisfaccionCRUD, 'encuestas-satisfaccion')
 #router.register(r'tareas', views.TareaCRUD, 'tareas')
 router.register(r'tiempos', views.TiempoCRUD, 'tiempos')
-#router.register(r'sectores', views.SectorCRUD, 'sector')
+router.register(r'sectores', views.SectorCRUD, 'sector')
 
 urlpatterns = [
     path('', include(router.urls)),
