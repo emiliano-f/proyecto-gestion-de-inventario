@@ -9,6 +9,7 @@ import { getEdificios,getSectors } from "../../Api/apiService";
 export default function ServiceForm(){
     const form  = useRef();
     const edificioSelect = useRef();
+    const sectorSelect = useRef();
 
     const UserContext =  createContext({
         user_id:1,
@@ -63,10 +64,19 @@ export default function ServiceForm(){
         }
     },[edificio_id])
 
-    console.log(sectors)
-    console.log(edificio_id)
+    //console.log(sectors)
+    //console.log(edificio_id)
     //endBLOCK
-    
+
+    const changeID = () => {
+        console.log("")
+        if(sectorSelect.current!.value !== ""){
+            sectorSelect.current.value = "";
+        }
+        setEdificioID(edificioSelect.current.value);
+
+    }
+
     return (
         <>
         <Header/>
@@ -82,15 +92,14 @@ export default function ServiceForm(){
                 
                 <form ref={form} method="post" onSubmit={handleSubmit}>
                     
-                    
                     <div className="form-group">
                     <label>Sector de la necesidad</label>
                         <div className="two-fields">
-                            <select ref={edificioSelect} className="form-select" name="edificio" defaultValue={""} onChange={()=>setEdificioID(edificioSelect.current.value)}>
+                            <select ref={edificioSelect} className="form-select" name="edificio" defaultValue={""} onChange={changeID}>
                                 <option value="" disabled selected>Selecciona un Edificio</option>
                                 {edificios.map((edificio)=><option key={edificio.id} value={edificio.id}>{edificio.name}</option>)}
                             </select>
-                            <select className="form-select" name="sector" defaultValue={""}>
+                            <select ref={sectorSelect} className="form-select" name="sector" defaultValue={""}>
                                 <option value="" disabled selected>Selecciona un Sector</option>
                                 {sectors.map((sectors)=><option key={sectors.id} value={sectors.id}>{sectors.name}</option>)}
                             </select>
