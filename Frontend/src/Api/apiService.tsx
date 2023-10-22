@@ -17,7 +17,6 @@ export function ListItems(setItems : any, itemName : string) : Promise<AxiosResp
             .catch((error)=>(reject(error)))
         }
         loadItems()
-        
     });
 }
 
@@ -71,6 +70,34 @@ export function DeleteItem(itemName: string, id: string) : Promise<AxiosResponse
             .catch((error) => reject(error));
         }
         deleteData(itemName, id);
+    })
+}
+
+export function getEdificios(setEdificios : any) : Promise<AxiosResponse<any,any>> {
+    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
+        async function listEdificios() {
+            await inventarioAPI.get("tarea/edificio/")
+            .then((response) => {
+                setEdificios(response.data);
+                resolve(response);
+            })
+            .catch((error) => reject(error));
+        }
+        listEdificios();
+    })
+}
+
+export function getSectors(setSectors : any,edificio_id : number) : Promise<AxiosResponse<any,any>> {
+    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
+        async function listSectors() {
+            await inventarioAPI.get(`tarea/sector/${edificio_id}`)
+            .then((response) => {
+                setSectors(response.data);
+                resolve(response);
+            })
+            .catch((error) => reject(error));
+        }
+        listSectors();
     })
 }
 

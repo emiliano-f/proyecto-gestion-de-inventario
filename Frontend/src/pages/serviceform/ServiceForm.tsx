@@ -2,9 +2,15 @@ import "./serviceform.scss"
 import { SendServiceRequest } from "../../Api/apiService";
 import Header from "../../components/dashboardComponents/header/Header"
 import {  setMessage , MessageDisplay } from "../../components/CRUDComponents/messageDisplay/MessageDisplay";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
+import { getEdificios,getSectors } from "../../Api/apiService";
+
 
 export default function ServiceForm(){
+    const form  = useRef();
+    const edificioSelect = useRef();
+    const sectorSelect = useRef();
+
     const UserContext =  createContext({
         user_id:1,
         user_name:"Aldo",
@@ -23,12 +29,53 @@ export default function ServiceForm(){
         formData.append("usuario",user.user_id.toString())
         SendServiceRequest(formData)
         .then(() => {
+            form.current.reset()
             setMessage(`Se ha enviado el formulario con éxito`,null)
         })
         .catch((error) => {
             setMessage(`Ha surgido un error al enviar el formulario`,error)
         })
     };
+
+    //BLOCK
+    const [edificios,setEdificios] = useState([]);
+    
+    useEffect(()=>{
+        getEdificios(setEdificios)
+        .catch((error) => {
+            setMessage(`No se pudo conectar con el servidor`,error)
+        })
+    },[setEdificios])
+
+
+    //endBLOCK
+
+
+    //BLOCK
+    const [sectors,setSectors] = useState([]);
+    const [edificio_id,setEdificioID] = useState(null);
+
+    useEffect(()=>{
+        if(edificio_id !== null){
+            getSectors(setSectors,edificio_id)
+            .catch((error) => {
+                setMessage(`No se pudo conectar con el servidor`,error)
+            })
+        }
+    },[edificio_id])
+
+    //console.log(sectors)
+    //console.log(edificio_id)
+    //endBLOCK
+
+    const changeID = () => {
+        console.log("")
+        if(sectorSelect.current!.value !== ""){
+            sectorSelect.current.value = "";
+        }
+        setEdificioID(edificioSelect.current.value);
+
+    }
 
     return (
         <>
@@ -43,12 +90,20 @@ export default function ServiceForm(){
                 
                 <div className="comm-info">Cualquier duda comunicarse al  4135000 interno 2137 o al 2615068289</div>
                 
-                <form method="post" onSubmit={handleSubmit}>
+                <form ref={form} method="post" onSubmit={handleSubmit}>
                     
-
                     <div className="form-group">
-                        <label>Sector de la necesidad</label>
-                        <input className="form-control" name="sector" maxLength={32}/>
+                    <label>Sector de la necesidad</label>
+                        <div className="two-fields">
+                            <select ref={edificioSelect} className="form-select" name="edificio" defaultValue={""} onChange={changeID}>
+                                <option value="" disabled selected>Selecciona un Edificio</option>
+                                {edificios.map((edificio)=><option key={edificio.id} value={edificio.id}>{edificio.name}</option>)}
+                            </select>
+                            <select ref={sectorSelect} className="form-select" name="sector" defaultValue={""}>
+                                <option value="" disabled selected>Selecciona un Sector</option>
+                                {sectors.map((sectors)=><option key={sectors.id} value={sectors.id}>{sectors.name}</option>)}
+                            </select>
+                        </div>
                     </div>
 
                     <div className="form-group">

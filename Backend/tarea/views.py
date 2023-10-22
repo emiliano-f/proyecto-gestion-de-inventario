@@ -74,3 +74,88 @@ class OrdenServicioCRUD(viewsets.ViewSet):
         orden_servicio = models.OrdenServicio.objects.get(id=pk)
         orden_servicio.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SectorCRUD(viewsets.ViewSet):
+    def __table__():
+        return 'sector'
+
+    def retrieve(self, request, edificio_id):
+        sectors = [
+                [
+                    {
+                        "id" : 1,
+                        "edificio_id": 1,
+                        "name":"Aula 1",
+                    },
+                    {
+                        "id" : 2,
+                        "edificio_id": 1,
+                        "name":"Aula 4",
+                    },
+                    {
+                        "id" : 3,
+                        "edificio_id": 1,
+                        "name":"Aula 4A",
+                    },
+                ],
+                [
+                    {
+                        "id" : 1,
+                        "edificio_id": 2,
+                        "name":"Biblioteca",
+                    },
+                    {
+                        "id" : 2,
+                        "edificio_id": 2,
+                        "name":"Anfiteatro Este",
+                    },
+                    {
+                        "id" : 3,
+                        "edificio_id": 2,
+                        "name":"Anfiteatro Oeste",
+                    },
+                ],
+                [
+                    {
+                        "id" : 1,
+                        "edificio_id": 3,
+                        "name":"Lab Química",
+                    },
+                ],
+                [
+                    {
+                        "id" : 2,
+                        "edificio_id": 4,
+                        "name":"Lab civil",
+                    },
+                ],
+            ]
+        return Response(sectors[edificio_id])
+    
+class EdificioCRUD(viewsets.ViewSet):
+    
+    def __table__():
+        return 'edificio'
+
+    def list(self, request):
+        return Response(data=
+            [
+                {
+                    "id":"0",
+                    "name":"Edificio de Aulas",
+                },
+                {
+                    "id":"1",
+                    "name":"Edificio de Gobierno",
+                },
+                {
+                    "id":"2",
+                    "name":"DETI I",
+                },
+                {
+                    "id":"3",
+                    "name":"DETI II",
+                },
+            ],
+        )
