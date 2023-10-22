@@ -38,7 +38,6 @@ const SelectEnum = ({props}:Props) => {
             onChange={changeHandler}
         >
             <option value="" disabled>Elegir {props.fieldName}</option>
-            {}
             {enums!==""?
             enums[entityName][props.fieldName].map(unidad => (
                 <option value={unidad.toLowerCase()} key={unidad}>{unidad}</option>
