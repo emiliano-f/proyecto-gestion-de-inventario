@@ -5,7 +5,6 @@ import {  setMessage , MessageDisplay } from "../../components/CRUDComponents/me
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { getEdificios,getSectors } from "../../Api/apiService";
 
-
 export default function ServiceForm(){
     const form  = useRef();
     const edificioSelect = useRef();
@@ -69,12 +68,10 @@ export default function ServiceForm(){
     //endBLOCK
 
     const changeID = () => {
-        console.log("")
         if(sectorSelect.current!.value !== ""){
             sectorSelect.current.value = "";
         }
         setEdificioID(edificioSelect.current.value);
-
     }
 
     return (
@@ -95,11 +92,11 @@ export default function ServiceForm(){
                     <div className="form-group">
                     <label>Sector de la necesidad</label>
                         <div className="two-fields">
-                            <select ref={edificioSelect} className="form-select" name="edificio" defaultValue={""} onChange={changeID}>
+                            <select required ref={edificioSelect} className="form-select" name="edificio" defaultValue={""} onChange={changeID}>
                                 <option value="" disabled selected>Selecciona un Edificio</option>
                                 {edificios.map((edificio)=><option key={edificio.id} value={edificio.id}>{edificio.name}</option>)}
                             </select>
-                            <select ref={sectorSelect} className="form-select" name="sector" defaultValue={""}>
+                            <select required ref={sectorSelect} className="form-select" name="sector" defaultValue={""}>
                                 <option value="" disabled selected>Selecciona un Sector</option>
                                 {sectors.map((sectors)=><option key={sectors.id} value={sectors.id}>{sectors.name}</option>)}
                             </select>
@@ -108,12 +105,13 @@ export default function ServiceForm(){
 
                     <div className="form-group">
                         <label>Descripción de la necesidad de mantenimiento/reparación</label>
-                        <textarea className="form-control" name="descripcion" maxLength={120}/>
+                        <textarea required className="form-control" name="descripcion" maxLength={120} />
                     </div>
 
                     <div className="form-group">
                         <label>Detalle de la necesidad de mantenimiento/reparación</label>
-                        <select className="form-select">
+                        <select required className="form-select" defaultValue={""}>
+                            <option value="" disabled selected>Selecciona un tipo</option>
                             <option value="Fabricación">Fabricación</option>
                             <option value="Movimiento">Movimiento de materiales / traslados</option>
                             <option value="Modificación">Modificación/adecuación</option>
@@ -122,7 +120,8 @@ export default function ServiceForm(){
                     
                     <div className="form-group">
                         <label>Carácter de la necesidad</label>
-                        <select className="form-select">
+                        <select required className="form-select" defaultValue={""}>
+                            <option value="" disabled selected>Selecciona el carácter</option>
                             <option value="Normal">Normal (sin urgencia)</option>
                             <option value="Urgente">Urgente</option>
                             <option value="Critica">Crítica</option>
@@ -130,7 +129,7 @@ export default function ServiceForm(){
                     </div>
                     <div className="form-group">
                         <label>Fecha de Necesidad (cuando debe estar resuelta la necesidad)</label>
-                        <input className="form-control" type="date" name="fechaNecesidad" maxLength={120}/>
+                        <input required className="form-control" type="date" name="fechaNecesidad" maxLength={120}/>
                     </div>
                     <div className="form-group">
                         <label>Añadir algún comentario</label>
