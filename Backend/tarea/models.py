@@ -26,6 +26,11 @@ class Empleado(models.Model):
                                  choices=CategoriaScale.choices,
                                  default=CategoriaScale.CAT1)
 
+class Sector(models.Model):
+    id = models.AutoField(primary_key=True)
+    edificio = models.CharField(max_length=30, unique=True)
+    subsector = models.CharField(max_length=30, unique=True)
+
 class OrdenServicio(models.Model):
 
     class CaracterScale(models.TextChoices):
@@ -81,6 +86,7 @@ class OrdenServicio(models.Model):
         choices = EdificioScale.choices,
         default = EdificioScale.INDEFINIDO
     )
+    sector = models.ForeignKey(Sector, on_delete=models.DO_NOTHING)
     
 class EncuestaSatisfaccion(models.Model):
     class SatisfactionScale(models.TextChoices):
@@ -185,8 +191,3 @@ class Tiempo(models.Model):
             choices=CategoryScale.choices,
             default=CategoryScale.NO
     )
-
-class Sector(models.Model):
-    id = models.AutoField(primary_key=True)
-    edificio = models.CharField(max_length=30, unique=True)
-    subsector = models.CharField(max_length=30, unique=True)
