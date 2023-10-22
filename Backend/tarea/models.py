@@ -185,3 +185,8 @@ class Tiempo(models.Model):
             choices=CategoryScale.choices,
             default=CategoryScale.NO
     )
+
+class Sector(models.Model):
+    id = models.AutoField(primary_key=True)
+    edificio = models.CharField(max_length=30, unique=True)
+    subsector = models.CharField(max_length=30, unique=True)

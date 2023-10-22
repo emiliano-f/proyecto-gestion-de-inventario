@@ -71,3 +71,12 @@ class TiempoSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Tiempo
         fields = '__all__'
+
+class SectorSerializer(serializers.ModelSerializer):
+    """
+    Retrieves all fields in Sector
+    """
+
+    class Meta:
+        model = models.Sector
+        fields = '__all__'
