@@ -95,7 +95,7 @@ export default function ServiceForm(){
                         <div className="two-fields">
                             <select required ref={edificioSelect} className="form-select" name="edificio" defaultValue={""} onChange={changeID}>
                                 <option value="" disabled selected>Selecciona un Edificio</option>
-                                {edificios.map((obj)=><option key={obj.id} value={obj.id}>{obj.edificio}</option>)}
+                                {edificios.map((obj)=><option key={obj.id} value={obj.id}>{obj.nombre}</option>)}
                             </select>
                             <select required ref={sectorSelect} className="form-select" name="sector" defaultValue={""}>
                                 <option value="" disabled selected>Selecciona un Sector</option>

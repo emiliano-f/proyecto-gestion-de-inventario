@@ -264,7 +264,7 @@ class SectorListCRUD(viewsets.ViewSet):
     def retrieve(self, request, pk):
         try:
             edificio_model = models.Sector.objects.get(id=pk)
-            sectores = models.Sector.objects.filter(edificio=edificio_model.edificio).all()
+            sectores = models.Sector.objects.filter(nombre=edificio_model.nombre).all()
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer_class = serializer.SectorSubsectorSerializer(sectores, many=True)

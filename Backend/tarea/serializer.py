@@ -93,7 +93,7 @@ class SectorSubsectorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Sector
-        exclude = ['edificio']
+        exclude = ['nombre']
 
 class SectorSerializer(serializers.ModelSerializer):
     class Meta:
