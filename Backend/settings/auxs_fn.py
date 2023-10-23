@@ -90,7 +90,7 @@ def enums_models(request):
     enums['insumos'] = tmp
 
     tmp = {}
-    tmp['accionCantidad'] = get_scales(inv.AjusteStock().ActionScale)
+    tmp['accionCantidad'] = get_scales(inv.ActionScale)
     enums['ajustes-stock'] = tmp
 
     tmp = {}
@@ -106,7 +106,6 @@ def enums_models(request):
     tmp['prioridad'] = get_scales(tar.OrdenServicio().CaracterScale)
     tmp['categoria'] = get_scales(tar.OrdenServicio().CategoriaScale)
     tmp['estado'] = get_scales(tar.OrdenServicio().StatusScale)
-    tmp['edificio'] = get_scales(tar.OrdenServicio().EdificioScale)
     enums['ordenes-servicio'] = tmp
 
     tmp = {}

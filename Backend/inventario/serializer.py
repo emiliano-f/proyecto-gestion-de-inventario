@@ -44,7 +44,7 @@ class InsumoSerializerWithoutEstado(serializers.ModelSerializer):
 
     class Meta:
         model = models.Insumo
-        exclude = ['baja']
+        fields = '__all__'
 
 class InsumoTipoInsumoWithoutEstado(InsumoSerializerWithoutEstado):
     """
@@ -53,6 +53,7 @@ class InsumoTipoInsumoWithoutEstado(InsumoSerializerWithoutEstado):
     """
 
     tipoInsumo = serializers.CharField(source='tipoInsumo.nombre')
+
 
 class OrdenRetiroSerializer(serializers.ModelSerializer):
     """

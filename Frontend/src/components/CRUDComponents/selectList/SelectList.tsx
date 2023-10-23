@@ -34,8 +34,14 @@ const SelectList = ({props}:Props) => {
         fetchData();
     }, [itemName]);
     
-    const [currOption,setCurrOption] =  useState("");    
-    useState(()=>{setCurrOption(props.defaultValue.toLowerCase().replace("_"," "))},[list]);
+    const [currOption,setCurrOption] =  useState(-1);    
+    useEffect(()=>{
+        list.forEach((row)=>{
+            if(row.nombre === props.defaultValue){
+                setCurrOption(Number(row.id));
+            }
+        })
+    },[list,setList]);
     const changeHandler = e => setCurrOption(e.target.value);
     
     return ( 
@@ -46,12 +52,11 @@ const SelectList = ({props}:Props) => {
             required={props.required}
             onChange={changeHandler}
             >
-            <option value="" disabled>Elegir {getSingular(itemName)}</option>
+            <option value={-1} disabled>Elegir {getSingular(itemName)}</option>
             {list.map(value => (
-                value.nombre!?
-                    <option value={value.nombre.toLocaleLowerCase().replace("_"," ")} key={value.id}>{value.nombre}</option>
-                :
-                    <option value={value.id} key={value.id}>{value.id}</option>
+                <option value={value.id} key={value.id}>{
+                    value.nombre!? value.nombre : value.id
+                }</option>
             ))}
         </Form.Select>
     )
