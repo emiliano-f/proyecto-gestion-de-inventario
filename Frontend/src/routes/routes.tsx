@@ -8,7 +8,7 @@ import Detail from "../components/CRUDComponents/detail/Detail.tsx";
 import NotFound from "../pages/notFound/NotFound.tsx";
 import TaskForm from "../components/CRUDComponents/taskForm/TaskForm.tsx";
 import List from "../components/CRUDComponents/list/List"
-
+import RepositionForm from "../components/CRUDComponents/repositionForm/RepositionForm.tsx"
 import SECTIONS from "../data/SECTIONS.tsx";
 
 
@@ -54,7 +54,7 @@ function generateRoutes() {
     },
     {
       path: "/compra/pedidos-insumo/:id/",
-      element: <TaskForm />
+      element: <RepositionForm />
     }
   ]);
   return routes;

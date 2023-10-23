@@ -1,4 +1,4 @@
-import "./taskForm.scss";
+import "./repositionForm.scss";
 
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
@@ -12,7 +12,7 @@ import { setMessage } from '../messageDisplay/MessageDisplay';
 import { getSingular } from '../../../data/TRANSLATIONS';
 import { GetUrlParts } from '../../../data/FRONTURLS';
 
-const TaskForm = () => {
+const RepositionForm = () => {
     const [row, setRow] = useState(null);
     const {entity: entityName} = GetUrlParts();
 
@@ -46,70 +46,45 @@ const TaskForm = () => {
         
         <div className="task-form">
             <div className="info mb-3">
-                <h1>Crear tarea</h1>
+                <h1>Crear Presupuesto</h1>
             </div>
             <Form>
                 <Row className="mb-5">
                     {row &&
                         <Col xs={5} className="service-order">
-                            <h4>Orden de servicio</h4>
+                            <h4>Pedido de Insumo</h4>
                             <Row className="mb-3">
                                 <Form.Group as={Col} controlId="formGridNombre">
-                                    <Form.Label>Nombre</Form.Label>
+                                    <Form.Label>Fecha de creación</Form.Label>
                                     <Form.Control disabled type="string" value={row["usuarioNombre"]} />
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="formGridApellido">
-                                    <Form.Label>Apellido</Form.Label>
+                                    <Form.Label>Insumo</Form.Label>
                                     <Form.Control disabled type="string" value={row["usuarioApellido"]} />
                                 </Form.Group>
                             </Row>
                             <Row className="mb-3">
                                 <Form.Group as={Col} controlId="formGridSector">
-                                    <Form.Label>Sector de la necesidad</Form.Label>
+                                    <Form.Label>Cantidad</Form.Label>
                                     <Form.Control disabled value={row["sector"]} />
                                 </Form.Group>
-                                <Form.Group as={Col} controlId="formGridDetalle">
-                                    <Form.Label>Detalle de la necesidad</Form.Label>
-                                    <Form.Control disabled placeholder="Detalle de la necesidad" value={""} />
+                                <Form.Group as={Col} controlId="formGridSector">
+                                    <Form.Label>Recibido</Form.Label>
+                                    <Form.Control disabled value={row["sector"]} />
                                 </Form.Group>
                             </Row>
-
-
                             <Form.Group className="mb-3" controlId="formGridAddress2">
-                                <Form.Label>Descripción de la necesidad</Form.Label>
+                                <Form.Label>Observaciones</Form.Label>
                                 <Form.Control disabled as="textarea" rows={2} value={row["descripcion"]} />
                             </Form.Group>
-
-                            <Row className="mb-3">
-                                <Form.Group as={Col} controlId="formGridCity">
-                                    <Form.Label>Prioridad</Form.Label>
-                                    <Form.Control disabled value={row["prioridad"]} />
-                                </Form.Group>
-
-                                <Form.Group as={Col} controlId="formGridCity">
-                                    <Form.Label>Fecha de Necesidad</Form.Label>
-                                    <Form.Control type="date" value={row["fechaNecesidad"]} />
-                                </Form.Group>
-                            </Row>
-
-                            <Form.Group className="mb-3" controlId="formGridAddress2">
-                                <Form.Label>Comentario adicional</Form.Label>
-                                <Form.Control disabled as="textarea" rows={2} value={row["comentario"]} />
-                            </Form.Group>
                         </Col>
-                    
                     }
                     
 
                     <Col className="task">
-                        <h4>Tarea</h4>
+                        <h4>Nuevo Presupuesto</h4>
                         <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridCity">
-                                <Form.Label>Tarea Padre</Form.Label>
-                                <Form.Control name="supTarea"/>
-                            </Form.Group>
-
                             <Form.Group as={Col} controlId="formGridCity">
                                 <Form.Label>Tipo</Form.Label>
                                 <Form.Control name="tipo" />
@@ -122,7 +97,7 @@ const TaskForm = () => {
                                     <div className="employee">
                                         <Form.Control type="string" placeholder="Ingrese empleado" onChange={e => handleEmpChange(e,i)} />
                                         {empList.length!==1 &&
-                                            <BF' utton className="btn btn-danger" onClick={()=> handleDeleteEmp(i)}>-</Button>
+                                            <Button className="btn btn-danger" onClick={()=> handleDeleteEmp(i)}>-</Button>
                                         }
                                         {empList.length-1===i &&
                                             <Button className="btn btn-success" onClick={handleAddEmp}>+</Button>
@@ -162,4 +137,4 @@ const TaskForm = () => {
         
     )
 }
-export default TaskForm
+export default RepositionForm
