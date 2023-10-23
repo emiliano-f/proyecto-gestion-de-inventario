@@ -439,16 +439,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
-            "id-detalle-pedidos": {
-                editable: false,
-                show: false,
-                name: "ID",
-                type: "number",
-                col_size: SIZE.TINY,
-                required: true,
-                select : false,
-                enum: false
-            },
             "insumo": {
                 editable: true,
                 show: true,
@@ -485,9 +475,9 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "recibido",
                 type: "string",
                 col_size: SIZE.TINY,
-                required: false,
-                select : false,
-                enum: false
+                required: true,
+                select : true,
+                enum: true
             },
         },
         "presupuestos": {
