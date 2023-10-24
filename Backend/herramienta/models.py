@@ -1,5 +1,5 @@
-from django.contrib.auth.models import User
 from django.db import models
+from usuario.models import Usuario
 
 class StatusScale(models.TextChoices):
     DISPONIBLE = 'Disponible'
@@ -25,7 +25,7 @@ class Herramienta(models.Model):
     fechaAlta = models.DateField(auto_now_add=True)
     observaciones = models.CharField(max_length=255, null=True)
     estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)
-    userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         texto = "{0} [{1}]"
@@ -39,4 +39,4 @@ class EstadoHerramienta(models.Model):
     fecha = models.DateField(auto_now_add=True)
     estado = models.CharField(max_length=16, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)
     observaciones = models.CharField(max_length=255, null=True)
-    userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
