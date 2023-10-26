@@ -902,6 +902,8 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: true
             },
         },
+    },
+    "sectores":{
         "sectores": {
             "id": {
                 editable: false,
@@ -921,7 +923,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 col_size: SIZE.TINY,
                 required: true,
                 select : true,
-                enum: false
+                enum: true
             },
             "subsector": {
                 editable: true,
@@ -934,60 +936,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
         }
-        /*
-        "encuestas-satisfaccion": {
-            "id": {
-                editable: false,
-                show: false,
-                name: "ID",
-                type: "number",
-                col_size: SIZE.TINY,
-                required: true,
-                select : false,
-                enum: false
-            },
-            "ordenServicio": {
-                editable: true,
-                show: true,
-                name: "Orden de Servicio",
-                type: "number",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : true,
-                enum: false
-            },
-            "satisfaccion": {
-                editable: true,
-                show: true,
-                name: "Satisfacción",
-                type: "number",
-                col_size: SIZE.TINY,
-                required: true,
-                select : true,
-                enum: true
-            },
-            "tiempoRespuesta": {
-                editable: true,
-                show: true,
-                name: "Tiempo de Respuesta",
-                type: "number",
-                col_size: SIZE.TINY,
-                required: true,
-                select : true,
-                enum: true
-            },
-            "tarea": {
-                editable: true,
-                show: true,
-                name: "Tarea",
-                type: "number",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : true,
-                enum: false
-            },
-        },
-        */
     }
 }
 
