@@ -13,9 +13,6 @@ class PresupuestoSerializer(serializers.ModelSerializer):
 class PedidoInsumoSerializer(serializers.ModelSerializer):
     """
     Retrieves all fields in PedidoInsumo
-
-    Adds attribute to PedidoInsumoSerializer for get 
-    DetallePedido.*
     """
     
     class Meta:
