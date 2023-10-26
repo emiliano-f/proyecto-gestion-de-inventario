@@ -5,4 +5,4 @@ from . import models
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Usuario
-        fields = '__all__'
+        exclude = ['is_superuser']
