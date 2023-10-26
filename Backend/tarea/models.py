@@ -1,7 +1,7 @@
 from datetime import date
 from django.core.validators import MinValueValidator
-from django.contrib.auth.models import User
 from django.db import models
+from usuario.models import Usuario
 
 # Create your models here.
 
@@ -154,7 +154,7 @@ class Tarea(models.Model):
             max_length=15,
             choices=ClassificationScale.choices
     )
-    userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
 
 class Tiempo(models.Model):
 
