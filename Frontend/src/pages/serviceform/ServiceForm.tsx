@@ -6,7 +6,7 @@ import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { getEdificios,getSectors } from "../../Api/apiService";
 
 export default function ServiceForm(){
-    const formRef  = useRef();
+    const form  = useRef();
     const edificioSelect = useRef();
     const sectorSelect = useRef();
 
@@ -28,11 +28,10 @@ export default function ServiceForm(){
         formData.append("usuario",user.user_id.toString())
         SendServiceRequest(formData)
         .then(() => {
-            formRef.current.reset()
+            form.current.reset()
             setMessage(`Se ha enviado el formulario con éxito`,null)
         })
         .catch((error) => {
-            console.log(error)
             setMessage(`Ha surgido un error al enviar el formulario`,error)
         })
     };
@@ -89,12 +88,12 @@ export default function ServiceForm(){
                 
                 <div className="comm-info">Cualquier duda comunicarse al  4135000 interno 2137 o al 2615068289</div>
                 
-                <form ref={formRef} method="post" onSubmit={handleSubmit}>
+                <form ref={form} method="post" onSubmit={handleSubmit}>
                     
                     <div className="form-group">
                     <label>Sector de la necesidad</label>
                         <div className="two-fields">
-                            <select required ref={edificioSelect} className="form-select" defaultValue={""} onChange={changeID}>
+                            <select required ref={edificioSelect} className="form-select" name="edificio" defaultValue={""} onChange={changeID}>
                                 <option value="" disabled selected>Selecciona un Edificio</option>
                                 {edificios.map((obj)=><option key={obj.id} value={obj.id}>{obj.nombre}</option>)}
                             </select>
