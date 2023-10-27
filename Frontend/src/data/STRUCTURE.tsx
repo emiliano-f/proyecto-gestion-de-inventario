@@ -555,6 +555,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
+            "username":{
+                editable: true,
+                show: true,
+                name: "nombre de usuario",
+                type: "number",
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,
+                enum: false
+            },
             "legajo": {
                 editable: true,
                 show: true,
@@ -565,7 +575,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
-            "nombre": {
+            "first_name": {
                 editable: true,
                 show: true,
                 name: "Nombre",
@@ -575,7 +585,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
-            "apellido": {
+            "last_name": {
                 editable: true,
                 show: true,
                 name: "Apellido",
@@ -595,7 +605,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
-            "mail": {
+            "email": {
                 editable: true,
                 show: true,
                 name: "Mail",
@@ -627,16 +637,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 col_size: SIZE.TINY,
                 required: true,
                 select : false,
-                enum: false
-            },
-            "supTarea": {
-                editable: true,
-                show: true,
-                name: "Tarea padre",
-                type: "number",
-                col_size: SIZE.SMALL,
-                required: false,
-                select : true,
                 enum: false
             },
             "tipo": {
