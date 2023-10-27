@@ -902,8 +902,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: true
             },
         },
-    },
-    "sectores":{
         "sectores": {
             "id": {
                 editable: false,
@@ -923,7 +921,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 col_size: SIZE.TINY,
                 required: true,
                 select : true,
-                enum: true
+                enum: false
             },
             "subsector": {
                 editable: true,
@@ -936,7 +934,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
         }
-    }
+    },
 }
 
 export default STRUCTURE;

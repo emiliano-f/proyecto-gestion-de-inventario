@@ -7,10 +7,6 @@
  * Depende de el nombre de las entidades del MER.
  */
 const TRANSLATION : Record<string,Record<string,string>> = {
-    "sectores":{
-        singular:"Sector",
-        plural:"Sectores"
-    },
     "inventario": {
         singular: "Inventario", 
         plural: "Inventarios"
@@ -100,7 +96,7 @@ const TRANSLATION : Record<string,Record<string,string>> = {
 //================GETTERS Y FUNCIONES================//
 
 export function getSingular(name: string){
-    console.log(name)
+    //console.log(name)
     try{
         return TRANSLATION[name].singular
     }catch(e){

@@ -56,7 +56,7 @@ export default function ServiceForm(){
 
     useEffect(()=>{
         if(edificio_id !== null){
-            getSectors(setSectors,edificio_id)
+            getSectors(setSectors,edificio_enum)
             .catch((error) => {
                 setMessage(`No se pudo conectar con el servidor`,error)
             })
