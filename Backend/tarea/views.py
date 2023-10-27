@@ -44,7 +44,7 @@ class TareaCommonLogic:
     def create_empleados_relation(empleados_data, tarea_pk):
         print(empleados_data)
         for empleado in empleados_data:
-            ## dict
+            ## dictusuarioNombre
             tiempo_entry = []
             tiempo_entry['empleado'] = empleado['id']
             tiempo_entry['tarea'] = tarea_pk
@@ -245,26 +245,9 @@ class SectorListCRUD(viewsets.ViewSet):
     def __table__():
         return 'sector'
 
-    def list(self, request):
-        # join
-        edificio = models.Sector.objects.all()
-        # serializer
-        serializer_class = serializer.SectorEdificioSerializer(edificio, many=True)
-        return Response(serializer_class.data)
-
-    def create(self, request):
+    def retrieve(self, request, nombre):
         try:
-            serializer_class = serializer.SectorSerializer(data=request.data)
-            serializer_class.is_valid(raise_exception=True)
-            serializer_class.save()
-            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-    def retrieve(self, request, pk):
-        try:
-            edificio_model = models.Sector.objects.get(id=pk)
-            sectores = models.Sector.objects.filter(nombre=edificio_model.nombre).all()
+            sectores = models.Sector.objects.filter(edificio=nombre).all()
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer_class = serializer.SectorSubsectorSerializer(sectores, many=True)

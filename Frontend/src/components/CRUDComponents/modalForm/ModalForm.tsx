@@ -45,7 +45,7 @@ function CreateSelect({field,props}) {
     return (field.enum ? <SelectEnum props={selectAtt} /> : <SelectList props={selectAtt} />);
 }
 
-function CreateControl({field,props}) {
+function CreateControl({field,props,setOpenStockAdj}) {
     return <>
         <Form.Control
             className="col"
@@ -147,7 +147,7 @@ const ModalForm = (props: Props) => {
                                         field.select ? (
                                             <CreateSelect field={field} props={props} />
                                         ) : (
-                                            <CreateControl field={field} props={props} />
+                                            <CreateControl field={field} props={props} setOpenStockAdj={setOpenStockAdj} />
                                         )
                                     }</div>
                                     {field.required ?(

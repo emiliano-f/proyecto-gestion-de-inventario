@@ -1,10 +1,11 @@
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 from django.db import models
 
 # Create your models here.
-class Usuario(models.Model):
-    legajo = models.IntegerField(unique=True)
-    nombre = models.CharField(max_length=255)
-    apellido = models.CharField(max_length=255)
+class Usuario(AbstractUser):
+    legajo = models.IntegerField(unique=True,
+                                 validators=[MinValueValidator(0, message='Inserte un legajo válido')],
+                                 null=True)
     cargo = models.CharField(max_length=255, null=True)
-    mail = models.EmailField()
-    telefono = models.CharField(max_length=255)
+    telefono = models.CharField(max_length=255, null=True)

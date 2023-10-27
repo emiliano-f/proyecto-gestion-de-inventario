@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
+from usuario.models import Usuario
 
 class ActionScale(models.TextChoices):
     SUMAR = 'Sumar'
@@ -71,4 +71,4 @@ class AjusteStock(models.Model):
     observaciones = models.CharField(max_length=256)
     fecha = models.DateTimeField(auto_now=True)
     accionCantidad = models.CharField(max_length=6, choices=ActionScale.choices)
-    userAuth = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)

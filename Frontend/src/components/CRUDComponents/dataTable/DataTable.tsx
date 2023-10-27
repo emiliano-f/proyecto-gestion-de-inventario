@@ -54,7 +54,6 @@ export const DataTable = (props: Props) => {
         },
     }
 
-
     return (
         <div className="dataTable" ref={containerRef}>
             <DataGrid
