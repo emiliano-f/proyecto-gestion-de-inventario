@@ -107,11 +107,6 @@ const TaskForm = () => {
                         <h4>Tarea</h4>
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridCity">
-                                <Form.Label>Tarea Padre</Form.Label>
-                                <Form.Control name="supTarea"/>
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridCity">
                                 <Form.Label>Tipo</Form.Label>
                                 <Form.Control name="tipo" />
                             </Form.Group>

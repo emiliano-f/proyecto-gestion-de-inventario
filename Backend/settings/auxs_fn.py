@@ -116,7 +116,6 @@ def enums_models(request):
     tmp = {}
     tmp['tipo'] = get_scales(tar.Tarea().TypeScale)
     tmp['clasificacion'] = get_scales(tar.Tarea().ClassificationScale)
-    tmp['edificios'] = get_scales(tar.Sector().EdificioScale)
     enums['tareas'] = tmp
 
     tmp = {}
@@ -131,5 +130,9 @@ def enums_models(request):
     tmp = {}
     tmp['recibido'] = aux
     enums['pedidos-insumo'] = tmp
+
+    tmp = {}
+    tmp['edificio'] = get_scales(tar.Sector().EdificioScale)
+    enums['sectores'] = tmp
 
     return JsonResponse(enums)
