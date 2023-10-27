@@ -77,15 +77,6 @@ class TiempoSerializer(serializers.ModelSerializer):
         model = models.Tiempo
         fields = '__all__'
 
-class SectorEdificioSerializer(serializers.ModelSerializer):
-    """
-    Exclude subsector field in Sector
-    """
-
-    class Meta:
-        model = models.Sector
-        exclude = ['subsector']
-
 class SectorSubsectorSerializer(serializers.ModelSerializer):
     """
     Exclude edificio field in Sector
