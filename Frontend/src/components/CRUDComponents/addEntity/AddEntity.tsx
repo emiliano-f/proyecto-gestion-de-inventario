@@ -1,4 +1,60 @@
 
+const AddEntity = ()=>{
+    
+    // Array de entidades
+    const [entList, setEntList] = useState([{entity:''}]);
+    
+    // Maneja los cambios en cada entleado del array
+    const handleEntChange = (e: React.ChangeEvent<HTMLInputElement>, index: number)=>{
+        const {name, value} = e.target;
+        const list = [...entList];
+        (list[index] as { [key: string]: string })[name] = value;
+        setEntList(list);
+
+    }
+    // Agrega un campo de entidades
+    const handleAddEnt =()=>{
+        setEntList([...entList, {entloyee:''}]);
+    }
+    // Elimina determinado entidades
+    const handleDeleteEnt = (index:number) => {
+        const list=[...entList];
+        list.splice(index,1);
+        setEntList(list);
+    }
+
+    entList.map((x,i)=>{
+        return (
+            <Form.Group className="mb-3" controlId="formGridEntleado" key={i}>
+                <Form.Label>Entleado {i+1}</Form.Label>
+                <div className="entloyee">
+                    <Form.Control type="string" placeholder="Ingrese entleado" onChange={e => handleEntChange(e,i)} />
+                    <Form.Select
+                        name={props.fieldName}
+                        className="form-select"
+                        value={currOption}
+                        required={props.required}
+                        onChange={changeHandler}
+                        >
+                        <option value={-1} disabled>Elegir {getSingular(itemName)}</option>
+                        {list.map(value => (
+                            <option value={value.id} key={value.id}>{
+                                value.nombre!? value.nombre : value.id
+                            }</option>
+                        ))}
+                    </Form.Select>
+                    {entList.length!==1 &&
+                        <Button className="btn btn-danger" onClick={()=> handleDeleteEnt(i)}>-</Button>
+                    }
+                    {entList.length-1===i &&
+                        <Button className="btn btn-success" onClick={handleAddEnt}>+</Button>
+                    }
+                </div>
+            </Form.Group>
+        );
+    }
+}
+
 const SelectList = ({props}:Props) => {
     interface Item {
         id: number;
@@ -28,59 +84,15 @@ const SelectList = ({props}:Props) => {
     const changeHandler = e => setCurrOption(e.target.value);
     
     return ( 
-        <Form.Select
-            name={props.fieldName}
-            className="form-select"
-            value={currOption}
-            required={props.required}
-            onChange={changeHandler}
-            >
-            <option value={-1} disabled>Elegir {getSingular(itemName)}</option>
-            {list.map(value => (
-                <option value={value.id} key={value.id}>{
-                    value.nombre!? value.nombre : value.id
-                }</option>
-            ))}
-        </Form.Select>
+        
     )
 }
 
-    // Array de empleados
-    const [empList, setEmpList] = useState([{employee:''}]);
     
-    // Maneja los cambios en cada empleado del array
-    const handleEmpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number)=>{
-        const {name, value} = e.target;
-        const list = [...empList];
-        (list[index] as { [key: string]: string })[name] = value;
-        setEmpList(list);
-
-    }
-    // Agrega un campo de empleado
-    const handleAddEmp =()=>{
-        setEmpList([...empList, {employee:''}]);
-    }
-    // Elimina determinado empleado
-    const handleDeleteEmp = (index:number) => {
-        const list=[...empList];
-        list.splice(index,1);
-        setEmpList(list);
-    }
 
 
-{empList.map((x,i)=>{
+{
     return(
-        <Form.Group className="mb-3" controlId="formGridEmpleado" key={i}>
-            <Form.Label>Empleado {i+1}</Form.Label>
-            <div className="employee">
-                <Form.Control type="string" placeholder="Ingrese empleado" onChange={e => handleEmpChange(e,i)} />
-                {empList.length!==1 &&
-                    <Button className="btn btn-danger" onClick={()=> handleDeleteEmp(i)}>-</Button>
-                }
-                {empList.length-1===i &&
-                    <Button className="btn btn-success" onClick={handleAddEmp}>+</Button>
-                }
-            </div>
-        </Form.Group>
+        
     );
 })}
