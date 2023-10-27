@@ -2,6 +2,7 @@ import "./addEntity.scss"
 import React, { useState,useEffect } from "react";
 import { Form,Button } from "react-bootstrap";
 import SelectList from "../selectList/SelectList";
+import { getSingular } from "../../../data/TRANSLATIONS";
 
 const AddEntity = ({entityName}) =>{
 
@@ -22,8 +23,8 @@ const AddEntity = ({entityName}) =>{
         entList.map((x,i)=>{
             return(
                 <Form.Group className="mb-1" controlId="formGridEntidad" key={i}>
-                    <Form.Label>{entityName} {i+1}</Form.Label>
                     <div className="entity">
+                        <Form.Label>{i+1} : </Form.Label>
                         <div className="entitySelect">
                         <SelectList props={{fieldName:entityName,required:false,defaultValue:""}}/>
                         </div>

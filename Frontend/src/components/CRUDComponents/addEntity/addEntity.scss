@@ -1,10 +1,11 @@
 
 .entity{
     display: flex;
-    
-    .entitySelect{
-        flex: 0.9%;
+    margin: 1%;
+    Label{
+        font-size: 100;
     }
-    .entityButtons{
+    .entitySelect{
+        flex: 1;
     }
 }

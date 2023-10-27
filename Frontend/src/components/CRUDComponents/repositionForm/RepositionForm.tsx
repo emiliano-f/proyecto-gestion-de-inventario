@@ -92,14 +92,15 @@ const RepositionForm = () => {
             <Form>
                 <Row className="mb-5">
                     {row &&
-                        <Col xs={5} className="service-order">
+                        <Col xs={5} className="">
                             <PedidoInsumoView/>          
                         </Col>
                     } 
-                    <Col className="task">
+                    <Col className="">
                         <PresupuestoCreate/>
                     </Col>
                 </Row>
+                <h4>Seleccionar Presupuestos Asociados al Pedido de Insumo</h4>
                 <Row>
                     <AddEntity entityName={"presupuesto"}/>
                 </Row>   
