@@ -47,6 +47,13 @@ class OrdenServicio(models.Model):
         EN_PROGRESO = "EN_PROGRESO"
         RECHAZADA = "RECHAZADA"
         APROBADA = "APROBADA"
+    class EdificioScale(models.TextChoices):
+        AULAS = 'AULAS'
+        DETI_I = 'DETI I'
+        DETI_II = 'DETI II'
+        GOBIERNO = 'GOBIERNO'
+        ARQUITECTURA = 'ARQUITECTURA'
+
 
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)
@@ -73,6 +80,10 @@ class OrdenServicio(models.Model):
         max_length = 15,
         choices= StatusScale.choices,
         default= StatusScale.EN_ESPERA
+    )
+    nombre = models.CharField(
+        max_length = 12,
+        choices= EdificioScale.choices
     )
     sector = models.ForeignKey(Sector, on_delete=models.DO_NOTHING)
     
