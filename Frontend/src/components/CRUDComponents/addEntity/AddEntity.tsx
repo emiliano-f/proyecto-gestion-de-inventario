@@ -7,6 +7,7 @@ import { ListItems } from "../../../Api/apiService";
 
 const AddEntity = ({entityName}) =>{
 
+    
     const [list, setList] = useState([]);
     
     useEffect(() => {
