@@ -23,6 +23,7 @@ const SelectList = ({props}:Props) => {
         [key: string]: any; // Esto permite otros atributos de cualquier tipo
     }
 
+
     const [list, setList] = useState<Item[]>([]);
     const itemName = getUri(props.fieldName);
     
@@ -43,7 +44,6 @@ const SelectList = ({props}:Props) => {
         })
     },[list,setList]);
     const changeHandler = e => setCurrOption(e.target.value);
-    
     return ( 
         <Form.Select
             name={props.fieldName}

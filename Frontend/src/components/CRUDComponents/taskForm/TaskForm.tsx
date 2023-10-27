@@ -91,10 +91,6 @@ const TaskForm = () => {
                             </Form.Group>
                         </Row>
 
-                        <AddEntity entityName={"empleados"}/>
-                        <AddEntity entityName={"Herramientas"}/>
-                        <AddEntity entityName={"Insumos"}/>
-
                         <Form.Group className="mb-3" controlId="formGridAddress2">
                             <Form.Label>Descripción</Form.Label>
                             <Form.Control name="descripcion" as="textarea" rows={2} value={"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."} />
@@ -114,6 +110,16 @@ const TaskForm = () => {
                              
                     </Col>
                 </Row>
+                
+                <div>
+                    <AddEntity entityName={"empleado"}/>
+                </div>
+                <div>
+                    <AddEntity entityName={"insumo"}/>
+                </div>
+                <div>
+                    <AddEntity entityName={"herramienta"}/>
+                </div>       
                 
                 <Row className="mb-3">
                     <Button className="btn btn-success" type="submit">
