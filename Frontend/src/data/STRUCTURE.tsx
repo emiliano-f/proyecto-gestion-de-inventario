@@ -556,41 +556,77 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "username":{
-                editable: true,
-                show: true,
-                name: "nombre de usuario",
-                type: "number",
+                editable: false,
+                show: false,
+                name: "Nombre de Usuario",
+                type: "string",
                 col_size: SIZE.TINY,
                 required: true,
                 select : false,
                 enum: false
             },
-            "legajo": {
-                editable: true,
-                show: true,
-                name: "Leagajo",
-                type: "number",
-                col_size: SIZE.TINY,
-                required: true,
-                select : false,
-                enum: false
-            },
-            "first_name": {
+            "first_name":{
                 editable: true,
                 show: true,
                 name: "Nombre",
                 type: "string",
-                col_size: SIZE.SMALL,
+                col_size: SIZE.TINY,
                 required: true,
                 select : false,
                 enum: false
             },
-            "last_name": {
+            "last_name":{
                 editable: true,
                 show: true,
                 name: "Apellido",
                 type: "string",
-                col_size: SIZE.SMALL,
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,
+                enum: false
+            },
+            "email":{
+                editable: true,
+                show: true,
+                name: "Dirección de Correo Electrónico",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,    
+            },
+            "is_staff":{
+                editable: false,
+                show: true,
+                name: "Es Administrador",
+                type: "boolean",
+                col_size: SIZE.TINY,
+                required: false,
+                select : false,
+            },
+            "is_active":{
+                editable: false,
+                show: false,
+                name: "Está Activo",
+                type: "boolean",
+                col_size: SIZE.TINY,
+                required: false,
+                select : false,    
+            },
+            "date_joined":{
+                editable: false,
+                show: true,
+                name: "Fecha de Creación",
+                type: "date",
+                col_size: SIZE.TINY,
+                required: false,
+                select : false, 
+            },
+            "legajo":{
+                editable: true,
+                show: true,
+                name: "Legajo",
+                type: "number",
+                col_size: SIZE.TINY,
                 required: true,
                 select : false,
                 enum: false
@@ -605,21 +641,11 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
-            "email": {
-                editable: true,
-                show: true,
-                name: "Mail",
-                type: "email",
-                col_size: SIZE.SMALL,
-                required: true,
-                select : false,
-                enum: false
-            },
             "telefono": {
                 editable: true,
                 show: true,
                 name: "Teléfono",
-                type: "tel",
+                type: "phone",
                 col_size: SIZE.SMALL,
                 required: true,
                 select : false,

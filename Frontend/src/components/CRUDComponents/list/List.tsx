@@ -44,7 +44,7 @@ const List = () => {
 
     const columns: GridColDef[] = GetColumns(groupName, entityName);
     const fields: Field[] = GetFields(groupName, entityName);
-    console.log(items)
+
     return (
         <>
             <MessageDisplay {...ErrorState}/>
