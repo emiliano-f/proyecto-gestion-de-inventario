@@ -20,11 +20,11 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
     def __table__():
         return 'pedidoinsumo'
 
-    def __update_insumo__(serializers):
-        for curr_ser in serializer:
-            insumo = Insumo.objects.get(id=curr_ser['insumo'].id)
+    def __update_insumo__(detalles):
+        for detalle_pedido in detalles:
+            insumo = Insumo.objects.get(id=detalle_pedido['insumo'].id)
             ## update quantities
-            insumo.cantidad += curr_ser['cantidad']
+            insumo.cantidad += detalle_pedido['cantidad']
             insumo.save()
 
     def __get_detalles__(serializer_, pedido_insumo, many=True):
@@ -55,6 +55,9 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
             # serializer
             serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo, many=True, read_only=True)
 
+            # reverse relation (get DetallePedido)
+            PedidoInsumoCRUD.__get_detalles__(serializer_class, pedido_insumo)
+
             return Response(serializer_class.data)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -63,18 +66,33 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
     def create(self, request):
         try:
 
+            ## check if detalles is empty
+            detalles_data = request.data.pop('detalles', [])
+            if not detalles_data:
+                raise Exception("Details empty")
+
             serializer_pedido = serializer.PedidoInsumoSerializer(data=request.data)
 
             ## check data types
             serializer_pedido.is_valid(raise_exception=True)
             pedido_insumo = serializer_pedido.save()
 
+            ## check for detalles
+            serializers_detalles = []
+            for detalle in detalles_data:
+                detalle['pedidoInsumo'] = pedido_insumo.id
+                serializers_detalles.append(serializer.DetallePedidoSerializer(data=detalle))
+
             ### check validity, logic and save
-            CompraCommonLogic.detalle_pedido_logic(serializer_pedido.validated_data.get('cantidad'))
-            
+            detalle_pedido_models = []
+            for serializer_detalle in serializers_detalles:
+                serializer_detalle.is_valid(raise_exception=True)
+                CompraCommonLogic.detalle_pedido_logic(serializer_detalle.validated_data.get('cantidad'))
+                detalle_pedido_models.append(serializer_detalle.save())
+
             ## check if PedidoInsumo was received
             if pedido_insumo.recibido == 'Si':
-                PedidoInsumoCRUD.__update_insumo__(pedido_insumo.data)
+                PedidoInsumoCRUD.__update_insumo__(detalle_pedido_models)
 
             return Response(serializer_pedido.data, status=status.HTTP_201_CREATED)
 
@@ -86,8 +104,10 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
         try:
             pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
             serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo)
+
             # reverse relation (get DetallePedido)
-            return Response(serializer_class.data)
+            data = PedidoInsumoCRUD.__get_detalles__(serializer_class, pedido_insumo, many=False)
+            return Response(data)
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
@@ -102,7 +122,10 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
             serializer_pedido.save()
 
             if serializer_pedido.validated_data.get('recibido') == 'Si':
-                PedidoInsumoCRUD.__update_insumo__(serializer_pedido.data)
+                serializer_detalles = serializer.DetallePedidoSerializer(
+                                                    models.DetallePedido.objects.filter(pedidoInsumo=pk).all(),
+                                                    many=True)
+                PedidoInsumoCRUD.__update_insumo__(serializer_detalles.data)
 
             return Response(serializer_pedido.data)
 
