@@ -3,8 +3,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from usuario.models import Usuario
 
-# Create your models here.
-
 class Empleado(models.Model):
     dni = models.IntegerField(unique=True)
     nombre = models.CharField(max_length=255)
@@ -27,9 +25,19 @@ class Empleado(models.Model):
                                  default=CategoriaScale.CAT1)
 
 class Sector(models.Model):
+    class EdificioScale(models.TextChoices):
+        AULAS = 'AULAS'
+        DETI_I = 'DETI I'
+        DETI_II = 'DETI II'
+        GOBIERNO = 'GOBIERNO'
+        ARQUITECTURA = 'ARQUITECTURA'
+
     id = models.AutoField(primary_key=True)
+    edificio = models.CharField(
+        max_length = 12,
+        choices= EdificioScale.choices
+    )
     nombre = models.CharField(max_length=30)
-    subsector = models.CharField(max_length=30)
 
 class OrdenServicio(models.Model):
 
@@ -47,6 +55,7 @@ class OrdenServicio(models.Model):
         EN_PROGRESO = "EN_PROGRESO"
         RECHAZADA = "RECHAZADA"
         APROBADA = "APROBADA"
+
 
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING)

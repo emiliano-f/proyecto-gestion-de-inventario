@@ -116,6 +116,7 @@ export const ACTIONS: Record<string, any> ={
         update: true,
         delete: true,        
     },
+    
 }
 
 export default ACTIONS;
