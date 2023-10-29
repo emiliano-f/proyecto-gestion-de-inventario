@@ -25,7 +25,7 @@ class Presupuesto(models.Model):
     proveedor = models.CharField(max_length = 255)
     total = models.FloatField(validators=[MinValueValidator(0, message='El valor no puede ser menor a cero')])
     aprobado = models.CharField(max_length=2, choices=StatusScale.choices)
-    pedidoInsumo = models.ForeignKey(PedidoInsumo, on_delete=models.DO_NOTHING)
+    pedidoInsumo = models.ForeignKey(PedidoInsumo, on_delete=models.DO_NOTHING, related_name='presupuestos')
     userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
 
 class DetallePedido(models.Model):

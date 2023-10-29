@@ -2,6 +2,7 @@ from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from . import serializer
 from . import models
@@ -108,6 +109,20 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
             # reverse relation (get DetallePedido)
             data = PedidoInsumoCRUD.__get_detalles__(serializer_class, pedido_insumo, many=False)
             return Response(data)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error':str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['GET'])
+    def retrieve_presupuestos(self, request, pk):
+        try:
+            pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
+            # reverse relation (get Presupuestos)
+            presupuestos = pedido_insumo.presupuestos.all()
+            serializer_class = serializer.PresupuestoSerializer(presupuestos, many=True, read_only=True)
+
+            return Response(serializer_class.data)
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
