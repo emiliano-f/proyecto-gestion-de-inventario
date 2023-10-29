@@ -25,7 +25,8 @@ function buildURLs(){
  * Endpoints(URL's) del backend utilizados por apiService.tsx
  * Depende de los grupos, y las entidades del MER definidas en STRUCTURE.
  */
-export const BACKENDURLS: Record<string, string> = buildURLs();
+const BACKENDURLS: Record<string, string> = buildURLs();
+
 export function getBackendUrl(name){
     try{
         return BACKENDURLS[name];

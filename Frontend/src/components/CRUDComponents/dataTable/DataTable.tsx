@@ -2,7 +2,7 @@ import "./dataTable.scss"
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import {ACTIONS} from "../../../data/ACTIONS"
+import getACTION from "../../../data/ACTIONS"
 import { BsPlusCircle } from "react-icons/bs";
 
 type Props = {
@@ -21,7 +21,7 @@ export const DataTable = (props: Props) => {
     const actionColumn: GridColDef = {
         field: "action",
         headerName: "Acciones ",
-        width: 150,
+        width: 200,
         renderCell: (params) => {
             return (
                 <div className="action">
@@ -32,21 +32,15 @@ export const DataTable = (props: Props) => {
                         </Link>
                     }
                     {
-                        props.slug === "pedidos-insumo" &&
-                        <Link to={`/compra/pedidos-insumo/${params.row.id}/`}>
-                            <button className="button"><BsPlusCircle /></button>
-                        </Link>
-                    }
-                    {
-                        ACTIONS[props.slug].detail && 
+                        getACTION(entityName).detail && 
                         <Link to={`detail/${params.row.id}/`}>
                             <button className="button"><img src="/read.png" alt="" /></button>
                         </Link>
                     }
-                    {ACTIONS[props.slug].update &&
+                    {getACTION(entityName).update &&
                         <button className="button" onClick={() => { props.setOpenUpdate(true); props.setRow(params.row) }}><img src="/edit.png" alt="" /></button>
                     }
-                    {ACTIONS[props.slug].delete &&
+                    {getACTION(entityName).delete &&
                         <button className="button" onClick={() => { props.setOpenDelete(true); props.setRow(params.row) }}><img src="/delete.png" alt="" /></button>
                     }
                 </div>

@@ -22,6 +22,23 @@ import ListByEntity from "../components/CRUDComponents/listByEntity/ListByEntity
  */
 function generateRoutes() {
   var routes: RouteObject[] = [];
+
+  //Special url's que tienen prioridad sobre las generadas posteriormente
+  routes = routes.concat([
+    {
+      path: "/tarea/crear-tarea/:id/",
+      element: <TaskForm />
+    },
+    {
+      path: "/compra/detalle-pedido",
+      element: <ListByEntity entityNameToFilterBy={"pedidos-insumo"} entityNameToList={"detalle-pedidos"}/>
+    },
+    {
+      path: "/compra/presupuesto",
+      element: <ListByEntity entityNameToFilterBy={"pedidos-insumo"} entityNameToList={"presupuesto"}/>
+    }
+  ]);
+
   SECTIONS.forEach((section) => {
     section.modules.forEach((group) => {
 
@@ -47,21 +64,6 @@ function generateRoutes() {
       });
     });
   });
-  //Special url's
-  routes = routes.concat([
-    {
-      path: "/tarea/crear-tarea/:id/",
-      element: <TaskForm />
-    },
-    {
-      path: "/compra/detalle-pedido",
-      element: <ListByEntity entityNameToFilterBy={"pedido-insumo"} entityNameToList={"detalle-pedido"}/>
-    },
-    {
-      path: "/compra/presupuesto",
-      element: <ListByEntity entityNameToFilterBy={"pedido-insumo"} entityNameToList={"presupuesto"}/>
-    }
-  ]);
   return routes;
 }
 

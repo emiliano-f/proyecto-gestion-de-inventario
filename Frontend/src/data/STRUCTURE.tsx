@@ -439,6 +439,48 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
+            "observaciones": {
+                editable: true,
+                show: true,
+                name: "Observacion",
+                type: "string",
+                col_size: SIZE.BIG,
+                required: false,
+                select : false,
+                enum: false
+            },
+            "recibido": {
+                editable: true,
+                show: true,
+                name: "recibido",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: true,
+                select : true,
+                enum: true
+            },
+        },
+        "detalle-pedidos": {
+            "id": {
+                editable: false,
+                show: true,
+                name: "ID",
+                type: "number",
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,
+                enum: false
+            },
+            "pedidoInsumo": {
+                editable: false,
+                show: false,
+                name: "Pedido de Insumo",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,
+                enum: false
+            },
             "insumo": {
                 editable: true,
                 show: true,
@@ -468,16 +510,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 required: false,
                 select : false,
                 enum: false
-            },
-            "recibido": {
-                editable: true,
-                show: true,
-                name: "recibido",
-                type: "string",
-                col_size: SIZE.TINY,
-                required: true,
-                select : true,
-                enum: true
             },
         },
         "presupuestos": {

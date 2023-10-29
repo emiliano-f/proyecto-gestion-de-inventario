@@ -59,6 +59,13 @@ export const ACTIONS: Record<string, any> ={
         update: true,
         delete: true,
     },
+    "detalle-pedido":{
+        add: true,
+        detail: true,
+        stockAdj: false,
+        update: true,
+        delete: true,
+    },
     "presupuestos": {
         add: false,
         detail: true,
@@ -119,5 +126,14 @@ export const ACTIONS: Record<string, any> ={
     
 }
 
-export default ACTIONS;
+function getACTION(itemName:string){
+    console.log(itemName)
+    try{
+        return ACTIONS[itemName]
+    }catch(error){
+        throw new Error(`No hay acciones para la entreda ${itemName}`);
+    }
+}
+
+export default getACTION;
 
