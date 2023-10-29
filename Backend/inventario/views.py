@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from rest_framework import viewsets
 from rest_framework import status
@@ -6,7 +7,7 @@ from rest_framework.response import Response
 from . import serializer
 from . import models
 
-class CustomModelViewSet(viewsets.ModelViewSet):
+class CustomModelViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
 class InventarioCommonLogic:
@@ -29,7 +30,7 @@ class TipoInsumoCRUD(CustomModelViewSet):
     def __table__():
         return 'tipoinsumo'
 
-class InsumoCRUD(viewsets.ViewSet):
+class InsumoCRUD(LoginRequiredMixin, viewsets.ViewSet):
 
     def __table__():
         return 'insumo'
@@ -76,7 +77,7 @@ class InsumoCRUD(viewsets.ViewSet):
         insumo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class OrdenRetiroCRUD(viewsets.ViewSet):
+class OrdenRetiroCRUD(LoginRequiredMixin, viewsets.ViewSet):
 
     def __table__():
         return 'ordenretiro'
@@ -127,7 +128,7 @@ class OrdenRetiroCRUD(viewsets.ViewSet):
         orden_retiro.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class AjusteStockCRUD(viewsets.ViewSet):
+class AjusteStockCRUD(LoginRequiredMixin, viewsets.ViewSet):
 
     def __table__():
         return 'ajustestock'

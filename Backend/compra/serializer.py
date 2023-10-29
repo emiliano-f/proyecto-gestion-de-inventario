@@ -32,9 +32,6 @@ class DetallePedidoFkReplacedSerializer(DetallePedidoSerializer):
 class PedidoInsumoSerializer(serializers.ModelSerializer):
     """
     Retrieves all fields in PedidoInsumo
-
-    Adds attribute to PedidoInsumoSerializer for get 
-    DetallePedido.*
     """
     detalles = DetallePedidoSerializer(many=True, required=False)
 
