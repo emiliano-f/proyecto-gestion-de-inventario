@@ -132,4 +132,8 @@ def enums_models(request):
     tmp['recibido'] = aux
     enums['pedidos-insumo'] = tmp
 
+    tmp = {}
+    tmp['edificio'] = get_scales(tar.Sector().EdificioScale)
+    enums['sectores'] = tmp
+
     return JsonResponse(enums)

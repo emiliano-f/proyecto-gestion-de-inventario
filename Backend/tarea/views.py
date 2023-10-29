@@ -45,7 +45,7 @@ class TareaCommonLogic:
     def create_empleados_relation(empleados_data, tarea_pk):
         print(empleados_data)
         for empleado in empleados_data:
-            ## dict
+            ## dictusuarioNombre
             tiempo_entry = []
             tiempo_entry['empleado'] = empleado['id']
             tiempo_entry['tarea'] = tarea_pk
