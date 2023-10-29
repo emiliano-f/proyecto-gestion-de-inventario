@@ -24,7 +24,7 @@ class PedidoInsumoCRUD(LoginRequiredMixin, viewsets.ViewSet):
 
     def __update_insumo__(detalles):
         for detalle_pedido in detalles:
-            insumo = Insumo.objects.get(id=detalle_pedido['insumo'].id)
+            insumo = Insumo.objects.get(id=detalle_pedido['insumo'])
             ## update quantities
             insumo.cantidad += detalle_pedido['cantidad']
             insumo.save()
@@ -122,11 +122,14 @@ class PedidoInsumoCRUD(LoginRequiredMixin, viewsets.ViewSet):
     def update(self, request, pk):
         try:
             pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
+            if pedido_insumo.recibido == models.StatusScale.SI:
+                raise Exception('PedidoInsumo ya recibido, no se pueden efectuar cambios')
+
             serializer_pedido = serializer.PedidoInsumoSerializer(pedido_insumo, data=request.data)
             serializer_pedido.is_valid(raise_exception=True)
             serializer_pedido.save()
 
-            if serializer_pedido.validated_data.get('recibido') == 'Si':
+            if serializer_pedido.validated_data.get('recibido') == models.StatusScale.SI:
                 serializer_detalles = serializer.DetallePedidoSerializer(
                                                     models.DetallePedido.objects.filter(pedidoInsumo=pk).all(),
                                                     many=True)
@@ -155,7 +158,7 @@ class PresupuestoCRUD(CustomModelViewSet):
     def __table__():
         return 'presupuesto'
 
-class DetallePedidoCRUD(viewsets.ViewSet):
+class DetallePedidoCRUD(LoginRequiredMixin, viewsets.ViewSet):
 
     def __table__():
         return 'detallepedido'
