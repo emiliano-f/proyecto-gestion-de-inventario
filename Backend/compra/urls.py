@@ -10,6 +10,7 @@ urlpatterns = [
     path('pedidos-insumo/', views.PedidoInsumoCRUD.as_view({'get':'list', 'post':'create'}), name='pedidos-insumo'),
     path('pedidos-insumo/<int:pk>/', views.PedidoInsumoCRUD.as_view({'get':'retrieve','put':'update','delete':'destroy'}), name='pedidos-insumo-id'),
     path('pedidos-insumo/presupuestos/<int:pk>/', views.PedidoInsumoCRUD.as_view({'get':'retrieve_presupuestos'}), name='pedidos-insumo-presupuestos-id'),
+    path('pedidos-insumo/detalles/<int:pk>/', views.PedidoInsumoCRUD.as_view({'get':'retrieve_detalles'}), name='pedidos-insumo-detalles-id'),
     path('detalle-pedidos/', views.DetallePedidoCRUD.as_view({'get':'list', 'post':'create'}), name='detalle-pedidos'),
     path('detalle-pedidos/<int:pk>/', views.DetallePedidoCRUD.as_view({'get':'retrieve','put':'update','delete':'destroy'}), name='detalle-pedidos'),
 ]

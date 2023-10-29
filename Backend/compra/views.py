@@ -115,6 +115,20 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
             return Response({'error':str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['GET'])
+    def retrieve_detalles(self, request, pk):
+        try:
+            pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
+            # reverse relation (get DetallePedido)
+            detalles_pedido = pedido_insumo.detalles_pedido.all()
+            serializer_class = serializer.DetallePedidoSerializer(detalles_pedido, many=True, read_only=True)
+
+            return Response(serializer_class.data)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error':str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['GET'])
     def retrieve_presupuestos(self, request, pk):
         try:
             pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
