@@ -10,6 +10,7 @@ import TaskForm from "../components/CRUDComponents/taskForm/TaskForm.tsx";
 import List from "../components/CRUDComponents/list/List"
 import RepositionForm from "../components/CRUDComponents/repositionForm/RepositionForm.tsx"
 import SECTIONS from "../data/SECTIONS.tsx";
+import ListByEntity from "../components/CRUDComponents/listByEntity/ListByEntity.tsx";
 
 
 /**
@@ -53,8 +54,12 @@ function generateRoutes() {
       element: <TaskForm />
     },
     {
-      path: "/compra/pedidos-insumo/:id/",
-      element: <RepositionForm />
+      path: "/compra/detalle-pedido",
+      element: <ListByEntity entityNameToFilterBy={"pedido-insumo"} entityNameToList={"detalle-pedido"}/>
+    },
+    {
+      path: "/compra/presupuesto",
+      element: <ListByEntity entityNameToFilterBy={"pedido-insumo"} entityNameToList={"presupuesto"}/>
     }
   ]);
   return routes;

@@ -159,6 +159,10 @@ const TRANSLATION : Record<string,Record<string,string>> = {
         singular: "Edificio", 
         plural: "Edificios"
     },
+    "detalle-pedido":{
+        singular:"Detalle de Pedido",
+        plural:"Detalles de Pedido"
+    }
 }
 
 //================GETTERS Y FUNCIONES================//
