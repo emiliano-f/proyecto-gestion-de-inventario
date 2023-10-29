@@ -472,13 +472,13 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "pedidoInsumo": {
-                editable: false,
-                show: false,
+                editable: true,
+                show: true,
                 name: "Pedido de Insumo",
                 type: "string",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select : true,
                 enum: false
             },
             "insumo": {
@@ -1011,7 +1011,7 @@ export function getFullName(group: string, entity: string, attribute: string): s
         return STRUCTURE[group][entity][attribute]["name"];
     }catch{
         throw new Error(`No se encuentra el atributo 
-        ${group} ${entity} ${attribute}`)
+        ${group}->${entity}->${attribute}`)
     }
 }
 
@@ -1026,6 +1026,7 @@ import { GridColDef } from "@mui/x-data-grid";
  * @returns 
  */
 export function GetColumns(group: string, entity: String): GridColDef[] {
+    //console.log(group,entity)
     return Object.entries(STRUCTURE[group][entity])
         .filter(([key, attribute]) => attribute.show === true)
         .map(([key, attribute]) => {

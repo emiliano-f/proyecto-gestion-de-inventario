@@ -174,7 +174,7 @@ class DetallePedidoCRUD(viewsets.ViewSet):
             serializer_class.is_valid(raise_exception=True)
 
             ## check logic
-            CompraCommonLogic.detalle_pedido_logic(serializer_class.data.get('cantidad'))
+            CompraCommonLogic.detalle_pedido_logic(serializer_class.validated_data.get('cantidad'))
 
             serializer_class.save()
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)

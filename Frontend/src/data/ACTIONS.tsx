@@ -67,7 +67,7 @@ export const ACTIONS: Record<string, any> ={
         delete: true,
     },
     "presupuestos": {
-        add: false,
+        add: true,
         detail: true,
         stockAdj: false,
         update: true,
@@ -127,7 +127,7 @@ export const ACTIONS: Record<string, any> ={
 }
 
 function getACTION(itemName:string){
-    console.log(itemName)
+    //console.log(itemName)
     try{
         return ACTIONS[itemName]
     }catch(error){

@@ -91,7 +91,7 @@ export function getSectors(setSectors : any,edificioName : number) : Promise<Axi
 export function SendServiceRequest(formData: FormData) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function sendData(formData: FormData) {
-            await inventarioAPI.post(BACKENDURLS["ordenes-servicio"], formData)
+            await inventarioAPI.post(getBackendUrl("ordenes-servicio"), formData)
             .then((response) => resolve(response))
             .catch((error) => reject(error));
         }
@@ -102,7 +102,7 @@ export function SendServiceRequest(formData: FormData) : Promise<AxiosResponse<a
 export function GetEnums(setEnum:any) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
             async function loadItem(){
-                await inventarioAPI.get(BACKENDURLS["enums"])
+                await inventarioAPI.get(getBackendUrl("enums"))
                 .then((response) => {
                     setEnum(response.data)
                     resolve(response)
@@ -111,6 +111,21 @@ export function GetEnums(setEnum:any) : Promise<AxiosResponse<any,any>> {
             }
             loadItem()
         });
+}
+
+export function ListItemsFiltered(setItems, filteredEntityName, filterID){
+    console.log(`${filteredEntityName}-filtered`)
+    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
+        async function loadItems() {
+            await inventarioAPI.get(getBackendUrl(`${filteredEntityName}-filtered`).concat(`${filterID}/`))
+            .then((response) => {
+                setItems(response.data);
+                resolve(response)
+            })
+            .catch((error)=>(reject(error)))
+        }
+        loadItems()
+    });
 }
 
 export function login(){

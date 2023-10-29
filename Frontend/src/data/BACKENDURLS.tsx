@@ -19,6 +19,8 @@ function buildURLs(){
     })
     urls["enums"] = "/table-enums/";
     urls["edificios"] = "tarea/sector/edificios/";
+    urls["presupuestos-filtered"] = "compra/pedidos-insumo/presupuestos/";
+    urls["detalle-pedidos-filtered"] = "compra/pedidos-insumo/detalles/";
     return urls;
 }
 /**

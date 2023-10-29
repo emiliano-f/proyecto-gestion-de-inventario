@@ -24,10 +24,13 @@ class DetallePedidoFkReplacedSerializer(DetallePedidoSerializer):
     Adds attributes to DetallePedidoSerializer for get 
     PedidoInsumo.*
     """
- 
-    fechaHora = serializers.CharField(source='pedidoInsumo.fechaHora') 
-    observaciones = serializers.CharField(source='pedidoInsumo.observaciones') 
-    recibido = serializers.CharField(source='pedidoInsumo.recibido') 
+    class Meta:
+        model = models.DetallePedido
+        fields = '__all__'
+
+    #fechaHora = serializers.CharField(source='pedidoInsumo.fechaHora') 
+    #observaciones = serializers.CharField(source='pedidoInsumo.observaciones') 
+    #recibido = serializers.CharField(source='pedidoInsumo.recibido') 
 
 class PedidoInsumoSerializer(serializers.ModelSerializer):
     """

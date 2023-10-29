@@ -30,12 +30,12 @@ function generateRoutes() {
       element: <TaskForm />
     },
     {
-      path: "/compra/detalle-pedido",
+      path: "/compra/detalle-pedidos",
       element: <ListByEntity entityNameToFilterBy={"pedidos-insumo"} entityNameToList={"detalle-pedidos"}/>
     },
     {
-      path: "/compra/presupuesto",
-      element: <ListByEntity entityNameToFilterBy={"pedidos-insumo"} entityNameToList={"presupuesto"}/>
+      path: "/compra/presupuestos",
+      element: <ListByEntity entityNameToFilterBy={"pedidos-insumo"} entityNameToList={"presupuestos"}/>
     }
   ]);
 

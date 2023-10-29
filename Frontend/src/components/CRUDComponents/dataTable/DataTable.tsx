@@ -32,15 +32,15 @@ export const DataTable = (props: Props) => {
                         </Link>
                     }
                     {
-                        getACTION(entityName).detail && 
+                        getACTION(props.slug).detail && 
                         <Link to={`detail/${params.row.id}/`}>
                             <button className="button"><img src="/read.png" alt="" /></button>
                         </Link>
                     }
-                    {getACTION(entityName).update &&
+                    {getACTION(props.slug).update &&
                         <button className="button" onClick={() => { props.setOpenUpdate(true); props.setRow(params.row) }}><img src="/edit.png" alt="" /></button>
                     }
-                    {getACTION(entityName).delete &&
+                    {getACTION(props.slug).delete &&
                         <button className="button" onClick={() => { props.setOpenDelete(true); props.setRow(params.row) }}><img src="/delete.png" alt="" /></button>
                     }
                 </div>
