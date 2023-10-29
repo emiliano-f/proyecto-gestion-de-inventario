@@ -248,7 +248,7 @@ class SectorListCRUD(LoginRequiredMixin, viewsets.ViewSet):
 
     def retrieve(self, request, nombre):
         try:
-            sectores = models.Sector.objects.filter(nombre=nombre).all()
+            sectores = models.Sector.objects.filter(edificio=nombre).all()
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer_class = serializer.SectorSubsectorSerializer(sectores, many=True)
