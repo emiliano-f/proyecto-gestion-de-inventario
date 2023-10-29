@@ -28,36 +28,12 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
             insumo.cantidad += detalle_pedido['cantidad']
             insumo.save()
 
-    def __get_detalles__(serializer_, pedido_insumo, many=True):
-        new_data = {}
-        if many:
-            for pedido_instance in pedido_insumo:
-                detalles = pedido_instance.detalles_pedido.all()
-                pedido_data = next(pedido_data
-                                   for pedido_data in serializer_.data
-                                   if pedido_data['id'] == pedido_instance.id)
-                pedido_data['detalles'] = [{'insumo': Insumo.objects.get(pk=detalle.insumo.id).nombre,
-                                            'cantidad': detalle.cantidad,
-                                            'observacion': detalle.observacion}
-                                           for detalle in detalles]
-        else:
-            detalles = pedido_insumo.detalles_pedido.all()
-            new_data = serializer_.data.copy()
-            new_data['detalles'] = [{'insumo': Insumo.objects.get(pk=detalle.insumo.id).nombre,
-                                        'cantidad': detalle.cantidad,
-                                        'observacion': detalle.observacion}
-                                       for detalle in detalles]
-        return new_data
-
     def list(self, request):
         try:
             # join
             pedido_insumo = models.PedidoInsumo.objects.all()
             # serializer
             serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo, many=True, read_only=True)
-
-            # reverse relation (get DetallePedido)
-            PedidoInsumoCRUD.__get_detalles__(serializer_class, pedido_insumo)
 
             return Response(serializer_class.data)
         except Exception as e:
@@ -107,8 +83,7 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
             serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo)
 
             # reverse relation (get DetallePedido)
-            data = PedidoInsumoCRUD.__get_detalles__(serializer_class, pedido_insumo, many=False)
-            return Response(data)
+            return Response(serializer_class.data)
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
