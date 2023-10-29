@@ -155,7 +155,7 @@ class PresupuestoCRUD(CustomModelViewSet):
     def __table__():
         return 'presupuesto'
 
-class DetallePedidoCRUD(viewsets.ViewSet):
+class DetallePedidoCRUD(LoginRequiredMixin, viewsets.ViewSet):
 
     def __table__():
         return 'detallepedido'
