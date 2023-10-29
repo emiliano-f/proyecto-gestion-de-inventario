@@ -1,5 +1,7 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
+from django.utils.translation import gettext_lazy as _
 from usuario.models import Usuario
 
 class StatusScale(models.TextChoices):
@@ -11,7 +13,6 @@ class StatusScale(models.TextChoices):
     NO = 'No'
 
 class PedidoInsumo(models.Model):
-
     id = models.AutoField(primary_key=True);
     fechaHora = models.DateTimeField(auto_now=True)
     recibido = models.CharField(max_length=2, choices=StatusScale.choices, default=StatusScale.NO)
