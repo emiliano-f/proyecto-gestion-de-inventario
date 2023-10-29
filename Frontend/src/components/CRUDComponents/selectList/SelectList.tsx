@@ -16,7 +16,7 @@ type Props = {
  * @param props props.fieldName es el nombre de la columna de interés
  * @returns 
  */
-const SelectList = ({props}:Props) => {
+const SelectList = ({props}:{props:Props}) => {
     interface Item {
         id: number;
         nombre: string;

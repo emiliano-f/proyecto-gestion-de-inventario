@@ -15,13 +15,14 @@ import AddEntity from "../addEntity/AddEntity";
 
 const TaskForm = () => {
     const [row, setRow] = useState(null);
-    const {entity: entityName} = GetUrlParts();
+    
 
-    ReadItem(setRow, entityName)
+    ReadItem(setRow, "ordenes-servicio")
         .then((response)=>console.log("response"))
         .catch((error) => {
             setMessage(`Ha surgido un error al buscar ${getSingular(entityName)}`, error)
         });
+    console.log(row)
     
     return (    
         <div className="task-form">
@@ -107,18 +108,32 @@ const TaskForm = () => {
                                 <Form.Control name="fechaFin" type="date" />
                             </Form.Group>
                         </Row>
+                        <Row className="mb-3">
+                            
+                            <AddEntity entityName="empleado"/>
+                            
+                        </Row>
+                        <Row className="mb-3">
+                            <Col className="mb-3">
+                                <AddEntity entityName="insumo"/>
+                            </Col>
+                            <Col className="mb-3">
+                                <AddEntity entityName="herramienta"/>
+                            </Col>
+                            
+                            
+
+                        </Row>
                              
                     </Col>
                 </Row>
                 
+                
                 <div>
-                    <AddEntity entityName={"empleado"}/>
+                    
                 </div>
                 <div>
-                    <AddEntity entityName={"insumo"}/>
-                </div>
-                <div>
-                    <AddEntity entityName={"herramienta"}/>
+                    
                 </div>       
                 
                 <Row className="mb-3">
