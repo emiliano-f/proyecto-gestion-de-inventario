@@ -439,6 +439,48 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select: false,
                 enum: false
             },
+            "observaciones": {
+                editable: true,
+                show: true,
+                name: "Observacion",
+                type: "string",
+                col_size: SIZE.BIG,
+                required: false,
+                select : false,
+                enum: false
+            },
+            "recibido": {
+                editable: true,
+                show: true,
+                name: "recibido",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: true,
+                select : true,
+                enum: true
+            },
+        },
+        "detalle-pedidos": {
+            "id": {
+                editable: false,
+                show: true,
+                name: "ID",
+                type: "number",
+                col_size: SIZE.TINY,
+                required: true,
+                select : false,
+                enum: false
+            },
+            "pedidoInsumo": {
+                editable: true,
+                show: true,
+                name: "Pedido de Insumo",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: true,
+                select : true,
+                enum: false
+            },
             "insumo": {
                 editable: true,
                 show: true,
@@ -476,7 +518,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.TINY,
                 required: true,
-                select: true,
+                select : true,
                 enum: true
             },
         },
@@ -979,7 +1021,7 @@ export function getFullName(group: string, entity: string, attribute: string): s
         return STRUCTURE[group][entity][attribute]["name"];
     } catch {
         throw new Error(`No se encuentra el atributo 
-        ${group} ${entity} ${attribute}`)
+        ${group}->${entity}->${attribute}`)
     }
 }
 
@@ -994,6 +1036,7 @@ import { GridColDef } from "@mui/x-data-grid";
  * @returns 
  */
 export function GetColumns(group: string, entity: String): GridColDef[] {
+    //console.log(group,entity)
     return Object.entries(STRUCTURE[group][entity])
         .filter(([key, attribute]) => attribute.show === true)
         .map(([key, attribute]) => {

@@ -10,6 +10,7 @@ import TaskForm from "../components/CRUDComponents/taskForm/TaskForm.tsx";
 import List from "../components/CRUDComponents/list/List"
 import RepositionForm from "../components/CRUDComponents/repositionForm/RepositionForm.tsx"
 import SECTIONS from "../data/SECTIONS.tsx";
+import ListByEntity from "../components/CRUDComponents/listByEntity/ListByEntity.tsx";
 
 
 /**
@@ -21,6 +22,23 @@ import SECTIONS from "../data/SECTIONS.tsx";
  */
 function generateRoutes() {
   var routes: RouteObject[] = [];
+
+  //Special url's que tienen prioridad sobre las generadas posteriormente
+  routes = routes.concat([
+    {
+      path: "/tarea/crear-tarea/:id/",
+      element: <TaskForm />
+    },
+    {
+      path: "/compra/detalle-pedidos",
+      element: <ListByEntity entityNameToFilterBy={"pedidos-insumo"} entityNameToList={"detalle-pedidos"}/>
+    },
+    {
+      path: "/compra/presupuestos",
+      element: <ListByEntity entityNameToFilterBy={"pedidos-insumo"} entityNameToList={"presupuestos"}/>
+    }
+  ]);
+
   SECTIONS.forEach((section) => {
     section.modules.forEach((group) => {
 
@@ -46,17 +64,6 @@ function generateRoutes() {
       });
     });
   });
-  //Special url's
-  routes = routes.concat([
-    {
-      path: "/tarea/crear-tarea/:id/",
-      element: <TaskForm />
-    },
-    {
-      path: "/compra/pedidos-insumo/:id/",
-      element: <RepositionForm />
-    }
-  ]);
   return routes;
 }
 

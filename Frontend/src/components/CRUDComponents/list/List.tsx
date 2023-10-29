@@ -12,7 +12,7 @@ import DeleteAlert from "../deleteAlert/DeleteAlert";
 import { GetUrlParts } from "../../../data/FRONTURLS";
 import { GetColumns, GetFields, Field } from "../../../data/STRUCTURE";
 import { getSingular, getPlural} from "../../../data/TRANSLATIONS"
-import { ACTIONS } from "../../../data/ACTIONS";
+import getACTION from "../../../data/ACTIONS";
 import { Link } from "react-router-dom";
 
 
@@ -51,7 +51,7 @@ const List = () => {
             <div className="item">
                 <div className="info">
                     <h1>{getPlural(entityName)}</h1>
-                    {(ACTIONS[entityName].add) && <button className="btn btn-primary" onClick={() => setOpenAdd(true)}>Agregar {getSingular(entityName)}</button>}
+                    {(getACTION(entityName)["add"]) && <button className="btn btn-primary" onClick={() => setOpenAdd(true)}>Agregar {getSingular(entityName)}</button>}
                 </div>
 
                 <DataTable slug={entityName} columns={columns} rows={items} setOpenUpdate={setOpenUpdate} setOpenRead={setOpenRead} setOpenDelete={setOpenDelete} setRow={setRow} />
