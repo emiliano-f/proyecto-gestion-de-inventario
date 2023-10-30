@@ -45,7 +45,7 @@ function FilteredDataGrid({ filterID, filteredEntity,  setFilterID }): React.Rea
 
     return (
         <>
-            <div className="item">
+            <div className="myTable">
                 <div className="info">
                     <h1>{getPlural(filteredEntity)}</h1>
                     {(getACTION(filteredEntity)["add"]) && <button className="btn btn-primary" onClick={() => setOpenAdd(true)}>Agregar {getSingular(filteredEntity)}</button>}
@@ -65,21 +65,22 @@ function FilteredDataGrid({ filterID, filteredEntity,  setFilterID }): React.Rea
 
 class renderRow extends PureComponent {
     render() {
-
         const filters = this.props.data["filters"];
         const setFilterID = this.props.data["setFilter"];
-        const handleClick = (filter) => setFilterID(filter["id"]);
+        const currWord = this.props.data["currWord"];
 
-        const readClick = () => (console.log("Abrir modal Read"))
+        const handleClick = (filter) => setFilterID(filter["id"]);
+        const lookFor = (filter) => String(filter["id"]).startsWith(currWord) 
+        || (new Date(filter["fechaHora"])).toLocaleString().match(currWord) 
+        || currWord === "";
+        console.log(currWord)
         return (
-            filters.map((filter,index) => {
+            filters.filter(lookFor).map((filter,index) => {
             return (
-                <ListItem key={index}>
-                    <ListItemButton onClick={() => handleClick(filter)}>
-                        <ListItemText primary={`${filter["id"]}\n${Date(filter["fechaHora"])}`} />
-                        <ListItemIcon>
-                            <AiOutlineSelect/>
-                        </ListItemIcon>
+                <ListItem className="list-items" key={index}>
+                    <ListItemButton className="btn btn-primary" onClick={() => handleClick(filter)}>
+                        <ListItemText className="item-button-id" primary={filter["id"]} />
+                        <ListItemText className="item-button-date" primary={`${(new Date(filter["fechaHora"])).toLocaleString()}`} />
                     </ListItemButton>
                 </ListItem>
             );
@@ -99,21 +100,26 @@ function ListFilters({ setFilterID, filterName }): React.ReactElement {
                 setMessage(`Ha surgido un error al buscar ${getPlural(filterName)}.`, error)
             })
     }, [setFilters])
-    
+
+    const [currWord,setCurrWord] = useState("");
+
     return (
         <div className="Filters">
-                <h4>Pedidos de Insumo</h4>
             <Card>
-                <FixedSizeList
-                    height={570}
-                    width={300}
-                    itemSize={50}
-                    itemCount={filters.length}
-                    overscanCount={1}
-                    itemData={{filters:filters,setFilter:setFilterID}}
-                >   
-                    {renderRow}
-                </FixedSizeList>
+                <h4>Pedidos de Insumo</h4>
+                <Card className="custom-card">
+                    <input value={currWord} placeholder="Buscar..." onChange={(event) => setCurrWord(event.target.value)}/>
+                    <FixedSizeList
+                        height={570}
+                        width={250}
+                        itemSize={50}
+                        itemCount={filters.length}
+                        overscanCount={1}
+                        itemData={{filters:filters,setFilter:setFilterID,currWord:currWord}}
+                    >   
+                        {renderRow}
+                    </FixedSizeList>
+                </Card>
             </Card>
         </div>
     );
