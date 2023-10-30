@@ -1,5 +1,6 @@
-from django.db import transaction
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.views import APIView
@@ -11,7 +12,7 @@ import inventario.models as inventario_models
 from herramienta.views import HerramientaCommonLogic
 from inventario.views import InventarioCommonLogic
 
-class CustomModelViewSet(viewsets.ModelViewSet):
+class CustomModelViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
 class TareaCommonLogic:
@@ -92,7 +93,7 @@ class EncuestaSatisfaccionCRUD(CustomModelViewSet):
     def __table__():
         return 'encuestasatisfaccion'
 
-class TareaCRUD(viewsets.ViewSet):
+class TareaCRUD(LoginRequiredMixin, viewsets.ViewSet):
 
     def __table__():
         return 'tarea'
@@ -192,7 +193,7 @@ class TareaCRUD(viewsets.ViewSet):
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
     
-class OrdenServicioCRUD(viewsets.ViewSet):
+class OrdenServicioCRUD(LoginRequiredMixin, viewsets.ViewSet):
 
     def __table__():
         return 'ordenservicio'
@@ -241,7 +242,7 @@ class OrdenServicioCRUD(viewsets.ViewSet):
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-class SectorListCRUD(viewsets.ViewSet):
+class SectorListCRUD(LoginRequiredMixin, viewsets.ViewSet):
     def __table__():
         return 'sector'
 
