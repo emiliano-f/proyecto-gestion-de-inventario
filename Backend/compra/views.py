@@ -31,7 +31,7 @@ class PedidoInsumoCRUD(viewsets.ViewSet):
     def list(self, request):
         try:
             # join
-            pedido_insumo = models.PedidoInsumo.objects.all()
+            pedido_insumo = models.PedidoInsumo.objects.all().order_by('-fechaHora')
             # serializer
             serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo, many=True, read_only=True)
 
