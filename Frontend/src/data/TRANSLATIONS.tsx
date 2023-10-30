@@ -115,6 +115,10 @@ const TRANSLATION : Record<string,Record<string,string>> = {
         singular: "Tarea", 
         plural: "Tareas"
     },
+    "crear-tarea": {
+        singular: "Crear Tarea",
+        plural: "Crear Tareas"
+    },
     "tareas": {
         singular: "Tarea", 
         plural: "Tareas"

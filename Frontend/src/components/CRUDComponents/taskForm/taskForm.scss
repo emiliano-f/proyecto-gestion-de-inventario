@@ -3,8 +3,9 @@
 .task-form{
     display: flex;
     flex-direction: column;
+    
     .service-order {
-        margin-right: 50px;
+        
         @include lg {
             width: 100%;
         }

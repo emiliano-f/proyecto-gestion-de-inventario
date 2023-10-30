@@ -1,4 +1,4 @@
-enum SIZE{
+enum SIZE {
     TINY = 150,
     SMALL = 200,
     MEDIUM = 250,
@@ -29,7 +29,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "nombre": {
@@ -39,7 +39,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "tipoInsumo": {
@@ -49,7 +49,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : true,
+                select: true,
                 enum: false
             },
             "unidadMedida": {
@@ -59,7 +59,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : true,
+                select: true,
                 enum: true
             },
             "cantidad": {
@@ -69,7 +69,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "codigo": {
@@ -79,7 +79,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.TINY,
                 required: false,
-                select : false,
+                select: false,
                 enum: false
             },
             "observaciones": {
@@ -89,7 +89,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: false,
-                select : false,
+                select: false,
                 enum: false
             },
             "puntoReposicion": {
@@ -99,20 +99,20 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: false,
-                select : false,
+                select: false,
                 enum: false
             },
-            "baja":{
-                editable:false,
-                show:false,
+            "baja": {
+                editable: false,
+                show: false,
                 name: "Dado de Baja",
                 type: "string",
-                col_size:SIZE.TINY,
-                required : false,
+                col_size: SIZE.TINY,
+                required: false,
                 select: false,
                 enum: false,
             }
-            
+
         },
         "tipos-insumo": {
             "id": {
@@ -122,7 +122,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false,
             },
             "nombre": {
@@ -132,7 +132,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "descripcion": {
@@ -142,7 +142,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.BIG,
                 required: false,
-                select : false,
+                select: false,
                 enum: false
             }
         },
@@ -154,7 +154,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "insumo": {
@@ -164,7 +164,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : true,
+                select: true,
                 enum: false
             },
             "tarea": {
@@ -174,7 +174,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : true,
+                select: true,
                 enum: false
             },
             "cantidad": {
@@ -184,7 +184,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "fechaHora": {
@@ -194,7 +194,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "date",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
         },
@@ -206,7 +206,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "insumo": {
@@ -216,7 +216,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : true,
+                select: true,
                 enum: false
             },
             "cantidad": {
@@ -226,7 +226,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "observaciones": {
@@ -236,7 +236,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.BIG,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "fecha": {
@@ -246,7 +246,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "date",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "accionCantidad": {
@@ -256,7 +256,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
         },
@@ -268,7 +268,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "nombre": {
@@ -278,7 +278,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "tipoHerramienta": {
@@ -288,7 +288,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : true,
+                select: true,
                 enum: false
             },
             "codigo": {
@@ -298,7 +298,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.TINY,
                 required: false,
-                select : false,
+                select: false,
                 enum: false
             },
             "estado": {
@@ -308,7 +308,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : true,
+                select: true,
                 enum: true
             },
             "fechaAlta": {
@@ -318,7 +318,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "date",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "observaciones": {
@@ -328,7 +328,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.BIG,
                 required: false,
-                select : false,
+                select: false,
                 enum: false
             },
         },
@@ -340,7 +340,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "nombre": {
@@ -350,7 +350,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "descripcion": {
@@ -360,7 +360,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.BIG,
                 required: false,
-                select : false,
+                select: false,
                 enum: false
             },
         },
@@ -372,7 +372,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "herramienta": {
@@ -382,7 +382,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : true,
+                select: true,
                 enum: false
             },
             "fecha": {
@@ -392,7 +392,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "date",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "estado": {
@@ -402,7 +402,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.TINY,
                 required: true,
-                select : true,
+                select: true,
                 enum: true
             },
             "observaciones": {
@@ -412,7 +412,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: false,
-                select : false,
+                select: false,
                 enum: false
             },
         }
@@ -426,7 +426,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "fechaHora": {
@@ -436,7 +436,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "date",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "observaciones": {
@@ -488,7 +488,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : true,
+                select: true,
                 enum: false
             },
             "cantidad": {
@@ -498,7 +498,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "observacion": {
@@ -508,8 +508,18 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.BIG,
                 required: false,
-                select : false,
+                select: false,
                 enum: false
+            },
+            "recibido": {
+                editable: true,
+                show: true,
+                name: "recibido",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: true,
+                select : true,
+                enum: true
             },
         },
         "presupuestos": {
@@ -520,7 +530,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "pedidoInsumo": {
@@ -530,7 +540,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : true,
+                select: true,
                 enum: false
             },
             "fecha": {
@@ -540,7 +550,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "date",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "proveedor": {
@@ -550,7 +560,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "total": {
@@ -560,7 +570,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "aprobado": {
@@ -570,7 +580,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "boolean",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : true,
+                select: true,
                 enum: true
             },
         }
@@ -584,83 +594,83 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
-            "username":{
+            "username": {
                 editable: false,
                 show: false,
                 name: "Nombre de Usuario",
                 type: "string",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
-            "first_name":{
+            "first_name": {
                 editable: true,
                 show: true,
                 name: "Nombre",
                 type: "string",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
-            "last_name":{
+            "last_name": {
                 editable: true,
                 show: true,
                 name: "Apellido",
                 type: "string",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
-            "email":{
+            "email": {
                 editable: true,
                 show: true,
                 name: "Dirección de Correo Electrónico",
                 type: "string",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,    
+                select: false,
             },
-            "is_staff":{
+            "is_staff": {
                 editable: false,
                 show: true,
                 name: "Es Administrador",
                 type: "boolean",
                 col_size: SIZE.TINY,
                 required: false,
-                select : false,
+                select: false,
             },
-            "is_active":{
+            "is_active": {
                 editable: false,
                 show: false,
                 name: "Está Activo",
                 type: "boolean",
                 col_size: SIZE.TINY,
                 required: false,
-                select : false,    
+                select: false,
             },
-            "date_joined":{
+            "date_joined": {
                 editable: false,
                 show: true,
                 name: "Fecha de Creación",
                 type: "date",
                 col_size: SIZE.TINY,
                 required: false,
-                select : false, 
+                select: false,
             },
-            "legajo":{
+            "legajo": {
                 editable: true,
                 show: true,
                 name: "Legajo",
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "cargo": {
@@ -670,7 +680,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "telefono": {
@@ -680,7 +690,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "phone",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
         }
@@ -694,7 +704,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "tipo": {
@@ -704,7 +714,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : true,
+                select: true,
                 enum: true
             },
             "descripcion": {
@@ -714,7 +724,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "fechaTentativa": {
@@ -724,7 +734,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "date",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "fechaInicio": {
@@ -734,7 +744,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "date",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "fechaFin": {
@@ -744,7 +754,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "date",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
         },
@@ -756,7 +766,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "dni": {
@@ -766,7 +776,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "nombre": {
@@ -776,7 +786,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "apellido": {
@@ -786,7 +796,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "telefono": {
@@ -796,7 +806,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "tel",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "mail": {
@@ -806,7 +816,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "email",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "categoria": {
@@ -816,7 +826,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : true,
+                select: true,
                 enum: true
             },
         },
@@ -828,7 +838,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "usuario": {
@@ -838,7 +848,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.TINY,
                 required: true,
-                select : true,
+                select: true,
                 enum: false
             },
             //Estos se han agregado ya que recibimos los datos dle usuario desde el back
@@ -879,7 +889,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.SMALL,
                 required: false,
-                select : true,
+                select: true,
                 enum: false
             },
             "fechaGeneracion": {
@@ -889,26 +899,26 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "date",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
-            "sector":{
+            "sector": {
                 editable: true,
-                show:false,
-                name:"Sector",
-                type:"string",
+                show: false,
+                name: "Sector",
+                type: "string",
                 col_size: SIZE.TINY,
-                required:true,
-                enum:false
+                required: true,
+                enum: false
             },
-            "descripcion":{
+            "descripcion": {
                 editable: true,
-                show:false,
-                name:"Descripción",
-                type:"string",
+                show: false,
+                name: "Descripción",
+                type: "string",
                 col_size: SIZE.SMALL,
-                required:false,
-                enum:false
+                required: false,
+                enum: false
             },
             "categoria": {
                 editable: true,
@@ -917,7 +927,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : true,
+                select: true,
                 enum: true
             },
             "prioridad": {
@@ -927,27 +937,27 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : true,
+                select: true,
                 enum: true
             },
-            "fechaNecesidad":{
+            "fechaNecesidad": {
                 editable: true,
                 show: true,
                 name: "Fecha de Necesidad",
                 type: "date",
                 col_size: SIZE.SMALL,
                 required: false,
-                select : false,
+                select: false,
                 enum: false
             },
-            "comentario":{
+            "comentario": {
                 editable: true,
-                show:false,
-                name:"Comentario",
-                type:"string",
+                show: false,
+                name: "Comentario",
+                type: "string",
                 col_size: SIZE.SMALL,
-                required:false,
-                enum:false
+                required: false,
+                enum: false
             },
             "estado": {
                 editable: true,
@@ -956,7 +966,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : true,
+                select: true,
                 enum: true
             },
         },
@@ -968,7 +978,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "number",
                 col_size: SIZE.TINY,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
             "edificio": {
@@ -978,7 +988,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.TINY,
                 required: true,
-                select : true,
+                select: true,
                 enum: true
             },
             "nombre": {
@@ -988,7 +998,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
-                select : false,
+                select: false,
                 enum: false
             },
         }
@@ -1007,9 +1017,9 @@ export default STRUCTURE;
  * @returns Devuelve el valor que se encuentra en el meta-atributo name de un atributo.
  */
 export function getFullName(group: string, entity: string, attribute: string): string | undefined {
-    try{
+    try {
         return STRUCTURE[group][entity][attribute]["name"];
-    }catch{
+    } catch {
         throw new Error(`No se encuentra el atributo 
         ${group}->${entity}->${attribute}`)
     }
@@ -1030,9 +1040,9 @@ export function GetColumns(group: string, entity: String): GridColDef[] {
     return Object.entries(STRUCTURE[group][entity])
         .filter(([key, attribute]) => attribute.show === true)
         .map(([key, attribute]) => {
-            
-            var getter =  attribute.type === "date" ? 
-            (params) => {return new Date(params.value)} : null
+
+            var getter = attribute.type === "date" ?
+                (params) => { return new Date(params.value) } : null
 
             return {
                 field: key,
@@ -1049,7 +1059,7 @@ export type Field = {
     headerName: string,
     type: string,
     required: boolean,
-    editable : boolean,
+    editable: boolean,
     select: boolean,
     enum: boolean;
 }
