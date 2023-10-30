@@ -155,7 +155,7 @@ class AjusteStockCRUD(LoginRequiredMixin, viewsets.ViewSet):
                 raise Exception("Negative or zero quantity")
 
             ## sum quantities
-            if request.data.get('accionCantidad') == 'SUMAR':
+            if request.data.get('accionCantidad') == models.ActionScale.SUMAR:
                 quant = insumo.cantidad + int(request.data.get('cantidad'))
             else:
                 quant = insumo.cantidad - int(request.data.get('cantidad'))
