@@ -1,6 +1,6 @@
-import "./addEntity.scss"
+import "./addEntityAmount.scss"
 import React, { useState,useEffect } from "react";
-import { Form,Button } from "react-bootstrap";
+import { Form,Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import SelectList from "../selectList/SelectList";
 import InputGroup from 'react-bootstrap/InputGroup';
 import {getPlural, getSingular} from '../../../data/TRANSLATIONS'
@@ -15,14 +15,17 @@ type Props = {
     setEntList: React.Dispatch<React.SetStateAction<Entities[]>>
 }
 
-const AddEntity = (props:Props) =>{
-
+const AddEntityAmount = (props:Props) =>{
+    // console.log(props.entList);
     // Agrega un campo de entidad
     const handleAddEnt =()=>{
         props.setEntList(prevState => [...prevState, { [props.entityName]: '' }]);
     }
     const entListString: string[] = Object.values(props.entList).map(item => item[props.entityName]);
-    
+
+    // Posiblilidad de eliminar
+    const [amounts, setAmounts] = useState<any>([]);
+
     // Elimina determinado entidad
     const handleDeleteEnt = (index:number) => {
         props.setEntList(prevState => {
@@ -31,6 +34,26 @@ const AddEntity = (props:Props) =>{
             return list;
         });
     }
+
+    const addAmount = (index: number, amount:any) => {
+        props.setEntList(prevList => {
+            const updatedList = [...prevList];
+            const objetoModificado = { ...updatedList[index], ["cantidad"]: amount};
+            updatedList[index] = objetoModificado;
+            
+            return updatedList;
+        });
+    }
+
+    // Se puede eliminar y hacer el llamado directamente a addAmount
+    const handleChange = (index: number, amount: any) => {
+        const newAmounts = [...amounts]; // Copiamos el arreglo de valores actual
+        newAmounts[index] = amount; // Actualizamos el valor en la posición correspondiente
+        setAmounts(newAmounts); // Actualizamos el estado con los nuevos valores
+        addAmount(index, amount);
+
+    };
+
     return(
         <>
             <div className="entity-label">{getPlural(props.entityName)}</div>
@@ -42,9 +65,23 @@ const AddEntity = (props:Props) =>{
                                 <InputGroup.Text id="basic-addon1">{i + 1}</InputGroup.Text>
                                 <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: "", exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}}} />
 
+
+                                <OverlayTrigger
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id={`tooltip-${i}`}>
+                                            Cantidad (positiva)
+                                        </Tooltip>
+                                    }
+                                >
+                                    <Form.Control className="w-25" name="cantidad" inputMode="numeric" pattern="[0-9]*" onChange={(e) => handleChange(i, e.target.value)} />
+                                </OverlayTrigger>
+                                
+
                                 {props.entList.length !== 1 &&
                                     <Button className="btn btn-danger" onClick={() => handleDeleteEnt(i)}>-</Button>
                                 }
+
                                 {props.entList.length - 1 === i &&
                                     <Button className="btn btn-success" onClick={handleAddEnt}>+</Button>
                                 }
@@ -54,9 +91,7 @@ const AddEntity = (props:Props) =>{
                 )
             })}
         </>
-    )
-    
-        
+    )  
 }
-export default React.memo(AddEntity);
+export default React.memo(AddEntityAmount);
 

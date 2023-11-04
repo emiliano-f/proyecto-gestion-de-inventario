@@ -1,0 +1,40 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/responsive.scss";
+
+.entity-label {
+
+    padding-bottom: 5px;
+}
+.entity{
+    
+    min-width: 300px;
+    
+
+    .entity-row{
+        display: flex;
+        flex-direction: row;
+        .input-group-text {
+            background-color: $main-bg;
+            border-color: $main-bg;
+            color: white;
+            padding-left: 0px;
+            min-width: 5px;
+        }
+        .
+        .form-control {
+            display: flex;
+            width: 30px;
+            margin-left: 2px;
+        }
+
+    }
+    
+    
+    
+    
+    
+    button {
+        min-width: 40px;
+        margin-left: 10px;
+    }
+}

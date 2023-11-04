@@ -4,9 +4,11 @@ import { GetEnums} from '../../../Api/apiService';
 import { GetUrlParts } from '../../../data/FRONTURLS';
 
 type Props = {
+    entityName?: string | undefined,
     fieldName: string,
     required: boolean,
-    defaultValue: string | undefined
+    defaultValue?: string | undefined,
+    exclude?: string[] | undefined
 }
 
 /**
@@ -14,14 +16,16 @@ type Props = {
  * @param props props.fieldName es el nombre de la columna de interés
  * @returns 
  */
-const SelectEnum = ({props}:Props) => {
+const SelectEnum = ({ props }: { props: Props }) => {
     const [enums, setEnum] = useState("");
-    const {entity : entityName} =  GetUrlParts()
+    const {entity} =  GetUrlParts();
+    const entityName = props.entityName===undefined ? entity : props.entityName;
     
     useEffect(() => {
         const fetchData = async () => {
             await GetEnums(setEnum); 
         };
+        
         fetchData();
     }, [entityName]);
 
