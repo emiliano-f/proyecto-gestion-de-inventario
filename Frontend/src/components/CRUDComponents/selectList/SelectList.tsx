@@ -84,7 +84,7 @@ const SelectList = React.memo(({ props }: { props: Props }) => {
 
 
                 .map(value => (
-                    <option value={value.id} key={value.id} disabled={props.exclude.includes(value.id.toString())}>
+                    <option value={value.id} key={value.id} disabled={(props.exclude)?(props.exclude.includes(value.id.toString())):false}>
                         {value.nombre!? value.nombre : value.id}
                     </option>
                 ))
