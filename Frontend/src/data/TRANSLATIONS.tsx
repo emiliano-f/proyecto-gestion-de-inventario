@@ -11,7 +11,15 @@ const TRANSLATION : Record<string,Record<string,string>> = {
         singular: "Inventario", 
         plural: "Inventarios"
     },
+    "inventarios": {
+        singular: "Inventario", 
+        plural: "Inventarios"
+    },
     "tipos-insumo": {
+        singular: "Tipo de Insumo", 
+        plural: "Tipos de Insumo"
+    },
+    "tipo-insumo": {
         singular: "Tipo de Insumo", 
         plural: "Tipos de Insumo"
     },
@@ -19,7 +27,15 @@ const TRANSLATION : Record<string,Record<string,string>> = {
         singular: "Insumo", 
         plural: "Insumos"
     },
+    "insumo": {
+        singular: "Insumo", 
+        plural: "Insumos"
+    },
     "tipos-herramienta": {
+        singular: "Tipo de Herramienta", 
+        plural: "Tipos de Herramientas"
+    },
+    "tipo-herramienta": {
         singular: "Tipo de Herramienta", 
         plural: "Tipos de Herramientas"
     },
@@ -27,7 +43,15 @@ const TRANSLATION : Record<string,Record<string,string>> = {
         singular: "Herramienta", 
         plural: "Herramientas"
     },
+    "herramienta": {
+        singular: "Herramienta", 
+        plural: "Herramientas"
+    },
     "ordenes-retiro": {
+        singular: "Orden de Retiro", 
+        plural: "Ordenes de Retiro"
+    },
+    "orden-retiro": {
         singular: "Orden de Retiro", 
         plural: "Ordenes de Retiro"
     },
@@ -35,7 +59,15 @@ const TRANSLATION : Record<string,Record<string,string>> = {
         singular: "Ajuste de Stock", 
         plural: "Ajustes de Stock"
     },
+    "ajuste-stock": {
+        singular: "Ajuste de Stock", 
+        plural: "Ajustes de Stock"
+    },
     "estados-herramienta": {
+        singular: "Estado de Herramienta", 
+        plural: "Estados de Herramienta"
+    },
+    "estado-herramienta": {
         singular: "Estado de Herramienta", 
         plural: "Estados de Herramienta"
     },
@@ -43,7 +75,15 @@ const TRANSLATION : Record<string,Record<string,string>> = {
         singular: "Compra",
         plural: "Compras"
     },
+    "compras": {
+        singular: "Compra",
+        plural: "Compras"
+    },
     "pedidos-insumo": {
+        singular: "Pedido de Insumo", 
+        plural: "Pedidos de Insumo"
+    },
+    "pedido-insumo": {
         singular: "Pedido de Insumo", 
         plural: "Pedidos de Insumo"
     },
@@ -51,7 +91,15 @@ const TRANSLATION : Record<string,Record<string,string>> = {
         singular: "Presupuesto", 
         plural: "Presupuestos"
     },
+    "presupuesto": {
+        singular: "Presupuesto", 
+        plural: "Presupuestos"
+    },
     "detalle-pedidos": {
+        singular: "Detalle de Pedido", 
+        plural: "Detalles de Pedido"
+    },
+    "detalles-pedidos": {
         singular: "Detalle de Pedido", 
         plural: "Detalles de Pedido"
     },
@@ -67,7 +115,19 @@ const TRANSLATION : Record<string,Record<string,string>> = {
         singular: "Tarea", 
         plural: "Tareas"
     },
+    "crear-tarea": {
+        singular: "Crear Tarea",
+        plural: "Crear Tareas"
+    },
+    "tareas": {
+        singular: "Tarea", 
+        plural: "Tareas"
+    },
     "empleados": {
+        singular: "Empleado", 
+        plural: "Empleados"
+    },
+    "empleado": {
         singular: "Empleado", 
         plural: "Empleados"
     },
@@ -75,15 +135,23 @@ const TRANSLATION : Record<string,Record<string,string>> = {
         singular: "Orden de Servicio", 
         plural: "Ordenes de Servicio"
     },
+    "orden-servicio": {
+        singular: "Orden de Servicio", 
+        plural: "Ordenes de Servicio"
+    },
     "encuestas-satisfaccion": {
         singular: "Encuesta de Satisfacción", 
         plural: "Encuestas de Satisfacción"
     },
-    "tareas": {
-        singular: "Tarea", 
-        plural: "Tareas"
+    "encuesta-satisfaccion": {
+        singular: "Encuesta de Satisfacción", 
+        plural: "Encuestas de Satisfacción"
     },
     "sectores":{
+        singular: "Sector", 
+        plural: "Sectores"
+    },
+    "sector":{
         singular: "Sector", 
         plural: "Sectores"
     },
@@ -91,15 +159,20 @@ const TRANSLATION : Record<string,Record<string,string>> = {
         singular: "Edificio", 
         plural: "Edificios"
     },
-    "sector":{
-        singular:"Sector",
-        plural: "Sectores"
+    "edificio":{
+        singular: "Edificio", 
+        plural: "Edificios"
+    },
+    "detalle-pedido":{
+        singular:"Detalle de Pedido",
+        plural:"Detalles de Pedido"
     }
 }
 
 //================GETTERS Y FUNCIONES================//
 
 export function getSingular(name: string){
+    //console.log(name)
     try{
         return TRANSLATION[name].singular
     }catch(e){

@@ -14,7 +14,7 @@ const Detail = () => {
     .catch((error) => {
         setMessage(`Ha surgido un error al buscar ${getSingular(entity)}`,error)
     });
-    
+    console.log(row)
     return (
         <div className="detail">
             <div className="card custom-card mb-3">

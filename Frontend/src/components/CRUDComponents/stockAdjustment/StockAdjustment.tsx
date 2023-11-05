@@ -32,8 +32,8 @@ const StockAdjusment = (props: Props) => {
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
         formData.append("insumo", props.id.toString());
-        formData.append('accionCantidad', '+');
-        
+        formData.append('accionCantidad', formData.get("cantidad")>=0?'Sumar':'Restar');
+        console.log(formData)
 
         if (form.checkValidity() === false) {
             e.stopPropagation();
@@ -96,7 +96,7 @@ const StockAdjusment = (props: Props) => {
                                 placeholder="Ingrese cantidad"
                                 defaultValue={0}
                             />
-                            <Form.Control.Feedback />
+                            <Form.Control.Feedback type="invalid"/>
                         </Form.Group>
 
                     </div>
@@ -112,7 +112,7 @@ const StockAdjusment = (props: Props) => {
                                 placeholder="Ingrese motivo"
                                 defaultValue=""
                             />
-                            <Form.Control.Feedback />
+                            <Form.Control.Feedback type="invalid"/>
                         </Form.Group>
 
                     </div>
