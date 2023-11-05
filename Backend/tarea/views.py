@@ -46,7 +46,7 @@ class TareaCommonLogic:
         print(empleados_data)
         for empleado in empleados_data:
             ## dictusuarioNombre
-            tiempo_entry = []
+            tiempo_entry = {}
             tiempo_entry['empleado'] = empleado['id']
             tiempo_entry['tarea'] = tarea_pk
             tiempo_entry['horasEstimadas'] = empleado.get('horasEstimadas')

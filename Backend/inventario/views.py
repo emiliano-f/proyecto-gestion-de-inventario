@@ -43,6 +43,7 @@ class InsumoCRUD(LoginRequiredMixin, viewsets.ViewSet):
         return Response(serializer_class.data)
 
     def create(self, request):
+        print(request.data)
         serializer_class = serializer.InsumoSerializer(data=request.data)
         serializer_class.is_valid(raise_exception=True)
         serializer_class.save()
