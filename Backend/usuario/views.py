@@ -20,9 +20,9 @@ class UsuarioCRUD(CustomModelViewSet):
     @transaction.atomic
     def create(self, request):
         try:
-            invalid_data = request.data.copy()
-            invalid_data["username"] = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-            invalid_data["password"] = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
+            #invalid_data = request.data.copy()
+            #invalid_data["username"] = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+            #invalid_data["password"] = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
             usuario_serializer = serializer.UsuarioSerializer(data=invalid_data)
             usuario_serializer.is_valid(raise_exception=True)
             usuario_serializer.validated_data['password'] = make_password(usuario_serializer.validated_data['password'])
