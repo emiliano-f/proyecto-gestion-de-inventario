@@ -1,8 +1,7 @@
 import {useEffect} from "react";
 import {useParams} from "react-router-dom";
-import axios, { AxiosResponse } from "axios"
+import axios, { AxiosHeaders, AxiosResponse } from "axios"
 import {BASEURL, getBackendUrl} from "../data/BACKENDURLS"
-
 const inventarioAPI = axios.create()
 inventarioAPI.defaults.baseURL = BASEURL
 
@@ -128,9 +127,20 @@ export function ListItemsFiltered(setItems, filteredEntityName, filterID){
     });
 }
 
-export function login(){
-
-}
-export function register(){
-    
+export function SendLogin(){
+    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
+        async function auhtenticate() {
+            const token = "=8x8s8dasjdojas8s"
+            await inventarioAPI.post("auth/",{},{
+                headers: {
+                'Authorization': `Basic ${token}`
+              }
+            })
+            .then((response) => {
+                resolve(response)
+            })
+            .catch((error)=>(reject(error)))
+        }
+        auhtenticate()
+    });
 }

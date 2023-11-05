@@ -3,14 +3,20 @@ import Form from 'react-bootstrap/Form';
 import "./login.scss";
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { SendLogin } from '../../Api/apiService';
 function Login() {
+  
+  const handleRequest = () => {
+    SendLogin()
+    .then((r)=>console.log(r.request))
+    .catch((e)=>console.log(e.request))
+  }
 
   return (
     <div className="background">
   
         <div className="container foreground">
-          <Form>
+          <Form onSubmit={handleRequest}>
             <div className="header">
               
               <div className="text">Log In</div>
@@ -41,14 +47,7 @@ function Login() {
           </p>
           </Form>
         </div>
-
-      
-      
     </div>
-    
-    
-    
-    
   )
 }
 
