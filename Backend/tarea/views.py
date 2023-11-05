@@ -316,15 +316,3 @@ class SectorCRUD(CustomModelViewSet):
 class TiempoCRUD(CustomModelViewSet):
     serializer_class = serializer.TiempoSerializer
     queryset = models.Tiempo.objects.all()
-
-          console.log(r.headers['x-csrftoken'])
-          setHaveToken(true);
-      })
-      .catch((e)=>console.log(e,"no se obtuvo el token"))
-  }
-  
-  const [validated, setValidated] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    def __table__():
-        return 'tiempo'
