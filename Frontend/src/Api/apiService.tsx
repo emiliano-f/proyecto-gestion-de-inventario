@@ -1,8 +1,12 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import axios, { AxiosHeaders, AxiosResponse } from "axios"
 import {BASEURL, getBackendUrl} from "../data/BACKENDURLS"
+
 const inventarioAPI = axios.create()
+inventarioAPI.defaults.xsrfCookieName = 'csrftoken';
+//inventarioAPI.defaults.xsrfHeaderName = 'X-CSRFToken';
+inventarioAPI.defaults.withCredentials = true;
 inventarioAPI.defaults.baseURL = BASEURL
 
 export function ListItems(setItems : any, itemName : string) : Promise<AxiosResponse<any,any>> {
@@ -132,32 +136,28 @@ export function ListItemsFiltered(setItems, filteredEntityName, filterID){
     });
 }
 
-export function SendLogin(){
-    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
-        async function auhtenticate() {
-            const token = "=8x8s8dasjdojas8s"
-            await inventarioAPI.post("auth/",{},{
-                headers: {
-                'Authorization': `Basic ${token}`
-              }
-            })
+export function getToken(){
+    return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
+        async function requestToken() {
+            await inventarioAPI.get('/usuario/csrf/')
             .then((response) => {
+                console.log(response)
                 resolve(response)
             })
             .catch((error)=>(reject(error)))
         }
-        auhtenticate()
+        requestToken();
     });
-    
+}
+
 export function Login(formData: FormData): Promise<AxiosResponse<any, any>> {
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         async function loginUser() {
-            try {
-                const response = await inventarioAPI.post('/admin/login', formData);
-                resolve(response);
-            } catch (error) {
-                reject(error);
-            }
+            const response = await inventarioAPI.post('/usuario/login/', formData)
+            .then((response) => {
+                resolve(response)
+            })
+            .catch((error)=>(reject(error)))
         }
         loginUser();
     });

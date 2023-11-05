@@ -1,3 +1,5 @@
+from django.views.decorators.csrf import csrf_exempt
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -53,10 +55,11 @@ class UsuarioCRUD(LoginRequiredMixin, CustomModelViewSet):
     def __table__():
         return 'usuario'
 
-
+@csrf_exempt
 def get_csrf(request):
     response = JsonResponse({'detail': 'CSRF cookie set'})
-    response['X-CSRFToken'] = get_token(request)
+    #response['X-CSRFToken'] = get_token(request)
+    response.set_cookie('csrftoken', get_token(request))
     return response
 
 @require_POST

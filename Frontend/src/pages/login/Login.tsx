@@ -4,11 +4,22 @@ import "./login.scss";
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Login as login } from "../../Api/apiService"
+import { getToken, Login as login } from "../../Api/apiService"
 
 function Login() {
   // /admin/login
 
+  const [haveToken,setHaveToken] = useState(false);
+
+  if(!haveToken){
+      getToken()
+      .then((r)=>{
+          console.log(r.headers['x-csrftoken'])
+          setHaveToken(true);
+      })
+      .catch((e)=>console.log(e,"no se obtuvo el token"))
+  }
+  
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,11 +31,10 @@ function Login() {
       e.stopPropagation();
     } else {
       console.log(formData);
-
-      login(formData);
-
+      login(formData)
+      .then((r)=>{console.log(r),setValidated(true);})
+      .catch((e)=>(console.log(e)))
     }
-    setValidated(true);
   };
   
 
