@@ -1,24 +1,45 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import "./login.scss";
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { Login as login } from "../../Api/apiService"
+
 function Login() {
+  // /admin/login
+
+  const [validated, setValidated] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+    
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    } else {
+      console.log(formData);
+
+      login(formData);
+
+    }
+    setValidated(true);
+  };
+  
 
   return (
     <div className="background">
   
         <div className="container foreground">
-          <Form>
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <div className="header">
-              
               <div className="text">Log In</div>
               <div className="underline"></div>
             </div>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Dirección email</Form.Label>
-              <Form.Control type="email" placeholder="Ingrese email" />
+              <Form.Label>Usuario</Form.Label>
+              <Form.Control name="user" type="string" placeholder="Ingrese nombre de usuario" />
               {/*<Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
@@ -27,7 +48,7 @@ function Login() {
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Contraseña</Form.Label>
-              <Form.Control type="password" placeholder="Contraseña" />
+              <Form.Control name="password" type="password" placeholder="Contraseña" />
             </Form.Group>
             
             <div className="d-grid">
