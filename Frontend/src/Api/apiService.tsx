@@ -137,7 +137,7 @@ export function Login(formData: FormData): Promise<AxiosResponse<any, any>> {
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         async function loginUser() {
             try {
-                const response = await inventarioAPI.post('/admin/login', formData);
+                const response = await inventarioAPI.post('/usuario/login/', formData);
                 resolve(response);
             } catch (error) {
                 reject(error);
