@@ -598,9 +598,19 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "username": {
-                editable: false,
-                show: false,
-                name: "Nombre de Usuario",
+                editable: true,
+                show: true,
+                name: "Nombre de usuario",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: true,
+                select: false,
+                enum: false
+            },
+            "password": {
+                editable: true,
+                show: true,
+                name: "Contraseña",
                 type: "string",
                 col_size: SIZE.TINY,
                 required: true,
