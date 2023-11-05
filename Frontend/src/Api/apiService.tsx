@@ -44,7 +44,7 @@ export function ReadItem(setItem:any,itemName:string) : Promise<AxiosResponse<an
     })
 }
 
-export function CreateItem(itemName: string, formData: FormData) : Promise<AxiosResponse<any,any>> {
+export function CreateItem(itemName: string, formData: FormData | string) : Promise<AxiosResponse<any,any>> {
     console.log(formData);
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function createData(itemName: string, formData: FormData) {
@@ -164,6 +164,8 @@ export function Login(formData: FormData): Promise<AxiosResponse<any, any>> {
     });
 }
 
+/*
 export function register(){
     
 }
+*/

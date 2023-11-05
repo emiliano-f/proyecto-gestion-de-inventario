@@ -611,7 +611,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: true,
                 name: "Contraseña",
-                type: "string",
+                type: "password",
                 col_size: SIZE.TINY,
                 required: true,
                 select: false,
@@ -717,6 +717,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select: false,
                 enum: false
             },
+            "clasificacion":{
+                editable: true,
+                show: true,
+                name: "Clasificación",
+                type: "number",
+                col_size: SIZE.TINY,
+                required: true,
+                select: true,
+                enum: true
+            },
             "tipo": {
                 editable: true,
                 show: true,
@@ -729,11 +739,32 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "descripcion": {
                 editable: true,
-                show: false,
+                show: true,
                 name: "Descripción",
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
+                select: false,
+                enum: false
+            },
+            "empleados": {
+                editable: true,
+                show: false,
+                name: "Empleados",
+                type: "string",
+                col_size: SIZE.SMALL,
+                required: false,
+                select: false,
+                enum: false
+
+            },
+            "herramientas": {
+                editable: true,
+                show: false,
+                name: "Herramientas",
+                type: "string",
+                col_size: SIZE.SMALL,
+                required: false,
                 select: false,
                 enum: false
             },
@@ -793,7 +824,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: true,
                 name: "Nombre",
-                type: "number",
+                type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
                 select: false,
@@ -803,7 +834,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: true,
                 name: "Apellido",
-                type: "number",
+                type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
                 select: false,
@@ -813,7 +844,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: true,
                 name: "Teléfono",
-                type: "tel",
+                type: "string",
                 col_size: SIZE.SMALL,
                 required: true,
                 select: false,
@@ -833,7 +864,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: true,
                 name: "Categoría",
-                type: "number",
+                type: "string",
                 col_size: SIZE.TINY,
                 required: true,
                 select: true,
@@ -843,7 +874,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
         "ordenes-servicio": {
             "id": {
                 editable: false,
-                show: false,
+                show: true,
                 name: "ID",
                 type: "number",
                 col_size: SIZE.TINY,

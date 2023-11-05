@@ -21,6 +21,7 @@ const AddEntity = (props:Props) =>{
     const handleAddEnt =()=>{
         props.setEntList(prevState => [...prevState, { [props.entityName]: '' }]);
     }
+    
     const entListString: string[] = Object.values(props.entList).map(item => item[props.entityName]);
     
     // Elimina determinado entidad
@@ -40,7 +41,10 @@ const AddEntity = (props:Props) =>{
                         <div className="entity">
                             <div className="entity-row">
                                 <InputGroup.Text id="basic-addon1">{i + 1}</InputGroup.Text>
-                                <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: "", exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}}} />
+
+                               <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: "", exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}}} />
+
+                               
 
                                 {props.entList.length !== 1 &&
                                     <Button className="btn btn-danger" onClick={() => handleDeleteEnt(i)}>-</Button>
