@@ -22,6 +22,7 @@ export function ListItems(setItems : any, itemName : string) : Promise<AxiosResp
 
 export function ReadItem(setItem:any,itemName:string) : Promise<AxiosResponse<any,any>> {
     const {id} = useParams();
+    console.log(getBackendUrl(itemName) + `${id}/`)
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         useEffect(() => {
             async function loadItem(){
@@ -40,6 +41,7 @@ export function ReadItem(setItem:any,itemName:string) : Promise<AxiosResponse<an
 }
 
 export function CreateItem(itemName: string, formData: FormData) : Promise<AxiosResponse<any,any>> {
+    console.log(formData);
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function createData(itemName: string, formData: FormData) {
             await inventarioAPI.post(getBackendUrl(itemName), formData)
@@ -100,15 +102,18 @@ export function SendServiceRequest(formData: FormData) : Promise<AxiosResponse<a
 
 export function GetEnums(setEnum:any) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
+            
             async function loadItem(){
                 await inventarioAPI.get(getBackendUrl("enums"))
                 .then((response) => {
                     setEnum(response.data)
                     resolve(response)
+                    
                 })
                 .catch((error) => reject(error));
             }
-            loadItem()
+            loadItem();
+            
         });
 }
 
@@ -143,4 +148,21 @@ export function SendLogin(){
         }
         auhtenticate()
     });
+    
+export function Login(formData: FormData): Promise<AxiosResponse<any, any>> {
+    return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
+        async function loginUser() {
+            try {
+                const response = await inventarioAPI.post('/admin/login', formData);
+                resolve(response);
+            } catch (error) {
+                reject(error);
+            }
+        }
+        loginUser();
+    });
+}
+
+export function register(){
+    
 }

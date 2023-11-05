@@ -7,6 +7,9 @@ from rest_framework.response import Response
 from . import serializer
 from . import models
 
+import random
+import string
+
 
 class CustomModelViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
@@ -18,9 +21,9 @@ class UsuarioCRUD(LoginRequiredMixin, CustomModelViewSet):
     @transaction.atomic
     def create(self, request):
         try:
-            invalid_data = request.data.copy()
-            invalid_data["username"] = "newuser"
-            invalid_data["password"] = "newuser"
+            #invalid_data = request.data.copy()
+            #invalid_data["username"] = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+            #invalid_data["password"] = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
             usuario_serializer = serializer.UsuarioSerializer(data=invalid_data)
             usuario_serializer.is_valid(raise_exception=True)
             usuario_serializer.validated_data['password'] = make_password(usuario_serializer.validated_data['password'])

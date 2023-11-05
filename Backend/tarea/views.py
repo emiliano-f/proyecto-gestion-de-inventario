@@ -124,15 +124,15 @@ class TareaCRUD(LoginRequiredMixin, viewsets.ViewSet):
     def create(self, request):
         try:
             # get empleados, herramientas, insumos
-            empleados_data = request.data.pop('empleados', [])
-            herramientas_data = request.data.pop('herramientas', [])
-            insumos_data = request.data.pop('retiros_insumos', [])
+            to_create = request.data.copy()
+            empleados_data = to_create.pop('empleados', [])
+            herramientas_data = to_create.pop('herramientas', [])
+            insumos_data = to_create.pop('retiros_insumos', [])
+            orden_servicio_pk = to_create.pop('orden_servicio')
 
             # check and create tarea
-            print(request.data)
-            serializer_tarea = serializer.TareaSerializer(data=request.data)
+            serializer_tarea = serializer.TareaSerializer(data=to_create)
             serializer_tarea.is_valid(raise_exception=True)
-            print(empleados_data)
             tarea = serializer_tarea.save()
 
             # create empleados relation (Tiempo)
@@ -143,6 +143,10 @@ class TareaCRUD(LoginRequiredMixin, viewsets.ViewSet):
 
             # update insumos
             TareaCommonLogic.update_insumos(insumos_data)
+
+            # update orden servicio
+            orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
+            orden_servicio_model.tarea = tarea
 
             return Response(serializer_tarea.data, status=status.HTTP_201_CREATED)
         except Exception as e:
