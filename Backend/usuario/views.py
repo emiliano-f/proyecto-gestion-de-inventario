@@ -58,8 +58,8 @@ class UsuarioCRUD(LoginRequiredMixin, CustomModelViewSet):
 @csrf_exempt
 def get_csrf(request):
     response = JsonResponse({'detail': 'CSRF cookie set'})
-    #response['X-CSRFToken'] = get_token(request)
-    response.set_cookie('csrftoken', get_token(request))
+    response['X-CSRFToken'] = get_token(request)
+    #response.set_cookie('csrftoken', get_token(request),samesite='None')
     return response
 
 @require_POST

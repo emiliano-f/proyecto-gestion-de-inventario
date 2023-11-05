@@ -5,7 +5,7 @@ import {BASEURL, getBackendUrl} from "../data/BACKENDURLS"
 
 const inventarioAPI = axios.create()
 inventarioAPI.defaults.xsrfCookieName = 'csrftoken';
-//inventarioAPI.defaults.xsrfHeaderName = 'X-CSRFToken';
+inventarioAPI.defaults.xsrfHeaderName = 'X-CSRFToken';
 inventarioAPI.defaults.withCredentials = true;
 inventarioAPI.defaults.baseURL = BASEURL
 
@@ -142,6 +142,7 @@ export function getToken(){
             await inventarioAPI.get('/usuario/csrf/')
             .then((response) => {
                 console.log(response)
+                inventarioAPI.defaults.headers.common['X-CSRFToken'] = response.headers['X-CSRFToken'];
                 resolve(response)
             })
             .catch((error)=>(reject(error)))
