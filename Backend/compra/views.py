@@ -24,7 +24,11 @@ class PedidoInsumoCRUD(LoginRequiredMixin, viewsets.ViewSet):
 
     def __update_insumo__(detalles):
         for detalle_pedido in detalles:
+<<<<<<< HEAD
             insumo = Insumo.objects.get(id=detalle_pedido['insumo'].id)
+=======
+            insumo = Insumo.objects.get(id=detalle_pedido['insumo'])
+>>>>>>> backend
             ## update quantities
             insumo.cantidad += detalle_pedido['cantidad']
             insumo.save()
@@ -45,9 +49,15 @@ class PedidoInsumoCRUD(LoginRequiredMixin, viewsets.ViewSet):
         try:
 
             ## check if detalles is empty
+<<<<<<< HEAD
             #detalles_data = request.data.pop('detalles', [])
             #if not detalles_data:
             #    raise Exception("Details empty")
+=======
+            detalles_data = request.data.pop('detalles', [])
+            if not detalles_data:
+                raise Exception("Details empty")
+>>>>>>> backend
 
             serializer_pedido = serializer.PedidoInsumoSerializer(data=request.data)
 
@@ -56,6 +66,7 @@ class PedidoInsumoCRUD(LoginRequiredMixin, viewsets.ViewSet):
             pedido_insumo = serializer_pedido.save()
 
             ## check for detalles
+<<<<<<< HEAD
             #serializers_detalles = []
             #for detalle in detalles_data:
             #    detalle['pedidoInsumo'] = pedido_insumo.id
@@ -67,6 +78,19 @@ class PedidoInsumoCRUD(LoginRequiredMixin, viewsets.ViewSet):
             #    serializer_detalle.is_valid(raise_exception=True)
             #    CompraCommonLogic.detalle_pedido_logic(serializer_detalle.validated_data.get('cantidad'))
             #    detalle_pedido_models.append(serializer_detalle.save())
+=======
+            serializers_detalles = []
+            for detalle in detalles_data:
+                detalle['pedidoInsumo'] = pedido_insumo.id
+                serializers_detalles.append(serializer.DetallePedidoSerializer(data=detalle))
+
+            ### check validity, logic and save
+            detalle_pedido_models = []
+            for serializer_detalle in serializers_detalles:
+                serializer_detalle.is_valid(raise_exception=True)
+                CompraCommonLogic.detalle_pedido_logic(serializer_detalle.validated_data.get('cantidad'))
+                detalle_pedido_models.append(serializer_detalle.save())
+>>>>>>> backend
 
             ## check if PedidoInsumo was received
             if pedido_insumo.recibido == 'Si':

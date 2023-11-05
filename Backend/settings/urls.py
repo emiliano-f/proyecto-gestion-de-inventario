@@ -29,5 +29,4 @@ urlpatterns = [
     path('enabled-methods/', auxs_fn.enabled_methods, name='enabled-methods'),
     path('table-enums/', auxs_fn.enums_models, name='table-enums'),
     path('docs/', include_docs_urls(title='API docs')),
-    path('auth/', include('django.contrib.auth.urls')),
 ]

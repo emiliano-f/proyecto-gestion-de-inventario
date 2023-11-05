@@ -24,6 +24,7 @@ class DetallePedidoFkReplacedSerializer(DetallePedidoSerializer):
     Adds attributes to DetallePedidoSerializer for get 
     PedidoInsumo.*
     """
+<<<<<<< HEAD
     class Meta:
         model = models.DetallePedido
         fields = '__all__'
@@ -31,12 +32,23 @@ class DetallePedidoFkReplacedSerializer(DetallePedidoSerializer):
     #fechaHora = serializers.CharField(source='pedidoInsumo.fechaHora') 
     #observaciones = serializers.CharField(source='pedidoInsumo.observaciones') 
     #recibido = serializers.CharField(source='pedidoInsumo.recibido') 
+=======
+ 
+    fechaHora = serializers.CharField(source='pedidoInsumo.fechaHora') 
+    observaciones = serializers.CharField(source='pedidoInsumo.observaciones') 
+    recibido = serializers.CharField(source='pedidoInsumo.recibido') 
+>>>>>>> backend
 
 class PedidoInsumoSerializer(serializers.ModelSerializer):
     """
     Retrieves all fields in PedidoInsumo
     """
+<<<<<<< HEAD
     #detalles = DetallePedidoSerializer(many=True, required=False)
+=======
+
+    detalles = DetallePedidoSerializer(many=True, required=False)
+>>>>>>> backend
 
     class Meta:
         model = models.PedidoInsumo
