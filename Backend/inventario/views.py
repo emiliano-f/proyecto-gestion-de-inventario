@@ -17,8 +17,9 @@ class InventarioCommonLogic:
         serializer_class.save()
 
         ## update cantidad from Insumo
-        insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
-        insumo.update_quantity(data['cantidad'], models.ActionScale.RESTAR)
+        insumo = models.Insumo.objects.get(id=data.get('insumo'))
+        insumo.update_quantity(int(data['cantidad']), models.ActionScale.RESTAR)
+        
         insumo.save()
 
 

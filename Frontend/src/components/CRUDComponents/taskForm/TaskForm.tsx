@@ -8,13 +8,15 @@ import Row from 'react-bootstrap/Row';
 
 import { ReadItem } from '../../../Api/apiService';
 import { setMessage, MessageDisplay } from '../messageDisplay/MessageDisplay';
-import { UpdateItem as Update, CreateItem as Create } from "../../../Api/apiService"
+import { CreateItem as Create } from "../../../Api/apiService"
 import { getSingular } from '../../../data/TRANSLATIONS';
-import { GetUrlParts } from '../../../data/FRONTURLS';
+
 import AddEntity from "../addEntity/AddEntity";
 import SelectEnum from "../selecEnum/SelectEnum";
 import { ServiceOrderInfo } from "./serviceOrderInfo/ServiceOrderInfo";
 import AddEntityAmount from "../addEntityAmount/AddEntityAmount";
+
+
 
 const TaskForm = () => {
     const entityName = "tareas";
@@ -28,7 +30,6 @@ const TaskForm = () => {
     type Entities = {
         [key: string]: any;
     }
-
     // Array de empleados
     const [empList, setEmpList] = useState<Entities>([{ ["empleado"]: '' }]);
     // Array de insumos
@@ -37,7 +38,7 @@ const TaskForm = () => {
     // Array de herramientas
     const [herrList, setHerrList] = useState<Entities>([{ ["herramienta"]: '' }]);
 
-    const createItem = (formData: FormData) => {
+    const createItem = (formData: FormData | string) => {
         Create("tareas", formData)
             .then(() => {
                 setMessage(`Se ha creado la nueva Tarea con exito`, null)
@@ -55,24 +56,44 @@ const TaskForm = () => {
         // Campos de form que se extraerán de forma predeterminada
         const allowedFields = ['tipo', 'descripcion', 'fechaTentativa', 'fechaInicio', 'fechaFin', 'clasificacion'];
         const formData = new FormData();
+
+        serviceOrder && (formData.append("orden_servicio", serviceOrder["id"]));
+        
+
         for (const field of allowedFields) {
             const inputElement = form.elements.namedItem(field) as HTMLInputElement | null;
             if (inputElement) {
                 formData.append(field, inputElement.value);
             }
         }
-        // Se agregan los demás campos
-        const empleadosJSON = JSON.stringify(empList);
-        formData.append("empleados", empleadosJSON);
-
-        const insumosJSON = JSON.stringify(insumoList);
         
-        formData.append("retiros_insumo", insumosJSON);
+        // Se agregan los demás campos
+        // const empleadosJSON = JSON.stringify(empList);
 
-        const herramientasJSON = JSON.stringify(herrList);
-        formData.append("herramientas", herramientasJSON);
 
-        console.log(formData)
+        formData.append("empleados", JSON.stringify(empList));
+    
+        //const insumosJSON = JSON.stringify(insumoList);
+        
+        formData.append("retiros_insumo", JSON.stringify(insumoList));
+
+        //const herramientasJSON = JSON.stringify(herrList);
+        formData.append("herramientas", JSON.stringify(herrList));
+        /*
+        const formDataJSON:any = {};
+        for (let [key, value] of formData.entries()){
+            formDataJSON[key] = value;
+        }
+
+        
+        let jsonString = JSON.stringify(formDataJSON);
+
+        jsonString = eliminarComillas(jsonString);
+
+        console.log(jsonString);
+        */
+
+        // console.log(formData);
         if (form.checkValidity() === false) {
             e.stopPropagation();
         } else { 
@@ -127,14 +148,22 @@ const TaskForm = () => {
 
                     <Row className="mb-3">
                         <Form.Group as={Col} controlId="taken">
+                            <Form.Label>Fecha Programada</Form.Label>
+                            <Form.Control name="fechaTentativa" type="date" required />
+                            <Form.Control.Feedback type="invalid">
+                                Este campo es obligatorio
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="taken">
                             <Form.Label>Fecha de Inicio</Form.Label>
                             <Form.Control name="fechaInicio" type="date"/>
                         </Form.Group>
 
-                            <Form.Group as={Col} controlId="taken">
-                                <Form.Label>Fecha de Finalización</Form.Label>
-                                <Form.Control name="fechaFin" type="date" />
-                            </Form.Group>
+                        <Form.Group as={Col} controlId="taken">
+                            <Form.Label>Fecha de Finalización</Form.Label>
+                            <Form.Control name="fechaFin" type="date" />
+                        </Form.Group>
                         </Row>
                         <Row className="mb-3">
                             
