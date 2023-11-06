@@ -72,7 +72,16 @@ const TaskForm = (props:Props) => {
             const updatedHerrList = task["herramientas"].map(item => ({ ["herramienta"]: item.id.toString() }));
             setHerrList(updatedHerrList);    
         }
-    }, [task]);    
+    }, [task]);
+
+    
+    ReadItem(setServiceOrder, "ordenes-servicio")
+        .then((response) => console.log(response))
+        .catch((error) => {
+            setMessage(`Ha surgido un error al buscar ${getSingular("orden-servicio")}`, error)
+        }); 
+    
+    
 
     const createItem = (formData: FormData | string) => {
         Create("tareas", formData)
@@ -130,11 +139,7 @@ const TaskForm = (props:Props) => {
         setValidated(true);
     };
 
-    ReadItem(setServiceOrder, "ordenes-servicio")
-        .then((response)=>console.log(response))
-        .catch((error) => {
-            setMessage(`Ha surgido un error al buscar ${getSingular("orden-servicio")}`, error)
-        });
+    
     
     return (
         <>

@@ -21,23 +21,22 @@ export function ListItems(setItems : any, itemName : string) : Promise<AxiosResp
     });
 }
 
-export function ReadItem(setItem:any,itemName:string) : Promise<AxiosResponse<any,any>> {
-    const {id} = useParams();
-    console.log(getBackendUrl(itemName) + `${id}/`)
-    return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
-    
-        async function loadItem(){
-            await inventarioAPI.get(
-                getBackendUrl(itemName)+`${id}/`
-            )
-            .then((response) => {
-                setItem(response.data)
-                resolve(response)
-            })
-            .catch((error) => reject(error));
-        }
-        loadItem()
-        
+export function ReadItem(setItem: any, itemName: string): Promise<AxiosResponse<any, any>> {
+    const { id } = useParams();
+    return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
+        useEffect(() => {
+            async function loadItem() {
+                await inventarioAPI.get(
+                    getBackendUrl(itemName) + `${id}/`
+                )
+                    .then((response) => {
+                        setItem(response.data)
+                        resolve(response)
+                    })
+                    .catch((error) => reject(error));
+            }
+            loadItem()
+        }, [itemName]);
     })
 }
 
