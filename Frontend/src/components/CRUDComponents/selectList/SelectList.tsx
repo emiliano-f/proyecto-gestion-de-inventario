@@ -29,6 +29,7 @@ const SelectList = React.memo(({ props }: { props: Props }) => {
         nombre: string;
         [key: string]: any; // Esto permite otros atributos de cualquier tipo
     }
+    
 
     const { setEntList, index } = props.setEntListObj || {};
 
@@ -43,7 +44,7 @@ const SelectList = React.memo(({ props }: { props: Props }) => {
         fetchData();
     }, [itemName]);
     
-    const [currOption,setCurrOption] =  useState(-1); 
+    const [currOption,setCurrOption] =  useState(""); 
 
     useEffect(()=>{
         list.forEach((row)=>{
@@ -69,8 +70,8 @@ const SelectList = React.memo(({ props }: { props: Props }) => {
         )
     }
         
+    return (
         
-    return ( 
         <Form.Select
             name={props.fieldName}
             className="form-select"
@@ -78,10 +79,8 @@ const SelectList = React.memo(({ props }: { props: Props }) => {
             required={props.required}
             onChange={changeHandler}
             >
-            <option value={-1} disabled>Elegir {getSingular(itemName)}</option>
+            <option value="" disabled>Elegir {getSingular(itemName)}</option>
             {list
-
-
                 .map(value => (
                     <option value={value.id} key={value.id} disabled={(props.exclude)?(props.exclude.includes(value.id.toString())):false}>
                         {value.nombre!? value.nombre : value.id}

@@ -24,7 +24,14 @@ const AddEntityAmount = (props:Props) =>{
     const entListString: string[] = Object.values(props.entList).map(item => item[props.entityName]);
 
     // Posiblilidad de eliminar
-    const [amounts, setAmounts] = useState<any>([]);
+    
+    const [amounts, setAmounts] = useState(props.entList.map(x => x["cantidad"] || ""));
+
+    useEffect(() => {
+        // Actualizar el estado local cuando props.entList cambie
+        setAmounts(props.entList.map(x => x["cantidad"] || ""));
+    }, [props.entList]);
+
 
     // Elimina determinado entidad
     const handleDeleteEnt = (index:number) => {
@@ -63,8 +70,7 @@ const AddEntityAmount = (props:Props) =>{
                         <div className="entity">
                             <div className="entity-row">
                                 <InputGroup.Text id="basic-addon1">{i + 1}</InputGroup.Text>
-                                <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: "", exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}}} />
-
+                                <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: x[props.entityName], exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}}} />
 
                                 <OverlayTrigger
                                     placement="top"
@@ -74,9 +80,8 @@ const AddEntityAmount = (props:Props) =>{
                                         </Tooltip>
                                     }
                                 >
-                                    <Form.Control className="w-25" name="cantidad" inputMode="numeric" pattern="[0-9]*" onChange={(e) => handleChange(i, e.target.value)} />
+                                    <Form.Control className="w-25" name="cantidad" inputMode="numeric" pattern="[0-9]*" defaultValue={amounts[i]} onChange={(e) => handleChange(i, e.target.value)} />
                                 </OverlayTrigger>
-                                
 
                                 {props.entList.length !== 1 &&
                                     <Button className="btn btn-danger" onClick={() => handleDeleteEnt(i)}>-</Button>

@@ -25,7 +25,19 @@ const TaskForm = (props:Props) => {
     // Para obtener y manejar la información de la orden de servicio
     const [serviceOrder, setServiceOrder] = useState(null);
     // Para obtener y manejar la información de la tarea
-    const [task, setTask] = useState(null);
+    interface Task {
+        id: number;
+        tipo: string;
+        descripcion: string;
+        fechaTentativa: any;
+        fechaInicio: any;
+        fechaFin: any;
+        empleados: Array<{ id: number }>;
+        retiros_insumos: Array<{ id_insumo: number; cantidad: number }>;
+        herramientas: Array<{ id: number }>;
+    }
+
+    const [task, setTask] = useState<Task | null>(null);
     // Para validación de campos
     const [validated, setValidated] = useState(false);
 
@@ -45,27 +57,22 @@ const TaskForm = (props:Props) => {
     // Si se está realizando una modificación se busca la información de la tarea correspondiente
     if (props.action === "update") {
         ReadItem(setTask, entityName)
-            .then((response) => console.log("response"))
+            .then((response) => console.log(response))
             .catch((error) => {
                 setMessage(`Ha surgido un error al buscar tarea`, error)
-            });
-        task && console.log(task["retiros_insumos"])
+            });  
     }
-    
+    // Luego de buscar información sobre las tareas. Se actualizan los estados para mantener la lista de empleados, herramientas e insumos (junto a su cantidad solicitada)
     useEffect(() => {
         if (task) {
             const updatedEmpList = task["empleados"].map(item => ({ ["empleado"]: item.id.toString() }));
             setEmpList(updatedEmpList);
-            //const updatedInsumoList = task["retiros_insumo"].map(item => ({ ["insumo"]: item.id.toString() }));
-            //setEmpList(updatedInsumoList);
+            const updatedInsumoList = task["retiros_insumos"].map(item => ({ ["insumo"]: item.id_insumo.toString(), ["cantidad"]: item.cantidad }));
+            setInsumoList(updatedInsumoList);
             const updatedHerrList = task["herramientas"].map(item => ({ ["herramienta"]: item.id.toString() }));
-            setHerrList(updatedHerrList);
-            
+            setHerrList(updatedHerrList);    
         }
-    }, [task]);
-    
-
-    
+    }, [task]);    
 
     const createItem = (formData: FormData | string) => {
         Create("tareas", formData)
@@ -97,28 +104,21 @@ const TaskForm = (props:Props) => {
         const formData = new FormData();
         if (form.checkValidity() === false) {
             e.stopPropagation();
-            
-        
+
         } else {
             if (props.action === "create") {
                 // Campos de form que se extraerán de forma predeterminada
                 const allowedFields = ['tipo', 'descripcion', 'fechaTentativa', 'fechaInicio', 'fechaFin', 'clasificacion'];
-
                 serviceOrder && (formData.append("orden_servicio", serviceOrder["id"]));
-
                 for (const field of allowedFields) {
                     const inputElement = form.elements.namedItem(field) as HTMLInputElement | null;
                     if (inputElement) {
                         formData.append(field, inputElement.value);
                     }
                 }
-
                 formData.append("empleados", JSON.stringify(empList));
-
                 formData.append("retiros_insumo", JSON.stringify(insumoList));
-
                 formData.append("herramientas", JSON.stringify(herrList));
-
                 createItem(formData);
             }
             else {
@@ -126,14 +126,12 @@ const TaskForm = (props:Props) => {
                     updateItem(formData, task["id"]);
                 }
             }
-            
-
         }
         setValidated(true);
     };
 
     ReadItem(setServiceOrder, "ordenes-servicio")
-        .then((response)=>console.log("response"))
+        .then((response)=>console.log(response))
         .catch((error) => {
             setMessage(`Ha surgido un error al buscar ${getSingular("orden-servicio")}`, error)
         });
@@ -206,7 +204,6 @@ const TaskForm = (props:Props) => {
                             <Col className="mb-3">
                                 <AddEntity entList={herrList} setEntList={setHerrList} entityName="herramienta"/>
                             </Col>
-                            
                         </Row>
                              
                     </Col>

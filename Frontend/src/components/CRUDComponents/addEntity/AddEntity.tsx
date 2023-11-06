@@ -35,8 +35,7 @@ const AddEntity = (props:Props) =>{
     return(
         <>
             <div className="entity-label">{getPlural(props.entityName)}</div>
-            {props.entList.map((x, i) => {
-                
+            {props.entList.map((x, i) => { 
                 return (
                     <Form.Group className="mb-1" controlId="formGridEntidad" key={i}>
                         <div className="entity">
@@ -44,8 +43,6 @@ const AddEntity = (props:Props) =>{
                                 <InputGroup.Text id="basic-addon1">{i + 1}</InputGroup.Text>
 
                                 <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: x[props.entityName], exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}}} />
-
-                               
 
                                 {props.entList.length !== 1 &&
                                     <Button className="btn btn-danger" onClick={() => handleDeleteEnt(i)}>-</Button>
@@ -60,8 +57,6 @@ const AddEntity = (props:Props) =>{
             })}
         </>
     )
-    
-        
 }
 export default React.memo(AddEntity);
 
