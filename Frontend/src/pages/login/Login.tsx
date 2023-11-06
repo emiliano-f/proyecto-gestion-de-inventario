@@ -2,13 +2,16 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import "./login.scss";
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { getToken, Login as login } from "../../Api/apiService"
+import { MessageDisplay, setMessage } from '../../components/CRUDComponents/messageDisplay/MessageDisplay';
 
 function Login() {
   // /admin/login 
   const [validated, setValidated] = useState(false);
+  const ErrorState = useState(["",false]);
+  const nav = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,17 +21,25 @@ function Login() {
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
-      console.log(formData);
+      //console.log(formData);
       login(formData)
-      .then((r)=>{console.log(r),setValidated(true);})
-      .catch((e)=>(console.log("")))
+      .then((r)=>{
+        console.log(r);
+        setValidated(true);
+        nav("/")
+      })
+      .catch((e)=>(
+        setMessage("Error al inciar sesion",e)
+      ))
     }
   };
   
 
   return (
     <div className="background">
-  
+        <div className="error" >
+          <MessageDisplay {...ErrorState}/>
+        </div>
         <div className="container foreground">
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <div className="header">

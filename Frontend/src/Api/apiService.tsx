@@ -5,8 +5,8 @@ import {BASEURL, getBackendUrl} from "../data/BACKENDURLS"
 import { getNav } from '../components/CRUDComponents/navComp/navComp'
 
 const inventarioAPI = axios.create()
-//inventarioAPI.defaults.xsrfCookieName = 'csrftoken';
-//inventarioAPI.defaults.xsrfHeaderName = 'X-CSRFToken';
+inventarioAPI.defaults.xsrfCookieName = 'csrftoken';
+inventarioAPI.defaults.xsrfHeaderName = 'X-CSRFToken';
 inventarioAPI.defaults.withCredentials = true;
 inventarioAPI.defaults.baseURL = BASEURL
 
@@ -133,21 +133,6 @@ export function ListItemsFiltered(setItems, filteredEntityName, filterID){
             .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         loadItems()
-    });
-}
-
-export function getToken(){
-    return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
-        async function requestToken() {
-            await inventarioAPI.get('/usuario/csrf/')
-            .then((response) => {
-                console.log(response)
-                inventarioAPI.defaults.headers.common['X-CSRFToken'] = response.headers['X-CSRFToken'];
-                resolve(response)
-            })
-            .catch((error)=>(reject(error)))
-        }
-        requestToken();
     });
 }
 

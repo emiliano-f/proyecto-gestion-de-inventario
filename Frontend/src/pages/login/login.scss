@@ -1,16 +1,27 @@
 @import "../../styles/variables.scss";
 
+
+
 .background {
     display:flex;
     background: linear-gradient($main-bg,black);
     margin: 0;
     height: 100vh;
     overflow: auto;
+    .error{
+        position: fixed; /* Lo fija en su posición */
+        top: 0; /* Lo coloca en la parte superior */
+        left: 0; /* Lo coloca en la parte izquierda */
+        width: 100%; /* Ocupa todo el ancho */
+        color: #fff; /* Cambia el color del texto a tu preferencia */
+        z-index: 1000; 
+    }
     
+
     //margin-top: 200px;
     .container.foreground {
         width: 50rem;
-        display: flex;
+        display: Flex;
         flex-direction: column;
         margin: auto;
         margin-top: 100px;
