@@ -117,7 +117,7 @@ const TaskForm = (props:Props) => {
                     }
                 }
                 formData.append("empleados", JSON.stringify(empList));
-                formData.append("retiros_insumo", JSON.stringify(insumoList));
+                formData.append("retiros_insumos", JSON.stringify(insumoList));
                 formData.append("herramientas", JSON.stringify(herrList));
                 createItem(formData);
             }
