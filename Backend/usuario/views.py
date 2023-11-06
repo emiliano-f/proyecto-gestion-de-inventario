@@ -61,10 +61,10 @@ def get_csrf(request):
     return response
 
 @require_POST
+@csrf_exempt
 def login_view(request):
-    data = json.loads(request.body)
-    username = data.get('username')
-    password = data.get('password')
+    username = request.POST.get('username')
+    password = request.POST.get('password')
 
     if username is None or password is None:
         return JsonResponse({'detail': 'Please provide username and password.'}, status=400)

@@ -22,6 +22,7 @@ class InventarioCommonLogic:
         insumo.update_quantity(int(data['cantidad']), models.ActionScale.RESTAR)
         
         insumo.save()
+        return serializer_class
 
 
 class TipoInsumoCRUD(CustomModelViewSet):
@@ -94,7 +95,7 @@ class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     @transaction.atomic
     def create(self, request):
         try:
-            InventarioCommonLogic.create_orden_retiro(request.data)
+            serializer_class = InventarioCommonLogic.create_orden_retiro(request.data)
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
