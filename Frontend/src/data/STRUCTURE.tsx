@@ -1,4 +1,6 @@
 enum SIZE {
+    ID = 50,
+    VERYTINY = 100,
     TINY = 150,
     SMALL = 200,
     MEDIUM = 250,
@@ -717,6 +719,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select: false,
                 enum: false
             },
+            "descripcion": {
+                editable: true,
+                show: true,
+                name: "Descripción",
+                type: "string",
+                col_size: SIZE.BIG,
+                required: true,
+                select: false,
+                enum: false
+            },
             "clasificacion":{
                 editable: true,
                 show: true,
@@ -737,16 +749,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select: true,
                 enum: true
             },
-            "descripcion": {
-                editable: true,
-                show: true,
-                name: "Descripción",
-                type: "string",
-                col_size: SIZE.SMALL,
-                required: true,
-                select: false,
-                enum: false
-            },
+            
             "empleados": {
                 editable: true,
                 show: false,
@@ -762,6 +765,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: false,
                 name: "Herramientas",
+                type: "string",
+                col_size: SIZE.SMALL,
+                required: false,
+                select: false,
+                enum: false
+            },
+            "retiros_insumos": {
+                editable: true,
+                show: false,
+                name: "Insumo",
                 type: "string",
                 col_size: SIZE.SMALL,
                 required: false,
@@ -793,6 +806,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 show: true,
                 name: "Fecha de Finalizacion",
                 type: "date",
+                col_size: SIZE.TINY,
+                required: true,
+                select: false,
+                enum: false
+            },
+            "userAuth": {
+                editable: false,
+                show: false,
+                name: "userAuth",
+                type: "string",
                 col_size: SIZE.TINY,
                 required: true,
                 select: false,
@@ -870,6 +893,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select: true,
                 enum: true
             },
+            
         },
         "ordenes-servicio": {
             "id": {
@@ -877,7 +901,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 show: true,
                 name: "ID",
                 type: "number",
-                col_size: SIZE.TINY,
+                col_size: SIZE.ID,
                 required: true,
                 select: false,
                 enum: false
@@ -928,7 +952,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 show: true,
                 name: "Tarea",
                 type: "number",
-                col_size: SIZE.SMALL,
+                col_size: SIZE.TINY,
                 required: false,
                 select: true,
                 enum: false

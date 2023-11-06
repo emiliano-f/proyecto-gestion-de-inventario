@@ -28,9 +28,10 @@ export const DataTable = (props: Props) => {
                     {
                         props.slug === "ordenes-servicio" &&
                         <Link to={`/tarea/crear-tarea/${params.row.id}/`}>
-                                <button className="button"><BsPlusCircle /></button>
+                            <button className="button"><BsPlusCircle /></button>
                         </Link>
                     }
+                    
                     {
                         getACTION(props.slug).detail && 
                         <Link to={`detail/${params.row.id}/`}>
@@ -39,6 +40,12 @@ export const DataTable = (props: Props) => {
                     }
                     {getACTION(props.slug).update &&
                         <button className="button" onClick={() => { props.setOpenUpdate(true); props.setRow(params.row) }}><img src="/edit.png" alt="" /></button>
+                    }
+                    {
+                        props.slug === "tareas" &&
+                        <Link to={`/tarea/modificar-tarea/${params.row.id}/`}>
+                            <button className="button"><img src="/edit.png" alt="" /></button>
+                        </Link>
                     }
                     {getACTION(props.slug).delete &&
                         <button className="button" onClick={() => { props.setOpenDelete(true); props.setRow(params.row) }}><img src="/delete.png" alt="" /></button>

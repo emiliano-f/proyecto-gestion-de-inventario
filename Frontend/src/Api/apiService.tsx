@@ -28,19 +28,19 @@ export function ReadItem(setItem:any,itemName:string) : Promise<AxiosResponse<an
     const {id} = useParams();
     console.log(getBackendUrl(itemName) + `${id}/`)
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
-        useEffect(() => {
-            async function loadItem(){
-                await inventarioAPI.get(
-                    getBackendUrl(itemName)+`${id}/`
-                )
-                .then((response) => {
-                    setItem(response.data)
-                    resolve(response)
-                })
-                .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
-            }
-            loadItem()
-        }, [itemName, setItem]);
+    
+        async function loadItem(){
+            await inventarioAPI.get(
+                getBackendUrl(itemName)+`${id}/`
+            )
+            .then((response) => {
+                setItem(response.data)
+                resolve(response)
+            })
+            .catch((error) => reject(error));
+        }
+        loadItem()
+        
     })
 }
 

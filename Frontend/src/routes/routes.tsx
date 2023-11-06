@@ -26,7 +26,11 @@ function generateRoutes() {
   routes = routes.concat([
     {
       path: "/tarea/crear-tarea/:id/",
-      element: <TaskForm />
+      element: <TaskForm action="create"/>
+    },
+    {
+      path: "/tarea/modificar-tarea/:id/",
+      element: <TaskForm action="update"/>
     },
     {
       path: "/compra/detalle-pedidos",

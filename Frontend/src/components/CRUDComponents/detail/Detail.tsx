@@ -14,7 +14,9 @@ const Detail = () => {
     .catch((error) => {
         setMessage(`Ha surgido un error al buscar ${getSingular(entity)}`,error)
     });
-    console.log(row)
+    console.log(row);
+    
+    const keys2show2ndLvl = ["nombre", "apellido", "cantidad", "insumo"];
     return (
         <div className="detail">
             <div className="card custom-card mb-3">
@@ -24,11 +26,34 @@ const Detail = () => {
                 <div className="card-body">
                     {row 
                         ? Object.keys(row).map((key, index) => (
-                            (key !== "id" && key !== "nombre") && 
+                            (key !== "id" && key !== "nombre" && key !=="userAuth") && 
                             (
                                 <div className="row" key={index}>
                                     <span className="title">{getFullName(group, entity, key)} : </span>
-                                    <span className="value">{row[key]}</span>
+                                    {Array.isArray(row[key]) ? (
+                                        <div className="value">
+                                            {row[key].map((item,idx) => (
+                                                <div key={idx}>
+                                                    {Object.keys(item).map((itemKey, itemIdx) => (
+                                                        keys2show2ndLvl.includes(itemKey) && (
+                                                            <div key={itemIdx} style={{ display: 'inline-block'}}>
+                                                            {(itemKey ==="cantidad") ? (
+                                                                <span>[{item[itemKey]}]&nbsp;</span>
+                                                            ) : (
+                                                                <span>{item[itemKey]}&nbsp;</span>
+                                                            )}
+
+                                                            
+                                                        </div>
+                                                        )
+                                                    ))}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <span className="value">{row[key]}</span>
+                                    )}
+
                                 </div>
                             )
                         )) 
