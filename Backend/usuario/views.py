@@ -104,4 +104,10 @@ class WhoAmIView(APIView):
     @staticmethod
     @csrf_exempt
     def get(request, format=None):
-        return JsonResponse({'username': request.user.username})
+        if request.user.is_staff:
+            rol = "Administrador" if request.user.is_superuser else "Staff"
+        else:
+            rol = "Regular"
+        return JsonResponse({'username': request.user.username,
+                             'email': request.user.email,
+                             'rol': rol})
