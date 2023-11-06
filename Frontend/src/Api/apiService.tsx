@@ -148,3 +148,29 @@ export function Login(formData: FormData): Promise<AxiosResponse<any, any>> {
         loginUser();
     });
 }
+
+export function WhoAmI(){
+    return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
+        async function whoami() {
+            await inventarioAPI.post('/usuario/whoami/')
+            .then((response) => {
+                resolve(response)
+            })
+            .catch((error)=>(reject(error)))
+        }
+        whoami();
+    });
+}
+
+export function Logout(){
+    return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
+        async function loginUser() {
+            await inventarioAPI.post('/usuario/logout/')
+            .then((response) => {
+                resolve(response)
+            })
+            .catch((error)=>(reject(error)))
+        }
+        loginUser();
+    });
+}

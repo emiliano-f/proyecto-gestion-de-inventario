@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from settings.common_class import LoginRequiredNoRedirect
+
 from . import serializer
 from . import models
 
@@ -77,12 +78,14 @@ def login_view(request):
     login(request, user)
     return JsonResponse({'detail': 'Successfully logged in.'})
 
+@csrf_exempt
 def logout_view(request):
     if not request.user.is_authenticated:
         return JsonResponse({'detail': 'You\'re not logged in.'}, status=400)
 
     logout(request)
     return JsonResponse({'detail': 'Successfully logged out.'})
+
 
 class SessionView(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
@@ -98,5 +101,6 @@ class WhoAmIView(APIView):
     permission_classes = [IsAuthenticated]
 
     @staticmethod
+    @csrf_exempt
     def get(request, format=None):
         return JsonResponse({'username': request.user.username})

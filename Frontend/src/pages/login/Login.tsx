@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import "./login.scss";
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { getToken, Login as login } from "../../Api/apiService"
@@ -9,7 +9,7 @@ import { MessageDisplay, setMessage } from '../../components/CRUDComponents/mess
 
 function Login() {
   // /admin/login 
-  const [validated, setValidated] = useState(false);
+  const [validated,setValidated] = useState(false);
   const ErrorState = useState(["",false]);
   const nav = useNavigate();
 
@@ -24,8 +24,7 @@ function Login() {
       //console.log(formData);
       login(formData)
       .then((r)=>{
-        console.log(r);
-        setValidated(true);
+        //console.log(r)
         nav("/")
       })
       .catch((e)=>(
