@@ -15,7 +15,7 @@ const Detail = () => {
         setMessage(`Ha surgido un error al buscar ${getSingular(entity)}`,error)
     });
     console.log(row);
-    const keys2hide1stLvl = ["userAuth"];
+    
     const keys2show2ndLvl = ["nombre", "apellido", "cantidad", "insumo"];
     return (
         <div className="detail">

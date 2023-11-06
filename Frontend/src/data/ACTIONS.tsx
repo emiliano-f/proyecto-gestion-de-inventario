@@ -92,7 +92,7 @@ export const ACTIONS: Record<string, any> ={
         add: false,
         detail: true,
         stockAdj: false,
-        update: true,
+        update: false,
         delete: true,
     },
     "empleados": {

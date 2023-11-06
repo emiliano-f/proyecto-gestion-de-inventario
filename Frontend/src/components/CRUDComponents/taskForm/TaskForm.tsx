@@ -1,6 +1,6 @@
 import "./taskForm.scss";
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 
 import { ReadItem } from '../../../Api/apiService';
 import { setMessage, MessageDisplay } from '../messageDisplay/MessageDisplay';
-import { CreateItem as Create } from "../../../Api/apiService"
+import { CreateItem as Create, UpdateItem as Update} from "../../../Api/apiService"
 import { getSingular } from '../../../data/TRANSLATIONS';
 
 import AddEntity from "../addEntity/AddEntity";
@@ -16,12 +16,17 @@ import SelectEnum from "../selecEnum/SelectEnum";
 import { ServiceOrderInfo } from "./serviceOrderInfo/ServiceOrderInfo";
 import AddEntityAmount from "../addEntityAmount/AddEntityAmount";
 
+type Props = {
+    action: "create" | "update",
+}
 
-
-const TaskForm = () => {
+const TaskForm = (props:Props) => {
     const entityName = "tareas";
+    // Para obtener y manejar la información de la orden de servicio
     const [serviceOrder, setServiceOrder] = useState(null);
-
+    // Para obtener y manejar la información de la tarea
+    const [task, setTask] = useState(null);
+    // Para validación de campos
     const [validated, setValidated] = useState(false);
 
     const ErrorState = useState(["",false]);
@@ -34,9 +39,33 @@ const TaskForm = () => {
     const [empList, setEmpList] = useState<Entities>([{ ["empleado"]: '' }]);
     // Array de insumos
     const [insumoList, setInsumoList] = useState<Entities>([{ ["insumo"]: '', ["cantidad"]: 0 }]);
-
     // Array de herramientas
     const [herrList, setHerrList] = useState<Entities>([{ ["herramienta"]: '' }]);
+
+    // Si se está realizando una modificación se busca la información de la tarea correspondiente
+    if (props.action === "update") {
+        ReadItem(setTask, entityName)
+            .then((response) => console.log("response"))
+            .catch((error) => {
+                setMessage(`Ha surgido un error al buscar tarea`, error)
+            });
+        task && console.log(task["retiros_insumos"])
+    }
+    
+    useEffect(() => {
+        if (task) {
+            const updatedEmpList = task["empleados"].map(item => ({ ["empleado"]: item.id.toString() }));
+            setEmpList(updatedEmpList);
+            //const updatedInsumoList = task["retiros_insumo"].map(item => ({ ["insumo"]: item.id.toString() }));
+            //setEmpList(updatedInsumoList);
+            const updatedHerrList = task["herramientas"].map(item => ({ ["herramienta"]: item.id.toString() }));
+            setHerrList(updatedHerrList);
+            
+        }
+    }, [task]);
+    
+
+    
 
     const createItem = (formData: FormData | string) => {
         Create("tareas", formData)
@@ -47,57 +76,57 @@ const TaskForm = () => {
                 console.log(error)
                 setMessage(`Ha surgido un error al crear la nueva Tarea.`, error)
             })
-            // .finally(() => props.setOpen(false));
+            
+    }
+
+    const updateItem = (formData: FormData, id:number) => {
+        Update("tareas", formData, id.toString())
+            .then(() => {
+                setMessage(`Se ha modificado la Tarea con exito`, null)
+            })
+            .catch((error) => {
+                console.log(error)
+                setMessage(`Ha surgido un error al modificar la Tarea.`, error)
+            })
+        
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
-        // Campos de form que se extraerán de forma predeterminada
-        const allowedFields = ['tipo', 'descripcion', 'fechaTentativa', 'fechaInicio', 'fechaFin', 'clasificacion'];
         const formData = new FormData();
-
-        serviceOrder && (formData.append("orden_servicio", serviceOrder["id"]));
-        
-
-        for (const field of allowedFields) {
-            const inputElement = form.elements.namedItem(field) as HTMLInputElement | null;
-            if (inputElement) {
-                formData.append(field, inputElement.value);
-            }
-        }
-        
-        // Se agregan los demás campos
-        // const empleadosJSON = JSON.stringify(empList);
-
-
-        formData.append("empleados", JSON.stringify(empList));
-    
-        //const insumosJSON = JSON.stringify(insumoList);
-        
-        formData.append("retiros_insumo", JSON.stringify(insumoList));
-
-        //const herramientasJSON = JSON.stringify(herrList);
-        formData.append("herramientas", JSON.stringify(herrList));
-        /*
-        const formDataJSON:any = {};
-        for (let [key, value] of formData.entries()){
-            formDataJSON[key] = value;
-        }
-
-        
-        let jsonString = JSON.stringify(formDataJSON);
-
-        jsonString = eliminarComillas(jsonString);
-
-        console.log(jsonString);
-        */
-
-        // console.log(formData);
         if (form.checkValidity() === false) {
             e.stopPropagation();
-        } else { 
-            createItem(formData);
+            
+        
+        } else {
+            if (props.action === "create") {
+                // Campos de form que se extraerán de forma predeterminada
+                const allowedFields = ['tipo', 'descripcion', 'fechaTentativa', 'fechaInicio', 'fechaFin', 'clasificacion'];
+
+                serviceOrder && (formData.append("orden_servicio", serviceOrder["id"]));
+
+                for (const field of allowedFields) {
+                    const inputElement = form.elements.namedItem(field) as HTMLInputElement | null;
+                    if (inputElement) {
+                        formData.append(field, inputElement.value);
+                    }
+                }
+
+                formData.append("empleados", JSON.stringify(empList));
+
+                formData.append("retiros_insumo", JSON.stringify(insumoList));
+
+                formData.append("herramientas", JSON.stringify(herrList));
+
+                createItem(formData);
+            }
+            else {
+                if (task) {
+                    updateItem(formData, task["id"]);
+                }
+            }
+            
 
         }
         setValidated(true);
@@ -118,7 +147,7 @@ const TaskForm = () => {
             </div>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Row className="mb-5">
-                    {serviceOrder && (
+                    {(serviceOrder && props.action === "create") && (
                         <ServiceOrderInfo serviceOrder={serviceOrder}></ServiceOrderInfo>
                     )}
 
@@ -127,14 +156,14 @@ const TaskForm = () => {
                     <Row className="mb-3">
                         <Form.Group as={Col} controlId="taken">
                             <Form.Label>Tipo</Form.Label>
-                            <SelectEnum props={{ entityName: entityName, fieldName: "tipo", required: true, defaultValue: "", exclude:undefined }}/>
+                            <SelectEnum props={{ entityName: entityName, fieldName: "tipo", required: true, defaultValue: task ? (task["tipo"]):"", exclude:undefined }}/>
                             <Form.Control.Feedback type="invalid">
                                 Este campo es obligatorio
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group as={Col} controlId="taken">
                             <Form.Label>Clasificación</Form.Label>
-                            <SelectEnum props={{ entityName: entityName, fieldName: "clasificacion", required: true, defaultValue: "", exclude:undefined }} />
+                                    <SelectEnum props={{ entityName: entityName, fieldName: "clasificacion", required: true, defaultValue: task ? (task["tipo"]) : "", exclude:undefined }} />
                             <Form.Control.Feedback type="invalid">
                                 Este campo es obligatorio
                             </Form.Control.Feedback>
@@ -143,13 +172,13 @@ const TaskForm = () => {
 
                     <Form.Group className="mb-3" controlId="taken">
                         <Form.Label>Descripción</Form.Label>
-                        <Form.Control name="descripcion" as="textarea" rows={2} />
+                                <Form.Control name="descripcion" as="textarea" rows={2} defaultValue={task ? (task["descripcion"]) : ""} />
                     </Form.Group>
 
                     <Row className="mb-3">
                         <Form.Group as={Col} controlId="taken">
                             <Form.Label>Fecha Programada</Form.Label>
-                            <Form.Control name="fechaTentativa" type="date" required />
+                            <Form.Control name="fechaTentativa" type="date" required defaultValue={task ? (task["fechaTentativa"]) : ""}/>
                             <Form.Control.Feedback type="invalid">
                                 Este campo es obligatorio
                             </Form.Control.Feedback>
@@ -157,12 +186,12 @@ const TaskForm = () => {
 
                         <Form.Group as={Col} controlId="taken">
                             <Form.Label>Fecha de Inicio</Form.Label>
-                            <Form.Control name="fechaInicio" type="date"/>
+                            <Form.Control name="fechaInicio" type="date" defaultValue={task ? (task["fechaInicio"]) : ""} />
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="taken">
                             <Form.Label>Fecha de Finalización</Form.Label>
-                            <Form.Control name="fechaFin" type="date" />
+                            <Form.Control name="fechaFin" type="date" defaultValue={task ? (task["fechaFin"]) : ""} />
                         </Form.Group>
                         </Row>
                         <Row className="mb-3">

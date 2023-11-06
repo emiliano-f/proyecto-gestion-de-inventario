@@ -36,13 +36,14 @@ const AddEntity = (props:Props) =>{
         <>
             <div className="entity-label">{getPlural(props.entityName)}</div>
             {props.entList.map((x, i) => {
+                
                 return (
                     <Form.Group className="mb-1" controlId="formGridEntidad" key={i}>
                         <div className="entity">
                             <div className="entity-row">
                                 <InputGroup.Text id="basic-addon1">{i + 1}</InputGroup.Text>
 
-                               <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: "", exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}}} />
+                                <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: x[props.entityName], exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}}} />
 
                                
 

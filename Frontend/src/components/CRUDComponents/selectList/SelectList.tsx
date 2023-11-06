@@ -30,7 +30,6 @@ const SelectList = React.memo(({ props }: { props: Props }) => {
         [key: string]: any; // Esto permite otros atributos de cualquier tipo
     }
 
-
     const { setEntList, index } = props.setEntListObj || {};
 
     const [list, setList] = useState<Item[]>([]);
@@ -48,11 +47,11 @@ const SelectList = React.memo(({ props }: { props: Props }) => {
 
     useEffect(()=>{
         list.forEach((row)=>{
-            if(row.nombre === props.defaultValue){
+            if(row.nombre === props.defaultValue || row.id.toString() === props.defaultValue){
                 setCurrOption(Number(row.id));
             }
         })
-    },[list,setList]);
+    },[list,setList,props.defaultValue]);
 
     const changeHandler = e => {
         
