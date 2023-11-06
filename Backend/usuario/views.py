@@ -1,8 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
 from django.db import transaction
 from django.http import JsonResponse
@@ -14,6 +12,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from settings.common_class import LoginRequiredNoRedirect
 from . import serializer
 from . import models
 
@@ -21,11 +20,10 @@ import json
 import random
 import string
 
-
 class CustomModelViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
-class UsuarioCRUD(LoginRequiredMixin, CustomModelViewSet):
+class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     serializer_class = serializer.UsuarioSerializer
     queryset = models.Usuario.objects.all()
 

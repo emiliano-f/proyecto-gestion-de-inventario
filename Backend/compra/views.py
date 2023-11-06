@@ -1,6 +1,6 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+from settings.common_class import LoginRequiredNoRedirect
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
@@ -9,7 +9,7 @@ from . import serializer
 from . import models
 from inventario.models import Insumo
 
-class CustomModelViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
+class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
 class CompraCommonLogic:
@@ -17,7 +17,7 @@ class CompraCommonLogic:
         ## check positive value
         if quantity <= 0: raise Exception('Negative or zero: invalid quantity')
 
-class PedidoInsumoCRUD(LoginRequiredMixin, viewsets.ViewSet):
+class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def __table__():
         return 'pedidoinsumo'
@@ -158,7 +158,7 @@ class PresupuestoCRUD(CustomModelViewSet):
     def __table__():
         return 'presupuesto'
 
-class DetallePedidoCRUD(LoginRequiredMixin, viewsets.ViewSet):
+class DetallePedidoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def __table__():
         return 'detallepedido'
