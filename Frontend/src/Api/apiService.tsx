@@ -10,12 +10,23 @@ inventarioAPI.defaults.xsrfHeaderName = 'X-CSRFToken';
 inventarioAPI.defaults.withCredentials = true;
 inventarioAPI.defaults.baseURL = BASEURL
 
+function setToken(){
+    //axios.defaults.headers.common['X-CSRFToken']
+    console.log(
+        document
+        .cookie
+        .split('; ')
+        .find((row) => row.startsWith('csrftoken='))
+        .split('=')[1])
+}
+
 export function ListItems(setItems : any, itemName : string) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function loadItems() {
             await inventarioAPI.get(getBackendUrl(itemName))
             .then((response) => {
                 setItems(response.data);
+                setToken();
                 resolve(response)
             })
             .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
@@ -34,7 +45,9 @@ export function ReadItem(setItem:any,itemName:string) : Promise<AxiosResponse<an
                     getBackendUrl(itemName)+`${id}/`
                 )
                 .then((response) => {
+                    
                     setItem(response.data)
+                    setToken();
                     resolve(response)
                 })
                 .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
@@ -49,7 +62,9 @@ export function CreateItem(itemName: string, formData: FormData | string) : Prom
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function createData(itemName: string, formData: FormData) {
             await inventarioAPI.post(getBackendUrl(itemName), formData)
-            .then((response) => resolve(response))
+            .then((response) => {
+                setToken();
+                resolve(response)})
             .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         createData(itemName, formData);
@@ -61,7 +76,9 @@ export function UpdateItem(itemName:string,formData:FormData,id:string|undefined
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function updateData(itemName:string,id:string|undefined,formData:FormData){
             await inventarioAPI.put(getBackendUrl(itemName) +`${id}/`, formData)
-            .then((response) => resolve(response))
+            .then((response) => {
+                setToken();
+                resolve(response)})
             .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         updateData(itemName, id, formData)
@@ -72,7 +89,9 @@ export function DeleteItem(itemName: string, id: string) : Promise<AxiosResponse
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function deleteData(itemName: string, id: string) {
             await inventarioAPI.delete(getBackendUrl(itemName) +`${id}/`)
-            .then((response) => resolve(response))
+            .then((response) => {
+                setToken();
+                resolve(response)})
             .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         deleteData(itemName, id);
@@ -85,6 +104,7 @@ export function getSectors(setSectors : any,edificioName : number) : Promise<Axi
             await inventarioAPI.get(`tarea/sector/subsectores/${edificioName}/`)
             .then((response) => {
                 setSectors(response.data);
+                setToken();
                 resolve(response);
             })
             .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
@@ -97,7 +117,9 @@ export function SendServiceRequest(formData: FormData) : Promise<AxiosResponse<a
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function sendData(formData: FormData) {
             await inventarioAPI.post(getBackendUrl("ordenes-servicio"), formData)
-            .then((response) => resolve(response))
+            .then((response) => {
+                setToken();
+                resolve(response)})
             .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         sendData(formData);
@@ -106,13 +128,11 @@ export function SendServiceRequest(formData: FormData) : Promise<AxiosResponse<a
 
 export function GetEnums(setEnum:any) : Promise<AxiosResponse<any,any>> {
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
-            
             async function loadItem(){
                 await inventarioAPI.get(getBackendUrl("enums"))
                 .then((response) => {
                     setEnum(response.data)
                     resolve(response)
-                    
                 })
                 .catch((error)=>(error.response?.status !== 403? reject(error):getNav()("/login")))
             }
@@ -128,6 +148,7 @@ export function ListItemsFiltered(setItems, filteredEntityName, filterID){
             await inventarioAPI.get(getBackendUrl(`${filteredEntityName}-filtered`).concat(`${filterID}/`))
             .then((response) => {
                 setItems(response.data);
+                setToken();
                 resolve(response)
             })
             .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
@@ -141,6 +162,7 @@ export function Login(formData: FormData): Promise<AxiosResponse<any, any>> {
         async function loginUser() {
             await inventarioAPI.post('/usuario/login/', formData)
             .then((response) => {
+                setToken();
                 resolve(response)
             })
             .catch((error)=>(reject(error)))
@@ -154,6 +176,7 @@ export function WhoAmI(){
         async function whoami() {
             await inventarioAPI.post('/usuario/whoami/')
             .then((response) => {
+                setToken();
                 resolve(response)
             })
             .catch((error)=>(reject(error)))
