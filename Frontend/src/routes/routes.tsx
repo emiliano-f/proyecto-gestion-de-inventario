@@ -1,4 +1,4 @@
-import { RouteObject, createBrowserRouter, redirect } from "react-router-dom";
+import { RouteObject, createBrowserRouter, redirect, useNavigate } from "react-router-dom";
 
 import Login from "../pages/login/Login";
 import MainResume from "../pages/mainResume/MainResume";
@@ -22,7 +22,6 @@ import ListByEntity from "../components/CRUDComponents/listByEntity/ListByEntity
  */
 function generateRoutes() {
   var routes: RouteObject[] = [];
-
   //Special url's que tienen prioridad sobre las generadas posteriormente
   routes = routes.concat([
     {

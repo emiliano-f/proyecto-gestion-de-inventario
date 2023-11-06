@@ -1,6 +1,6 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+from settings.common_class import LoginRequiredNoRedirect
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.views import APIView
@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from . import serializer
 from . import models
 
-class CustomModelViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
+class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
 class HerramientaCommonLogic:
@@ -29,7 +29,7 @@ class TipoHerramientaCRUD(CustomModelViewSet):
     def __table__():
         return 'tipoherramienta'
 
-class HerramientaCRUD(LoginRequiredMixin, viewsets.ViewSet):
+class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def __table__():
         return 'herramienta'
@@ -88,7 +88,7 @@ class HerramientaCRUD(LoginRequiredMixin, viewsets.ViewSet):
         herramienta.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class EstadoHerramientaCRUD(LoginRequiredMixin, viewsets.ViewSet):
+class EstadoHerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def __table__():
         return 'estadoherramienta'

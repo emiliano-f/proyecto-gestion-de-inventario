@@ -7,19 +7,7 @@ import { Link } from 'react-router-dom';
 import { getToken, Login as login } from "../../Api/apiService"
 
 function Login() {
-  // /admin/login
-
-  const [haveToken,setHaveToken] = useState(false);
-
-  if(!haveToken){
-      getToken()
-      .then((r)=>{
-          console.log(r.headers['x-csrftoken'])
-          setHaveToken(true);
-      })
-      .catch((e)=>console.log(e,"no se obtuvo el token"))
-  }
-  
+  // /admin/login 
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,7 +21,7 @@ function Login() {
       console.log(formData);
       login(formData)
       .then((r)=>{console.log(r),setValidated(true);})
-      .catch((e)=>(console.log(e)))
+      .catch((e)=>(console.log("")))
     }
   };
   
