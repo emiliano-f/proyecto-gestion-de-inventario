@@ -60,11 +60,11 @@ def get_csrf(request):
     #response.set_cookie('csrftoken', get_token(request),samesite='None')
     return response
 
+@csrf_exempt
 @require_POST
 def login_view(request):
-    data = json.loads(request.body)
-    username = data.get('username')
-    password = data.get('password')
+    username = request.POST.get('username')
+    password = request.POST.get('password')
 
     if username is None or password is None:
         return JsonResponse({'detail': 'Please provide username and password.'}, status=400)
