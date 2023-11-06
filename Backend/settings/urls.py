@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.documentation import include_docs_urls
 from . import auxs_fn
+from . import stats
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +30,9 @@ urlpatterns = [
     path('enabled-methods/', auxs_fn.enabled_methods, name='enabled-methods'),
     path('table-enums/', auxs_fn.enums_models, name='table-enums'),
     path('docs/', include_docs_urls(title='API docs')),
+
+    path('stats/insumos-mas-consumidos/', stats.InsumosMasConsumidos.as_view({'get':'list'}), name='stats-insumo'),
+    path('stats/tipos-insumos-utilizados/', stats.TiposInsumoMasUtilizados.as_view({'get':'list'}), name='stats-tipos-insumo'),
+    path('stats/empleados-horas/', stats.EmpleadosHorasTotales.as_view({'get':'list'}), name='stats-empleados'),
+    path('stats/tareas-completadas/', stats.TareasCompletadas.as_view({'get':'list'}), name='stats-tareas'),
 ]

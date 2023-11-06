@@ -63,6 +63,7 @@ def get_csrf(request):
 
 @csrf_exempt
 @require_POST
+@csrf_exempt
 def login_view(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
