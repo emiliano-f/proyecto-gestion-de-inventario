@@ -60,6 +60,7 @@ def get_csrf(request):
     #response.set_cookie('csrftoken', get_token(request),samesite='None')
     return response
 
+@csrf_exempt
 @require_POST
 @csrf_exempt
 def login_view(request):

@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import axios, { AxiosHeaders, AxiosResponse } from "axios"
 import {BASEURL, getBackendUrl} from "../data/BACKENDURLS"
+import { getNav } from '../components/CRUDComponents/navComp/navComp'
 
 const inventarioAPI = axios.create()
 inventarioAPI.defaults.xsrfCookieName = 'csrftoken';
@@ -10,7 +11,6 @@ inventarioAPI.defaults.withCredentials = true;
 inventarioAPI.defaults.baseURL = BASEURL
 
 export function ListItems(setItems : any, itemName : string) : Promise<AxiosResponse<any,any>> {
-    //console.log(getBackendUrl(itemName))
     return new Promise<AxiosResponse<any,any>>((resolve,reject) => {
         async function loadItems() {
             await inventarioAPI.get(getBackendUrl(itemName))
@@ -18,7 +18,7 @@ export function ListItems(setItems : any, itemName : string) : Promise<AxiosResp
                 setItems(response.data);
                 resolve(response)
             })
-            .catch((error)=>(reject(error)))
+            .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         loadItems()
     });
@@ -37,7 +37,7 @@ export function ReadItem(setItem:any,itemName:string) : Promise<AxiosResponse<an
                     setItem(response.data)
                     resolve(response)
                 })
-                .catch((error) => reject(error));
+                .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
             }
             loadItem()
         }, [itemName, setItem]);
@@ -50,7 +50,7 @@ export function CreateItem(itemName: string, formData: FormData | string) : Prom
         async function createData(itemName: string, formData: FormData) {
             await inventarioAPI.post(getBackendUrl(itemName), formData)
             .then((response) => resolve(response))
-            .catch((error) => reject(error));
+            .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         createData(itemName, formData);
     })
@@ -62,7 +62,7 @@ export function UpdateItem(itemName:string,formData:FormData,id:string|undefined
         async function updateData(itemName:string,id:string|undefined,formData:FormData){
             await inventarioAPI.put(getBackendUrl(itemName) +`${id}/`, formData)
             .then((response) => resolve(response))
-            .catch((error) => reject(error));
+            .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         updateData(itemName, id, formData)
     })
@@ -73,7 +73,7 @@ export function DeleteItem(itemName: string, id: string) : Promise<AxiosResponse
         async function deleteData(itemName: string, id: string) {
             await inventarioAPI.delete(getBackendUrl(itemName) +`${id}/`)
             .then((response) => resolve(response))
-            .catch((error) => reject(error));
+            .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         deleteData(itemName, id);
     })
@@ -87,7 +87,7 @@ export function getSectors(setSectors : any,edificioName : number) : Promise<Axi
                 setSectors(response.data);
                 resolve(response);
             })
-            .catch((error) => reject(error));
+            .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         listSectors();
     })
@@ -98,7 +98,7 @@ export function SendServiceRequest(formData: FormData) : Promise<AxiosResponse<a
         async function sendData(formData: FormData) {
             await inventarioAPI.post(getBackendUrl("ordenes-servicio"), formData)
             .then((response) => resolve(response))
-            .catch((error) => reject(error));
+            .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         sendData(formData);
     })
@@ -114,7 +114,7 @@ export function GetEnums(setEnum:any) : Promise<AxiosResponse<any,any>> {
                     resolve(response)
                     
                 })
-                .catch((error) => reject(error));
+                .catch((error)=>(error.response?.status !== 403? reject(error):getNav()("/login")))
             }
             loadItem();
             
@@ -130,31 +130,16 @@ export function ListItemsFiltered(setItems, filteredEntityName, filterID){
                 setItems(response.data);
                 resolve(response)
             })
-            .catch((error)=>(reject(error)))
+            .catch((error )=>(error.response?.status !== 403? reject(error):getNav()("/login")))
         }
         loadItems()
-    });
-}
-
-export function getToken(){
-    return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
-        async function requestToken() {
-            await inventarioAPI.get('/usuario/csrf/')
-            .then((response) => {
-                console.log(response)
-                inventarioAPI.defaults.headers.common['X-CSRFToken'] = response.headers['X-CSRFToken'];
-                resolve(response)
-            })
-            .catch((error)=>(reject(error)))
-        }
-        requestToken();
     });
 }
 
 export function Login(formData: FormData): Promise<AxiosResponse<any, any>> {
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         async function loginUser() {
-            const response = await inventarioAPI.post('/usuario/login/', formData)
+            await inventarioAPI.post('/usuario/login/', formData)
             .then((response) => {
                 resolve(response)
             })
@@ -163,9 +148,3 @@ export function Login(formData: FormData): Promise<AxiosResponse<any, any>> {
         loginUser();
     });
 }
-
-/*
-export function register(){
-    
-}
-*/
