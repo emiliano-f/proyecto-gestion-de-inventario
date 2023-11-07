@@ -15,6 +15,8 @@ import AddEntity from "../addEntity/AddEntity";
 import SelectEnum from "../selecEnum/SelectEnum";
 import { ServiceOrderInfo } from "./serviceOrderInfo/ServiceOrderInfo";
 import AddEntityAmount from "../addEntityAmount/AddEntityAmount";
+import { objectFilteringNoEmptyValues } from "../../../utils/utils";
+
 
 type Props = {
     action: "create" | "update",
@@ -44,15 +46,15 @@ const TaskForm = (props:Props) => {
     const ErrorState = useState(["",false]);
     
     // Garantiza coherencia de tipos y generecidad para el valor del key (empleado, insumo, herramienta, etc)
-    type Entities = {
+    type Entity = {
         [key: string]: any;
     }
     // Array de empleados
-    const [empList, setEmpList] = useState<Entities>([{ ["empleado"]: '' }]);
+    const [empList, setEmpList] = useState<Entity[]>([{ ["empleado"]: '' }]);
     // Array de insumos
-    const [insumoList, setInsumoList] = useState<Entities>([{ ["insumo"]: '', ["cantidad"]: 0 }]);
+    const [insumoList, setInsumoList] = useState<Entity[]>([{ ["insumo"]: '', ["cantidad"]: 0 }]);
     // Array de herramientas
-    const [herrList, setHerrList] = useState<Entities>([{ ["herramienta"]: '' }]);
+    const [herrList, setHerrList] = useState<Entity[]>([{ ["herramienta"]: '' }]);
 
     // Si se está realizando una modificación se busca la información de la tarea correspondiente
     if (props.action === "update") {
@@ -74,14 +76,11 @@ const TaskForm = (props:Props) => {
         }
     }, [task]);
 
-    
     ReadItem(setServiceOrder, "ordenes-servicio")
         .then((response) => console.log(response))
         .catch((error) => {
             setMessage(`Ha surgido un error al buscar ${getSingular("orden-servicio")}`, error)
         }); 
-    
-    
 
     const createItem = (formData: FormData | string) => {
         Create("tareas", formData)
@@ -104,7 +103,6 @@ const TaskForm = (props:Props) => {
                 console.log(error)
                 setMessage(`Ha surgido un error al modificar la Tarea.`, error)
             })
-        
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -124,10 +122,12 @@ const TaskForm = (props:Props) => {
                     if (inputElement) {
                         formData.append(field, inputElement.value);
                     }
-                }
-                formData.append("empleados", JSON.stringify(empList));
-                formData.append("retiros_insumo", JSON.stringify(insumoList));
-                formData.append("herramientas", JSON.stringify(herrList));
+                } 
+                
+                formData.append("empleados", JSON.stringify(objectFilteringNoEmptyValues("empleado", empList)));
+                formData.append("retiros_insumos", JSON.stringify(objectFilteringNoEmptyValues("insumo", insumoList)));
+                formData.append("herramientas", JSON.stringify(objectFilteringNoEmptyValues("herramienta", herrList)));
+                console.log(formData);
                 createItem(formData);
             }
             else {
