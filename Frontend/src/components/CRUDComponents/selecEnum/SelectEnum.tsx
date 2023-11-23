@@ -17,6 +17,7 @@ type Props = {
  * @returns 
  */
 const SelectEnum = ({ props }: { props: Props }) => {
+    
     const [enums, setEnum] = useState("");
     const {entity} =  GetUrlParts();
     const entityName = props.entityName===undefined ? entity : props.entityName;
@@ -29,8 +30,13 @@ const SelectEnum = ({ props }: { props: Props }) => {
         fetchData();
     }, [entityName]);
 
-    const [currOption,setCurrOption] =  useState("");    
-    useState(()=>{setCurrOption(props.defaultValue)},[enums]);
+    const [currOption,setCurrOption] =  useState("");
+    useEffect(() => {
+        setCurrOption(props.defaultValue);
+    }, [props.defaultValue, enums]);
+
+    // Deprecated
+    //useState(()=>{setCurrOption(props.defaultValue)},[enums]);
     const changeHandler = e => setCurrOption(e.target.value);
     //console.log(entityName,props.fieldName)
     return ( 

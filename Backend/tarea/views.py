@@ -148,7 +148,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             empleados_data = json.loads(to_create.pop('empleados', [])[0])
             
             herramientas_data = json.loads(to_create.pop('herramientas', [])[0])
-            insumos_data = json.loads(to_create.pop('retiros_insumo', [])[0])
+            insumos_data = json.loads(to_create.pop('retiros_insumos', [])[0])
             
         
             orden_servicio_pk = json.loads(to_create.pop('orden_servicio', [])[0])
@@ -195,6 +195,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
                 # insumo = inventario_models.Insumo.objects.get(pk=orden_retiro.insumo)
                 insumo = orden_retiro.insumo
                 insumoRetiro['insumo'] = insumo.nombre
+                insumoRetiro['id_insumo'] = insumo.id
                 insumoRetiro['fechaHora'] = orden_retiro.fechaHora
                 insumoRetiro['cantidad'] = orden_retiro.cantidad
                 insumos.append(insumoRetiro)
@@ -206,7 +207,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        
+        print(data)
         return Response(data)
 
     @transaction.atomic
