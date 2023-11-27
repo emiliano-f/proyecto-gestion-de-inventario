@@ -144,10 +144,12 @@ class Tarea(models.Model):
         choices=TypeScale.choices,
     )
     descripcion = models.CharField(max_length=255, null=True)
+    
     fechaTentativa = models.DateField(
             validators=[MinValueValidator(limit_value=date.today())],
             help_text='Fecha debe ser igual o posterior a la actual'
     )
+    
     fechaInicio = models.DateField(
             validators=[MinValueValidator(limit_value=date.today(),
                                           message='Fecha debe ser igual o posterior a la actual')],

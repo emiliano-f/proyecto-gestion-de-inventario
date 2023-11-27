@@ -21,20 +21,6 @@ class EncuestaSatisfaccionSerializer(serializers.ModelSerializer):
         model = models.EncuestaSatisfaccion
         fields = '__all__'
 
-class TareaSerializer(serializers.ModelSerializer):
-    """
-    Retrieves all fields in Tarea
-    """
-
-    class Meta:
-        model = models.Tarea
-        fields = '__all__'
-
-class TareaJoinedSerializer(TareaSerializer):
-    empleados = EmpleadoSerializer(many=True, required=False)
-    herramientas = HerramientaSerializer(many=True, required=False)
-    retiros_insumos = OrdenRetiroSerializer(many=True, required=False)
-
 class OrdenServicioSerializer(serializers.ModelSerializer):
     """
     Retrieves all fields in OrdenServicio
@@ -51,7 +37,7 @@ class OrdenServicioUsuarioSerializer(serializers.ModelSerializer):
     Usuario.apellido
     Usuario.nombre
     Usuario.id
-    Sector.edificio
+    Sector.nombre
     Sector.subsector
     """
 
@@ -68,6 +54,21 @@ class OrdenServicioUsuarioSerializer(serializers.ModelSerializer):
                   'usuarioNombre', 'usuarioApellido',
                   'usuarioID',
                   'edificio', 'sector']
+
+class TareaSerializer(serializers.ModelSerializer):
+    """
+    Retrieves all fields in Tarea
+    """
+
+    class Meta:
+        model = models.Tarea
+        fields = '__all__'
+
+class TareaJoinedSerializer(TareaSerializer):
+    empleados = EmpleadoSerializer(many=True, required=False)
+    herramientas = HerramientaSerializer(many=True, required=False)
+    retiros_insumos = OrdenRetiroSerializer(many=True, required=False)
+    orden_servicio = serializers.IntegerField(required=False)
 
 class TiempoSerializer(serializers.ModelSerializer):
     """

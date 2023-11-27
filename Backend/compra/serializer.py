@@ -33,6 +33,7 @@ class PedidoInsumoSerializer(serializers.ModelSerializer):
     """
     Retrieves all fields in PedidoInsumo
     """
+
     detalles = DetallePedidoSerializer(many=True, required=False)
 
     class Meta:

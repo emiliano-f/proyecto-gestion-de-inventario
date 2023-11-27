@@ -18,8 +18,9 @@ class InventarioCommonLogic:
         serializer_class.save()
 
         ## update cantidad from Insumo
-        insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
-        insumo.update_quantity(data['cantidad'], models.ActionScale.RESTAR)
+        insumo = models.Insumo.objects.get(id=data.get('insumo'))
+        insumo.update_quantity(int(data['cantidad']), models.ActionScale.RESTAR)
+        
         insumo.save()
 
 
@@ -43,6 +44,7 @@ class InsumoCRUD(LoginRequiredMixin, viewsets.ViewSet):
         return Response(serializer_class.data)
 
     def create(self, request):
+        print(request.data)
         serializer_class = serializer.InsumoSerializer(data=request.data)
         serializer_class.is_valid(raise_exception=True)
         serializer_class.save()
@@ -155,7 +157,7 @@ class AjusteStockCRUD(LoginRequiredMixin, viewsets.ViewSet):
                 raise Exception("Negative or zero quantity")
 
             ## sum quantities
-            if request.data.get('accionCantidad') == 'SUMAR':
+            if request.data.get('accionCantidad') == models.ActionScale.SUMAR:
                 quant = insumo.cantidad + int(request.data.get('cantidad'))
             else:
                 quant = insumo.cantidad - int(request.data.get('cantidad'))

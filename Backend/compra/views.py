@@ -32,7 +32,7 @@ class PedidoInsumoCRUD(LoginRequiredMixin, viewsets.ViewSet):
     def list(self, request):
         try:
             # join
-            pedido_insumo = models.PedidoInsumo.objects.all()
+            pedido_insumo = models.PedidoInsumo.objects.all().order_by('-fechaHora')
             # serializer
             serializer_class = serializer.PedidoInsumoSerializer(pedido_insumo, many=True, read_only=True)
 
@@ -178,7 +178,7 @@ class DetallePedidoCRUD(LoginRequiredMixin, viewsets.ViewSet):
             serializer_class.is_valid(raise_exception=True)
 
             ## check logic
-            CompraCommonLogic.detalle_pedido_logic(serializer_class.data.get('cantidad'))
+            CompraCommonLogic.detalle_pedido_logic(serializer_class.validated_data.get('cantidad'))
 
             serializer_class.save()
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
