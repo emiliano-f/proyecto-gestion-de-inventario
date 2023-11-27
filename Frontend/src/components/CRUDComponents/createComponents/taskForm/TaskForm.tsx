@@ -17,6 +17,7 @@ import MessageDisplay from "../../../generalComponents/messageDisplay/MessageDis
 import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
 
 import { getSingular } from "../../../../data/TRANSLATIONS";
+import { objectFilteringNoEmptyValues } from "../../../../utils/utils";
 
 type Props = {
     action: "create" | "update",
