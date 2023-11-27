@@ -1,11 +1,11 @@
 
 import "./mainResume.scss"
 
-import TopBox from "../../components/chartComponents/topBox/TopBox"
-import ChartBox from "../../components/chartComponents/chartBox/ChartBox"
-import BarChartBox from "../../components/chartComponents/barChartBox/BarChartBox"
-import { PieChartBox } from "../../components/chartComponents/pieChartBox/PieChartBox"
-import { BigChartBox } from "../../components/chartComponents/bigChartBox/BigChartBox"
+import TopBox from "./chartComponents/topBox/TopBox"
+import ChartBox from "./chartComponents/chartBox/ChartBox"
+import BarChartBox from "./chartComponents/barChartBox/BarChartBox"
+import { PieChartBox } from "./chartComponents/pieChartBox/PieChartBox"
+import { BigChartBox } from "./chartComponents/bigChartBox/BigChartBox"
 import { chartBoxUser, chartBoxUser2 } from "../../data/resumeData"
 
 function MainResume() {
@@ -28,7 +28,7 @@ export default MainResume;
 
 export default Home
 
-import RepositionChart from "../../components/chartComponents/repostionChart/RepostionChart"
+import RepositionChart from "./chartComponents/repostionChart/RepostionChart"
 import { inventarioReposition,herramientaReposition } from "../../data/resumeData"
 
 function MainReusme() {

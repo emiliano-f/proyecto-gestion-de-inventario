@@ -1,9 +1,10 @@
 import "./addEntity.scss"
-import React, { useState,useEffect } from "react";
+import React from "react";
 import { Form,Button } from "react-bootstrap";
-import SelectList from "../selectList/SelectList";
 import InputGroup from 'react-bootstrap/InputGroup';
-import {getPlural, getSingular} from '../../../data/TRANSLATIONS'
+
+import SelectList from "../selectComponentes/selectList/SelectList";
+import {getPlural, getSingular} from '../../../../data/TRANSLATIONS'
 
 type Entities = {
     [key: string]: any;

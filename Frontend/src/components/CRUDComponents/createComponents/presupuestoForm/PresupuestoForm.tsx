@@ -1,18 +1,17 @@
 import "./repositionForm.scss";
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
-import { ReadItem } from '../../../Api/apiService';
-import { setMessage } from '../messageDisplay/MessageDisplay';
-
-import { getSingular } from '../../../data/TRANSLATIONS';
-import { GetUrlParts } from '../../../data/FRONTURLS';
+import { ReadItem } from '../../../../Api/apiService';
 import AddEntity from "../addEntity/AddEntity";
+import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
 
+import { getSingular } from '../../../../data/TRANSLATIONS';
+import { GetUrlParts } from '../../../../data/FRONTURLS';
 
 function PedidoInsumoView(){
     return (<>

@@ -6,7 +6,7 @@ import router from './routes/routes'
 import "./styles/global.scss"
 import { useState } from 'react';
 
-import { AuthProvider } from './components/CRUDComponents/authProvider/AuthProvider';
+import { AuthProvider } from './components/providerComponents/authProvider/AuthProvider';
 
 function App(){
     const [authData,setAuthData] = useState();

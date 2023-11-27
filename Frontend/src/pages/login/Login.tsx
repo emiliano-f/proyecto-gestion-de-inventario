@@ -1,11 +1,12 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import "./login.scss";
 import React, { useContext, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { getToken, Login as login } from "../../Api/apiService"
-import { MessageDisplay, setMessage } from '../../components/CRUDComponents/messageDisplay/MessageDisplay';
+import { Login as login } from "../../Api/apiService"
+import MessageDisplay from "../../components/generalComponents/messageDisplay/MessageDisplay";
+import { setMessage } from "../../components/generalComponents/messageDisplay/MessageDisplay";
 
 function Login() {
   // /admin/login 

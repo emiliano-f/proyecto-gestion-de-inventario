@@ -1,10 +1,10 @@
 import "./stockAdjustment.scss";
 import { useState } from "react";
 
-import { GetUrlParts } from "../../../data/FRONTURLS";
+import { GetUrlParts } from "../../../../../data/FRONTURLS";
 
-import { UpdateItem as Update, CreateItem as Create } from "../../../Api/apiService"
-import { setMessage } from "../messageDisplay/MessageDisplay";
+import { UpdateItem as Update, CreateItem as Create } from "../../../../../Api/apiService"
+import { setMessage } from "../../../../generalComponents/messageDisplay/MessageDisplay";
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'

@@ -1,9 +1,10 @@
 import "./detail.scss"
 import { useState } from "react";
 import { ReadItem } from "../../../Api/apiService";
+import { setMessage } from "../../generalComponents/messageDisplay/MessageDisplay";
+
 import { GetUrlParts } from "../../../data/FRONTURLS";
 import { getSingular } from "../../../data/TRANSLATIONS";
-import { setMessage } from "../messageDisplay/MessageDisplay";
 import { getFullName } from "../../../data/STRUCTURE";
 
 const Detail = () => {

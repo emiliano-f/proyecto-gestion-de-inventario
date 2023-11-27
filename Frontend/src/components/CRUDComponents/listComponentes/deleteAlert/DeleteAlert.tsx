@@ -1,11 +1,11 @@
 import "./deleteAlert.scss"
-
-import { UpdateItem as Update, CreateItem as Create, DeleteItem } from "../../../Api/apiService"
-import { GetUrlParts } from "../../../data/FRONTURLS";
-import { getSingular } from "../../../data/TRANSLATIONS";
-import { setMessage } from "../messageDisplay/MessageDisplay";
-
 import Button from 'react-bootstrap/Button'
+
+import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
+
+import { UpdateItem as Update, CreateItem as Create, DeleteItem } from "../../../../Api/apiService"
+import { GetUrlParts } from "../../../../data/FRONTURLS";
+import { getSingular } from "../../../../data/TRANSLATIONS";
 
 type Props = {
     slug: string,

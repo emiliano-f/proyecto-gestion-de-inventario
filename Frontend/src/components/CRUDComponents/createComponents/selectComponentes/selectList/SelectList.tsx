@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import { ListItems } from '../../../Api/apiService';
-import { setMessage } from '../messageDisplay/MessageDisplay';
-import { getUri } from '../../../data/FOREINGENTITY';
-import { getSingular } from '../../../data/TRANSLATIONS';
+import { ListItems } from '../../../../../Api/apiService';
+import { setMessage } from '../../../../generalComponents/messageDisplay/MessageDisplay';
+
+import { getUri } from '../../../../../data/FOREINGENTITY';
+import { getSingular } from '../../../../../data/TRANSLATIONS';
 
 type Props = {
     entityName?: string,

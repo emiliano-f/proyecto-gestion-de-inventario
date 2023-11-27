@@ -1,6 +1,4 @@
-
 import "./notFound.scss"
-import React from "react";
 
 import { Col, Row, Card, Image, Button, Container } from 'react-bootstrap';
 

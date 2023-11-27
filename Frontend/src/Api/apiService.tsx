@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import axios, { AxiosHeaders, AxiosResponse } from "axios"
 import {BASEURL, getBackendUrl} from "../data/BACKENDURLS"
-import { getNav } from '../components/CRUDComponents/navComp/navComp'
+import { getNav } from "../components/providerComponents/navComp/navComp";
 
 const inventarioAPI = axios.create()
 

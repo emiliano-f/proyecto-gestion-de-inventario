@@ -6,15 +6,17 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
-import { ReadItem } from '../../../Api/apiService';
-import { setMessage, MessageDisplay } from '../messageDisplay/MessageDisplay';
-import { CreateItem as Create, UpdateItem as Update} from "../../../Api/apiService"
-import { getSingular } from '../../../data/TRANSLATIONS';
+import { ReadItem, CreateItem as Create, UpdateItem as Update } from "../../../../Api/apiService";
 
 import AddEntity from "../addEntity/AddEntity";
-import SelectEnum from "../selecEnum/SelectEnum";
+import SelectEnum from "../selectComponentes/selecEnum/SelectEnum";
 import { ServiceOrderInfo } from "./serviceOrderInfo/ServiceOrderInfo";
-import AddEntityAmount from "../addEntityAmount/AddEntityAmount";
+import AddEntityAmount from "./addEntityAmount/AddEntityAmount";
+
+import MessageDisplay from "../../../generalComponents/messageDisplay/MessageDisplay";
+import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
+
+import { getSingular } from "../../../../data/TRANSLATIONS";
 
 type Props = {
     action: "create" | "update",

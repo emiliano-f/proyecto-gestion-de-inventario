@@ -1,11 +1,14 @@
 import "./serviceform.scss"
-import { GetEnums, SendServiceRequest } from "../../Api/apiService";
-import Header from "../../components/dashboardComponents/header/Header"
-import {  setMessage , MessageDisplay } from "../../components/CRUDComponents/messageDisplay/MessageDisplay";
-import { createContext, useContext, useEffect, useState, useRef } from "react";
-import { getEdificios,getSectors } from "../../Api/apiService";
-
 import { Form } from "react-bootstrap";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
+
+import { GetEnums, SendServiceRequest } from "../../../../Api/apiService";
+
+import Header from "../../../generalComponents/header/Header";
+import MessageDisplay from "../../../generalComponents/messageDisplay/MessageDisplay";
+import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
+
+import { getSectors } from "../../../../Api/apiService";
 
 export default function ServiceForm(){
     ///Select de Edificios

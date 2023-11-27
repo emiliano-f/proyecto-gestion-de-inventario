@@ -3,18 +3,19 @@ import "./list.scss"
 import { useEffect, useRef, useState } from "react"
 import { GridColDef } from "@mui/x-data-grid";
 
+import { ListItems } from "../../../../Api/apiService";
+
 import { DataTable } from "../dataTable/DataTable"
-import { ListItems } from "../../../Api/apiService";
-import { setMessage, MessageDisplay } from "../messageDisplay/MessageDisplay";
-import ModalForm, { FormType } from "../modalForm/ModalForm";
 import DeleteAlert from "../deleteAlert/DeleteAlert";
+import ModalForm, { FormType } from "../../createComponents/modalForm/ModalForm";
 
-import { GetUrlParts } from "../../../data/FRONTURLS";
-import { GetColumns, GetFields, Field } from "../../../data/STRUCTURE";
-import { getSingular, getPlural} from "../../../data/TRANSLATIONS"
-import getACTION from "../../../data/ACTIONS";
-import { Link } from "react-router-dom";
+import { GetColumns, GetFields, Field } from "../../../../data/STRUCTURE";
+import { getSingular, getPlural} from "../../../../data/TRANSLATIONS"
+import { GetUrlParts } from "../../../../data/FRONTURLS";
+import getACTION from "../../../../data/ACTIONS";
 
+import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
+import MessageDisplay from "../../../generalComponents/messageDisplay/MessageDisplay";
 
 const List = () => {
     const ErrorState = useState(["",false]);

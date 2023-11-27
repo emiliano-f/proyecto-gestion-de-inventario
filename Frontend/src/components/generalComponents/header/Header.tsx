@@ -1,11 +1,12 @@
 import "./header.scss"
-
-import { AuthContext } from "../../CRUDComponents/authProvider/AuthProvider"
 import { useContext, useEffect, useState } from "react";
 import { Button, Col, Container, Dropdown, Row } from "react-bootstrap";
+
 import { Logout, WhoAmI } from "../../../Api/apiService";
-import { setMessage } from "../../CRUDComponents/messageDisplay/MessageDisplay";
-import {getNav} from "../../CRUDComponents/navComp/navComp"
+
+import { AuthContext } from "../../providerComponents/authProvider/AuthProvider";
+import { setMessage } from "../messageDisplay/MessageDisplay";
+import { getNav } from "../../providerComponents/navComp/navComp";
 
 function UserDropDown(){
 

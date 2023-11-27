@@ -8,24 +8,6 @@ type msgError = [
 
 var setMsg : React.Dispatch<React.SetStateAction<(string | boolean)[]>>;
 
-export function MessageDisplay(state : msgError){   
-    const [msg,errorDesc,is_error] = state[0] 
-    setMsg = state[1]; 
-    return <div id="msg" className={(msg === "")? "hidden":"visible"}>
-                <div className={is_error ? "alert alert-danger" : "alert alert-success"}>
-                    <div className="row">
-                        <div className="col-1 icon">
-                            {is_error? <FiAlertTriangle size={32}/> : <FiAlertCircle size={32}/>}
-                        </div>
-                        <div className="col-10">
-                            <span className="title">{msg}</span>
-                            {errorDesc?<span className="desc">{errorDesc}</span>:null}
-                        </div>  
-                    </div>
-                </div>
-            </div>
-}
-
 export function setMessage(message: string, error : Promise<AxiosResponse<any,any>>| null): void{
     var errorDesc = null;
     if(error === null){
@@ -65,3 +47,23 @@ function setInvisible(elemento : HTMLElement | null ){
     elemento?.classList.add('hidden');
     setMsg(["",false])
 }
+
+function MessageDisplay(state : msgError){   
+    const [msg,errorDesc,is_error] = state[0] 
+    setMsg = state[1]; 
+    return <div id="msg" className={(msg === "")? "hidden":"visible"}>
+                <div className={is_error ? "alert alert-danger" : "alert alert-success"}>
+                    <div className="row">
+                        <div className="col-1 icon">
+                            {is_error? <FiAlertTriangle size={32}/> : <FiAlertCircle size={32}/>}
+                        </div>
+                        <div className="col-10">
+                            <span className="title">{msg}</span>
+                            {errorDesc?<span className="desc">{errorDesc}</span>:null}
+                        </div>  
+                    </div>
+                </div>
+            </div>
+}
+
+export default MessageDisplay;

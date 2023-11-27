@@ -1,9 +1,10 @@
 import "./dataTable.scss"
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import getACTION from "../../../data/ACTIONS"
 import { BsPlusCircle } from "react-icons/bs";
+import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import getACTION from "../../../../data/ACTIONS"
+
 
 type Props = {
     slug: string;

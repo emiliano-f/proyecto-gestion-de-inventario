@@ -5,16 +5,15 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import { SiBetfair } from 'react-icons/si'
 
-import { UpdateItem as Update, CreateItem as Create } from "../../../Api/apiService"
-import { setMessage } from "../messageDisplay/MessageDisplay";
-import SelectList from "../selectList/SelectList";
-import SelectEnum from "../selecEnum/SelectEnum";
-import StockAdjusment from "../stockAdjustment/StockAdjustment";
+import { UpdateItem as Update, CreateItem as Create } from "../../../../Api/apiService"
+import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
+import SelectList from "../selectComponentes/selectList/SelectList";
+import SelectEnum from "../selectComponentes/selecEnum/SelectEnum";
+import StockAdjusment from "./stockAdjustment/StockAdjustment";
 
-
-import { GetUrlParts } from "../../../data/FRONTURLS";
-import { getSingular } from "../../../data/TRANSLATIONS";
-import { Field } from "../../../data/STRUCTURE";
+import { GetUrlParts } from "../../../../data/FRONTURLS";
+import { getSingular } from "../../../../data/TRANSLATIONS";
+import { Field } from "../../../../data/STRUCTURE";
 
 
 export enum FormType {

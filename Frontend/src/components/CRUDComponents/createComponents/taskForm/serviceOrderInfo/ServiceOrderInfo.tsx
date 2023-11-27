@@ -1,4 +1,4 @@
-import React from 'react'
+import "./serviceOrderInfo.scss"
 import { Col, Row } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form';
 import "./serviceOrderInfo.scss"

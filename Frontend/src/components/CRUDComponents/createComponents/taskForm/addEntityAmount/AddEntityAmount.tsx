@@ -1,9 +1,11 @@
 import "./addEntityAmount.scss"
 import React, { useState,useEffect } from "react";
 import { Form,Button, OverlayTrigger, Tooltip } from "react-bootstrap";
-import SelectList from "../selectList/SelectList";
+
+import SelectList from "../../selectComponentes/selectList/SelectList";
 import InputGroup from 'react-bootstrap/InputGroup';
-import {getPlural, getSingular} from '../../../data/TRANSLATIONS'
+
+import {getPlural, getSingular} from '../../../../../data/TRANSLATIONS'
 
 type Entities = {
     [key: string]: any;

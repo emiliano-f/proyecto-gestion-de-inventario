@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import { GetEnums} from '../../../Api/apiService';
-import { GetUrlParts } from '../../../data/FRONTURLS';
+import { GetEnums} from '../../../../../Api/apiService';
+import { GetUrlParts } from '../../../../../data/FRONTURLS';
 
 type Props = {
     entityName?: string | undefined,
