@@ -38,7 +38,7 @@ function Login() {
   return (
     <div className="background">
         <div className="error" >
-          <MessageDisplay {...ErrorState}/>
+          <MessageDisplay />
         </div>
         <div className="container foreground">
         <Form noValidate validated={validated} onSubmit={handleSubmit}>

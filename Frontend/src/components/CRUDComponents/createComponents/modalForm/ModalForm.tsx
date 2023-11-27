@@ -80,6 +80,7 @@ const ModalForm = (props: Props) => {
     const {entity : entityName} = GetUrlParts();
     const [openStockAdj, setOpenStockAdj] = useState(false);
     const [validated, setValidated] = useState(false);
+    const setMessage = useContext();
 
 
     const updateItem = (entity: string, formData: FormData, id: number) => {

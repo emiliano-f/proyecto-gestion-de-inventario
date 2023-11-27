@@ -15,10 +15,9 @@ import { GetUrlParts } from "../../../../data/FRONTURLS";
 import getACTION from "../../../../data/ACTIONS";
 
 import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
-import MessageDisplay from "../../../generalComponents/messageDisplay/MessageDisplay";
 
 const List = () => {
-    const ErrorState = useState(["",false]);
+    
     const [openAdd, setOpenAdd] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
     const [openRead, setOpenRead] = useState(false);
@@ -48,7 +47,6 @@ const List = () => {
 
     return (
         <>
-            <MessageDisplay {...ErrorState}/>
             <div className="item">
                 <div className="info">
                     <h1>{getPlural(entityName)}</h1>

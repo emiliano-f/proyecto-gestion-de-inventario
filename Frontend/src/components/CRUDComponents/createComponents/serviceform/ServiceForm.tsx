@@ -4,8 +4,6 @@ import { createContext, useContext, useEffect, useState, useRef } from "react";
 
 import { GetEnums, SendServiceRequest } from "../../../../Api/apiService";
 
-import Header from "../../../generalComponents/header/Header";
-import MessageDisplay from "../../../generalComponents/messageDisplay/MessageDisplay";
 import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
 
 import { getSectors } from "../../../../Api/apiService";
@@ -89,8 +87,6 @@ export default function ServiceForm(){
     //console.log(sectors)
     return (
         <>
-        <Header/>
-        <MessageDisplay {...serviceContext}/>
         <div className="serviceForm">           
 
             <div className="container">
