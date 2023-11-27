@@ -1,4 +1,5 @@
 from django.db import transaction
+from settings.common_class import LoginRequiredNoRedirect
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.views import APIView
@@ -6,7 +7,7 @@ from rest_framework.response import Response
 from . import serializer
 from . import models
 
-class CustomModelViewSet(viewsets.ModelViewSet):
+class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
 class InventarioCommonLogic:
@@ -21,6 +22,7 @@ class InventarioCommonLogic:
         insumo.update_quantity(int(data['cantidad']), models.ActionScale.RESTAR)
         
         insumo.save()
+        return serializer_class
 
 
 class TipoInsumoCRUD(CustomModelViewSet):
@@ -30,7 +32,7 @@ class TipoInsumoCRUD(CustomModelViewSet):
     def __table__():
         return 'tipoinsumo'
 
-class InsumoCRUD(viewsets.ViewSet):
+class InsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def __table__():
         return 'insumo'
@@ -43,6 +45,7 @@ class InsumoCRUD(viewsets.ViewSet):
         return Response(serializer_class.data)
 
     def create(self, request):
+        print(request.data)
         serializer_class = serializer.InsumoSerializer(data=request.data)
         serializer_class.is_valid(raise_exception=True)
         serializer_class.save()
@@ -77,7 +80,7 @@ class InsumoCRUD(viewsets.ViewSet):
         insumo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class OrdenRetiroCRUD(viewsets.ViewSet):
+class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def __table__():
         return 'ordenretiro'
@@ -92,7 +95,7 @@ class OrdenRetiroCRUD(viewsets.ViewSet):
     @transaction.atomic
     def create(self, request):
         try:
-            InventarioCommonLogic.create_orden_retiro(request.data)
+            serializer_class = InventarioCommonLogic.create_orden_retiro(request.data)
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
@@ -128,7 +131,7 @@ class OrdenRetiroCRUD(viewsets.ViewSet):
         orden_retiro.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class AjusteStockCRUD(viewsets.ViewSet):
+class AjusteStockCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def __table__():
         return 'ajustestock'
@@ -155,7 +158,7 @@ class AjusteStockCRUD(viewsets.ViewSet):
                 raise Exception("Negative or zero quantity")
 
             ## sum quantities
-            if request.data.get('accionCantidad') == 'SUMAR':
+            if request.data.get('accionCantidad') == models.ActionScale.SUMAR:
                 quant = insumo.cantidad + int(request.data.get('cantidad'))
             else:
                 quant = insumo.cantidad - int(request.data.get('cantidad'))

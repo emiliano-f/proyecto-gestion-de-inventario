@@ -1,0 +1,17 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/responsive.scss";
+
+.task-form{
+    display: flex;
+    flex-direction: column;
+    
+    
+    .employee {
+        display: flex;
+        button {
+            min-width: 50px;
+            margin-left: 10px;
+        }
+    }
+    
+}

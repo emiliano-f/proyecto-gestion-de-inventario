@@ -1,15 +1,18 @@
+import "./login.scss";
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import "./login.scss";
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Login as login } from "../../Api/apiService"
+import MessageDisplay from "../../components/generalComponents/messageDisplay/MessageDisplay";
+import { setMessage } from "../../components/generalComponents/messageDisplay/MessageDisplay";
 
 function Login() {
-  // /admin/login
-
-  const [validated, setValidated] = useState(false);
+  // /admin/login 
+  const [validated,setValidated] = useState(false);
+  const ErrorState = useState(["",false]);
+  const nav = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,18 +22,24 @@ function Login() {
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
-      console.log(formData);
-
-      login(formData);
-
+      //console.log(formData);
+      login(formData)
+      .then((r)=>{
+        //console.log(r)
+        nav("/")
+      })
+      .catch((e)=>(
+        setMessage("Error al inciar sesion",e)
+      ))
     }
-    setValidated(true);
   };
   
 
   return (
     <div className="background">
-  
+        <div className="error" >
+          <MessageDisplay {...ErrorState}/>
+        </div>
         <div className="container foreground">
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <div className="header">
@@ -39,7 +48,7 @@ function Login() {
             </div>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Usuario</Form.Label>
-              <Form.Control name="user" type="string" placeholder="Ingrese nombre de usuario" />
+              <Form.Control name="username" type="string" placeholder="Ingrese nombre de usuario" />
               {/*<Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
@@ -62,14 +71,7 @@ function Login() {
           </p>
           </Form>
         </div>
-
-      
-      
     </div>
-    
-    
-    
-    
   )
 }
 

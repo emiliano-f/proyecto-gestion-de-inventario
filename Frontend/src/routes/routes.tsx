@@ -1,17 +1,17 @@
 import { RouteObject, createBrowserRouter, redirect } from "react-router-dom";
 
 import Login from "../pages/login/Login";
-import MainResume from "../pages/mainResume/MainResume";
 import Dashboard from "../pages/dashboard/Dashboard";
-import ServiceForm from "../pages/serviceform/ServiceForm"
-import Detail from "../components/CRUDComponents/detail/Detail.tsx";
-import NotFound from "../pages/notFound/NotFound.tsx";
-import TaskForm from "../components/CRUDComponents/taskForm/TaskForm.tsx";
-import List from "../components/CRUDComponents/list/List"
-import RepositionForm from "../components/CRUDComponents/repositionForm/RepositionForm.tsx"
-import SECTIONS from "../data/SECTIONS.tsx";
-import ListByEntity from "../components/CRUDComponents/listByEntity/ListByEntity.tsx";
+import ServiceForm from "../pages/serviceRequest/ServiceRequest"
+import NotFound from "../pages/notFound/NotFound";
 
+import MainResume from "../components/resumeComponents/MainResume";
+import List from "../components/CRUDComponents/listComponentes/listEntity/List.tsx";
+import ListByEntity from "../components/CRUDComponents/listComponentes/listByEntity/ListByEntity.tsx";
+import Detail from "../components/CRUDComponents/detailEntity/Detail.tsx";
+import TaskForm from "../components/CRUDComponents/createComponents/taskForm/TaskForm.tsx";
+
+import SECTIONS from "../data/SECTIONS.tsx";
 
 /**
  * Genera a partir de los elementos del menu lateral las url's correspondientes
@@ -22,7 +22,6 @@ import ListByEntity from "../components/CRUDComponents/listByEntity/ListByEntity
  */
 function generateRoutes() {
   var routes: RouteObject[] = [];
-
   //Special url's que tienen prioridad sobre las generadas posteriormente
   routes = routes.concat([
     {
@@ -73,6 +72,10 @@ function generateRoutes() {
 
 const routes = [
   {
+    path: "/login",
+    element: <Login />
+  },
+  {
     path: "/",
     element: <Dashboard />,
     children: generateRoutes().concat([
@@ -86,10 +89,6 @@ const routes = [
   {
     path: "/orden-servicio/",
     loader: () => { return redirect("/orden-servicio/generate") }
-  },
-  {
-    path: "/login",
-    element: <Login />
   },
   {
     path: "/orden-servicio/generate",

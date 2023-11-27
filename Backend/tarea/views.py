@@ -1,9 +1,10 @@
-from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from settings.common_class import LoginRequiredNoRedirect
 from . import serializer
 from . import models
 import herramienta.models as herramienta_models
@@ -13,7 +14,7 @@ from inventario.views import InventarioCommonLogic
 import inventario.serializer as inventario_serializer
 import json
 
-class CustomModelViewSet(viewsets.ModelViewSet):
+class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
 class TareaCommonLogic:
@@ -110,7 +111,7 @@ class EncuestaSatisfaccionCRUD(CustomModelViewSet):
     def __table__():
         return 'encuestasatisfaccion'
 
-class TareaCRUD(viewsets.ViewSet):
+class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def __table__():
         return 'tarea'
@@ -245,7 +246,7 @@ class TareaCRUD(viewsets.ViewSet):
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
     
-class OrdenServicioCRUD(viewsets.ViewSet):
+class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def __table__():
         return 'ordenservicio'
@@ -294,7 +295,7 @@ class OrdenServicioCRUD(viewsets.ViewSet):
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-class SectorListCRUD(viewsets.ViewSet):
+class SectorListCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def __table__():
         return 'sector'
 
@@ -316,6 +317,3 @@ class SectorCRUD(CustomModelViewSet):
 class TiempoCRUD(CustomModelViewSet):
     serializer_class = serializer.TiempoSerializer
     queryset = models.Tiempo.objects.all()
-
-    def __table__():
-        return 'tiempo'

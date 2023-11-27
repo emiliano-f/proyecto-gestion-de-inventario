@@ -1,0 +1,23 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/responsive.scss";
+
+.task-form{
+    display: flex;
+    flex-direction: column;
+    .service-order {
+        margin-right: 50px;
+        @include lg {
+            width: 100%;
+        }
+        
+        
+    }
+    .employee {
+        display: flex;
+        button {
+            min-width: 50px;
+            margin-left: 10px;
+        }
+    }
+    
+}

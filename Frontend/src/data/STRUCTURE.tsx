@@ -519,9 +519,9 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "recibido",
                 type: "string",
                 col_size: SIZE.TINY,
-                required: true,
-                select : true,
-                enum: true
+                required: false,
+                select : false,
+                enum: false
             },
         },
         "presupuestos": {

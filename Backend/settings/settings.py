@@ -139,6 +139,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # URL base para acceder a los archivos subidos
 MEDIA_URL = '/media/'
 
+
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',
     'http://localhost:5173',
@@ -149,6 +151,33 @@ CORS_ALLOWED_ORIGINS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
 }
-
 AUTH_USER_MODEL = 'usuario.Usuario'
+
+#CSRF TOKEN and SESSION
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173','http://127.0.0.1:5173']
+
+CSRF_COOKIE_NAME = 'csrftoken'
+#CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
+CSRF_COOKIE_HTTPONLY = False # Can not read cookie with javascript
+CSRF_COOKIE_SAMESITE = 'strict'
+CSRF_COOKIE_SECURE = False # Send cookies by https only  
+
+SESSION_COOKIE_HTTPONLY = False
+SESSION_COOKIE_SAMESITE = 'strict'
+SESSION_COOKIE_SECURE = False
+
+# PROD ONLY
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+
+"""
+- same site 'strict'.Pasa el token solo entre dominios del mismo sito. mismo protocolo, mismo dominio
+- same site False, no permite que el navegador almacene la cookie porque es inseguro
+- same site 'None' requiere que secure=True, solo permite https
+- same site 'Lax', Se rechaza almacenar las cookies porque se encuentra en un contexto de dominios crusados
+"""

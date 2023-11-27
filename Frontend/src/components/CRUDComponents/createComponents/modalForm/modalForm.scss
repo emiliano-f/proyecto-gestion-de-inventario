@@ -1,0 +1,91 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/responsive.scss";
+
+.modal-background {
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.724);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .modal-front {
+        min-width: 480px;
+        max-width: 700px !important;
+        max-height: 100vh;
+        overflow-y: auto;     
+        padding: 40px 60px;
+        border-radius: 10px;
+        background-color: $main-bg;
+        position: relative;
+        
+        p{
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            color: $soft-color;
+            //font-size: 4dvw;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            
+            justify-content: space-between;
+
+            .form-group {
+                width: 48%;
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                margin-bottom: 20px;
+
+                label {
+                    font-size: 14px;
+                }
+
+                input {
+                    margin-right: null;
+                    padding: 10px;
+                    // background-color: transparent;
+                    // color: white;
+                    outline: none;
+                    border: 1px solid $soft-color;
+                    border-radius: 3px;
+                }
+
+                select {
+                    padding: 10px;
+                    // background-color: transparent;
+                    // color: white;
+                    outline: none;
+                    border: 1px solid $soft-color;
+                    border-radius: 3px;
+                }
+
+            }
+
+            button {
+                width: 100%;
+                padding: 10px;
+                cursor: pointer;
+            }
+
+        }
+    }
+}

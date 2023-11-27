@@ -1,0 +1,9 @@
+@import "../../../../../styles/responsive.scss";
+
+.service-order {
+
+    @include lg {
+        width: 100%;
+    }
+
+}
