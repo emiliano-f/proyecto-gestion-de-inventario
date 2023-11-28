@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import React from "react";
+import { createContext, useRef, useState } from "react";
 
 export var MessageContext : Context<any>;
 
@@ -10,6 +11,7 @@ type Message = {
 
 var message : Message = null;
 var setNewMessage : React.Dispatch<React.SetStateAction<Message>>;
+var setMessageMemo : React.NamedExoticComponent<object>;
 
 function MessageProvider({ children }) {
     [message,setNewMessage] = useState(
@@ -29,17 +31,24 @@ function MessageProvider({ children }) {
     );
   }
 
+function messageChanged(newMessage : Message){
+    return message.title === "" && message?.desc === ""
+    || !Object.keys(message)
+    .map((key) => newMessage[key] === message[key])
+    .reduce((ac,val) => ac && val)
+} 
+
 export function getMessage() : Message{
     return message;
 }
 
 export function setMessage(title: string, error : Promise<AxiosResponse<any,any>>| null): void{
-    console.log("error: "+error)
+    var newMessage = null;
     var errorDesc = null;
     if(error === null){
-        setNewMessage({title:title,desc:"",is_error:false});
+        newMessage = {title:title,desc:"",is_error:false};
     }else if(!('code' in error)){
-        setNewMessage({title:title,desc:"Error inesperado",is_error:true});
+        newMessage = {title:title,desc:"Error inesperado",is_error:true};
     }else{
         var dicc : any;
         switch(error.code){
@@ -62,13 +71,16 @@ export function setMessage(title: string, error : Promise<AxiosResponse<any,any>
                 break;
             }
         }
-        setNewMessage({title:title, desc:errorDesc, is_error:true});
+        newMessage = {title:title, desc:errorDesc, is_error:true};
     }
 
-    const elemento : HTMLElement | null = document.getElementById("msg");
-    elemento?.classList.remove('hidden');
-    elemento?.classList.add('visible');
-    setTimeout(()=>setInvisible(elemento),10000)
+    if(messageChanged(newMessage)){
+        setNewMessage(newMessage);
+        const elemento : HTMLElement | null = document.getElementById("msg");
+        elemento?.classList.remove('hidden');
+        elemento?.classList.add('visible');
+        setTimeout(()=>setInvisible(elemento),10000)
+    }
 }
 
 function setInvisible(elemento : HTMLElement | null ){

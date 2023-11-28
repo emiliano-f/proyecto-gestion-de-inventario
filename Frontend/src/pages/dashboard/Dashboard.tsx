@@ -7,6 +7,7 @@ import MessageDisplay from "../../components/generalComponents/messageDisplay/Me
 import MessageProvider from "../../components/providerComponents/messageProvider/MessageProvider"
 import { useAuthData } from "../../components/providerComponents/authProvider/AuthProvider"
 import { useEffect } from "react"
+import React from "react"
 
 function Dashboard() {
     
@@ -23,7 +24,7 @@ function Dashboard() {
         console.log(authData)
         return <Link to="/login" />;
     }
-    
+
     return (
         <div className="main">
             <Header />
@@ -34,7 +35,7 @@ function Dashboard() {
                 <div className="contentContainer">
                     <MessageProvider>
                         <MessageDisplay />
-                        <Outlet />
+                        <Outlet/>
                     </MessageProvider>
                 </div>
             </div>
