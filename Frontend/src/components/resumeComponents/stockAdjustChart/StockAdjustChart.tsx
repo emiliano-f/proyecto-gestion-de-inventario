@@ -37,13 +37,13 @@ const StockAdjustChart = () => {
                         labelStyle={{display:"none"}}
                         position={{x:12, y:60}}
                         />
-                        <Line type="monotone" dataKey={props["dataKe"]} stroke={props.color} strokeWidth={2} />
+                        <Line type="monotone" dataKey={props["dataKey"]} stroke={props.color} strokeWidth={2} />
                         dot={false}
                       </LineChart>
                   </ResponsiveContainer>
             </div>
             <div className="texts">
-                <span className="duration">este mes</span>
+                <span className="duration">Ultimo mes</span>
             </div>
         </div>
     </div>
