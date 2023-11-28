@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 
 type AuthData = {
+  id: number,
   authenticated: boolean,
   username: string,
   email: string,
@@ -12,6 +13,7 @@ const getInitialState = () : any => {
   var authData = sessionStorage.getItem("authData");
   if(authData === null){
     authData = {
+      id:-1,
       authenticated: false,
       username: "No consultado",
       email: "No consultado",

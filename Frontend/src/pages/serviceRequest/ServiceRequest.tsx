@@ -23,8 +23,8 @@ function ServiceRequest(){
     return (
         <>
             <Header/>
-            <MessageDisplay/>
             <MessageProvider>
+                <MessageDisplay/>
                 <ServiceForm />
             </MessageProvider>
         </>

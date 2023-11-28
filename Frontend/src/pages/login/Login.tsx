@@ -19,6 +19,7 @@ function Login() {
       WhoAmI()
       .then((r)=>{
         setAuthData({
+          id:r.data["id"],
           authenticated: true,
           username: r.data["username"],
           email: r.data["email"],
