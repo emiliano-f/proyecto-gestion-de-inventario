@@ -1,6 +1,7 @@
 import "./messageDisplay.scss"
 import { FiAlertTriangle, FiAlertCircle } from "react-icons/fi"
-import { getMessage } from "../../providerComponents/messageProvider/MessageProvider";
+import { MessageContext, getMessage } from "../../providerComponents/messageProvider/MessageProvider";
+import { useContext } from "react";
 
 function MessageDisplay() {
     const msgObj = getMessage();

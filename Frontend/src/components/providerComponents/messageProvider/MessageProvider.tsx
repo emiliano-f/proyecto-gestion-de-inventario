@@ -6,10 +6,10 @@ type Message = {
     title:string,
     desc:string,
     is_error:boolean
-}
+} | null
 
-var message : Message;
-var setNewMessage : React.Dispatch<Message>;
+var message : Message = null;
+var setNewMessage : React.Dispatch<React.SetStateAction<Message>>;
 
 function MessageProvider({ children }) {
     [message,setNewMessage] = useState(
@@ -21,11 +21,11 @@ function MessageProvider({ children }) {
             }
         )
     );
-    AuthContext = createContext(setNewMessage);
+    MessageContext = createContext(setNewMessage);
     return (
-      <AuthContext.Provider value={setNewMessage}>
+      <MessageContext.Provider value={setNewMessage}>
         {children}
-      </AuthContext.Provider>
+      </MessageContext.Provider>
     );
   }
 
@@ -34,9 +34,12 @@ export function getMessage() : Message{
 }
 
 export function setMessage(title: string, error : Promise<AxiosResponse<any,any>>| null): void{
+    console.log("error: "+error)
     var errorDesc = null;
     if(error === null){
         setNewMessage({title:title,desc:"",is_error:false});
+    }else if(!('code' in error)){
+        setNewMessage({title:title,desc:"Error inesperado",is_error:true});
     }else{
         var dicc : any;
         switch(error.code){

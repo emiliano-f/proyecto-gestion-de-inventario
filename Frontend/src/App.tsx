@@ -1,4 +1,4 @@
-import {RouterProvider} from 'react-router-dom'
+import { RouterProvider } from 'react-router-dom'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -8,13 +8,12 @@ import { useState } from 'react';
 
 import { AuthProvider } from './components/providerComponents/authProvider/AuthProvider';
 
-function App(){
-    const [authData,setAuthData] = useState();
-    return (
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
-    );
+function App() {
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App

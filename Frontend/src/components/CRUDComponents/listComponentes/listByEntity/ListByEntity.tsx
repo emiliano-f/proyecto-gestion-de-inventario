@@ -11,7 +11,7 @@ import ModalForm, { FormType } from "../../createComponents/modalForm/ModalForm"
 import DeleteAlert from "../deleteAlert/DeleteAlert";
 import { DataTable } from "../dataTable/DataTable";
 
-import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
+import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
 import MessageDisplay from "../../../generalComponents/messageDisplay/MessageDisplay";
 
 import { getPlural, getSingular } from "../../../../data/TRANSLATIONS";

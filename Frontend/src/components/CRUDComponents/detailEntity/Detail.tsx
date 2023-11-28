@@ -1,7 +1,7 @@
 import "./detail.scss"
 import { useState } from "react";
 import { ReadItem } from "../../../Api/apiService";
-import { setMessage } from "../../generalComponents/messageDisplay/MessageDisplay";
+import { setMessage } from "../../providerComponents/messageProvider/MessageProvider";
 
 import { GetUrlParts } from "../../../data/FRONTURLS";
 import { getSingular } from "../../../data/TRANSLATIONS";

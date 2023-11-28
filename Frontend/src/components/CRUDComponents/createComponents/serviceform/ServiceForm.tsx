@@ -4,11 +4,19 @@ import { createContext, useContext, useEffect, useState, useRef } from "react";
 
 import { GetEnums, SendServiceRequest } from "../../../../Api/apiService";
 
-import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
+import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
 
 import { getSectors } from "../../../../Api/apiService";
+import { useAuthData } from "../../../providerComponents/authProvider/AuthProvider";
 
 export default function ServiceForm(){
+
+    const formRef  = useRef();
+    const edificioSelect = useRef();
+    const sectorSelect = useRef();
+
+    const [authData] = useAuthData();
+
     ///Select de Edificios
         const [enums, setEnum] = useState("");
         useEffect(() => {
@@ -25,27 +33,12 @@ export default function ServiceForm(){
             setCurrOption(e.target.value)};
     ///
 
-
-    const formRef  = useRef();
-    const edificioSelect = useRef();
-    const sectorSelect = useRef();
-
-    const UserContext =  createContext({
-        user_id:2,
-        user_name:"Aldo",
-        user_email:"Aldo.Trillini.Ingenieria@gmail.com",
-        user_legajo:12345,
-    });
-    
-    const user = useContext(UserContext);
-    const serviceContext = useState(["",false]);
-
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         // Prevent the browser from reloading the page
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
-        formData.append("usuario",user.user_id.toString())
+        formData.append("usuario",authData["id"].toString())
         SendServiceRequest(formData)
         .then(() => {
             try{

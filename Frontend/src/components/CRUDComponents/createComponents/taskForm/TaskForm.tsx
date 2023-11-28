@@ -14,7 +14,7 @@ import { ServiceOrderInfo } from "./serviceOrderInfo/ServiceOrderInfo";
 import AddEntityAmount from "./addEntityAmount/AddEntityAmount";
 
 import MessageDisplay from "../../../generalComponents/messageDisplay/MessageDisplay";
-import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
+import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
 
 import { getSingular } from "../../../../data/TRANSLATIONS";
 import { objectFilteringNoEmptyValues } from "../../../../utils/utils";

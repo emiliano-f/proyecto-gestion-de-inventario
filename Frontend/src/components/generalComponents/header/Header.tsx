@@ -1,41 +1,28 @@
 import "./header.scss"
-import { useContext, useEffect, useState } from "react";
 import { Button, Col, Container, Dropdown, Row } from "react-bootstrap";
 
 import { Logout, WhoAmI } from "../../../Api/apiService";
 
-import { AuthContext } from "../../providerComponents/authProvider/AuthProvider";
-import { setMessage } from "../messageDisplay/MessageDisplay";
-import { getNav } from "../../providerComponents/navComp/navComp";
+import { useAuthData } from "../../providerComponents/authProvider/AuthProvider";
+import { setMessage } from "../../providerComponents/messageProvider/MessageProvider";
+import { useNavigate } from "react-router-dom";
 
 function UserDropDown(){
-
-  //const {authData,setAuthData} = useContext(AuthContext);
-  const [user,setUser]= useState(
-    {
-      username: "No consultado",
-      email: "No consultado",
-      rol: "No consultado",
-    }
-  )
-  useEffect(()=>{
-    WhoAmI()
-    .then((r)=>{
-      setUser({
-        username: r.data["username"],
-        email: r.data["email"],
-        rol: r.data["rol"],
-      });
-    })
-    .catch((e)=>{
-      setMessage("Error al cargar usuario",e)
-    })
-  },[setUser])
-  
+  console.log(useAuthData());
+  const [authData,setAuthData] = useAuthData();
+  const nav = useNavigate();
   const handleLogout = () => {
     Logout()
     .then(()  => {
-      (getNav())("/login")
+      setAuthData(
+        {
+          authenticated: false,
+          username: "No consultado",
+          email: "No consultado",
+          rol: "No consultado",
+        }
+      );
+      nav("/login")
     })
     .catch(e=>{
       setMessage("Error al cerrar sesión",e)
@@ -47,7 +34,7 @@ function UserDropDown(){
       <Dropdown.Toggle split variant="primary" id="dropdown-split-basic">
             <div className="user">
               <img src="https://freesvg.org/img/abstract-user-flat-4.png" alt="" />
-              <span>{user['username']}</span>
+              <span>{authData['username']}</span>
             </div>
       </Dropdown.Toggle>  
       <Dropdown.Menu>
@@ -57,19 +44,19 @@ function UserDropDown(){
               <Col><div className="header">Nombre de usuario:</div></Col>
             </Row>
             <Row>
-              <Col><div className="content">{user['username']}</div></Col>
+              <Col><div className="content">{authData['username']}</div></Col>
             </Row>
             <Row>
               <Col><div className="header">Correo:</div></Col>
             </Row>
             <Row>
-              <Col><div className="content">{user['email']}</div></Col>
+              <Col><div className="content">{authData['email']}</div></Col>
             </Row>
             <Row>
               <Col><div className="header">Rol:</div></Col>
             </Row>
             <Row>
-              <Col><div className="content">{user['rol']}</div></Col>
+              <Col><div className="content">{authData['rol']}</div></Col>
             </Row>
             <Row>
               <Button variant="danger" onClick={handleLogout}>Logout</Button>

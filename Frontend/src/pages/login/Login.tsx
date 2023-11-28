@@ -1,18 +1,36 @@
 import "./login.scss";
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { Login as login } from "../../Api/apiService"
+import { WhoAmI ,Login as login } from "../../Api/apiService"
 import MessageDisplay from "../../components/generalComponents/messageDisplay/MessageDisplay";
-import { setMessage } from "../../components/generalComponents/messageDisplay/MessageDisplay";
+import MessageProvider, { setMessage } from "../../components/providerComponents/messageProvider/MessageProvider";
+import { useAuthData } from "../../components/providerComponents/authProvider/AuthProvider";
 
 function Login() {
-  // /admin/login 
+  
+  const [authData,setAuthData] = useAuthData();
   const [validated,setValidated] = useState(false);
-  const ErrorState = useState(["",false]);
   const nav = useNavigate();
+
+  const handleWhoAmI = () => {
+      WhoAmI()
+      .then((r)=>{
+        setAuthData({
+          authenticated: true,
+          username: r.data["username"],
+          email: r.data["email"],
+          rol: r.data["rol"],
+        });
+        nav("/")
+      })
+      .catch((e)=>{
+        setMessage("Error al cargar usuario",e)
+      })
+  }
+  
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,37 +40,28 @@ function Login() {
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
-      //console.log(formData);
       login(formData)
       .then((r)=>{
-        //console.log(r)
-        nav("/")
+        handleWhoAmI();
       })
       .catch((e)=>(
-        setMessage("Error al inciar sesion",e)
+        setMessage("Error al iniciar sesión",e)
       ))
     }
   };
-  
 
-  return (
-    <div className="background">
-        <div className="error" >
-          <MessageDisplay />
-        </div>
-        <div className="container foreground">
+  function LoginForm(){
+    return (
+      <div className="container foreground">
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <div className="header">
               <div className="text">Log In</div>
               <div className="underline"></div>
             </div>
+            
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Usuario</Form.Label>
               <Form.Control name="username" type="string" placeholder="Ingrese nombre de usuario" />
-              {/*<Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
-              */}
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -66,12 +75,23 @@ function Login() {
               </Button>
             </div>
             
-          <p className="text-end mt-2">
-            <Link to="" className="ms-2">¿Olvidaste tu contraseña?</Link>
-          </p>
+            <p className="text-end mt-2">
+              <Link to="" className="ms-2">¿Olvidaste tu contraseña?</Link>
+            </p>
           </Form>
+      </div>
+    );
+  }
+
+  return (
+    <div className="background">    
+      <MessageProvider>
+        <div className="error" >
+          <MessageDisplay />
         </div>
-    </div>
+        <LoginForm/>
+      </MessageProvider>
+    </div>          
   )
 }
 

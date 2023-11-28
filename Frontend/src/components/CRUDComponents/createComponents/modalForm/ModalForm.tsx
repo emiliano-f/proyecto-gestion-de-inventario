@@ -1,12 +1,12 @@
 import "./modalForm.scss"
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import { SiBetfair } from 'react-icons/si'
 
 import { UpdateItem as Update, CreateItem as Create } from "../../../../Api/apiService"
-import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
+import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
 import SelectList from "../selectComponentes/selectList/SelectList";
 import SelectEnum from "../selectComponentes/selecEnum/SelectEnum";
 import StockAdjusment from "./stockAdjustment/StockAdjustment";
@@ -80,8 +80,7 @@ const ModalForm = (props: Props) => {
     const {entity : entityName} = GetUrlParts();
     const [openStockAdj, setOpenStockAdj] = useState(false);
     const [validated, setValidated] = useState(false);
-    const setMessage = useContext();
-
+    
 
     const updateItem = (entity: string, formData: FormData, id: number) => {
         // Comentario jm: sería mejor que la función reciba un int y el casteo lo haga dentro

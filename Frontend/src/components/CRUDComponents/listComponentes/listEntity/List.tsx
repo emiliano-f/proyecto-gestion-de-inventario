@@ -14,7 +14,7 @@ import { getSingular, getPlural} from "../../../../data/TRANSLATIONS"
 import { GetUrlParts } from "../../../../data/FRONTURLS";
 import getACTION from "../../../../data/ACTIONS";
 
-import { setMessage } from "../../../generalComponents/messageDisplay/MessageDisplay";
+import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
 
 const List = () => {
     

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { ListItems } from '../../../../../Api/apiService';
-import { setMessage } from '../../../../generalComponents/messageDisplay/MessageDisplay';
+import { setMessage } from '../../../../providerComponents/messageProvider/MessageProvider';
 
 import { getUri } from '../../../../../data/FOREINGENTITY';
 import { getSingular } from '../../../../../data/TRANSLATIONS';
