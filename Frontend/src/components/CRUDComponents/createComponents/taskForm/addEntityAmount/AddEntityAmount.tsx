@@ -15,6 +15,8 @@ type Props = {
     entityName: string,
     entList: Entities,
     setEntList: React.Dispatch<React.SetStateAction<Entities[]>>
+    amountTitle: string;
+    amountTooltip?: string;
 }
 
 const AddEntityAmount = (props:Props) =>{
@@ -27,11 +29,11 @@ const AddEntityAmount = (props:Props) =>{
 
     // Posiblilidad de eliminar
     
-    const [amounts, setAmounts] = useState(props.entList.map(x => x["cantidad"] || ""));
+    const [amounts, setAmounts] = useState(props.entList.map(x => x[props.amountTitle] || ""));
 
     useEffect(() => {
         // Actualizar el estado local cuando props.entList cambie
-        setAmounts(props.entList.map(x => x["cantidad"] || ""));
+        setAmounts(props.entList.map(x => x[props.amountTitle] || ""));
     }, [props.entList]);
 
 
@@ -47,7 +49,7 @@ const AddEntityAmount = (props:Props) =>{
     const addAmount = (index: number, amount:any) => {
         props.setEntList(prevList => {
             const updatedList = [...prevList];
-            const objetoModificado = { ...updatedList[index], ["cantidad"]: amount};
+            const objetoModificado = { ...updatedList[index], [props.amountTitle]: amount};
             updatedList[index] = objetoModificado;
             
             return updatedList;
@@ -65,7 +67,7 @@ const AddEntityAmount = (props:Props) =>{
 
     return(
         <>
-            <div className="entity-label">{getPlural(props.entityName)}</div>
+            <div className="entity-label">{getPlural(props.entityName) +"/"+ (props.amountTooltip || "Cantidad")}</div>
             {props.entList.map((x, i) => {
                 return (
                     <Form.Group className="mb-1" controlId="formGridEntidad" key={i}>
@@ -78,7 +80,7 @@ const AddEntityAmount = (props:Props) =>{
                                     placement="top"
                                     overlay={
                                         <Tooltip id={`tooltip-${i}`}>
-                                            Cantidad (positiva)
+                                           {props.amountTooltip ||"Cantidad (positiva)"}
                                         </Tooltip>
                                     }
                                 >

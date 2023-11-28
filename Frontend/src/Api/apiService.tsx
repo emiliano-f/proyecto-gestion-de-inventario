@@ -30,9 +30,9 @@ export function ListItems(setItems: any, itemName: string): Promise<AxiosRespons
     });
 }
 
-export function ReadItem(setItem: any, itemName: string): Promise<AxiosResponse<any, any>> {
+export function ReadItem(setItem: any, itemName: string, item_id?: string): Promise<AxiosResponse<any, any>> {
     
-    const { id } = useParams();
+    const { id } = item_id ? { id: item_id } : useParams();
     console.log(getBackendUrl(itemName) + `${id}/`)
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         useEffect(() => {
@@ -53,6 +53,9 @@ export function ReadItem(setItem: any, itemName: string): Promise<AxiosResponse<
         }, [itemName, setItem]);
     })
 }
+
+
+
 
 export function CreateItem(itemName: string, formData: FormData | string): Promise<AxiosResponse<any, any>> {
     

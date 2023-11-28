@@ -35,7 +35,7 @@ const TaskForm = (props:Props) => {
         fechaTentativa: any;
         fechaInicio: any;
         fechaFin: any;
-        empleados: Array<{ id: number }>;
+        empleados: Array<{ id: number, hsEstimadas: number}>;
         retiros_insumos: Array<{ id_insumo: number; cantidad: number }>;
         herramientas: Array<{ id: number }>;
     }
@@ -51,7 +51,7 @@ const TaskForm = (props:Props) => {
         [key: string]: any;
     }
     // Array de empleados
-    const [empList, setEmpList] = useState<Entity[]>([{ ["empleado"]: '' }]);
+    const [empList, setEmpList] = useState<Entity[]>([{ ["empleado"]: '', ["horasEstimadas"]: 0}]);
     // Array de insumos
     const [insumoList, setInsumoList] = useState<Entity[]>([{ ["insumo"]: '', ["cantidad"]: 0 }]);
     // Array de herramientas
@@ -68,7 +68,7 @@ const TaskForm = (props:Props) => {
     // Luego de buscar información sobre las tareas. Se actualizan los estados para mantener la lista de empleados, herramientas e insumos (junto a su cantidad solicitada)
     useEffect(() => {
         if (task) {
-            const updatedEmpList = task["empleados"].map(item => ({ ["empleado"]: item.id.toString() }));
+            const updatedEmpList = task["empleados"].map(item => ({ ["empleado"]: item.id.toString(), ["horasEstimadas"]: item.hsEstimadas }));
             setEmpList(updatedEmpList);
             const updatedInsumoList = task["retiros_insumos"].map(item => ({ ["insumo"]: item.id_insumo.toString(), ["cantidad"]: item.cantidad }));
             setInsumoList(updatedInsumoList);
@@ -76,13 +76,13 @@ const TaskForm = (props:Props) => {
             setHerrList(updatedHerrList);    
         }
     }, [task]);
-
+    /*
     ReadItem(setServiceOrder, "ordenes-servicio")
         .then((response) => console.log(response))
         .catch((error) => {
             setMessage(`Ha surgido un error al buscar ${getSingular("orden-servicio")}`, error)
         }); 
-
+        */
     const createItem = (formData: FormData | string) => {
         Create("tareas", formData)
             .then(() => {
@@ -144,10 +144,16 @@ const TaskForm = (props:Props) => {
     
     return (
         <>
-        <MessageDisplay {...ErrorState}/>
+
         <div className="task-form">
             <div className="info mb-3">
-                <h1>Crear tarea</h1>
+                {(props.action === "create") && (
+                    <h1>Crear tarea</h1>
+                )}
+                {(props.action === "create") && (
+                    <h1>Modificar tarea</h1>
+                )}
+                
             </div>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Row className="mb-5">
@@ -176,7 +182,10 @@ const TaskForm = (props:Props) => {
 
                     <Form.Group className="mb-3" controlId="taken">
                         <Form.Label>Descripción</Form.Label>
-                                <Form.Control name="descripcion" as="textarea" rows={2} defaultValue={task ? (task["descripcion"]) : ""} />
+                                <Form.Control name="descripcion" as="textarea" rows={2} required defaultValue={task ? (task["descripcion"]) : ""} />
+                                <Form.Control.Feedback type="invalid">
+                                    Este campo es obligatorio
+                                </Form.Control.Feedback>
                     </Form.Group>
 
                     <Row className="mb-3">
@@ -198,14 +207,12 @@ const TaskForm = (props:Props) => {
                             <Form.Control name="fechaFin" type="date" defaultValue={task ? (task["fechaFin"]) : ""} />
                         </Form.Group>
                         </Row>
-                        <Row className="mb-3">
-                            
-                            <AddEntity entList={empList} setEntList={setEmpList} entityName="empleado"/>
-                            
+                        <Row className="mb-3">                            
+                            <AddEntityAmount entList={empList} setEntList={setEmpList} entityName="empleado" amountTitle="horasEstimadas" amountTooltip="Horas estimadas" />
                         </Row>
                         <Row className="mb-3">
                             <Col className="mb-3">
-                                <AddEntityAmount entList={insumoList} setEntList={setInsumoList} entityName="insumo"/>
+                                <AddEntityAmount entList={insumoList} setEntList={setInsumoList} entityName="insumo" amountTitle="cantidad"/>
                             </Col>
                             <Col className="mb-3">
                                 <AddEntity entList={herrList} setEntList={setHerrList} entityName="herramienta"/>
