@@ -6,3 +6,8 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Usuario
         exclude = ['is_superuser']
+
+class UsuarioSerializerNoPassword(serializers.ModelSerializer):
+    class Meta:
+        model = models.Usuario
+        exclude = ['is_superuser', 'password']

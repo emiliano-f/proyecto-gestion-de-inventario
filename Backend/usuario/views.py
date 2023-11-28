@@ -28,6 +28,11 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     serializer_class = serializer.UsuarioSerializer
     queryset = models.Usuario.objects.all()
 
+    def list(self, request):
+        usuarios = models.Usuario.objects.all()
+        serializer_usuario = serializer.UsuarioSerializerNoPassword(usuarios, many=True)
+        return Response(serializer_usuario.data)
+
     @transaction.atomic
     def create(self, request):
         try:
@@ -46,7 +51,9 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
 
             #grupo.user_set.add(user)
             #grupo.save()
-            return Response(usuario_serializer.data, status=status.HTTP_201_CREATED)
+            user_return = usuario_serializer.data.copy()
+            user_return.pop('password')
+            return Response(user_return, status=status.HTTP_201_CREATED)
         except Exception as e:
             transaction.set_rollback(True)
             return Response({"error":str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -63,7 +70,6 @@ def get_csrf(request):
 
 @csrf_exempt
 @require_POST
-@csrf_exempt
 def login_view(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -86,7 +92,6 @@ def logout_view(request):
 
     logout(request)
     return JsonResponse({'detail': 'Successfully logged out.'})
-
 
 class SessionView(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
@@ -111,4 +116,3 @@ class WhoAmIView(APIView):
                              'id': request.user.id,
                              'email': request.user.email,
                              'rol': rol})
-        
