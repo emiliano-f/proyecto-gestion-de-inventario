@@ -170,8 +170,10 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             # update orden servicio
             orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
             
+            if orden_servicio_model.tarea is not None:
+                raise Exception("Orden de servicio ya tiene una tarea adjunta")
+
             orden_servicio_model.tarea = tarea
-            
             orden_servicio_model.save()
 
             return Response(serializer_tarea.data, status=status.HTTP_201_CREATED)

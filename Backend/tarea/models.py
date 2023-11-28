@@ -56,7 +56,6 @@ class OrdenServicio(models.Model):
         RECHAZADA = "RECHAZADA"
         APROBADA = "APROBADA"
 
-
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING, null=True)
     tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING, null=True)
