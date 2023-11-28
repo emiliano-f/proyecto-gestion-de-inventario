@@ -2,6 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from rest_framework import viewsets
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from settings.common_class import LoginRequiredNoRedirect
@@ -185,11 +186,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         try:
             
             tarea = models.Tarea.objects.get(id=pk)
-            
             ordenes_retiro = tarea.insumos_retirados.all()
-            
             tarea_data = serializer.TareaJoinedSerializer(tarea)
-            
             
             insumos = []
             for orden_retiro in ordenes_retiro:
@@ -204,13 +202,20 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             
             data=tarea_data.data.copy()
             data['retiros_insumos'] = insumos
+            return Response(data)
 
         except Exception as e:
-            
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        print(data)
-        return Response(data)
+    @action(detail=True, methods=['GET'])        
+    def retrieve_orden_servicio(self, request, pk):
+        try:
+            tarea = models.Tarea.objects.get(id=pk)
+            serializer_orden = serializer.OrdenServicioSerializer(tarea.orden_servicio)
+            return Response(serializer_orden.data)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def update(self, request, pk):
