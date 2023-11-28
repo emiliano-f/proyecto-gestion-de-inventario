@@ -108,6 +108,7 @@ class WhoAmIView(APIView):
         else:
             rol = "Regular"
         return JsonResponse({'username': request.user.username,
+                             'id': request.user.id,
                              'email': request.user.email,
                              'rol': rol})
         
