@@ -4,6 +4,16 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 import inventario.models as inv_models
 
+def toObjList(resultados):
+    keys = resultados.pop(0);
+    dicc_list = [];
+    for item in resultados:
+        dicc = {};
+        for i in range(len(keys)):
+            dicc[keys[i]] = item[i];
+        dicc_list.append(dicc);
+    return dicc_list
+
 class InsumosBajoReposición(LoginRequiredNoRedirect, ViewSet):
     def list(self, request):
         #insumos = inv_models.Insumo.objects.aggregate(total_consumido=Sum('precio')
@@ -25,8 +35,7 @@ class InsumosBajoReposición(LoginRequiredNoRedirect, ViewSet):
             cursor.execute(query)
             resultados = [[descrip[0] for descrip in cursor.description]]
             resultados += cursor.fetchall()
-        
-        return Response(resultados)
+        return Response(toObjList(resultados))
 
 class TiposInsumoMasUtilizados(LoginRequiredNoRedirect, ViewSet):
     def list(self, request):
@@ -46,7 +55,7 @@ class TiposInsumoMasUtilizados(LoginRequiredNoRedirect, ViewSet):
             resultados = [[descrip[0] for descrip in cursor.description]]
             resultados += cursor.fetchall()
 
-        return Response(resultados)
+        return Response(toObjList(resultados))
 
 class EmpleadosHorasTotales(LoginRequiredNoRedirect, ViewSet):
     def list(self, request):
@@ -65,7 +74,7 @@ class EmpleadosHorasTotales(LoginRequiredNoRedirect, ViewSet):
             resultados = [[descrip[0] for descrip in cursor.description]]
             resultados += cursor.fetchall()
 
-        return Response(resultados)
+        return Response(toObjList(resultados))
 
 class TareasCompletadas(LoginRequiredNoRedirect, ViewSet):
     def list(self, request):

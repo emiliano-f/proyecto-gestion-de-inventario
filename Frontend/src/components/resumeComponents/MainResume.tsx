@@ -17,14 +17,17 @@ function MainResume() {
   
   return (
     <div className="home">
-      <div className="box box1"><TopPendingTasks/></div>
-      <div className="box box2"><StockAdjustChart/></div>
-      <div className="box box3"><TaskCompletedChart/></div>
       <div className="box box1"><TopPendingReposition/></div>
-      <div className="box box7"><PieConsumed/></div>
     </div>
   )
 }
+/*
+  <div className="box box1"><TopPendingTasks/></div>  
+  <div className="box box2"><StockAdjustChart/></div>
+  <div className="box box3"><TaskCompletedChart/></div>
+
+  <div className="box box7"><PieConsumed/></div>
+*/
 
 export default MainResume;
 

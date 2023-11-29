@@ -10,7 +10,7 @@ const TopPendingTasks = () => {
   useEffect(()=>{
       ListItems(setStats, "stat-insumos")
           .catch((error) => {
-              setMessage(`Ha surgido un error al buscar estadísticas}.`,error)
+              setMessage(`Ha surgido un error al buscar estadísticas.`,error)
           })
   },[setStats])
   
@@ -23,10 +23,10 @@ const TopPendingTasks = () => {
                     <div className="user">
                         <div className="userTexts">
                             <span className="username">{task["name"]}</span>
-                            <span className="email">{task["usuario"]}</span>
+                            <span className="email">{task["type"]}</span>
                         </div>
                     </div>
-                    <span className="amount">{task["date"]}</span>
+                    <span className="amount">{task["value"]/task["repositionValue"]}</span>
                 </div>
             ))}
         </div>

@@ -11,7 +11,6 @@ type Message = {
 
 var message : Message = null;
 var setNewMessage : React.Dispatch<React.SetStateAction<Message>>;
-var setMessageMemo : React.NamedExoticComponent<object>;
 
 function MessageProvider({ children }) {
     [message,setNewMessage] = useState(
@@ -73,7 +72,7 @@ export function setMessage(title: string, error : Promise<AxiosResponse<any,any>
         }
         newMessage = {title:title, desc:errorDesc, is_error:true};
     }
-
+    console.log(messageChanged(newMessage))
     if(messageChanged(newMessage)){
         setNewMessage(newMessage);
         const elemento : HTMLElement | null = document.getElementById("msg");

@@ -22,10 +22,7 @@ function buildURLs(){
     urls["presupuestos-filtered"] = "compra/pedidos-insumo/presupuestos/";
     urls["detalle-pedidos-filtered"] = "compra/pedidos-insumo/detalles/";
     urls["stat-reposition"] = "stats/insumos-bajo-reposicion/";
-    urls["stat-tipos-insumos"] = "stats/tipos-insumos-utilizados/";
-    urls["stat-empleados"] = "stats/empleados-horas/";
-    urls["stat-tareas"] = "stats/tareas-completadas/";
-
+    
     return urls;
 }
 /**

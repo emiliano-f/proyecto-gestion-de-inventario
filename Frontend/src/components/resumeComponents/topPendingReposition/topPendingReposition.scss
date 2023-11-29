@@ -45,9 +45,17 @@
                     }
                 }
             }
-            .amount{
-                font-weight: 500;
-
+            .disp{
+                font-size:22px;
+                .value{
+                    font-weight: 1000;
+                    color:tomato;
+                    margin-left: 0;
+                }
+                .reposition{
+                    font-weight: 700;
+                    margin-right: 0;
+                }
             }
         }
     }
