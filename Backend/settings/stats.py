@@ -4,21 +4,23 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 import inventario.models as inv_models
 
-class InsumosMasConsumidos(LoginRequiredNoRedirect, ViewSet):
+class InsumosBajoReposición(LoginRequiredNoRedirect, ViewSet):
     def list(self, request):
         #insumos = inv_models.Insumo.objects.aggregate(total_consumido=Sum('precio')
         query = """
-            WITH tmp AS (
-            SELECT insumo_id, SUM(cantidad) AS total_consumido, strftime('%W', fechaHora) as semana
-            FROM inventario_ordenretiro
-            WHERE strftime('%Y', fechaHora)=strftime('%Y', date('now'))
-            GROUP BY semana, insumo_id
-            ORDER BY semana DESC, total_consumido DESC
-            )
-            SELECT inventario_insumo.nombre, tmp.*
-            FROM tmp INNER JOIN inventario_insumo
-                ON tmp.insumo_id=inventario_insumo.id
-        """
+                WITH tmp AS (SELECT id, nombre,tipoInsumo_id, cantidad , puntoReposicion FROM inventario_insumo
+                WHERE cantidad <= puntoReposicion
+                ORDER BY id DESC
+                LIMIT 10)
+                SELECT 
+                tmp.id,
+                tmp.nombre AS name,
+                inventario_tipoinsumo.nombre AS type,
+                tmp.cantidad AS value,
+                tmp.puntoReposicion AS repositionValue 
+                FROM tmp INNER JOIN inventario_tipoinsumo
+                ON tmp.tipoInsumo_id=inventario_tipoinsumo.id
+            """
         with connection.cursor() as cursor:
             cursor.execute(query)
             resultados = [[descrip[0] for descrip in cursor.description]]

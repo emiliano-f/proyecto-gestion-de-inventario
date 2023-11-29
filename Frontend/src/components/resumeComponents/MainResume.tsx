@@ -5,7 +5,6 @@ import TopPendingTasks from "./topPendingTasks/TopPendingTasks"
 import TopPendingReposition from "./topPendingReposition/TopPendingReposition"
 import PieConsumed from "./pieConsumed/PieConsumed";
 import TaskCompletedChart from "./stockAdjustChart/StockAdjustChart";
-import StockAdjusment from "../CRUDComponents/createComponents/modalForm/stockAdjustment/StockAdjustment";
 import StockAdjustChart from "./stockAdjustChart/StockAdjustChart";
 
 function MainResume() {

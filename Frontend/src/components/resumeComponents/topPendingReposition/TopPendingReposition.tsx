@@ -8,7 +8,7 @@ const TopPendingReposition = () => {
   const [stats, setStats] = useState([]);
 
   useEffect(()=>{
-      ListItems(setStats, "stat-insumos")
+      ListItems(setStats, "stat-reposition")
           .catch((error) => {
               setMessage(`Ha surgido un error al buscar estadísticas}.`,error)
           })
