@@ -23,6 +23,8 @@ class Empleado(models.Model):
     categoria = models.CharField(max_length=15,
                                  choices=CategoriaScale.choices,
                                  default=CategoriaScale.CAT1)
+    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    is_active = models.BooleanField(default=True)
 
 class Sector(models.Model):
     class EdificioScale(models.TextChoices):
@@ -83,6 +85,7 @@ class OrdenServicio(models.Model):
         default= StatusScale.EN_ESPERA
     )
     sector = models.ForeignKey(Sector, on_delete=models.DO_NOTHING)
+    is_active = models.BooleanField(default=True)
     
 class EncuestaSatisfaccion(models.Model):
     class SatisfactionScale(models.TextChoices):
@@ -165,6 +168,7 @@ class Tarea(models.Model):
             choices=ClassificationScale.choices
     )
     userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    is_active = models.BooleanField(default=True)
 
 class Tiempo(models.Model):
 
@@ -189,3 +193,4 @@ class Tiempo(models.Model):
             choices=CategoryScale.choices,
             default=CategoryScale.NO
     )
+    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
