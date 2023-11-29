@@ -69,7 +69,7 @@ class TareaJoinedSerializer(TareaSerializer):
     herramientas = HerramientaSerializer(many=True, required=False)
     # Es necesario retiros_insumos acá? Se recupera en la vista TareaCRUD (retrieve y list)
     retiros_insumos = OrdenRetiroSerializer(many=True, required=False)
-    orden_servicio = serializers.IntegerField(required=False)
+    orden_servicio = serializers.IntegerField(source='orden_servicio.id', required=False)
 
 class TiempoSerializer(serializers.ModelSerializer):
     """

@@ -122,7 +122,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             # join
             tarea = models.Tarea.objects.prefetch_related('empleados', 'herramientas').all()
             # serializer
-            serializer_class = serializer.TareaJoinedSerializer(tarea, many=True, read_only=True)
+            serializer_class = serializer.TareaJoinedSerializer(tarea, many=True, read_only=False)
 
             # inverse relation (get OrdenRetiro)
             for tarea_instance in tarea:
