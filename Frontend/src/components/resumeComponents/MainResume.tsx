@@ -4,8 +4,8 @@ import "./mainResume.scss"
 import TopPendingTasks from "./topPendingTasks/TopPendingTasks"
 import TopPendingReposition from "./topPendingReposition/TopPendingReposition"
 import PieConsumed from "./pieConsumed/PieConsumed";
-import TaskCompletedChart from "./stockAdjustChart/StockAdjustChart";
-import StockAdjustChart from "./stockAdjustChart/StockAdjustChart";
+import TaskCompletedChart from "./taskCompletedChart/taskCompletedChart";
+import HoursChart from "./hoursChart/hoursChart";
 
 function MainResume() {
 
@@ -17,17 +17,17 @@ function MainResume() {
   
   return (
     <div className="home">
+      <div className="box box1"><TopPendingTasks/></div> 
+      <div className="box box2"><HoursChart/></div>
+      <div className="box box3"><TaskCompletedChart/></div>
       <div className="box box1"><TopPendingReposition/></div>
+      <div className="box box7"><PieConsumed/></div>
     </div>
   )
 }
 /*
-  <div className="box box1"><TopPendingTasks/></div>  
-  <div className="box box2"><StockAdjustChart/></div>
-  <div className="box box3"><TaskCompletedChart/></div>
-
-  <div className="box box7"><PieConsumed/></div>
-*/
+   
+  */
 
 export default MainResume;
 

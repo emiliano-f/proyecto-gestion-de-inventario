@@ -32,7 +32,8 @@ urlpatterns = [
     path('docs/', include_docs_urls(title='API docs')),
 
     path('stats/insumos-bajo-reposicion/', stats.InsumosBajoReposición.as_view({'get':'list'}), name='stats-insumo'),
-    path('stats/tipos-insumos-utilizados/', stats.TiposInsumoMasUtilizados.as_view({'get':'list'}), name='stats-tipos-insumo'),
-    path('stats/empleados-horas/', stats.EmpleadosHorasTotales.as_view({'get':'list'}), name='stats-empleados'),
+    path('stats/tareas-pendientes-urgentes/', stats.TareasPendientesUrgentes.as_view({'get':'list'}), name='stats-tipos-insumo'),
+    path('stats/insumos-mas-consumidos/', stats.InsumoMasConsumido.as_view({'get':'list'}), name='stats-empleados'),
     path('stats/tareas-completadas/', stats.TareasCompletadas.as_view({'get':'list'}), name='stats-tareas'),
+    path('stats/empleados-horas-totales/', stats.EmpleadosHorasTotales.as_view({'get':'list'}), name='stats-tareas'),
 ]
