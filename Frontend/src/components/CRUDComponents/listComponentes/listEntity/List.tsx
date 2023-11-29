@@ -37,9 +37,9 @@ const List = () => {
 
     useEffect(()=>{
         ListItems(setItems, entityName)
-            .catch((error) => {
-                setMessage(`Ha surgido un error al buscar ${getPlural(entityName)}.`,error)
-            })
+        .catch((error) => {
+            setMessage(`Ha surgido un error al buscar ${getPlural(entityName)}.`,error)
+        })
     }, [changeRef.current, entityName])
 
     const columns: GridColDef[] = GetColumns(groupName, entityName);
