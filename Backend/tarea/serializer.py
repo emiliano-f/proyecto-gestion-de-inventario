@@ -41,9 +41,9 @@ class OrdenServicioUsuarioSerializer(serializers.ModelSerializer):
     Sector.subsector
     """
 
-    usuarioApellido = serializers.CharField(source='usuario.last_name')
-    usuarioNombre = serializers.CharField(source='usuario.first_name')
-    usuarioID = serializers.IntegerField(source='usuario.id')
+    usuarioApellido = serializers.CharField(source='usuario.last_name', required=False)
+    usuarioNombre = serializers.CharField(source='usuario.first_name', required=False)
+    usuarioID = serializers.IntegerField(source='usuario.id', required=False)
     edificio = serializers.CharField(source='sector.edificio')
     sector = serializers.CharField(source='sector.nombre')
     class Meta:

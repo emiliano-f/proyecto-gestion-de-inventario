@@ -59,6 +59,7 @@ class OrdenServicio(models.Model):
         APROBADA = "APROBADA"
 
     id = models.AutoField(primary_key=True)
+    # cuando se quite null=True, modificar required=True en OrdenServicioUsuarioSerializer
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING, null=True)
     tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING, related_name='orden_servicio', null=True)
     fechaGeneracion = models.DateField(auto_now=True)
