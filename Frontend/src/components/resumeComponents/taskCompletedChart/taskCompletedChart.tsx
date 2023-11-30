@@ -20,7 +20,7 @@ const TaskCompletedChart = () => {
                 setMessage(`Ha surgido un error al buscar estadísticas.`, error)
             })
     }, [setStats])
-    const porps ={
+    const props ={
         color: "#FF8042",
         dataKey: "visit",
         chartData: stats,
