@@ -8,7 +8,6 @@ import { setMessage } from "../../providerComponents/messageDisplay/MessageDispl
 import { useNavigate } from "react-router-dom";
 
 function UserDropDown(){
-  console.log(useAuthData());
   const [authData,setAuthData] = useAuthData();
   const nav = useNavigate();
   const handleLogout = () => {

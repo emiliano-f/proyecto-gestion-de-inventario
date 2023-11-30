@@ -14,7 +14,8 @@ function Login() {
   const [authData,setAuthData] = useAuthData();
   const [validated,setValidated] = useState(false);
   const nav = useNavigate();
-
+  const [message,setMessage] = useState({title: "",desc: "",is_error: false});
+ 
   const handleWhoAmI = () => {
       WhoAmI()
       .then((r)=>{
@@ -88,7 +89,7 @@ function Login() {
 
   return (
     <div className="background">    
-      <MessageDisplay messageState={messageState}/>
+      <MessageDisplay stateMessage={message} setStateMessage={setMessage}/>
       <LoginForm/>
     </div>          
   )

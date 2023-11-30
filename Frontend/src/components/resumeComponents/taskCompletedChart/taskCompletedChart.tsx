@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import "./taskCompletedChart.scss"
 import { Bar, BarChart, ResponsiveContainer, Tooltip } from "recharts"
-
+import { ListItems } from "../../../Api/apiService";
+import { setMessage } from "../../providerComponents/messageDisplay/MessageDisplay";
 type Props= {
     title: string;
     color: string;
@@ -9,7 +11,17 @@ type Props= {
 }
 
 const TaskCompletedChart = (props: Props) => {
-  return (
+
+    const [stats,setStats] = useState([]);
+    
+    useEffect(()=>{
+        ListItems(setStats, "stat-completed")
+            .catch((error) => {
+                setMessage(`Ha surgido un error al buscar estadísticas.`,error)
+            })
+    },[setStats])
+
+    return (
     <div className="barChartBox">
         <h1>{props.title}</h1>
         <div className="chart">
@@ -19,7 +31,6 @@ const TaskCompletedChart = (props: Props) => {
                     contentStyle={{background: "#2a3447", borderRadius:"5px"}}
                     labelStyle={{display:"none"}}
                     cursor={{fill:"none"}}
-
                     />
                     <Bar dataKey={props.dataKey} fill={props.color} />
                 </BarChart>

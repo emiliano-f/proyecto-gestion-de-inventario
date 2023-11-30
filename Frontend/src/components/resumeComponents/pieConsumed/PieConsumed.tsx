@@ -7,9 +7,9 @@ export const PieConsumed = () => {
     const [stats, setStats] = useState([]);
 
     useEffect(()=>{
-        ListItems(setStats, "stat-insumos")
+        ListItems(setStats, "stat-consumed")
             .catch((error) => {
-                setMessage(`Ha surgido un error al buscar estadísticas}.`,error)
+                setMessage(`Ha surgido un error al buscar estadísticas.`,error)
             })
     },[setStats])
 
@@ -17,8 +17,8 @@ export const PieConsumed = () => {
         (stat) => {
             return(
                 {
-                 name: stat["name"],
-                 value: stat["value"],
+                 name: stat["nombre"],
+                 value: stat["cantidadTotal"],
                  color: '#' + Math.floor(Math.random()*16777215).toString(16) 
                 }
             );

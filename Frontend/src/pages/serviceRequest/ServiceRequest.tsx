@@ -19,12 +19,12 @@ function ServiceRequest(){
         return <Link to="/login" />;
     }
 
-    const messageState = useState( {title: "",desc: "",is_error: false});
+    const [mesage,setMessage] = useState( {title: "",desc: "",is_error: false});
   
     return (
         <>
             <Header/>
-            <MessageDisplay messageState={messageState}/>
+            <MessageDisplay stateMessage={message} setStateMessage={setMessage}/>
             <ServiceForm />
         </>
     )

@@ -12,7 +12,7 @@ var message: Message = { title: "", desc: "", is_error: false };
 var setNewMessage: React.Dispatch<React.SetStateAction<Message>>;
 
 function messageChanged(newMessage: Message) {
-    console.log(newMessage, message)
+    //console.log(newMessage, message)
     return message.title === "" && message?.desc === ""
         || !Object.keys(message)
             .map((key) => newMessage[key] === message[key])

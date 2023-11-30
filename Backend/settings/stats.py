@@ -6,13 +6,8 @@ import inventario.models as inv_models
 
 def toObjList(resultados):
     keys = resultados.pop(0);
-    dicc_list = [];
-    for item in resultados:
-        dicc = {};
-        for i in range(len(keys)):
-            dicc[keys[i]] = item[i];
-        dicc_list.append(dicc);
-    return dicc_list
+    return [dict(zip(keys,item)) for item in resultados]
+    
 
 class InsumosBajoReposición(LoginRequiredNoRedirect, ViewSet):
     def list(self, request):
@@ -30,6 +25,7 @@ class InsumosBajoReposición(LoginRequiredNoRedirect, ViewSet):
                 tmp.puntoReposicion AS repositionValue 
                 FROM tmp INNER JOIN inventario_tipoinsumo
                 ON tmp.tipoInsumo_id=inventario_tipoinsumo.id
+                LIMIT 10
             """
         with connection.cursor() as cursor:
             cursor.execute(query)
@@ -37,18 +33,83 @@ class InsumosBajoReposición(LoginRequiredNoRedirect, ViewSet):
             resultados += cursor.fetchall()
         return Response(toObjList(resultados))
 
-class TiposInsumoMasUtilizados(LoginRequiredNoRedirect, ViewSet):
+class TareasPendientesUrgentes(LoginRequiredNoRedirect, ViewSet):
     def list(self, request):
         query = """
-            WITH tmp AS (
-            SELECT tipoInsumo_id, COUNT(tipoInsumo_id) AS total_tipos
-            FROM inventario_insumo
-            GROUP BY tipoInsumo_id
+                    SELECT 
+                    tarea_tarea.id,
+                    tarea_tarea.tipo,
+                    tarea_tarea.clasificacion,
+                    tarea_sector.edificio AS edificio,
+                    tarea_sector.nombre AS sector,
+                    prioridad,
+                    estado
+                    FROM tarea_tarea
+                    INNER JOIN tarea_ordenservicio
+                    ON tarea_tarea.id=tarea_ordenservicio.tarea_id
+                    INNER JOIN tarea_sector
+                    ON tarea_ordenservicio.sector_id=tarea_sector.id 
+                    WHERE estado = "EN_ESPERA" 
+                    OR estado = "APROBADO"
+                    OR estado = "EN_PROGRESO"
+                    ORDER BY 
+                        CASE prioridad 
+                        WHEN "CRITICO" THEN 1
+                        WHEN "URGENTE" THEN 2
+                        WHEN "NORMAL" THEN 3
+                        END ASC,
+                        CASE estado
+                        WHEN "EN_PROGRESO" THEN 1
+                        WHEN "APROBADO" THEN 2
+                        WHEN "EN_ESPERA" THEN 3
+                        END ASC
+                    LIMIT 10
+                """
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            resultados = [[descrip[0] for descrip in cursor.description]]
+            resultados += cursor.fetchall()
+
+        return Response(toObjList(resultados))
+
+class InsumoMasConsumido(LoginRequiredNoRedirect, ViewSet):
+    def list(self, request):
+        query = """
+                SELECT 
+                inventario_insumo.id,
+                inventario_insumo.nombre,
+                unidadMedida,
+                codigo AS codigoInsumo,
+                inventario_tipoinsumo.nombre AS tipoInsumo,
+                SUM(inventario_ordenRetiro.cantidad) AS cantidadTotal
+                FROM inventario_insumo
+                INNER JOIN inventario_ordenRetiro 
+                ON inventario_insumo.id=inventario_ordenRetiro.insumo_id
+                INNER JOIN inventario_tipoinsumo
+                ON inventario_insumo.tipoinsumo_id=inventario_tipoinsumo.id
+                GROUP BY inventario_insumo.id
+                ORDER BY cantidadTotal
+                LIMIT 10
+            """
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            resultados = [[descrip[0] for descrip in cursor.description]]
+            resultados += cursor.fetchall()
+
+        return Response(toObjList(resultados))
+
+class TareasCompletadas(LoginRequiredNoRedirect, ViewSet):
+    def list(self, request):
+        ## filtrar por nulos fechaFin
+        query = """
+            SELECT strftime('%W', fechaFin) AS semana, COUNT(*) AS total
+            FROM tarea_tarea
+            INNER JOIN tarea_ordenservicio
+            ON tarea_ordenservicio.tarea_id=tarea_tarea.id
+            WHERE strftime('%Y', fechaFin)=strftime('%Y', date('now'))
+            AND tarea_ordenservicio.estado="FINALIZADA"
+            GROUP BY semana
             LIMIT 10
-            )
-            SELECT inventario_tipoinsumo.nombre, tmp.*
-            FROM tmp INNER JOIN inventario_tipoinsumo
-                ON tmp.tipoInsumo_id=inventario_tipoinsumo.id
         """
         with connection.cursor() as cursor:
             cursor.execute(query)
@@ -56,6 +117,7 @@ class TiposInsumoMasUtilizados(LoginRequiredNoRedirect, ViewSet):
             resultados += cursor.fetchall()
 
         return Response(toObjList(resultados))
+
 
 class EmpleadosHorasTotales(LoginRequiredNoRedirect, ViewSet):
     def list(self, request):
@@ -75,19 +137,3 @@ class EmpleadosHorasTotales(LoginRequiredNoRedirect, ViewSet):
             resultados += cursor.fetchall()
 
         return Response(toObjList(resultados))
-
-class TareasCompletadas(LoginRequiredNoRedirect, ViewSet):
-    def list(self, request):
-        ## filtrar por nulos fechaFin
-        query = """
-            SELECT strftime('%W', fechaFin) AS semana, COUNT(*) AS total
-            FROM tarea_tarea
-            WHERE strftime('%Y', fechaFin)=strftime('%Y', date('now'))
-            GROUP BY semana
-        """
-        with connection.cursor() as cursor:
-            cursor.execute(query)
-            resultados = [[descrip[0] for descrip in cursor.description]]
-            resultados += cursor.fetchall()
-
-        return Response(resultados)
