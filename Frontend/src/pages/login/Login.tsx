@@ -5,9 +5,9 @@ import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { WhoAmI ,Login as login } from "../../Api/apiService"
-import MessageDisplay from "../../components/generalComponents/messageDisplay/MessageDisplay";
-import MessageProvider, { setMessage } from "../../components/providerComponents/messageProvider/MessageProvider";
+import { setMessage } from "../../components/providerComponents/messageDisplay/MessageDisplay";
 import { useAuthData } from "../../components/providerComponents/authProvider/AuthProvider";
+import MessageDisplay from "../../components/providerComponents/messageDisplay/MessageDisplay";
 
 function Login() {
   
@@ -84,14 +84,12 @@ function Login() {
     );
   }
 
+  const messageState = useState( {title: "",desc: "",is_error: false});
+
   return (
     <div className="background">    
-      <MessageProvider>
-        <div className="error" >
-          <MessageDisplay />
-        </div>
-        <LoginForm/>
-      </MessageProvider>
+      <MessageDisplay messageState={messageState}/>
+      <LoginForm/>
     </div>          
   )
 }

@@ -1,8 +1,7 @@
 import "./topPendingReposition.scss"
 import { useEffect, useState } from "react";
 import { ListItems } from "../../../Api/apiService";
-import { setMessage } from "../../providerComponents/messageProvider/MessageProvider";
-
+import { setMessage } from "../../providerComponents/messageDisplay/MessageDisplay";
 const TopPendingReposition = () => {
 
   const [stats, setStats] = useState([]);
