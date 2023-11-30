@@ -256,14 +256,58 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             transaction.set_rollback(True)
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    @transaction.atomic
     def destroy(self, request, pk):
         try:
             tarea = models.Tarea.objects.get(id=pk)
+
+            # check if it is active
+            if not tarea.is_active:
+                raise ObjectDoesNotExist('Tarea no encontrada para eliminación')
+
+            # check if tarea is finished
+            if tarea.fechaFin is not None:
+                raise Exception('No puede eliminarse esta tarea porque ya está finalizada')
+
+            # update status in OrdenServicio
+            tarea.ordenServicio.estado = models.OrdenServicio().StatusScale.APROBADA
+
+            # restore herramientas
+            for herramienta in tarea.herramientas:
+                herramienta.estado = herramienta_models.StatusScale.DISPONIBLE
+                herramienta.save()
+                # create entry in EstadoHerramienta
+                estado = herramienta_models.EstadoHerramienta(
+                        herramienta=herramienta,
+                        estado=herramienta_models.StatusScale.DISPONIBLE,
+                        observaciones='Eliminacion de tarea id '+str(pk)
+                    )
+                estado.save()
+                
+            # restore insumos
+            for orden_retiro in tarea.insumos_retirados:
+                ajuste_stock = inventario_models.AjusteStock(
+                        insumo=orden_retiro.insumo,
+                        cantidad=orden_retiro.cantidad,
+                        observaciones='Eliminacion de tarea id '+str(pk),
+                        accionCantidad=inventario_models.ActionScale.SUMAR
+                    )
+                ajuste_stock.save()
+
+            # restore empleados, delete Tiempo entry
+            for tiempo in models.Tarea.objects.get(tarea=tarea):
+                tiempo.delete()
             
-            tarea.delete()
+            # deactivate tarea
+            tarea.is_active = False
+
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except: 
+        except ObjectDoesNotExist: 
+            transaction.set_rollback(True)
             return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e: 
+            transaction.set_rollback(True)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
