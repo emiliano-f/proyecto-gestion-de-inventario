@@ -89,7 +89,7 @@ class InsumoMasConsumido(LoginRequiredNoRedirect, ViewSet):
                 ON inventario_insumo.tipoinsumo_id=inventario_tipoinsumo.id
                 GROUP BY inventario_insumo.id
                 ORDER BY cantidadTotal
-                LIMIT 10
+                LIMIT 6
             """
         with connection.cursor() as cursor:
             cursor.execute(query)
@@ -102,14 +102,13 @@ class TareasCompletadas(LoginRequiredNoRedirect, ViewSet):
     def list(self, request):
         ## filtrar por nulos fechaFin
         query = """
-            SELECT strftime('%W', fechaFin) AS semana, COUNT(*) AS total
+            SELECT strftime('%B', fechaFin) AS name, COUNT(*) AS value
             FROM tarea_tarea
             INNER JOIN tarea_ordenservicio
             ON tarea_ordenservicio.tarea_id=tarea_tarea.id
             WHERE strftime('%Y', fechaFin)=strftime('%Y', date('now'))
             AND tarea_ordenservicio.estado="FINALIZADA"
-            GROUP BY semana
-            LIMIT 10
+            GROUP BY name
         """
         with connection.cursor() as cursor:
             cursor.execute(query)
@@ -123,13 +122,18 @@ class EmpleadosHorasTotales(LoginRequiredNoRedirect, ViewSet):
     def list(self, request):
         query = """
             WITH tmp AS (
-            SELECT empleado_id, SUM(horasEstimadas) total_estimadas, SUM(horasTotales) total_reales
-            FROM tarea_tiempo
-            GROUP BY empleado_id
+                SELECT 
+                empleado_id, 
+                SUM(horasEstimadas) AS total_estimadas, 
+                SUM(horasTotales) AS total_reales
+                FROM tarea_tiempo
+                GROUP BY empleado_id
             )
-            SELECT nombre, apellido, tmp.*
+            SELECT nombre, apellido, tmp.total_estimadas, tmp.total_reales
             FROM tmp INNER JOIN tarea_empleado
-                ON tmp.empleado_id=tarea_empleado.id
+            ON tmp.empleado_id=tarea_empleado.id
+            ORDER BY total_estimadas DESC, total_reales DESC
+            LIMIT 5
         """
         with connection.cursor() as cursor:
             cursor.execute(query)

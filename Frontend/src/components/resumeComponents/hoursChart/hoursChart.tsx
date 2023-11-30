@@ -15,7 +15,7 @@ const HoursChart = () => {
     
     return (
       <div className="topBox">
-          <h1>Insumos bajo el punto de Reposición</h1>
+          <h1>Empleados con más horas trabajadas</h1>
           <div className="list">
               {stats.map((task,key) => (
                   <div className="listItem" key={key}>
