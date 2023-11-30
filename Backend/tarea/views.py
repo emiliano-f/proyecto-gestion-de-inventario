@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
@@ -150,7 +151,6 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             
             herramientas_data = json.loads(to_create.pop('herramientas', [])[0])
             insumos_data = json.loads(to_create.pop('retiros_insumos', [])[0])
-            
         
             orden_servicio_pk = json.loads(to_create.pop('orden_servicio', [])[0])
             
@@ -171,8 +171,15 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             # update orden servicio
             orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
             
+            # check previous tarea
             if orden_servicio_model.tarea is not None:
                 raise Exception("Orden de servicio ya tiene una tarea adjunta")
+
+            # modify orden servicio status
+            if tarea.fechaInicio == timezone.now().date():
+                orden_servicio_model.estado = models.OrdenServicio().StatusScale.EN_PROGRESO
+            else:
+                orden_servicio_model.estado = models.OrdenServicio().StatusScale.APROBADA
 
             orden_servicio_model.tarea = tarea
             orden_servicio_model.save()
@@ -184,7 +191,6 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def retrieve(self, request, pk):
         try:
-            
             tarea = models.Tarea.objects.get(id=pk)
             ordenes_retiro = tarea.insumos_retirados.all()
             tarea_data = serializer.TareaJoinedSerializer(tarea)
@@ -192,7 +198,6 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             insumos = []
             for orden_retiro in ordenes_retiro:
                 insumoRetiro = {}
-                # insumo = inventario_models.Insumo.objects.get(pk=orden_retiro.insumo)
                 insumo = orden_retiro.insumo
                 insumoRetiro['insumo'] = insumo.nombre
                 insumoRetiro['id_insumo'] = insumo.id
@@ -235,6 +240,13 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
             # update insumos
             TareaCommonLogic.update_insumos(insumos_data)
+
+            # update orden servicio
+            if tarea.fechaFin is not None:
+                # only works if tarea is uniqu
+                orden_servicio_model = models.OrdenServicio.objects.get(tarea=tarea)
+                orden_servicio_model.estado = models.OrdenServicio().StatusScale.FINALIZADA
+                orden_servicio_model.save()
 
             return Response(tarea_serializer.data)
         except ObjectDoesNotExist: 
