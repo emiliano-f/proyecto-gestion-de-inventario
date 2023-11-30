@@ -11,6 +11,7 @@ class TipoHerramienta(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=32, unique=True)
     descripcion = models.CharField(max_length=256, null=True)
+    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         texto = "{0}"
@@ -26,6 +27,7 @@ class Herramienta(models.Model):
     observaciones = models.CharField(max_length=255, null=True)
     estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)
     userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         texto = "{0} [{1}]"

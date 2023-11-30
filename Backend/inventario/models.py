@@ -11,6 +11,7 @@ class TipoInsumo(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=32, unique=True)
     descripcion = models.CharField(max_length=256, null=True)
+    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         texto = "{0}"
@@ -23,12 +24,6 @@ class Insumo(models.Model):
         LITRO = 'Litro'
         GRAMO = 'Gramo'
         CONTABLE = 'Contable'
-    """
-    class StatusScale(models.TextChoices):
-        OK = 'Ok'
-        ELIMINADO = 'Eliminado'
-        SUSPENDIDO = 'Suspendido'
-    """
     
     id = models.AutoField(primary_key=True)
     tipoInsumo = models.ForeignKey(TipoInsumo, on_delete=models.DO_NOTHING)
@@ -39,7 +34,8 @@ class Insumo(models.Model):
     observaciones = models.CharField(max_length=256, null=True)
     puntoReposicion = models.IntegerField(validators=[MinValueValidator(0, message='El valor no puede ser menor a cero')],
                                           null=True)
-    #estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.OK)
+    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         texto = "{0} ({1})"
@@ -59,6 +55,7 @@ class OrdenRetiro(models.Model):
     tarea = models.ForeignKey(Tarea, on_delete=models.DO_NOTHING, related_name='insumos_retirados')
     cantidad = models.IntegerField(validators=[MinValueValidator(1, message='El valor no puede ser menor a uno')])
     fechaHora = models.DateTimeField(auto_now=True)
+    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         texto = "{0} ({1})"

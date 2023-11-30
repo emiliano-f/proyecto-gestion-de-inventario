@@ -17,6 +17,7 @@ class PedidoInsumo(models.Model):
     fechaHora = models.DateTimeField(auto_now=True)
     recibido = models.CharField(max_length=2, choices=StatusScale.choices, default=StatusScale.NO)
     observaciones = models.CharField(max_length=255, null=True)
+    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
 
 class Presupuesto(models.Model):
 

@@ -28,3 +28,6 @@ Backend/*/migrations/*
 
 # cert
 *.pem
+
+# env
+*.env
