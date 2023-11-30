@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Line, LineChart, ResponsiveContainer, Tooltip } from "recharts";
 import { ListItems } from "../../../Api/apiService";
-import { setMessage } from "../../providerComponents/messageProvider/MessageProvider";
+import { setMessage } from "../../providerComponents/messageDisplay/MessageDisplay";
 
 const HoursChart = () => {
     const [stats, setStats] = useState([]);

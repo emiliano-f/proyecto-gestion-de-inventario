@@ -4,11 +4,10 @@ import { Button, Col, Container, Dropdown, Row } from "react-bootstrap";
 import { Logout, WhoAmI } from "../../../Api/apiService";
 
 import { useAuthData } from "../../providerComponents/authProvider/AuthProvider";
-import { setMessage } from "../../providerComponents/messageProvider/MessageProvider";
+import { setMessage } from "../../providerComponents/messageDisplay/MessageDisplay";
 import { useNavigate } from "react-router-dom";
 
 function UserDropDown(){
-  console.log(useAuthData());
   const [authData,setAuthData] = useAuthData();
   const nav = useNavigate();
   const handleLogout = () => {

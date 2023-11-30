@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState, useRef } from "react";
 
 import { GetEnums, SendServiceRequest } from "../../../../Api/apiService";
 
-import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
+import { setMessage } from "../../../providerComponents/messageDisplay/MessageDisplay";
 
 import { getSectors } from "../../../../Api/apiService";
 import { useAuthData } from "../../../providerComponents/authProvider/AuthProvider";

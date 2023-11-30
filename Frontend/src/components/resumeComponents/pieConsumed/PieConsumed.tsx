@@ -2,15 +2,14 @@ import "./pieConsumed.scss"
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useEffect, useState } from "react";
 import { ListItems } from "../../../Api/apiService";
-import { setMessage } from "../../providerComponents/messageProvider/MessageProvider";
-
+import { setMessage } from "../../providerComponents/messageDisplay/MessageDisplay";
 export const PieConsumed = () => {
     const [stats, setStats] = useState([]);
 
     useEffect(()=>{
         ListItems(setStats, "stat-consumed")
             .catch((error) => {
-                setMessage(`Ha surgido un error al buscar estadísticas}.`,error)
+                setMessage(`Ha surgido un error al buscar estadísticas.`,error)
             })
     },[setStats])
 

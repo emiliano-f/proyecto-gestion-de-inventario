@@ -1,8 +1,7 @@
 import "./detail.scss"
 import { useState } from "react";
 import { ReadItem } from "../../../Api/apiService";
-import { setMessage } from "../../providerComponents/messageProvider/MessageProvider";
-
+import { setMessage } from "../../providerComponents/messageDisplay/MessageDisplay";
 import { GetUrlParts } from "../../../data/FRONTURLS";
 import { getSingular } from "../../../data/TRANSLATIONS";
 import { getFullName } from "../../../data/STRUCTURE";

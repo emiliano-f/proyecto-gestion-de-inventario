@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import "./taskCompletedChart.scss"
 import { Bar, BarChart, ResponsiveContainer, Tooltip } from "recharts"
 import { ListItems } from "../../../Api/apiService";
-import { setMessage } from "../../providerComponents/messageProvider/MessageProvider";
-
+import { setMessage } from "../../providerComponents/messageDisplay/MessageDisplay";
 type Props= {
     title: string;
     color: string;
