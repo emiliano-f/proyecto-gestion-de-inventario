@@ -52,6 +52,9 @@ class OrdenServicio(models.Model):
         FABRICACION = "FABRICACION"
         TRASLADOS = "TRASLADOS"
     class StatusScale(models.TextChoices):
+        #EN_ESPERA->APROBADO->EN_PROGRESO->FINALIZADA
+        #   └->REACHAZADA
+        # Cuando se acepta pasa a probada, cuando se crea la tarea pasa a en progreso y cuando se termina a finalizada.
         EN_ESPERA = "EN_ESPERA"
         FINALIZADA = "FINALIZADA"
         EN_PROGRESO = "EN_PROGRESO"

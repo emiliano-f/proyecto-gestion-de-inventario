@@ -1,7 +1,7 @@
 import "./deleteAlert.scss"
 import Button from 'react-bootstrap/Button'
 
-import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
+import { setMessage } from "../../../providerComponents/messageDisplay/MessageDisplay";
 
 import { UpdateItem as Update, CreateItem as Create, DeleteItem } from "../../../../Api/apiService"
 import { GetUrlParts } from "../../../../data/FRONTURLS";

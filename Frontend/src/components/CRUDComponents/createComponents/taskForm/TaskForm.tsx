@@ -13,8 +13,7 @@ import SelectEnum from "../selectComponentes/selecEnum/SelectEnum";
 import { ServiceOrderInfo } from "./serviceOrderInfo/ServiceOrderInfo";
 import AddEntityAmount from "./addEntityAmount/AddEntityAmount";
 
-import MessageDisplay from "../../../generalComponents/messageDisplay/MessageDisplay";
-import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
+import { setMessage } from "../../../providerComponents/messageDisplay/MessageDisplay";
 
 import { getSingular } from "../../../../data/TRANSLATIONS";
 import { objectFilteringNoEmptyValues } from "../../../../utils/utils";
@@ -44,8 +43,6 @@ const TaskForm = (props:Props) => {
     // Para validación de campos
     const [validated, setValidated] = useState(false);
 
-    const ErrorState = useState(["",false]);
-    
     // Garantiza coherencia de tipos y generecidad para el valor del key (empleado, insumo, herramienta, etc)
     type Entity = {
         [key: string]: any;
@@ -144,13 +141,13 @@ const TaskForm = (props:Props) => {
     
     return (
         <>
-
+        
         <div className="task-form">
             <div className="info mb-3">
                 {(props.action === "create") && (
                     <h1>Crear tarea</h1>
                 )}
-                {(props.action === "create") && (
+                {(props.action === "update") && (
                     <h1>Modificar tarea</h1>
                 )}
                 

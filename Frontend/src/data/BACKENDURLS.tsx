@@ -20,11 +20,12 @@ function buildURLs(){
     urls["enums"] = "/table-enums/";
     urls["edificios"] = "tarea/sector/edificios/";
     urls["presupuestos-filtered"] = "compra/pedidos-insumo/presupuestos/";
-    urls["detalle-pedidos-filtered"] = "compra/pedidos-insumo/detalles/";
-    urls["stat-insumos"] = "stats/insumos-mas-consumidos/";
-    urls["stat-tipos-insumos"] = "stats/tipos-insumos-utilizados/";
-    urls["stat-empleados"] = "stats/empleados-horas/";
-    urls["stat-tareas"] = "stats/tareas-completadas/";
+    urls["detalle-pedidos-filtered"] = "compra/pedidos-insumo/detalles/";    
+    urls["stat-reposition"] = "stats/insumos-bajo-reposicion/";
+    urls["stat-tasks"] = "stats/tareas-pendientes-urgentes/";
+    urls["stat-consumed"] = 'stats/insumos-mas-consumidos/';
+    urls["stat-completed"] = 'stats/tareas-completadas/';
+    urls["stat-hours"] = 'stats/empleados-horas-totales/';
     return urls;
 }
 /**

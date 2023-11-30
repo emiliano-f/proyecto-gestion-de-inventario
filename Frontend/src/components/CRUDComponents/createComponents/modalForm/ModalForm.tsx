@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 import { SiBetfair } from 'react-icons/si'
 
 import { UpdateItem as Update, CreateItem as Create } from "../../../../Api/apiService"
-import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
+import { setMessage } from "../../../providerComponents/messageDisplay/MessageDisplay";
 import SelectList from "../selectComponentes/selectList/SelectList";
 import SelectEnum from "../selectComponentes/selecEnum/SelectEnum";
 import StockAdjusment from "./stockAdjustment/StockAdjustment";

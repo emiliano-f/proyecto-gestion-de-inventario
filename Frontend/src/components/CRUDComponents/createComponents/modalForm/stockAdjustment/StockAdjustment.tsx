@@ -4,8 +4,7 @@ import { useState } from "react";
 import { GetUrlParts } from "../../../../../data/FRONTURLS";
 
 import { UpdateItem as Update, CreateItem as Create } from "../../../../../Api/apiService"
-import { setMessage } from "../../../../providerComponents/messageProvider/MessageProvider";
-
+import { setMessage } from "../../../../providerComponents/messageDisplay/MessageDisplay";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 
