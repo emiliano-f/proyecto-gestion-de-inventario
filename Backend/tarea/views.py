@@ -129,6 +129,23 @@ class EmpleadoCRUD(CustomModelViewSet):
     serializer_class = serializer.EmpleadoSerializer
     queryset = models.Empleado.objects.all()
 
+    def delete(self, request, *args, **kwargs):
+        empleado = self.get_object()
+
+        # check
+        if not empleado.is_active:
+            raise ObjectDoesNotFound('Empleado inactivo')
+
+        # it is assigned?
+        for tiempo in models.Tiempo.objects.filter(empleado=empleado):
+            if tiempo.tarea.fechaFin is not None:
+                raise Exception('Empleado no puede eliminarse porque está asignado a una tarea sin finalizar')
+
+        # deactivate empleado
+        empleado.is_active = False
+        empleado.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     def __table__():
         return 'empleado'
 
@@ -196,7 +213,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
             
             # check previous tarea
-            for tarea_iter in models.Tarea.objects.get(ordenServicio=orden_servicio_model):
+            for tarea_iter in models.Tarea.objects.filter(ordenServicio=orden_servicio_model):
                 if tarea_iter.is_active:
                     raise Exception("Orden de servicio ya tiene una tarea adjunta")
             tarea.ordenServicio = orden_servicio_model
@@ -218,11 +235,11 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def retrieve(self, request, pk):
         try:
             tarea = models.Tarea.objects.get(id=pk)
-            ordenes_retiro = tarea.insumos_retirados.all()
-            tarea_data = serializer.TareaJoinedSerializer(tarea)
+            tarea_data = serializer.TareaJoinedSerializer(tarea).data.copy()
 
+            # insumos asociados
             insumos = []
-            for orden_retiro in ordenes_retiro:
+            for orden_retiro in tarea.insumos_retirados.all():
                 insumoRetiro = {}
                 insumo = orden_retiro.insumo
                 insumoRetiro['insumo'] = insumo.nombre
@@ -231,9 +248,18 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
                 insumoRetiro['cantidad'] = orden_retiro.cantidad
                 insumos.append(insumoRetiro)
             
-            data=tarea_data.data.copy()
-            data['retiros_insumos'] = insumos
-            return Response(data)
+            # add tiempos de empleados
+            ## esto es una cagada, ineficiente
+            empleados = tarea_data['empleados']
+            for tiempo in models.Tarea.objects.filter(tarea=tarea):
+                for emp in empleados:
+                    if emp['id'] == tiempo.empleado.id:
+                        emp['horasEstimadas'] = tiempo.horasEstimadas
+                        emp['horasTotales'] = tiempo.horasTotales
+                        emp['responsable'] = tiempo.responsable
+
+            tarea_data['retiros_insumos'] = insumos
+            return Response(tarea_data)
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

@@ -79,14 +79,40 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    @transaction.atomic
     def destroy(self, request, pk):
         try:
             herramienta = models.Herramienta.objects.get(id=pk)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        herramienta.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            # herramienta is active
+            if not herramienta.is_active:
+                raise ObjectDoesNotExist('Herramienta no encontrada para eliminación')
+
+            # check if it is in use
+            last_estado = models.EstadoHerramienta.objects.filter(herramienta=herramienta).latest('fecha')
+            if last_estado.estado == models.StatusScale.EN_USO:
+                raise Exception('No es posible eliminar: está en uso')
+            
+            # create estado entry
+            estado_herramienta = models.EstadoHerramienta(
+                    herramienta=herramienta,
+                    estado=models.StatusScale.ELIMINADA,
+                    observaciones='Eliminacion de registro herramienta id '+str(pk)
+                )
+            estado_herramienta.save()
+
+            # deactivate herramienta
+            herramienta.estado = models.StatusScale.ELIMINADA
+            herramienta.is_active = False
+            herramienta.save()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except ObjectDoesNotExist: 
+            transaction.set_rollback(True)
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e: 
+            transaction.set_rollback(True)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class EstadoHerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
