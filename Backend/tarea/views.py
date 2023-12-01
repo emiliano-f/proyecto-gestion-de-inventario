@@ -86,7 +86,7 @@ class TareaCommonLogic:
 
     def restore_herramientas(tarea):
         # restore herramientas
-        for herramienta in tarea.herramientas:
+        for herramienta in tarea.herramientas.all():
             herramienta.estado = herramienta_models.StatusScale.DISPONIBLE
             herramienta.save()
             # create entry in EstadoHerramienta
@@ -99,7 +99,7 @@ class TareaCommonLogic:
 
     def restore_insumos(tarea):
         # restore insumos
-        for orden_retiro in tarea.insumos_retirados:
+        for orden_retiro in tarea.insumos_retirados.all():
             ajuste_stock = inventario_models.AjusteStock(
                     insumo=orden_retiro.insumo,
                     cantidad=orden_retiro.cantidad,
@@ -110,7 +110,7 @@ class TareaCommonLogic:
 
     def restore_empleados(tarea):
         # restore empleados, delete Tiempo entry
-        for tiempo in models.Tarea.objects.get(tarea=tarea):
+        for tiempo in models.Tiempo.objects.filter(tarea=tarea):
             tiempo.delete()
 
     def deactivate_tarea(tarea):
@@ -194,7 +194,13 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             herramientas_data = json.loads(to_create.pop('herramientas', [])[0])
             insumos_data = json.loads(to_create.pop('retiros_insumos', [])[0])
             orden_servicio_pk = json.loads(to_create.get('orden_servicio', [])[0])
+            orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
             
+            # check previous tarea
+            for tarea_iter in models.Tarea.objects.filter(ordenServicio=orden_servicio_model):
+                if tarea_iter.is_active:
+                    raise Exception("Orden de servicio ya tiene una tarea adjunta")
+
             # check and create tarea
             serializer_tarea = serializer.TareaSerializer(data=to_create)
             serializer_tarea.is_valid(raise_exception=True)
@@ -210,12 +216,6 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             TareaCommonLogic.update_insumos(insumos_data, tarea.id)
             
             # update orden servicio
-            orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
-            
-            # check previous tarea
-            for tarea_iter in models.Tarea.objects.filter(ordenServicio=orden_servicio_model):
-                if tarea_iter.is_active:
-                    raise Exception("Orden de servicio ya tiene una tarea adjunta")
             tarea.ordenServicio = orden_servicio_model
 
             # modify orden servicio status
@@ -251,7 +251,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             # add tiempos de empleados
             ## esto es una cagada, ineficiente
             empleados = tarea_data['empleados']
-            for tiempo in models.Tarea.objects.filter(tarea=tarea):
+            for tiempo in models.Tiempo.objects.filter(tarea=tarea):
                 for emp in empleados:
                     if emp['id'] == tiempo.empleado.id:
                         emp['horasEstimadas'] = tiempo.horasEstimadas
