@@ -46,11 +46,8 @@ class TareaCommonLogic:
             insumo_data['tarea'] = tarea_pk
             
             #print(orden_retiro_entry)
-            
             #serializer_insumo = inventario_serializer.OrdenRetiroSerializer(data=orden_retiro_entry)
-            
             #serializer_insumo.is_valid(raise_exception=True)
-            
             #serializer_insumo.save()
             
             InventarioCommonLogic.create_orden_retiro(insumo_data)
@@ -172,8 +169,10 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
             
             # check previous tarea
-            if orden_servicio_model.tarea is not None:
-                raise Exception("Orden de servicio ya tiene una tarea adjunta")
+            for tarea_iter in models.Tarea.objects.get(ordenServicio=orden_servicio_model):
+                if tarea_iter.is_active:
+                    raise Exception("Orden de servicio ya tiene una tarea adjunta")
+            tarea.ordenServicio = orden_servicio_model
 
             # modify orden servicio status
             if tarea.fechaInicio == timezone.now().date():
@@ -181,8 +180,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             else:
                 orden_servicio_model.estado = models.OrdenServicio().StatusScale.APROBADA
 
-            orden_servicio_model.tarea = tarea
             orden_servicio_model.save()
+            tarea.save()
 
             return Response(serializer_tarea.data, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -212,23 +211,14 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['GET'])        
-    def retrieve_orden_servicio(self, request, pk):
-        try:
-            tarea = models.Tarea.objects.get(id=pk)
-            serializer_orden = serializer.OrdenServicioSerializer(tarea.orden_servicio)
-            return Response(serializer_orden.data)
-
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
     @transaction.atomic
     def update(self, request, pk):
         try:
-            herramientas_data = request.data.pop('herramientas', [])
+            tarea_update_data = request.data.copy()
+            herramientas_data = tarea_update_data.pop('herramientas', [])
 
             tarea = models.Tarea.objects.get(id=pk)
-            tarea_serializer = serializer.TareaSerializer(tarea, data=request.data)
+            tarea_serializer = serializer.TareaSerializer(tarea, data=tarea_update_data)
             tarea_serializer.is_valid(raise_exception=True)
             tarea_serializer.save()
 
@@ -243,10 +233,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
             # update orden servicio
             if tarea.fechaFin is not None:
-                # only works if tarea is uniqu
-                orden_servicio_model = models.OrdenServicio.objects.get(tarea=tarea)
-                orden_servicio_model.estado = models.OrdenServicio().StatusScale.FINALIZADA
-                orden_servicio_model.save()
+                tarea.ordenServicio.estado = models.OrdenServicio().StatusScale.FINALIZADA
+                tarea.ordenServicio.save()
 
             return Response(tarea_serializer.data)
         except ObjectDoesNotExist: 

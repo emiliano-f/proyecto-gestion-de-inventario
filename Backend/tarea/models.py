@@ -61,7 +61,6 @@ class OrdenServicio(models.Model):
     id = models.AutoField(primary_key=True)
     # cuando se quite null=True, modificar required=True en OrdenServicioUsuarioSerializer
     usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING, null=True)
-    tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING, related_name='orden_servicio', null=True)
     fechaGeneracion = models.DateField(auto_now=True)
     descripcion = models.CharField(max_length=255, null=True)
     fechaNecesidad = models.DateField(
@@ -142,6 +141,7 @@ class Tarea(models.Model):
     id = models.AutoField(primary_key=True)
     empleados = models.ManyToManyField(Empleado, through='Tiempo', blank=True)
     #legajo = models.IntegerField(unique=True)
+    ordenServicio = models.ForeignKey(OrdenServicio, on_delete=models.DO_NOTHING)
     tipo = models.CharField(
         max_length=15,
         choices=TypeScale.choices,
