@@ -48,12 +48,21 @@ class OrdenServicioUsuarioSerializer(serializers.ModelSerializer):
     sector = serializers.CharField(source='sector.nombre')
     class Meta:
         model = models.OrdenServicio
-        fields = ['id', 'tarea', 'fechaGeneracion', 
+        fields = ['id', 'fechaGeneracion', 
                   'descripcion', 'fechaNecesidad', 'comentario',
                   'prioridad', 'categoria', 'estado',
                   'usuarioNombre', 'usuarioApellido',
                   'usuarioID',
                   'edificio', 'sector']
+
+class TiempoSerializer(serializers.ModelSerializer):
+    """
+    Retrieves all fields in Tiempo
+    """
+
+    class Meta:
+        model = models.Tiempo
+        fields = '__all__'
 
 class TareaSerializer(serializers.ModelSerializer):
     """
@@ -66,19 +75,10 @@ class TareaSerializer(serializers.ModelSerializer):
 
 class TareaJoinedSerializer(TareaSerializer):
     empleados = EmpleadoSerializer(many=True, required=False)
+    tiempo = TiempoSerializer(many=True, required=False)
     herramientas = HerramientaSerializer(many=True, required=False)
     # Es necesario retiros_insumos acá? Se recupera en la vista TareaCRUD (retrieve y list)
     retiros_insumos = OrdenRetiroSerializer(many=True, required=False)
-    orden_servicio = serializers.IntegerField(source='orden_servicio.id', required=False)
-
-class TiempoSerializer(serializers.ModelSerializer):
-    """
-    Retrieves all fields in Tiempo
-    """
-
-    class Meta:
-        model = models.Tiempo
-        fields = '__all__'
 
 class SectorSubsectorSerializer(serializers.ModelSerializer):
     """
