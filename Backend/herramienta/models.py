@@ -29,6 +29,9 @@ class Herramienta(models.Model):
     userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
     is_active = models.BooleanField(default=True)
 
+    class Meta:
+        unique_together = ('nombre', 'codigo')
+
     def __str__(self):
         texto = "{0} [{1}]"
         return texto.format(self.descripcion, self.estado)    
