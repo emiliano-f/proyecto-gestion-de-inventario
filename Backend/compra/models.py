@@ -17,7 +17,7 @@ class PedidoInsumo(models.Model):
     fechaHora = models.DateTimeField(auto_now=True)
     recibido = models.CharField(max_length=2, choices=StatusScale.choices, default=StatusScale.NO)
     observaciones = models.CharField(max_length=255, null=True)
-    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
 
 class Presupuesto(models.Model):
 
@@ -28,7 +28,7 @@ class Presupuesto(models.Model):
     total = models.FloatField(validators=[MinValueValidator(0, message='El valor no puede ser menor a cero')])
     aprobado = models.CharField(max_length=2, choices=StatusScale.choices)
     pedidoInsumo = models.ForeignKey(PedidoInsumo, on_delete=models.DO_NOTHING, related_name='presupuestos')
-    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
 
 class DetallePedido(models.Model):
     id = models.AutoField(primary_key = True)
