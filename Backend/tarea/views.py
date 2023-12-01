@@ -93,7 +93,7 @@ class TareaCommonLogic:
             estado = herramienta_models.EstadoHerramienta(
                     herramienta=herramienta,
                     estado=herramienta_models.StatusScale.DISPONIBLE,
-                    observaciones='Eliminacion de tarea id '+str(pk)
+                    observaciones='Eliminacion de tarea id '+str(pk),
                     created_by=user
                 )
             estado.save()
@@ -105,7 +105,7 @@ class TareaCommonLogic:
                     insumo=orden_retiro.insumo,
                     cantidad=orden_retiro.cantidad,
                     observaciones='Eliminacion de tarea id '+str(pk),
-                    accionCantidad=inventario_models.ActionScale.SUMAR
+                    accionCantidad=inventario_models.ActionScale.SUMAR,
                     created_by=user
                 )
             ajuste_stock.save()
@@ -291,7 +291,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             tarea_serializer.save()
 
             # update herramientas and estado
-            TareaCommonLogic.update_herramientas(herramientas_data)
+            TareaCommonLogic.update_herramientas(herramientas_data, tarea)
 
             # update empleados relation (Tiempo)
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
