@@ -719,6 +719,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select: false,
                 enum: false
             },
+            "ordenServicio": {
+                editable: false,
+                show: true,
+                name: "Nº Orden",
+                type: "number",
+                col_size: 80,
+                required: true,
+                select: false,
+                enum: false
+            },
             "descripcion": {
                 editable: true,
                 show: true,

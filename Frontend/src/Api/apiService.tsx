@@ -30,10 +30,9 @@ export function ListItems(setItems: any, itemName: string): Promise<AxiosRespons
     });
 }
 
-export function ReadItem(setItem: any, itemName: string, item_id?: string): Promise<AxiosResponse<any, any>> {
-    
-    const { id } = item_id ? { id: item_id } : useParams();
-    console.log(getBackendUrl(itemName) + `${id}/`)
+export function ReadItem(setItem: any, itemName: string): Promise<AxiosResponse<any, any>> {
+    const { id } = useParams();
+
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         useEffect(() => {
             async function loadItem() {
@@ -42,7 +41,6 @@ export function ReadItem(setItem: any, itemName: string, item_id?: string): Prom
                 )
                     .then((response) => {
                         setItem(response.data)
-                        
                         resolve(response)
                     })
                     .catch(
@@ -50,7 +48,29 @@ export function ReadItem(setItem: any, itemName: string, item_id?: string): Prom
                         /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
             }
             loadItem()
-        }, [itemName, setItem]);
+        }, [itemName, setItem, id]);
+    })
+}
+
+
+export function ReadItemId(setItem: any, itemName: string, id: string): Promise<AxiosResponse<any, any>> {
+    console.log(getBackendUrl(itemName) + `${id}/`);
+    return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
+        useEffect(() => {
+            async function loadItem() {
+                await inventarioAPI.get(
+                    getBackendUrl(itemName) + `${id}/`
+                )
+                    .then((response) => {
+                        setItem(response.data)
+                        resolve(response)
+                    })
+                    .catch(
+                        (error) => reject(error)
+                        /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
+            }
+            loadItem()
+        }, [itemName, setItem, id]);
     })
 }
 
@@ -59,7 +79,6 @@ export function ReadItem(setItem: any, itemName: string, item_id?: string): Prom
 
 export function CreateItem(itemName: string, formData: FormData | string): Promise<AxiosResponse<any, any>> {
     
-    console.log(formData);
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         async function createData(itemName: string, formData: FormData) {
             await inventarioAPI.post(getBackendUrl(itemName), formData)
@@ -140,7 +159,6 @@ export function SendServiceRequest(formData: FormData): Promise<AxiosResponse<an
 }
 
 export function GetEnums(setEnum: any): Promise<AxiosResponse<any, any>> {
-    
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         async function loadItem() {
             await inventarioAPI.get(getBackendUrl("enums"))
@@ -157,8 +175,6 @@ export function GetEnums(setEnum: any): Promise<AxiosResponse<any, any>> {
 }
 
 export function ListItemsFiltered(setItems, filteredEntityName, filterID) {
-    
-    console.log(`${filteredEntityName}-filtered`)
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         async function loadItems() {
             await inventarioAPI.get(getBackendUrl(`${filteredEntityName}-filtered`).concat(`${filterID}/`))

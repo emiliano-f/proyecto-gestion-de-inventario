@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
-import { ReadItem, CreateItem as Create, UpdateItem as Update } from "../../../../Api/apiService";
+import { ReadItem, CreateItem as Create, UpdateItem as Update, ReadItemId } from "../../../../Api/apiService";
 
 import AddEntity from "../addEntity/AddEntity";
 import SelectEnum from "../selectComponentes/selecEnum/SelectEnum";
@@ -38,6 +38,7 @@ const TaskForm = (props:Props) => {
         empleados: Array<{ id: number, hsEstimadas: number, hsTotales: number}>;
         retiros_insumos: Array<{ id_insumo: number; cantidad: number }>;
         herramientas: Array<{ id: number }>;
+        ordenServicio: number;
     }
 
     const [task, setTask] = useState<Task | null>(null);
@@ -72,15 +73,24 @@ const TaskForm = (props:Props) => {
             const updatedInsumoList = task["retiros_insumos"].map(item => ({ ["insumo"]: item.id_insumo.toString(), ["cantidad"]: item.cantidad }));
             setInsumoList(updatedInsumoList);
             const updatedHerrList = task["herramientas"].map(item => ({ ["herramienta"]: item.id.toString() }));
-            setHerrList(updatedHerrList);    
+            setHerrList(updatedHerrList);
+
+            ReadItemId(setServiceOrder, "ordenes-servicio", task.ordenServicio.toString())
+                .then((response) => console.log(response))
+                .catch((error) => {
+                    setMessage(`Ha surgido un error al buscar la ${getSingular("orden-servicio")} correspondiente a la tarea`, error)
+                });  
         }
     }, [task]);
     
-    ReadItem(setServiceOrder, "ordenes-servicio")
-        .then((response) => console.log(response))
-        .catch((error) => {
-            setMessage(`Ha surgido un error al buscar ${getSingular("orden-servicio")}`, error)
-        }); 
+    if (props.action==="create") {
+        ReadItem(setServiceOrder, "ordenes-servicio")
+            .then((response) => console.log(response))
+            .catch((error) => {
+                setMessage(`Ha surgido un error al buscar ${getSingular("orden-servicio")}`, error)
+            }); 
+    }
+    
     
     const createItem = (formData: FormData | string) => {
         Create("tareas", formData)
