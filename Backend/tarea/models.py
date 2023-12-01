@@ -86,6 +86,30 @@ class OrdenServicio(models.Model):
     )
     sector = models.ForeignKey(Sector, on_delete=models.DO_NOTHING)
     is_active = models.BooleanField(default=True)
+
+    def clean(self, nuevo_estado):
+
+        # status progression
+        if self.estado == self.StatusScale.FINALIZADA:
+            if nuevo_estado != self.StatusScale.FINALIZADA:
+                raise Exception('Orden de servicio finalizada, no se puede cambiar el estado')
+        elif self.estado == self.StatusScale.EN_PROGRESO:
+            if nuevo_estado in [self.StatusScale.EN_ESPERA, 
+                                self.StatusScale.APROBADA, 
+                                self.StatusScale.RECHAZADA]:
+                raise Exception('Orden de servicio en progreso, solo puede finalizarse')
+        elif self.estado == self.StatusScale.RECHAZADA:
+            if nuevo_estado in [self.StatusScale.EN_PROGRESO, 
+                                self.StatusScale.FINALIZADA]: 
+                raise Exception('Orden de servicio en rechazada, debe aprobarse si se desea asignar a tarea')
+        elif self.estado == self.StatusScale.APROBADA:
+            if nuevo_estado == self.StatusScale.FINALIZADA: 
+                raise Exception('Orden de servicio aprobada, debe realizarse antes de finalizarla')
+        elif self.estado == self.StatusScale.EN_ESPERA:
+            if nuevo_estado in [self.StatusScale.EN_PROGRESO, 
+                                self.StatusScale.FINALIZADA]: 
+                raise Exception('Orden de servicio en espera, debe aprobarse o rechazarse')
+
     
 class EncuestaSatisfaccion(models.Model):
     class SatisfactionScale(models.TextChoices):
