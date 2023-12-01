@@ -89,7 +89,7 @@ function Login() {
   return (
     <>
       <div className="error">
-        <MessageDisplay className="loginError" stateMessage={message} setStateMessage={setnewMessage}/>
+        <MessageDisplay stateMessage={message} setStateMessage={setnewMessage}/>
       </div>
       <div className="background">    
         <LoginForm/>
