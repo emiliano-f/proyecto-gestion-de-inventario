@@ -196,7 +196,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
             
             # check previous tarea
-            for tarea_iter in models.Tarea.objects.get(ordenServicio=orden_servicio_model):
+            for tarea_iter in models.Tarea.objects.filter(ordenServicio=orden_servicio_model):
                 if tarea_iter.is_active:
                     raise Exception("Orden de servicio ya tiene una tarea adjunta")
             tarea.ordenServicio = orden_servicio_model
