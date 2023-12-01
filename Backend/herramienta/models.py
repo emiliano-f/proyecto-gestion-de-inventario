@@ -6,6 +6,7 @@ class StatusScale(models.TextChoices):
     EN_USO = 'En uso'
     EN_REPARACION = 'En reparación'
     MAL_ESTADO = 'En mal estado'
+    ELIMINADA = 'Eliminada'
 
 class TipoHerramienta(models.Model):
     id = models.AutoField(primary_key=True)
