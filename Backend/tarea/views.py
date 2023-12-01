@@ -191,15 +191,20 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             # get empleados, herramientas, insumos
             to_create = request.data.copy()
             empleados_data = json.loads(to_create.pop('empleados', [])[0])
+            
             herramientas_data = json.loads(to_create.pop('herramientas', [])[0])
+            
             insumos_data = json.loads(to_create.pop('retiros_insumos', [])[0])
-            orden_servicio_pk = json.loads(to_create.pop('orden_servicio', [])[0])
+            
+            orden_servicio_pk = json.loads(to_create.get('ordenServicio', [])[0])
             
             # check and create tarea
             serializer_tarea = serializer.TareaSerializer(data=to_create)
+            
             serializer_tarea.is_valid(raise_exception=True)
+            
             tarea = serializer_tarea.save()
-               
+            
             # create empleados relation (Tiempo)
             TareaCommonLogic.create_empleados_relation(empleados_data, tarea.id)
             
@@ -349,7 +354,6 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         try:
             orden_servicio = models.OrdenServicio.objects.get(id=pk)
         except: 
