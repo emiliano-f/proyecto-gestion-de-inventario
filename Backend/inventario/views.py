@@ -11,11 +11,11 @@ class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
 
 class InventarioCommonLogic:
-    def create_orden_retiro(data):
+    def create_orden_retiro(data, user):
         ## check data types
         serializer_class = serializer.OrdenRetiroSerializer(data=data)
         serializer_class.is_valid(raise_exception=True)
-        serializer_class.save()
+        serializer_class.save(created_by=user)
 
         ## update cantidad from Insumo
         insumo = models.Insumo.objects.get(id=data.get('insumo'))
@@ -28,6 +28,16 @@ class InventarioCommonLogic:
 class TipoInsumoCRUD(CustomModelViewSet):
     serializer_class = serializer.TipoInsumoSerializer
     queryset = models.TipoInsumo.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        try:
+            serializer_class = self.get_serializer(data=request.data)
+            serializer_class.is_valid(raise_exception=True)
+            serializer_class.save(created_by=request.user)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def __table__():
         return 'tipoinsumo'
@@ -48,7 +58,7 @@ class InsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         print(request.data)
         serializer_class = serializer.InsumoSerializer(data=request.data)
         serializer_class.is_valid(raise_exception=True)
-        serializer_class.save()
+        serializer_class.save(created_by=request.user)
         return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, pk):
@@ -95,7 +105,7 @@ class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     @transaction.atomic
     def create(self, request):
         try:
-            serializer_class = InventarioCommonLogic.create_orden_retiro(request.data)
+            serializer_class = InventarioCommonLogic.create_orden_retiro(request.data, request.user)
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
@@ -149,7 +159,7 @@ class AjusteStockCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             serializer_class = serializer.AjusteStockSerializer(data=request.data)
 
             serializer_class.is_valid(raise_exception=True)
-            serializer_class.save()
+            serializer_class.save(created_by=request.user)
             # update cantidad from Insumo
             insumo = models.Insumo.objects.get(id=request.data.get('insumo'))
             
