@@ -126,7 +126,7 @@ const TaskForm = (props:Props) => {
             if (props.action === "create") {
                 // Campos de form que se extraerán de forma predeterminada
                 const allowedFields = ['tipo', 'descripcion', 'fechaTentativa', 'fechaInicio', 'fechaFin', 'clasificacion'];
-                serviceOrder && (formData.append("orden_servicio", serviceOrder["id"]));
+                serviceOrder && (formData.append("ordenServicio", serviceOrder["id"]));
                 for (const field of allowedFields) {
                     const inputElement = form.elements.namedItem(field) as HTMLInputElement | null;
                     if (inputElement) {
