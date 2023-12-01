@@ -1,6 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.utils import timezone
+from herramienta.views import HerramientaCommonLogic
+from inventario.views import InventarioCommonLogic
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
@@ -11,8 +13,6 @@ from . import serializer
 from . import models
 import herramienta.models as herramienta_models
 import inventario.models as inventario_models
-from herramienta.views import HerramientaCommonLogic
-from inventario.views import InventarioCommonLogic
 import inventario.serializer as inventario_serializer
 import json
 
@@ -42,37 +42,25 @@ class TareaCommonLogic:
 
     def update_insumos(insumos_data, tarea_pk):
         for insumo_data in insumos_data:
-            
             insumo_data['tarea'] = tarea_pk
-            
-            #print(orden_retiro_entry)
-            #serializer_insumo = inventario_serializer.OrdenRetiroSerializer(data=orden_retiro_entry)
-            #serializer_insumo.is_valid(raise_exception=True)
-            #serializer_insumo.save()
-            
             InventarioCommonLogic.create_orden_retiro(insumo_data)
-            
 
     def create_empleados_relation(empleados_data, tarea_pk):
         for empleado in empleados_data:
-            ## dictusuarioNombre
-            
+
+            ## dict tiempo entry
             tiempo_entry = {}
-            
             tiempo_entry['empleado'] = empleado['empleado']
-            
-                
             tiempo_entry['tarea'] = tarea_pk
             tiempo_entry['horasEstimadas'] = empleado.get('horasEstimadas')
             if empleado.get('responsable') is not None:
                 tiempo_entry['responsable'] = empleado.get('responsable')
+
             ## serializer
-            
             tiempo_serializer = serializer.TiempoSerializer(data=tiempo_entry)
             tiempo_serializer.is_valid(raise_exception=True)
             ## saving
             tiempo_serializer.save()
-            
 
     def update_empleados_relation(empleados_data, tarea_pk):
         tarea_empleados = model.Tiempo.objects.filter(tarea=tarea_pk).all()
@@ -186,10 +174,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             # get empleados, herramientas, insumos
             to_create = request.data.copy()
             empleados_data = json.loads(to_create.pop('empleados', [])[0])
-            
             herramientas_data = json.loads(to_create.pop('herramientas', [])[0])
             insumos_data = json.loads(to_create.pop('retiros_insumos', [])[0])
-        
             orden_servicio_pk = json.loads(to_create.pop('orden_servicio', [])[0])
             
             # check and create tarea
