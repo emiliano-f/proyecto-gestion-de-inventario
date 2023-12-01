@@ -53,7 +53,7 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
             ## check data types
             serializer_pedido.is_valid(raise_exception=True)
-            pedido_insumo = serializer_pedido.save()
+            pedido_insumo = serializer_pedido.save(created_by=request.user)
 
             ## check for detalles
             #serializers_detalles = []
@@ -154,6 +154,16 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 class PresupuestoCRUD(CustomModelViewSet):
     serializer_class = serializer.PresupuestoSerializer
     queryset = models.Presupuesto.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        try:
+            serializer_class = self.get_serializer(data=request.data)
+            serializer_class.is_valid(raise_exception=True)
+            serializer_class.save(created_by=request.user)
+
+            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def __table__():
         return 'presupuesto'

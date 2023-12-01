@@ -23,7 +23,7 @@ class Empleado(models.Model):
     categoria = models.CharField(max_length=15,
                                  choices=CategoriaScale.choices,
                                  default=CategoriaScale.CAT1)
-    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
     is_active = models.BooleanField(default=True)
 
 class Sector(models.Model):
@@ -63,7 +63,7 @@ class OrdenServicio(models.Model):
 
     id = models.AutoField(primary_key=True)
     # cuando se quite null=True, modificar required=True en OrdenServicioUsuarioSerializer
-    usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING, null=True)
+    usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING, blank=True)
     fechaGeneracion = models.DateField(auto_now=True)
     descripcion = models.CharField(max_length=255, null=True)
     fechaNecesidad = models.DateField(
@@ -195,7 +195,7 @@ class Tarea(models.Model):
             max_length=15,
             choices=ClassificationScale.choices
     )
-    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
     is_active = models.BooleanField(default=True)
 
 class Tiempo(models.Model):
@@ -221,4 +221,4 @@ class Tiempo(models.Model):
             choices=CategoryScale.choices,
             default=CategoryScale.NO
     )
-    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
