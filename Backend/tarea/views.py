@@ -96,6 +96,47 @@ class TareaCommonLogic:
         if not new_empleados:
             create_empleados_relation(new_empleados, tarea_pk)
 
+    def restore_herramientas(tarea):
+        # restore herramientas
+        for herramienta in tarea.herramientas:
+            herramienta.estado = herramienta_models.StatusScale.DISPONIBLE
+            herramienta.save()
+            # create entry in EstadoHerramienta
+            estado = herramienta_models.EstadoHerramienta(
+                    herramienta=herramienta,
+                    estado=herramienta_models.StatusScale.DISPONIBLE,
+                    observaciones='Eliminacion de tarea id '+str(pk)
+                )
+            estado.save()
+
+    def restore_insumos(tarea):
+        # restore insumos
+        for orden_retiro in tarea.insumos_retirados:
+            ajuste_stock = inventario_models.AjusteStock(
+                    insumo=orden_retiro.insumo,
+                    cantidad=orden_retiro.cantidad,
+                    observaciones='Eliminacion de tarea id '+str(pk),
+                    accionCantidad=inventario_models.ActionScale.SUMAR
+                )
+            ajuste_stock.save()
+
+    def restore_empleados(tarea):
+        # restore empleados, delete Tiempo entry
+        for tiempo in models.Tarea.objects.get(tarea=tarea):
+            tiempo.delete()
+
+    def deactivate_tarea(tarea):
+        # restore herramientas
+        TareaCommonLogic.restore_herramientas(tarea)
+
+        # restore insumos
+        TareaCommonLogic.restore_insumos(tarea)
+
+        # restore empleados, delete Tiempo entry
+        TareaCommonLogic.restore_empleados(tarea)
+
+        tarea.is_active = False
+
 class EmpleadoCRUD(CustomModelViewSet):
     serializer_class = serializer.EmpleadoSerializer
     queryset = models.Empleado.objects.all()
@@ -261,35 +302,10 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
             # update status in OrdenServicio
             tarea.ordenServicio.estado = models.OrdenServicio().StatusScale.APROBADA
+            tarea.ordenServicio.save()
 
-            # restore herramientas
-            for herramienta in tarea.herramientas:
-                herramienta.estado = herramienta_models.StatusScale.DISPONIBLE
-                herramienta.save()
-                # create entry in EstadoHerramienta
-                estado = herramienta_models.EstadoHerramienta(
-                        herramienta=herramienta,
-                        estado=herramienta_models.StatusScale.DISPONIBLE,
-                        observaciones='Eliminacion de tarea id '+str(pk)
-                    )
-                estado.save()
-                
-            # restore insumos
-            for orden_retiro in tarea.insumos_retirados:
-                ajuste_stock = inventario_models.AjusteStock(
-                        insumo=orden_retiro.insumo,
-                        cantidad=orden_retiro.cantidad,
-                        observaciones='Eliminacion de tarea id '+str(pk),
-                        accionCantidad=inventario_models.ActionScale.SUMAR
-                    )
-                ajuste_stock.save()
-
-            # restore empleados, delete Tiempo entry
-            for tiempo in models.Tarea.objects.get(tarea=tarea):
-                tiempo.delete()
-            
-            # deactivate tarea
-            tarea.is_active = False
+            TareaCommonLogic.deactivate_tarea(tarea)
+            tarea.save()
 
             return Response(status=status.HTTP_204_NO_CONTENT)
         except ObjectDoesNotExist: 
@@ -333,6 +349,8 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             orden_servicio = models.OrdenServicio.objects.get(id=pk)
             serializer_class = serializer.OrdenServicioSerializer(orden_servicio, data=request.data)
             serializer_class.is_valid(raise_exception=True)
+            # check status
+            orden_servicio.clean(serializer_class.validated_data['estado'])
             serializer_class.save()
             return Response(serializer_class.data)
         except ObjectDoesNotExist: 
@@ -340,13 +358,35 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    @transaction.atomic
     def destroy(self, request, pk):
         try:
             orden_servicio = models.OrdenServicio.objects.get(id=pk)
-            orden_servicio.delete()
+
+            # check if it is active
+            if not orden_servicio.is_active:
+                raise ObjectDoesNotExist('Orden de servicio no encontrada para eliminación')
+
+            # check orden servicio
+            if orden_servicio.estado in [orden_servicio.StatusScale.EN_PROGRESO,
+                                         orden_servicio.StatusScale.FINALIZADA]:
+                raise Exception('Orden de servicio en progreso o finalizada, no puede eliminarse')
+
+            # check tarea progress
+            for tarea in models.Tarea.objects.get(ordenServicio=orden_servicio):
+                if tarea.is_active:
+                    TareaCommonLogic.deactivate_tarea(tarea)
+                    tarea.save()
+
+            orden_servicio.is_active = False
+
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except: 
+        except ObjectDoesNotExist: 
+            transaction.set_rollback(True)
             return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e: 
+            transaction.set_rollback(True)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class SectorListCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def __table__():
