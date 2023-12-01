@@ -41,6 +41,9 @@ class Sector(models.Model):
     )
     nombre = models.CharField(max_length=30)
 
+    class Meta:
+        unique_together = ('edificio', 'nombre')
+
 class OrdenServicio(models.Model):
 
     class CaracterScale(models.TextChoices):
