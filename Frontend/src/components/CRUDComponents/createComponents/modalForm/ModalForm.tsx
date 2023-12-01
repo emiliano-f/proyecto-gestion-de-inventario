@@ -80,30 +80,31 @@ const ModalForm = (props: Props) => {
     const {entity : entityName} = GetUrlParts();
     const [openStockAdj, setOpenStockAdj] = useState(false);
     const [validated, setValidated] = useState(false);
-    
 
     const updateItem = (entity: string, formData: FormData, id: number) => {
         // Comentario jm: sería mejor que la función reciba un int y el casteo lo haga dentro
         Update(entity, formData, id.toString())
             .then(() => {
                 setMessage(`Se ha modificado ${getSingular(entity)} con éxito`, null)
+                props.setOpen(false)
+                props.switchChange()
             })
             .catch((error) => {
                 setMessage(`Ha surgido un error al modificar ${getSingular(entity)}.`, error)
             })
-            .finally(() => props.setOpen(false));
     }
 
     const createItem = (entity: string, formData: FormData) => {
         Create(entity, formData)
             .then(() => {
                 setMessage(`Se ha creado el nuevo ${getSingular(entity)} con exito`, null)
+                props.setOpen(false)
+                props.switchChange()
             })
             .catch((error) => {
                 console.log(error)
                 setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(entity)}.`, error)
             })
-            .finally(() => props.setOpen(false));
     }
 
 
@@ -160,7 +161,6 @@ const ModalForm = (props: Props) => {
                         }
 
                         <Button type="submit" className="mt-3"
-                            onClick={() => props.switchChange()}
                             disabled={props.formType === FormType.READ}>
                             {props.formType === FormType.ADD && "Crear"}
                             {props.formType === FormType.UPDATE && "Modificar"}
