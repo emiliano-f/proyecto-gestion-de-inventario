@@ -19,7 +19,7 @@ class TipoHerramienta(models.Model):
 
 class Herramienta(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=32, unique=True)
+    nombre = models.CharField(max_length=32)
     tipoHerramienta = models.ForeignKey(TipoHerramienta, on_delete=models.DO_NOTHING)
     codigo = models.CharField(max_length=16, unique=True, null=True)
 
