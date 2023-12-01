@@ -137,7 +137,7 @@ class EmpleadoCRUD(CustomModelViewSet):
             raise ObjectDoesNotFound('Empleado inactivo')
 
         # it is assigned?
-        for tiempo in models.Tiempo.filter(empleado=empleado):
+        for tiempo in models.Tiempo.objects.filter(empleado=empleado):
             if tiempo.tarea.fechaFin is not None:
                 raise Exception('Empleado no puede eliminarse porque está asignado a una tarea sin finalizar')
 
