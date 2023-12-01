@@ -193,7 +193,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             tarea = models.Tarea.objects.get(id=pk)
             ordenes_retiro = tarea.insumos_retirados.all()
             tarea_data = serializer.TareaJoinedSerializer(tarea)
-            
+
             insumos = []
             for orden_retiro in ordenes_retiro:
                 insumoRetiro = {}
@@ -216,6 +216,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         try:
             tarea_update_data = request.data.copy()
             herramientas_data = tarea_update_data.pop('herramientas', [])
+            empleados_data = tarea_update_data.pop('empleados', [])
+            insumos_data = tarea_update_data.pop('retiros_insumos', [])
 
             tarea = models.Tarea.objects.get(id=pk)
             tarea_serializer = serializer.TareaSerializer(tarea, data=tarea_update_data)
