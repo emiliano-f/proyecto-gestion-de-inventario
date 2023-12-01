@@ -19,6 +19,7 @@
   }
 
 .visible{
+    z-index: 9999;
     display: block;
     animation: hideElement 10s ease 9s;
 }

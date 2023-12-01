@@ -1,5 +1,8 @@
 @import "../../styles/variables.scss";
 
+.error{
+    display: block;
+}
 .background {
     display:flex;
     background: linear-gradient($main-bg,black);

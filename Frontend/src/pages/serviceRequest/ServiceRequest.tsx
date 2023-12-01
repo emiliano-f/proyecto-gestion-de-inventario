@@ -19,7 +19,7 @@ function ServiceRequest(){
         return <Link to="/login" />;
     }
 
-    const [mesage,setMessage] = useState( {title: "",desc: "",is_error: false});
+    const [message,setMessage] = useState( {title: "",desc: "",is_error: false});
   
     return (
         <>
