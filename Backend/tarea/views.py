@@ -235,11 +235,11 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def retrieve(self, request, pk):
         try:
             tarea = models.Tarea.objects.get(id=pk)
-            ordenes_retiro = tarea.insumos_retirados.all()
-            tarea_data = serializer.TareaJoinedSerializer(tarea)
+            tarea_data = serializer.TareaJoinedSerializer(tarea).data.copy()
 
+            # insumos asociados
             insumos = []
-            for orden_retiro in ordenes_retiro:
+            for orden_retiro in tarea.insumos_retirados.all():
                 insumoRetiro = {}
                 insumo = orden_retiro.insumo
                 insumoRetiro['insumo'] = insumo.nombre
@@ -248,9 +248,18 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
                 insumoRetiro['cantidad'] = orden_retiro.cantidad
                 insumos.append(insumoRetiro)
             
-            data=tarea_data.data.copy()
-            data['retiros_insumos'] = insumos
-            return Response(data)
+            # add tiempos de empleados
+            ## esto es una cagada, ineficiente
+            empleados = tarea_data['empleados']
+            for tiempo in models.Tarea.objects.filter(tarea=tarea):
+                for emp in empleados:
+                    if emp['id'] == tiempo.empleado.id:
+                        emp['horasEstimadas'] = tiempo.horasEstimadas
+                        emp['horasTotales'] = tiempo.horasTotales
+                        emp['responsable'] = tiempo.responsable
+
+            tarea_data['retiros_insumos'] = insumos
+            return Response(tarea_data)
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
