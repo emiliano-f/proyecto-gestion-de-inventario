@@ -129,6 +129,23 @@ class EmpleadoCRUD(CustomModelViewSet):
     serializer_class = serializer.EmpleadoSerializer
     queryset = models.Empleado.objects.all()
 
+    def delete(self, request, *args, **kwargs):
+        empleado = self.get_object()
+
+        # check
+        if not empleado.is_active:
+            raise ObjectDoesNotFound('Empleado inactivo')
+
+        # it is assigned?
+        for tiempo in models.Tiempo.filter(empleado=empleado):
+            if tiempo.tarea.fechaFin is not None:
+                raise Exception('Empleado no puede eliminarse porque está asignado a una tarea sin finalizar')
+
+        # deactivate empleado
+        empleado.is_active = False
+        empleado.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     def __table__():
         return 'empleado'
 
