@@ -1,5 +1,5 @@
 import "./serviceform.scss"
-import { Form } from "react-bootstrap";
+import { Form, FormGroup } from "react-bootstrap";
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 
 import { GetEnums, SendServiceRequest } from "../../../../Api/apiService";
@@ -14,7 +14,7 @@ export default function ServiceForm(){
     const formRef  = useRef();
     const edificioSelect = useRef();
     const sectorSelect = useRef();
-
+    
     const [authData] = useAuthData();
 
     ///Select de Edificios
@@ -39,6 +39,7 @@ export default function ServiceForm(){
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
         formData.append("usuario",authData["id"].toString())
+        console.log(formData)
         SendServiceRequest(formData)
         .then(() => {
             try{
@@ -123,21 +124,21 @@ export default function ServiceForm(){
 
                     <div className="form-group">
                         <label>Detalle de la necesidad de mantenimiento/reparación</label>
-                        <select required className="form-select" defaultValue={""}>
+                        <select required name="categoria" className="form-select" defaultValue={""}>
                             <option value="" disabled>Selecciona un tipo</option>
-                            <option value="Fabricación">Fabricación</option>
-                            <option value="Movimiento">Movimiento de materiales / traslados</option>
-                            <option value="Modificación">Modificación/adecuación</option>
+                            <option value="FABRICACION">Fabricación</option>
+                            <option value="TRASLADOS">Movimiento de materiales / traslados</option>
+                            <option value="MODIF/ADEC">Modificación/adecuación</option>
                         </select>
                     </div>
                     
                     <div className="form-group">
                         <label>Carácter de la necesidad</label>
-                        <select required className="form-select" defaultValue={""}>
+                        <select required name="prioridad" className="form-select" defaultValue={""}>
                             <option value="" disabled>Selecciona el carácter</option>
-                            <option value="Normal">Normal (sin urgencia)</option>
-                            <option value="Urgente">Urgente</option>
-                            <option value="Critica">Crítica</option>
+                            <option value="NORMAL">Normal (sin urgencia)</option>
+                            <option value="URGENTE">Urgente</option>
+                            <option value="CRITICO">Crítica</option>
                         </select>
                     </div>
                     <div className="form-group">
