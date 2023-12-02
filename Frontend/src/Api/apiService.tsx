@@ -54,23 +54,22 @@ export function ReadItem(setItem: any, itemName: string): Promise<AxiosResponse<
 
 
 export function ReadItemId(setItem: any, itemName: string, id: string): Promise<AxiosResponse<any, any>> {
-    console.log(getBackendUrl(itemName) + `${id}/`);
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
-        useEffect(() => {
-            async function loadItem() {
-                await inventarioAPI.get(
-                    getBackendUrl(itemName) + `${id}/`
-                )
-                    .then((response) => {
-                        setItem(response.data)
-                        resolve(response)
-                    })
-                    .catch(
-                        (error) => reject(error)
-                        /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
-            }
-            loadItem()
-        }, [itemName, setItem, id]);
+        
+        async function loadItem() {
+            await inventarioAPI.get(
+                getBackendUrl(itemName) + `${id}/`
+            )
+                .then((response) => {
+                    setItem(response.data)
+                    resolve(response)
+                })
+                .catch(
+                    (error) => reject(error)
+                    /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
+        }
+        loadItem()
+        
     })
 }
 

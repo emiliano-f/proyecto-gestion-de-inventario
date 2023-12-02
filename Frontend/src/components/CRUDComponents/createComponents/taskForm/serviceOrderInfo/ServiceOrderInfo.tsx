@@ -38,9 +38,14 @@ export const ServiceOrderInfo = (props:Props) => {
           </Form.Group>
           <Row className="mb-3">
               <Form.Group as={Col} controlId="no">
+                  <Form.Label>Estado</Form.Label>
+                  <Form.Control disabled value={props.serviceOrder["estado"]} />
+              </Form.Group>
+              <Form.Group as={Col} controlId="no">
                   <Form.Label>Prioridad</Form.Label>
                   <Form.Control disabled value={props.serviceOrder["prioridad"]} />
               </Form.Group>
+              
               <Form.Group as={Col} controlId="no">
                   <Form.Label>Fecha de Necesidad</Form.Label>
                   <Form.Control disabled type="date" value={props.serviceOrder["fechaNecesidad"]} />
