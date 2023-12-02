@@ -44,13 +44,15 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
             usuario_serializer.validated_data['password'] = make_password(usuario_serializer.validated_data['password'])
             user = usuario_serializer.save()
             
-            #if user.is_staff:
-            #    grupo = Group.objects.get(name='staff_users')
-            #else:
-            #    grupo = Group.objects.get(name='regular_users')
+            # add to group
+            if user.is_staff:
+                grupo = Group.objects.get(name='staff_users')
+            else:
+                grupo = Group.objects.get(name='regular_users')
 
-            #grupo.user_set.add(user)
-            #grupo.save()
+            grupo.user_set.add(user)
+            grupo.save()
+
             user_return = usuario_serializer.data.copy()
             user_return.pop('password')
             return Response(user_return, status=status.HTTP_201_CREATED)
