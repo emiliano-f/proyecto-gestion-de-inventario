@@ -155,7 +155,7 @@ export default function ServiceForm(){
         </div>
         <div className="footer">
             <span>UNCUYO- Facultad de Ingeniería</span>
-            <img src="/SAEFyDISG.png" width="430" height="50"/>
+            <img src="/images/Institution_Logo.jpeg" width="430" height="50"/>
         </div>
         </>
     )

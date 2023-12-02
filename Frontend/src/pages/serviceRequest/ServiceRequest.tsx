@@ -22,9 +22,8 @@ function ServiceRequest(){
     const [message,setMessage] = useState( {title: "",desc: "",is_error: false});
   
     return (
-        <>
+        <>  <MessageDisplay stateMessage={message} setStateMessage={setMessage}/>
             <Header/>
-            
             <ServiceForm />
         </>
     )
