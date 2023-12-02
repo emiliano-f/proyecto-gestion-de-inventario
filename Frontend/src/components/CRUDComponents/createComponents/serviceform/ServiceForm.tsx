@@ -110,7 +110,7 @@ export default function ServiceForm(){
                             </Form.Select>
                             
                             <select required ref={sectorSelect} className="form-select" name="sector" defaultValue={""}>
-                                <option value="" disabled selected>Selecciona un Sector</option>
+                                <option value="" defaultValue={""} disabled>Selecciona un Sector</option>
                                 {sectors.map((obj)=><option key={obj.id} value={obj.id}>{obj.nombre}</option>)}
                             </select>
                         </div>
@@ -124,7 +124,7 @@ export default function ServiceForm(){
                     <div className="form-group">
                         <label>Detalle de la necesidad de mantenimiento/reparación</label>
                         <select required className="form-select" defaultValue={""}>
-                            <option value="" disabled selected>Selecciona un tipo</option>
+                            <option value="" disabled>Selecciona un tipo</option>
                             <option value="Fabricación">Fabricación</option>
                             <option value="Movimiento">Movimiento de materiales / traslados</option>
                             <option value="Modificación">Modificación/adecuación</option>
@@ -134,7 +134,7 @@ export default function ServiceForm(){
                     <div className="form-group">
                         <label>Carácter de la necesidad</label>
                         <select required className="form-select" defaultValue={""}>
-                            <option value="" disabled selected>Selecciona el carácter</option>
+                            <option value="" disabled>Selecciona el carácter</option>
                             <option value="Normal">Normal (sin urgencia)</option>
                             <option value="Urgente">Urgente</option>
                             <option value="Critica">Crítica</option>
