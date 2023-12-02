@@ -24,7 +24,7 @@ function ServiceRequest(){
     return (
         <>
             <Header/>
-            <MessageDisplay stateMessage={message} setStateMessage={setMessage}/>
+            
             <ServiceForm />
         </>
     )
