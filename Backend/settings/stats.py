@@ -46,7 +46,7 @@ class TareasPendientesUrgentes(LoginRequiredNoRedirect, ViewSet):
                     estado
                     FROM tarea_tarea
                     INNER JOIN tarea_ordenservicio
-                    ON tarea_tarea.id=tarea_ordenservicio.tarea_id
+                    ON tarea_tarea.ordenServicio_id=tarea_ordenservicio.id
                     INNER JOIN tarea_sector
                     ON tarea_ordenservicio.sector_id=tarea_sector.id 
                     WHERE estado = "EN_ESPERA" 
@@ -81,10 +81,10 @@ class InsumoMasConsumido(LoginRequiredNoRedirect, ViewSet):
                 unidadMedida,
                 codigo AS codigoInsumo,
                 inventario_tipoinsumo.nombre AS tipoInsumo,
-                SUM(inventario_ordenRetiro.cantidad) AS cantidadTotal
+                SUM(inventario_ordenretiro.cantidad) AS cantidadTotal
                 FROM inventario_insumo
-                INNER JOIN inventario_ordenRetiro 
-                ON inventario_insumo.id=inventario_ordenRetiro.insumo_id
+                INNER JOIN inventario_ordenretiro 
+                ON inventario_insumo.id=inventario_ordenretiro.insumo_id
                 INNER JOIN inventario_tipoinsumo
                 ON inventario_insumo.tipoinsumo_id=inventario_tipoinsumo.id
                 GROUP BY inventario_insumo.id
@@ -102,13 +102,15 @@ class TareasCompletadas(LoginRequiredNoRedirect, ViewSet):
     def list(self, request):
         ## filtrar por nulos fechaFin
         query = """
-            SELECT strftime('%B', fechaFin) AS name, COUNT(*) AS value
+            SELECT 
+            DATE_FORMAT(fechaFin, '%M') AS name,
+            COUNT(*) AS value
             FROM tarea_tarea
-            INNER JOIN tarea_ordenservicio
-            ON tarea_ordenservicio.tarea_id=tarea_tarea.id
-            WHERE strftime('%Y', fechaFin)=strftime('%Y', date('now'))
-            AND tarea_ordenservicio.estado="FINALIZADA"
-            GROUP BY name
+            INNER JOIN tarea_ordenservicio 
+            ON tarea_ordenservicio.id = tarea_tarea.ordenServicio_id
+            WHERE YEAR(fechaFin) = YEAR(CURDATE())
+            AND tarea_ordenservicio.estado = "FINALIZADA"
+            GROUP BY name;
         """
         with connection.cursor() as cursor:
             cursor.execute(query)
