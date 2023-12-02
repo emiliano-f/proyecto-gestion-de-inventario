@@ -25,3 +25,9 @@ __pycache__
 
 # migrations
 Backend/*/migrations/*
+
+# cert
+*.pem
+
+# env
+*.env

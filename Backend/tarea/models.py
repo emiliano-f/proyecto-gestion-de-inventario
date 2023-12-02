@@ -23,6 +23,8 @@ class Empleado(models.Model):
     categoria = models.CharField(max_length=15,
                                  choices=CategoriaScale.choices,
                                  default=CategoriaScale.CAT1)
+    created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
+    is_active = models.BooleanField(default=True)
 
 class Sector(models.Model):
     class EdificioScale(models.TextChoices):
@@ -38,6 +40,9 @@ class Sector(models.Model):
         choices= EdificioScale.choices
     )
     nombre = models.CharField(max_length=30)
+
+    class Meta:
+        unique_together = ('edificio', 'nombre')
 
 class OrdenServicio(models.Model):
 
@@ -59,10 +64,9 @@ class OrdenServicio(models.Model):
         RECHAZADA = "RECHAZADA"
         APROBADA = "APROBADA"
 
-
     id = models.AutoField(primary_key=True)
-    usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING, null=True)
-    tarea = models.ForeignKey("tarea.Tarea", verbose_name=(""), on_delete=models.DO_NOTHING, null=True)
+    # cuando se quite null=True, modificar required=True en OrdenServicioUsuarioSerializer
+    usuario = models.ForeignKey("usuario.Usuario", verbose_name=("Id del usuario"), on_delete=models.DO_NOTHING, blank=True)
     fechaGeneracion = models.DateField(auto_now=True)
     descripcion = models.CharField(max_length=255, null=True)
     fechaNecesidad = models.DateField(
@@ -87,6 +91,31 @@ class OrdenServicio(models.Model):
         default= StatusScale.EN_ESPERA
     )
     sector = models.ForeignKey(Sector, on_delete=models.DO_NOTHING)
+    is_active = models.BooleanField(default=True)
+
+    def clean(self, nuevo_estado):
+
+        # status progression
+        if self.estado == self.StatusScale.FINALIZADA:
+            if nuevo_estado != self.StatusScale.FINALIZADA:
+                raise Exception('Orden de servicio finalizada, no se puede cambiar el estado')
+        elif self.estado == self.StatusScale.EN_PROGRESO:
+            if nuevo_estado in [self.StatusScale.EN_ESPERA, 
+                                self.StatusScale.APROBADA, 
+                                self.StatusScale.RECHAZADA]:
+                raise Exception('Orden de servicio en progreso, solo puede finalizarse')
+        elif self.estado == self.StatusScale.RECHAZADA:
+            if nuevo_estado in [self.StatusScale.EN_PROGRESO, 
+                                self.StatusScale.FINALIZADA]: 
+                raise Exception('Orden de servicio en rechazada, debe aprobarse si se desea asignar a tarea')
+        elif self.estado == self.StatusScale.APROBADA:
+            if nuevo_estado == self.StatusScale.FINALIZADA: 
+                raise Exception('Orden de servicio aprobada, debe realizarse antes de finalizarla')
+        elif self.estado == self.StatusScale.EN_ESPERA:
+            if nuevo_estado in [self.StatusScale.EN_PROGRESO, 
+                                self.StatusScale.FINALIZADA]: 
+                raise Exception('Orden de servicio en espera, debe aprobarse o rechazarse')
+
     
 class EncuestaSatisfaccion(models.Model):
     class SatisfactionScale(models.TextChoices):
@@ -142,6 +171,7 @@ class Tarea(models.Model):
     id = models.AutoField(primary_key=True)
     empleados = models.ManyToManyField(Empleado, through='Tiempo', blank=True)
     #legajo = models.IntegerField(unique=True)
+    ordenServicio = models.ForeignKey(OrdenServicio, on_delete=models.DO_NOTHING)
     tipo = models.CharField(
         max_length=15,
         choices=TypeScale.choices,
@@ -168,7 +198,8 @@ class Tarea(models.Model):
             max_length=15,
             choices=ClassificationScale.choices
     )
-    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
+    is_active = models.BooleanField(default=True)
 
 class Tiempo(models.Model):
 
@@ -193,3 +224,4 @@ class Tiempo(models.Model):
             choices=CategoryScale.choices,
             default=CategoryScale.NO
     )
+    created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)

@@ -6,11 +6,13 @@ class StatusScale(models.TextChoices):
     EN_USO = 'En uso'
     EN_REPARACION = 'En reparación'
     MAL_ESTADO = 'En mal estado'
+    ELIMINADA = 'Eliminada'
 
 class TipoHerramienta(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=32, unique=True)
     descripcion = models.CharField(max_length=256, null=True)
+    created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
 
     def __str__(self):
         texto = "{0}"
@@ -18,14 +20,15 @@ class TipoHerramienta(models.Model):
 
 class Herramienta(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=32, unique=True)
+    nombre = models.CharField(max_length=32)
     tipoHerramienta = models.ForeignKey(TipoHerramienta, on_delete=models.DO_NOTHING)
     codigo = models.CharField(max_length=16, unique=True, null=True)
 
     fechaAlta = models.DateField(auto_now_add=True)
     observaciones = models.CharField(max_length=255, null=True)
     estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)
-    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         texto = "{0} [{1}]"
@@ -39,4 +42,4 @@ class EstadoHerramienta(models.Model):
     fecha = models.DateField(auto_now_add=True)
     estado = models.CharField(max_length=16, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)
     observaciones = models.CharField(max_length=255, null=True)
-    userAuth = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True)
+    created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
