@@ -47,33 +47,32 @@ class TareaCommonLogic:
 
     # forgive me, God, this aberration, but I'm in a hurry and I'm drunk
     def update_insumos(insumos_data, tarea, user):
-        ordenes_retiro = inventario_models.OrdenRetiro.objects.filter(tarea=tarea):
-        for insumo_data in insumos_data:
-            # get orden with insumo
-            insumo_existent = ordenes_retiro.filter(insumo=insumo_data['id']).first()
+        for orden_retiro in inventario_models.OrdenRetiro.objects.filter(tarea=tarea):
+            for insumo_data in insumos_data:
+                insumo_data_cant = int(insumo_data['id'])
+                if orden_retiro.insumo.id == insumo_data_cant:
+                    if insumo_data_cant == 0:
+                        # return insumos
+                        orden_retiro.insumo.cantidad += orden_retiro.cantidad
+                        orden_retiro.insumo.save()
+                        # delete orden
+                        orden_retiro.delete()
 
-            if insumo_existent is None:
-                # create order
-                insumo_data['tarea'] = tarea_pk
-                InventarioCommonLogic.create_orden_retiro(insumo_data, user)
-            else: 
-                insumo_data_cant = int(insumo_data['cantidad'])
-                if insumo_data_cant == 0:
-                    # return insumos
-                    insumo_existent.insumo.cantidad += insumo_existent.cantidad
-                    insumo_existent.insumo.save()
-                    # delete orden
-                    insumo_existent.delete()
+                    elif insumo_data_cant != insumo_existent.cantidad:
+                        # update quantities
+                        diff = orden_retiro.cantidad - insumo_data_cant
+                        orden_retiro.cantidad = insumo_data_cant
+                        orden_retiro.insumo.cantidad += diff
 
-                elif insumo_data_cant != insumo_existent.cantidad:
-                    # update quantities
-                    diff = insumo_existent.cantidad - insumo_data_cant
-                    insumo_existent.cantidad = insumo_data_cant
-                    insumo_existent.insumo.cantidad += diff
+                        # validate and check
+                        orden_retiro.save(created_by=user)
+                        orden_retiro.insumo.save()
+                    
+                    insumos_data.remove(insumo_data)
+                    break
 
-                    # validate and check
-                    insumo_existent.save(created_by=user)
-                    insumo_existent.insumo.save()
+        # create orden for new insumos
+        TareaCommonLogic.create_entry_insumos(insumos_data, tarea.id, user)
 
     def create_empleados_relation(empleados_data, tarea_pk, user):
         for empleado in empleados_data:
