@@ -1,9 +1,10 @@
 from datetime import date
 from django.core.validators import MinValueValidator
 from django.db import models
+from settings.common_class import CommonModel
 from usuario.models import Usuario
 
-class Empleado(models.Model):
+class Empleado(CommonModel):
     dni = models.IntegerField(unique=True)
     nombre = models.CharField(max_length=255)
     apellido = models.CharField(max_length=255)
@@ -24,7 +25,6 @@ class Empleado(models.Model):
                                  choices=CategoriaScale.choices,
                                  default=CategoriaScale.CAT1)
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
-    is_active = models.BooleanField(default=True)
 
 class Sector(models.Model):
     class EdificioScale(models.TextChoices):
@@ -44,7 +44,7 @@ class Sector(models.Model):
     class Meta:
         unique_together = ('edificio', 'nombre')
 
-class OrdenServicio(models.Model):
+class OrdenServicio(CommonModel):
 
     class CaracterScale(models.TextChoices):
         CRITICO = "CRITICO"
@@ -91,7 +91,6 @@ class OrdenServicio(models.Model):
         default= StatusScale.EN_ESPERA
     )
     sector = models.ForeignKey(Sector, on_delete=models.DO_NOTHING)
-    is_active = models.BooleanField(default=True)
 
     def clean(self, nuevo_estado):
 
@@ -144,7 +143,7 @@ class EncuestaSatisfaccion(models.Model):
     )
     observaciones = models.CharField(max_length=255, null=True)
 
-class Tarea(models.Model):
+class Tarea(CommonModel):
 
     class TypeScale(models.TextChoices):
         PREVENTIVO = "Preventivo"
@@ -199,7 +198,6 @@ class Tarea(models.Model):
             choices=ClassificationScale.choices
     )
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
-    is_active = models.BooleanField(default=True)
 
 class Tiempo(models.Model):
 

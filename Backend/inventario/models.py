@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from settings.common_class import CommonModel
 from usuario.models import Usuario
 from tarea.models import Tarea
 
@@ -17,7 +18,7 @@ class TipoInsumo(models.Model):
         texto = "{0}"
         return texto.format(self.nombre)
 
-class Insumo(models.Model):
+class Insumo(CommonModel):
 
     class MeasuresScale(models.TextChoices):
         METRO = 'Metro'
@@ -35,7 +36,6 @@ class Insumo(models.Model):
     puntoReposicion = models.IntegerField(validators=[MinValueValidator(0, message='El valor no puede ser menor a cero')],
                                           null=True)
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
-    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         texto = "{0} ({1})"
@@ -49,7 +49,7 @@ class Insumo(models.Model):
         else:
             raise Exception("Acción desconocida sobre cantidad")
 
-class OrdenRetiro(models.Model):
+class OrdenRetiro(CommonModel):
     id = models.AutoField(primary_key=True)
     insumo = models.ForeignKey(Insumo, on_delete=models.DO_NOTHING)
     tarea = models.ForeignKey(Tarea, on_delete=models.DO_NOTHING, related_name='insumos_retirados')
@@ -61,7 +61,7 @@ class OrdenRetiro(models.Model):
         texto = "{0} ({1})"
         return texto.format(self.id, self.cantidad)
 
-class AjusteStock(models.Model):
+class AjusteStock(CommonModel):
 
     id = models.AutoField(primary_key=True)
     insumo = models.ForeignKey(Insumo, on_delete=models.DO_NOTHING)

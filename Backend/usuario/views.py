@@ -66,6 +66,10 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     def update(self, request, *args, **kwargs):
         try:
             user_instance = self.get_object()
+
+            if not user_instance.is_active:
+                raise ObjectDoesNotExist()
+
             user_serializer = self.get_serializer(user_instance, data=request.data, partial=True)
             user_serializer.is_valid(raise_exception=True)
             self.perform_update(user_serializer)
