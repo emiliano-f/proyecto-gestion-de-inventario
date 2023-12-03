@@ -274,10 +274,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
             # check and create tarea
             serializer_tarea = serializer.TareaSerializer(data=to_create)
-            print(serializer_tarea.initial_data,"\n")
             serializer_tarea.is_valid(raise_exception=True)
-            print(serializer_tarea.validated_data,"\n")
-            tarea = serializer_tarea.save(created_by=request.user)
+            tarea = serializer_tarea.save(created_by=request.user,is_active=True)
                
             # create empleados relation (Tiempo)
             TareaCommonLogic.create_empleados_relation(empleados_data, tarea.id, request.user)
