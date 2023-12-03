@@ -9,7 +9,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 from rest_framework import viewsets, status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from settings.common_class import LoginRequiredNoRedirect
@@ -23,11 +23,11 @@ import string
 
 class CustomModelViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+    permission_classes = [IsAdminUser]
 
 class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     serializer_class = serializer.UsuarioSerializer
     queryset = models.Usuario.objects.all()
-    permission_classes = [DjangoModelPermissions]
 
     def get_serializer_class(self):
         if self.action in ['list', 'retrieve', 'update', 'delete']:

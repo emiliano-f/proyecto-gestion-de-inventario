@@ -2,6 +2,7 @@ from django.db import transaction
 from settings.common_class import LoginRequiredNoRedirect
 from rest_framework import viewsets
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from . import serializer
@@ -9,6 +10,7 @@ from . import models
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+    permission_classes = [IsAdminUser]
 
 class InventarioCommonLogic:
     def create_orden_retiro(data, user):
@@ -43,6 +45,7 @@ class TipoInsumoCRUD(CustomModelViewSet):
         return 'tipoinsumo'
 
 class InsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'insumo'
@@ -91,6 +94,7 @@ class InsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'ordenretiro'
@@ -142,6 +146,7 @@ class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class AjusteStockCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'ajustestock'

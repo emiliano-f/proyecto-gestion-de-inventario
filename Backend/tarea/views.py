@@ -6,6 +6,7 @@ from inventario.views import InventarioCommonLogic
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from settings.common_class import LoginRequiredNoRedirect
@@ -18,6 +19,7 @@ import json
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+    permission_classes = [IsAdminUser]
 
 class TareaCommonLogic:
     def update_herramientas(herramientas_data, tarea, status=None):
@@ -198,6 +200,7 @@ class EncuestaSatisfaccionCRUD(CustomModelViewSet):
         return 'encuestasatisfaccion'
 
 class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'tarea'
@@ -370,6 +373,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'ordenservicio'
@@ -443,6 +447,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class SectorListCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
     def __table__():
         return 'sector'
 
