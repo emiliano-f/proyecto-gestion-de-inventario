@@ -1,5 +1,5 @@
 import "./header.scss"
-import { Button, Col, Container, Dropdown, ListGroup, ListGroupItem, Popover, PopoverBody, PopoverHeader, Row } from "react-bootstrap";
+import { Button, ButtonGroup, Col, Container, Dropdown, ListGroup, ListGroupItem, Popover, PopoverBody, PopoverHeader, Row } from "react-bootstrap";
 
 import { Logout, WhoAmI } from "../../../Api/apiService";
 
@@ -7,6 +7,7 @@ import { useAuthData } from "../../providerComponents/authProvider/AuthProvider"
 import { setMessage } from "../../providerComponents/messageDisplay/MessageDisplay";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
 
 function UserDropDown(){
   const [authData,setAuthData] = useAuthData();
@@ -35,42 +36,35 @@ function UserDropDown(){
   }
   return (
     <>
-    <Dropdown>
-      <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" split>
-            <div className="user">
-              <img src="https://freesvg.org/img/abstract-user-flat-4.png" alt="" />
-              <span>{authData['username']}</span>
-            </div>
-      </Dropdown.Toggle>  
+    <Dropdown as={ButtonGroup} drop="start">
+      <Button className="user" variant="secondary">
+        <img src="https://freesvg.org/img/abstract-user-flat-4.png" alt="" />
+        <span>{authData['username']}</span>
+      </Button>
+      <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic"/>
       <Dropdown.Menu>
-        <Container>
-          <div className="fields">
-            <Row>
-              <Col>
-              <ListGroup>
-                <ListGroupItem>
-                  <span className="header">Nombre de usuario:</span>
-                  <span className="content">{authData['username']}</span>
-                </ListGroupItem>
-                <ListGroupItem>
-                  <span className="header">Correo:</span>
-                  <span className="content">{authData['email']}</span>
-                </ListGroupItem>
-                <ListGroupItem>
-                  <span className="header">Rol:</span>
-                  <span className="content">{authData['rol']}</span>
-                </ListGroupItem>
-              </ListGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Button variant="warning" onClick={()=>{nav("/nueva-contraseña")}}>Cambiar Contraseña</Button>
-            </Row>
-            <Row>
-              <Button variant="danger" onClick={handleLogout}>Cerrar sesión</Button>
-            </Row>
-          </div>
-        </Container>
+      <div className="fields">
+          <ListGroup>
+            <ListGroupItem>
+              <span className="header">Nombre de usuario:</span>
+              <span className="content">{authData['username']}</span>
+            </ListGroupItem>
+            <ListGroupItem>
+              <span className="header">Correo:</span>
+              <span className="content">{authData['email']}</span>
+            </ListGroupItem>
+            <ListGroupItem>
+              <span className="header">Rol:</span>
+              <span className="content">{authData['rol']}</span>
+            </ListGroupItem>
+            <ListGroupItem>
+            <Button variant="warning" onClick={()=>{nav("/nueva-contraseña")}}>Cambiar Contraseña</Button>  
+            </ListGroupItem>
+            <ListGroupItem>
+            <Button variant="danger" onClick={handleLogout}>Cerrar sesión</Button>
+            </ListGroupItem>
+          </ListGroup>    
+        </div>
       </Dropdown.Menu>
     
     </Dropdown>
