@@ -89,13 +89,12 @@ class InsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def destroy(self, request, pk):
         try:
             insumo = models.Insumo.objects.get(id=pk)
+            insumo.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except IntegrityError:
             return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-        insumo.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     permission_classes = [IsAdminUser]

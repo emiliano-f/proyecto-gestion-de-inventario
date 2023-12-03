@@ -1,8 +1,8 @@
 enum SIZE {
-    ID = 50,
-    VERYTINY = 100,
-    TINY = 150,
-    SMALL = 200,
+    ID = 25,
+    VERYTINY = 50,
+    TINY = 100,
+    SMALL = 150,
     MEDIUM = 250,
     BIG = 350,
 }
