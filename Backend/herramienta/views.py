@@ -41,6 +41,16 @@ class TipoHerramientaCRUD(CustomModelViewSet):
         except Exception as e:
             return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    def destroy(self, request, pk):
+        try:
+            tipo_herramienta = models.TipoHerramienta.objects.get(id=pk)
+            tipo_herramienta.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except IntegrityError:
+            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
     def __table__():
         return 'tipoherramienta'
 
