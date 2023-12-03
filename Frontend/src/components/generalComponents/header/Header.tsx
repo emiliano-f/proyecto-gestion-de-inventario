@@ -58,7 +58,10 @@ function UserDropDown(){
               <Col><div className="content">{authData['rol']}</div></Col>
             </Row>
             <Row>
-              <Button variant="danger" onClick={handleLogout}>Logout</Button>
+              <Button variant="warning" onClick={()=>{nav("/nueva-contraseña")}}>Cambiar Contraseña</Button>
+            </Row>
+            <Row>
+              <Button variant="danger" onClick={handleLogout}>Cerrar sesión</Button>
             </Row>
           </div>
         </Container>

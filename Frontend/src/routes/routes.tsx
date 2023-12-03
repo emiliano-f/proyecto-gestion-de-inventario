@@ -4,13 +4,13 @@ import Login from "../pages/login/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import ServiceForm from "../pages/serviceRequest/ServiceRequest"
 import NotFound from "../pages/notFound/NotFound";
+import ChangePassword from "../pages/ChangePassword/ChangePassword.tsx"
 
 import MainResume from "../components/resumeComponents/MainResume";
 import List from "../components/CRUDComponents/listComponentes/listEntity/List.tsx";
 import ListByEntity from "../components/CRUDComponents/listComponentes/listByEntity/ListByEntity.tsx";
 import Detail from "../components/CRUDComponents/detailEntity/Detail.tsx";
 import TaskForm from "../components/CRUDComponents/createComponents/taskForm/TaskForm.tsx";
-
 import SECTIONS from "../data/SECTIONS.tsx";
 
 /**
@@ -93,6 +93,10 @@ const routes = [
   {
     path: "/orden-servicio/generate",
     element: <ServiceForm />
+  },
+  {
+    path:"/nueva-contraseña",
+    element: <ChangePassword/>
   },
   {
     path: "*",
