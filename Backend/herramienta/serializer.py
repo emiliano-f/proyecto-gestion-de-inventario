@@ -9,7 +9,7 @@ class TipoHerramientaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.TipoHerramienta
-        fields = '__all__'
+        exclude = ['created_by']
 
 class HerramientaSerializer(serializers.ModelSerializer):
     """
@@ -18,7 +18,7 @@ class HerramientaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Herramienta
-        fields = '__all__'
+        exclude = ['is_active','created_by']
 
 class HerramientaJoinedSerializer(HerramientaSerializer):
     """
@@ -36,7 +36,8 @@ class EstadoHerramientaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.EstadoHerramienta
-        fields = '__all__'
+        exclude = ['created_by']
+        
 
 class EstadoHerramientaJoinedSerializer(EstadoHerramientaSerializer):
     """

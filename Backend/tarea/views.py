@@ -55,7 +55,7 @@ class TareaCommonLogic:
     def update_insumos(insumos_data, tarea, user):
         for orden_retiro in inventario_models.OrdenRetiro.objects.filter(tarea=tarea):
             for insumo_data in insumos_data:
-                insumo_data_cant = int(insumo_data['id'])
+                insumo_data_cant = int(insumo_data['insumo'])
                 if orden_retiro.insumo.id == insumo_data_cant:
                     if insumo_data_cant == 0:
                         # return insumos
@@ -64,7 +64,7 @@ class TareaCommonLogic:
                         # delete orden
                         orden_retiro.delete()
 
-                    elif insumo_data_cant != insumo_existent.cantidad:
+                    elif insumo_data_cant != orden_retiro.cantidad:
                         # update quantities
                         diff = orden_retiro.cantidad - insumo_data_cant
                         orden_retiro.cantidad = insumo_data_cant
@@ -352,9 +352,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             TareaCommonLogic.update_herramientas(herramientas_data, tarea)
             # update empleados relation (Tiempo)
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
-            
             # update insumos
-            TareaCommonLogic.update_insumos(insumos_data, tarea.id, request.user)
+            TareaCommonLogic.update_insumos(insumos_data, tarea, request.user)
             
             # update orden servicio
             if tarea.fechaFin is not None:
