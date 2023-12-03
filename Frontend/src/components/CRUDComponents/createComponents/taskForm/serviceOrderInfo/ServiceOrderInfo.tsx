@@ -13,13 +13,21 @@ type Props = {
 
 
 export const ServiceOrderInfo = (props:Props) => {
-    console.log(props.serviceOrder)
+    //console.log(props.serviceOrder)
     /**
      * Cambia el estado de la orden de servicio 
      */
     const changeStatus = (state) => {
         UpdateItem("ordenes-servicio",{
-            
+            categoria: props.serviceOrder["categoria"],
+            comentario: props.serviceOrder["comentario"],
+            descripcion: props.serviceOrder["descripcion"],
+            estado: state,
+            fechaGeneracion: props.serviceOrder["fechaGeneracion"],
+            fechaNecesidad: props.serviceOrder["fechaNecesidad"],
+            prioridad: props.serviceOrder["prioridad"],
+            sector: props.serviceOrder["sectorID"],
+            usuario: props.serviceOrder["usuarioID"],
         },props.serviceOrder["id"])
         .then((response)=>{})
         .catch((error)=>{setMessage("Se produjo un error al cambiar el estado de la Orden de servicio.",error)})
