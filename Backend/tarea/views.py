@@ -266,7 +266,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
                 orden_servicio_pk = [];
 
             orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
-        
+
             # check previous tarea
             for tarea_iter in models.Tarea.objects.filter(ordenServicio=orden_servicio_model):
                 if tarea_iter.is_active:
@@ -274,8 +274,9 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
             # check and create tarea
             serializer_tarea = serializer.TareaSerializer(data=to_create)
+            print(serializer_tarea.initial_data,"\n")
             serializer_tarea.is_valid(raise_exception=True)
-            
+            print(serializer_tarea.validated_data,"\n")
             tarea = serializer_tarea.save(created_by=request.user)
                
             # create empleados relation (Tiempo)
