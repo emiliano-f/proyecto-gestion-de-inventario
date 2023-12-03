@@ -40,10 +40,40 @@ class TareaCommonLogic:
             ## create estado entry
             HerramientaCommonLogic.create_estado_entry(herramienta)
 
-    def update_insumos(insumos_data, tarea_pk, user):
+    def create_entry_insumos(insumos_data, tarea_pk, user):
         for insumo_data in insumos_data:
             insumo_data['tarea'] = tarea_pk
             InventarioCommonLogic.create_orden_retiro(insumo_data, user)
+
+    # forgive me, God, this aberration, but I'm in a hurry and I'm drunk
+    def update_insumos(insumos_data, tarea, user):
+        ordenes_retiro = inventario_models.OrdenRetiro.objects.filter(tarea=tarea):
+        for insumo_data in insumos_data:
+            # get orden with insumo
+            insumo_existent = ordenes_retiro.filter(insumo=insumo_data['id']).first()
+
+            if insumo_existent is None:
+                # create order
+                insumo_data['tarea'] = tarea_pk
+                InventarioCommonLogic.create_orden_retiro(insumo_data, user)
+            else: 
+                insumo_data_cant = int(insumo_data['cantidad'])
+                if insumo_data_cant == 0:
+                    # return insumos
+                    insumo_existent.insumo.cantidad += insumo_existent.cantidad
+                    insumo_existent.insumo.save()
+                    # delete orden
+                    insumo_existent.delete()
+
+                elif insumo_data_cant != insumo_existent.cantidad:
+                    # update quantities
+                    diff = insumo_existent.cantidad - insumo_data_cant
+                    insumo_existent.cantidad = insumo_data_cant
+                    insumo_existent.insumo.cantidad += diff
+
+                    # validate and check
+                    insumo_existent.save(created_by=user)
+                    insumo_existent.insumo.save()
 
     def create_empleados_relation(empleados_data, tarea_pk, user):
         for empleado in empleados_data:
@@ -225,7 +255,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             TareaCommonLogic.update_herramientas(herramientas_data, tarea, herramienta_models.StatusScale.EN_USO)
             
             # update insumos
-            TareaCommonLogic.update_insumos(insumos_data, tarea.id, request.user)
+            TareaCommonLogic.create_entry_insumos(insumos_data, tarea.id, request.user)
             
             # update orden servicio
             tarea.ordenServicio = orden_servicio_model
@@ -297,7 +327,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
 
             # update insumos
-            TareaCommonLogic.update_insumos(insumos_data, tarea.id, request.user)
+            TareaCommonLogic.update_insumos(insumos_data, tarea, request.user)
 
             # update orden servicio
             if tarea.fechaFin is not None:
