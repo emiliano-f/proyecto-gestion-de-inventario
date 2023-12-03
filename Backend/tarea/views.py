@@ -22,7 +22,9 @@ class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
 class TareaCommonLogic:
     def update_herramientas(herramientas_data, tarea, status=None):
         # update herramientas and estado
+        
         for herramienta_data in herramientas_data:
+            
             
             ## update herramienta
             herramienta = herramienta_models.Herramienta.objects.get(id=int(herramienta_data['herramienta']))
@@ -65,10 +67,11 @@ class TareaCommonLogic:
     def update_empleados_relation(empleados_data, tarea_pk, user):
         tarea_empleados = models.Tiempo.objects.filter(tarea=tarea_pk).all()
         new_empleados = []
-
+        
         # update empleados
         for empleado in empleados_data:
-            tiempo_model = next((model for model in tarea_empleados if model.empleado == empleado['id']), None)
+            print(empleado)
+            tiempo_model = next((model for model in tarea_empleados if model.empleado == empleado['empleado']), None)
             if tiempo_model is None:
                 new_empleados.append(empleado)
             else:
@@ -284,24 +287,23 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def update(self, request, pk):
         try:
             tarea_update_data = request.data.copy()
-            herramientas_data = tarea_update_data.pop('herramientas', [])
-            empleados_data = tarea_update_data.pop('empleados', [])
-            insumos_data = tarea_update_data.pop('retiros_insumos', [])
+            herramientas_data = json.loads(tarea_update_data.pop('herramientas', [])[0])
+            empleados_data = json.loads(tarea_update_data.pop('empleados', [])[0])
+            insumos_data = json.loads(tarea_update_data.pop('retiros_insumos', [])[0])
 
             tarea = models.Tarea.objects.get(id=pk)
             tarea_serializer = serializer.TareaSerializer(tarea, data=tarea_update_data)
             tarea_serializer.is_valid(raise_exception=True)
             tarea_serializer.save()
-
+            
             # update herramientas and estado
             TareaCommonLogic.update_herramientas(herramientas_data, tarea)
-
             # update empleados relation (Tiempo)
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
-
+            
             # update insumos
             TareaCommonLogic.update_insumos(insumos_data, tarea.id, request.user)
-
+            
             # update orden servicio
             if tarea.fechaFin is not None:
                 tarea.ordenServicio.estado = models.OrdenServicio().StatusScale.FINALIZADA

@@ -28,16 +28,19 @@ const AddEntityAmount2 = (props:Props) =>{
     const handleAddEnt =()=>{
         props.setEntList(prevState => [...prevState, { [props.entityName]: '' }]);
     }
-    const entListString: string[] = Object.values(props.entList).map(item => item[props.entityName]);
 
-    const [amounts, setAmounts] = useState(props.entList.map(x => x[props.amountTitle] || ""));
+    
+    const entListString: string[] = Object.values(props.entList).map(item => item[props.entityName]);
+    
+
+    const [amounts, setAmounts] = useState(props.entList.map(x => x[props.amountTitle] || ""));    
 
     const [amounts2, setAmounts2] = useState(props.entList.map(x => x[props.amountTitle2] || ""));
 
     useEffect(() => {
         // Actualizar el estado local cuando props.entList cambie
         setAmounts(props.entList.map(x => x[props.amountTitle] || ""));
-        setAmounts(props.entList.map(x => x[props.amountTitle2] || ""));
+        setAmounts2(props.entList.map(x => x[props.amountTitle2] || ""));
     }, [props.entList]);
 
 
