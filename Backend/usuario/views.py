@@ -35,7 +35,6 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
         if self.action in ['list', 'retrieve', 'update', 'delete']:
             return serializer.UsuarioSerializerNoPassword
         return serializer.UsuarioSerializer
-
    
     @transaction.atomic
     def create(self, request):
