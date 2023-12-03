@@ -32,7 +32,7 @@ export const ACTIONS: Record<string, any> ={
         delete: true,
     },
     "ordenes-retiro": {
-        add: true,
+        add: false,
         detail: true,
         stockAdj: false,
         update: true,
