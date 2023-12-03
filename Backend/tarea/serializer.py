@@ -72,7 +72,7 @@ class TareaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Tarea
-        fields = '__all__'
+        exclude = ['is_active','created_by']
 
 class TareaJoinedSerializer(TareaSerializer):
     empleados = EmpleadoSerializer(many=True, required=False)

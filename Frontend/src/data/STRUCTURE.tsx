@@ -657,15 +657,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 required: false,
                 select: false,
             },
-            "is_active": {
-                editable: false,
-                show: false,
-                name: "Está Activo",
-                type: "boolean",
-                col_size: SIZE.TINY,
-                required: false,
-                select: false,
-            },
             "date_joined": {
                 editable: false,
                 show: true,
