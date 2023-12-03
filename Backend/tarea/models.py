@@ -1,9 +1,10 @@
 from datetime import date
 from django.core.validators import MinValueValidator
 from django.db import models
+from settings.common_class import CommonModel
 from usuario.models import Usuario
 
-class Empleado(models.Model):
+class Empleado(CommonModel):
     dni = models.IntegerField(unique=True)
     nombre = models.CharField(max_length=255)
     apellido = models.CharField(max_length=255)
@@ -44,7 +45,7 @@ class Sector(models.Model):
     class Meta:
         unique_together = ('edificio', 'nombre')
 
-class OrdenServicio(models.Model):
+class OrdenServicio(CommonModel):
 
     class CaracterScale(models.TextChoices):
         CRITICO = "CRITICO"
@@ -144,7 +145,7 @@ class EncuestaSatisfaccion(models.Model):
     )
     observaciones = models.CharField(max_length=255, null=True)
 
-class Tarea(models.Model):
+class Tarea(CommonModel):
 
     class TypeScale(models.TextChoices):
         PREVENTIVO = "Preventivo"
