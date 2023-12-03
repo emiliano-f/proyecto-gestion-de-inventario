@@ -22,7 +22,11 @@ import AddEntityAmount2 from "./addEntityAmount2/AddEntityAmount2";
 type Props = {
     action: "create" | "update",
 }
-
+/**
+ * Componente utilizado para gestionar el ciclo de vida de una Tarea. Acompaña información de la orden de servicio.
+ * @param props prop1 action: ["create"] | ["update"]
+ * @returns
+ */
 const TaskForm = (props:Props) => {
     const entityName = "tareas";
     // Para obtener y manejar la información de la orden de servicio
@@ -40,7 +44,7 @@ const TaskForm = (props:Props) => {
         herramientas: Array<{ id: number }>;
         ordenServicio: number;
     }
-
+    // Estado que almacena la tarea correspondiente
     const [task, setTask] = useState<Task | null>(null);
     // Para validación de campos
     const [validated, setValidated] = useState(false);
@@ -85,7 +89,7 @@ const TaskForm = (props:Props) => {
         }
     }, [task]);
 
-    
+    // Busca la orden de servicio correspondiente al Crear una Tarea
     if (props.action==="create") {
         ReadItem(setServiceOrder, "ordenes-servicio")
             .then((response) => console.log(response))
@@ -94,7 +98,10 @@ const TaskForm = (props:Props) => {
             }); 
     }
     
-    
+    /**
+     * Crea la tarea con la información del Form
+     * @param formData formulario con información de la tarea
+     */
     const createItem = (formData: FormData | string) => {
         Create("tareas", formData)
             .then(() => {
@@ -105,7 +112,11 @@ const TaskForm = (props:Props) => {
             })
             
     }
-
+    /**
+     * Actualiza la tarea con la información del Form
+     * @param formData formulario con información de la tarea
+     * @param id identificador de la tarea
+     */
     const updateItem = (formData: FormData, id:number) => {
         Update("tareas", formData, id.toString())
             .then(() => {
@@ -115,7 +126,11 @@ const TaskForm = (props:Props) => {
                 setMessage(`Ha surgido un error al modificar la Tarea.`, error)
             })
     }
-
+    /**
+     * Maneja el submit para Crear/Actualizar/Finalizar tarea
+     * @param form Formulario extraído del Form
+     * @param newForm Formulario nuevo, el cual contendrá toda la información necesaria para procesar la información de la tarea
+     */
     const handleSubmit2 = (form: HTMLFormElement, newForm: FormData) => {
         const formData = newForm;
         if (props.action === "create") {
@@ -156,7 +171,10 @@ const TaskForm = (props:Props) => {
         }
         
     }
-
+    /**
+     * Maneja el submit para Crear/Actualizar tarea
+     * @param e Evento generado al hacer submit en el Form
+     */
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
@@ -172,10 +190,18 @@ const TaskForm = (props:Props) => {
         setValidated(true);
     };
 
+    /**
+     * Maneja el completado de una tarea
+     * @param e Evento generado al hacer click en el botón "Finalizar tarea"
+     */
     const completeTask = (e: React.MouseEvent<HTMLButtonElement>) => {
 
         const form = e.currentTarget.closest('form') as HTMLFormElement | null;
-        if (form){
+        const fechaInicio = document.querySelector('input[name="fechaInicio"]') as HTMLInputElement;
+        if (fechaInicio===null || fechaInicio.value==="") {
+            setMessage("Para finalizar la tarea, antes debe establecer una fecha de inicio.", null);
+        } 
+        else if (form) {
             const formData = new FormData();
             // Obtener valores de horas totales de empList
             const horasTotales = empList.map(emp => emp.horasTotales);
@@ -183,6 +209,7 @@ const TaskForm = (props:Props) => {
             const todasSonNumericas = horasTotales.every(horas => (horas !== "" && !isNaN(parseInt(horas))));
 
             if (todasSonNumericas) {
+                // Almacenamiento de la fecha actual, como "fechaFin"
                 const dateObject = new Date();
                 const month = dateObject.getMonth() + 1;
                 const year = dateObject.getFullYear();
@@ -192,9 +219,14 @@ const TaskForm = (props:Props) => {
                 handleSubmit2(form, formData)
                 setValidated(true);
             } else {
-                setMessage("Asignar horas totales a cada empleado", null);
+                setMessage("Antes de finalizar la tarea, asignar horas totales a cada empleado", null);
             }
-        }        
+        }
+
+        
+            
+        
+               
     };
     
     return (
@@ -209,11 +241,12 @@ const TaskForm = (props:Props) => {
                     <h1>Modificar tarea</h1>
                 )}
                 
+                
             </div>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Row className="mb-5">
                     {(serviceOrder) && (
-                        <ServiceOrderInfo serviceOrder={serviceOrder}></ServiceOrderInfo>
+                        <ServiceOrderInfo action={props.action} serviceOrder={serviceOrder}></ServiceOrderInfo>
                     )}
 
                 <Col className="task">
@@ -244,17 +277,18 @@ const TaskForm = (props:Props) => {
                     </Form.Group>
 
                     <Row className="mb-3">
-                        <Form.Group as={Col} controlId="taken">
-                            <Form.Label>Fecha Programada</Form.Label>
-                            <Form.Control name="fechaTentativa" type="date" required defaultValue={task ? (task["fechaTentativa"]) : ""}/>
-                            <Form.Control.Feedback type="invalid">
-                                Este campo es obligatorio
-                            </Form.Control.Feedback>
-                        </Form.Group>
+                        
                         <Form.Group as={Col} controlId="taken">
                             <Form.Label>Fecha de Inicio</Form.Label>
                             <Form.Control name="fechaInicio" type="date" defaultValue={task ? (task["fechaInicio"]) : ""} />
                         </Form.Group>
+                            <Form.Group as={Col} controlId="taken">
+                                <Form.Label>Fecha Tentativa</Form.Label>
+                                <Form.Control readOnly={props.action === "update"} name="fechaTentativa" type="date" required defaultValue={task ? (task["fechaTentativa"]) : ""} />
+                                <Form.Control.Feedback type="invalid">
+                                    Este campo es obligatorio
+                                </Form.Control.Feedback>
+                            </Form.Group>
                         <Form.Group as={Col} controlId="taken">
                             <Form.Label>Fecha de Finalización</Form.Label>
                             <Form.Control readOnly={true} name="fechaFin" type="date" defaultValue={task ? (task["fechaFin"]) : ""} />
@@ -271,8 +305,6 @@ const TaskForm = (props:Props) => {
                                 <AddEntity entList={herrList} setEntList={setHerrList} entityName="herramienta"/>
                             </Col>
                         </Row>
-
-                            
                              
                     </Col>
                 </Row>
