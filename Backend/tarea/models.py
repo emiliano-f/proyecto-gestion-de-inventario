@@ -25,7 +25,6 @@ class Empleado(CommonModel):
                                  choices=CategoriaScale.choices,
                                  default=CategoriaScale.CAT1)
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
-    is_active = models.BooleanField(default=True)
 
 class Sector(models.Model):
     class EdificioScale(models.TextChoices):
@@ -92,7 +91,6 @@ class OrdenServicio(CommonModel):
         default= StatusScale.EN_ESPERA
     )
     sector = models.ForeignKey(Sector, on_delete=models.DO_NOTHING)
-    is_active = models.BooleanField(default=True)
 
     def clean(self, nuevo_estado):
 
@@ -200,7 +198,6 @@ class Tarea(CommonModel):
             choices=ClassificationScale.choices
     )
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
-    is_active = models.BooleanField(default=True)
 
 class Tiempo(models.Model):
 

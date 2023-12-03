@@ -29,7 +29,6 @@ class Herramienta(CommonModel):
     observaciones = models.CharField(max_length=255, null=True)
     estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
-    is_active = models.BooleanField(default=True)
 
     class Meta:
         unique_together = ('nombre', 'codigo')
@@ -47,4 +46,3 @@ class EstadoHerramienta(CommonModel):
     estado = models.CharField(max_length=16, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)
     observaciones = models.CharField(max_length=255, null=True)
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
-    is_active = models.BooleanField(default=True)

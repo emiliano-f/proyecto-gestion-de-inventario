@@ -36,7 +36,6 @@ class Insumo(CommonModel):
     puntoReposicion = models.IntegerField(validators=[MinValueValidator(0, message='El valor no puede ser menor a cero')],
                                           null=True)
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
-    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         texto = "{0} ({1})"
@@ -57,7 +56,6 @@ class OrdenRetiro(CommonModel):
     cantidad = models.IntegerField(validators=[MinValueValidator(1, message='El valor no puede ser menor a uno')])
     fechaHora = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
-    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         texto = "{0} ({1})"
@@ -72,4 +70,3 @@ class AjusteStock(CommonModel):
     fecha = models.DateTimeField(auto_now=True)
     accionCantidad = models.CharField(max_length=6, choices=ActionScale.choices)
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
-    is_active = models.BooleanField(default=True)

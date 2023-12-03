@@ -12,7 +12,7 @@ class Usuario(AbstractUser):
     telefono = models.CharField(max_length=255, null=True)
     default_password = models.BooleanField(default=True)
 
-    def is_active(self, raise_exception=False):
+    def is_active_(self, raise_exception=False):
         if not self.is_active:
             if raise_exception:
                 raise ObjectDoesNotExist("Objeto no existe")
