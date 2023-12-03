@@ -63,7 +63,7 @@ class OrdenRetiroSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.OrdenRetiro
-        exclude = ['created_by']
+        exclude = ['is_active','created_by']
 
 class OrdenRetiroFkReplacedSerializer(OrdenRetiroSerializer):
     """
