@@ -2,20 +2,53 @@ import "./serviceOrderInfo.scss"
 import { Button, Col, Row } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form';
 import "./serviceOrderInfo.scss"
+import { UpdateItem } from "../../../../../Api/apiService";
+import { useEffect, useState } from "react";
 
-type Props = {
-    serviceOrder: any,
-    action: "update" | "create"
+interface Props {
+    serviceOrder: {
+        estado: string,
+        usuarioNombre: string,
+        usuarioApellido: string,
+        sector: string,
+        categoria: string,
+        descripcion: string,
+        prioridad: string,
+        fechaNecesidad: string,
+        comentario: string
+         
+    };
+    action: "update" | "create";
 }
 
 
 export const ServiceOrderInfo = (props:Props) => {
-    console.log(props.serviceOrder["estado"])
     /**
      * Cambia el estado de la orden de servicio 
      */
-    const changeStatus = () => {
+    const [status, setStatus] = useState(props.serviceOrder["estado"]);
+    const [serviceOrder, setServiceOrder] = useState(props.serviceOrder);
 
+    useEffect(() => {
+
+        setServiceOrder((prevServiceOrder) => ({
+            ...prevServiceOrder,
+            estado: status,
+        }));
+    }, [status]);
+
+    const changeStatusState = () => {
+        if (status === "EN_ESPERA" || status === "APROBADA") {
+            setStatus("RECHAZADA");
+        }
+        if (status === "RECHAZADA") {
+            setStatus("APROBADA");
+        }
+    }
+
+    const changeStatus = () => {
+        changeStatusState();
+        serviceOrder["estado"]=status;
     }
 
 
@@ -24,19 +57,16 @@ export const ServiceOrderInfo = (props:Props) => {
                 <div className="row">
                     <h4 className="col">Orden de servicio</h4>
                     
-                    {props.action === "create" && (props.serviceOrder["estado"] === "EN_ESPERA" || props.serviceOrder["estado"] === "APROBADA") && (
+                    {props.action === "create" && (status === "EN_ESPERA" || status === "APROBADA") && (
                         <Button className="btn btn-danger mx-2 col-4" onClick={changeStatus}>
                             Rechazar
                         </Button>
                     )}
-                    {props.action === "create" && props.serviceOrder["estado"] === "RECHAZADA" && (
+                {props.action === "create" && status === "RECHAZADA" && (
                         <Button className="btn btn-success mx-2 col-4" onClick={changeStatus}>
                             Aprobar
                         </Button>
                     )}
-                        
-                    
-                    
 
 
                 </div>
