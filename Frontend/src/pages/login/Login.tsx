@@ -23,9 +23,16 @@ function Login() {
           authenticated: true,
           username: r.data["username"],
           email: r.data["email"],
-          rol: r.data["rol"],
+          rol: r.data["rol"]
         });
-        nav("/")
+        if(r.data["default_password"]){
+          nav("/nueva-contraseña")
+        }
+        if(r.data["is_staff"]){
+          nav("/")
+        }else{
+          nav("/orden-servicio")
+        }
       })
       .catch((e)=>{
         setMessage("Error al cargar usuario",e)

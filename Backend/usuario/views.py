@@ -1,6 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User, Group
 from django.db import transaction
 from django.http import JsonResponse
@@ -27,6 +27,11 @@ class CustomModelViewSet(viewsets.ModelViewSet):
 class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     serializer_class = serializer.UsuarioSerializer
     queryset = models.Usuario.objects.all()
+
+    def get_serializer_class(self):
+        if self.action in ['list', 'update', 'delete']:
+            return serializer.UsuarioSerializerNoPassword
+        return serializer.UsuarioSerializer
 
     def list(self, request):
         usuarios = models.Usuario.objects.all()
@@ -59,6 +64,33 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
         except Exception as e:
             transaction.set_rollback(True)
             return Response({"error":str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        try:
+            user_instance = self.get_object()
+            user_serializer = self.get_serializer(user_instance, data=request.data, partial=True)
+            user_serializer.is_valid(raise_exception=True)
+            self.perform_update(user_serializer)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            user_instance = self.get_object()
+
+            # check if it is active
+            if not user_instance.is_active:
+                raise ObjectDoesNotExist('Usuario no encontrado para eliminación')
+
+            user_instance.is_active = False
+            user_instance.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e: 
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def __table__():
         return 'usuario'
@@ -109,7 +141,8 @@ class WhoAmIView(APIView):
 
     @staticmethod
     @csrf_exempt
-    def get(request,format=None):
+    def get(request, format=None):
+        print(request.user.password)
         if request.user.is_staff:
             rol = "Administrador" if request.user.is_superuser else "Staff"
         else:
@@ -117,4 +150,26 @@ class WhoAmIView(APIView):
         return JsonResponse({'username': request.user.username,
                              'id': request.user.id,
                              'email': request.user.email,
+                             'default_password': request.user.default_password,
+                             'is_staff': request.user.is_staff,
                              'rol': rol})
+
+class PasswordView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def post(request, format=None):
+        try:
+            if not check_password(request.data.get('password'), request.user.password):
+                raise Exception('Invalid current password')
+
+            request.user.password = make_password(request.data['new_password'])
+            request.user.default_password = False
+            request.user.save()
+            update_session_auth_hash(request, request.user)
+            return Response({'notice': 'password changed'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error":str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        return JsonResponse({'isAuthenticated': True})

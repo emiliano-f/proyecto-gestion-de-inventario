@@ -12,4 +12,5 @@ urlpatterns = [
     path('csrf/', views.get_csrf, name='crsf'),
     path('session/', views.SessionView.as_view(), name='session'),
     path('whoami/', views.WhoAmIView.as_view(), name='whoami'),
+    path('change_password/', views.PasswordView.as_view(), name='change-password')
 ]

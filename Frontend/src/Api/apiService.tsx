@@ -219,6 +219,20 @@ export function Login(formData: FormData): Promise<AxiosResponse<any, any>> {
     });
 }
 
+export function newPassword(formData: FormData): Promise<AxiosResponse<any, any>> {
+    return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
+        async function loginUser() {
+            await inventarioAPI.post('/usuario/change_password/', formData)
+                .then((response) => {
+                    
+                    resolve(response)
+                })
+                .catch((error) => (reject(error)))
+        }
+        loginUser();
+    });
+}
+
 export function WhoAmI() {
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         async function whoami() {

@@ -125,7 +125,7 @@ const ModalForm = (props: Props) => {
 
         }
         setValidated(true);
-    };
+    };  
 
     return (
         <>

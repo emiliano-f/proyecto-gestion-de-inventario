@@ -46,8 +46,18 @@ function CreateSelect({field,props}) {
 
 function CreateControl({field,props,setOpenStockAdj}) {
     return <>
-        <Form.Control
-            className="col"
+        {(field.type==="checkbox")?
+            <Form.Control
+            id="staffCheck"
+            className="checkbox"
+            name={field.field}
+            required={field.required}
+            type={field.type}
+            value={""}
+          />
+        :
+            <Form.Control
+            className={(field.type==="checkbox")?"checkbox":"col"}
             name={field.field}
             required={field.required}
             type={field.type}
@@ -62,6 +72,7 @@ function CreateControl({field,props,setOpenStockAdj}) {
                     (props.row[field.field]) : ("")
             }
         />
+        }
         {
             props.formType === FormType.UPDATE && field.field === "cantidad" &&
             props.slug === "insumos" && <div className="col-3">
@@ -112,6 +123,10 @@ const ModalForm = (props: Props) => {
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
+        const check = document.getElementById("staffCheck");
+        if(check!==null){
+            formData.append("is_staff:",check.checked);
+        }
         console.log(formData)
         if (form.checkValidity() === false) {
             e.stopPropagation();
@@ -139,24 +154,28 @@ const ModalForm = (props: Props) => {
                         {props.fields
                             .filter(item => item.editable == true)
                             .map((field, index) => (
-                                <Form.Group className="form-group" key={index}>
-                                    <Form.Label>{field.headerName}</Form.Label>
-                                    <div className="row g-2">{
-                                        field.select ? (
-                                            <CreateSelect field={field} props={props} />
-                                        ) : (
-                                            <CreateControl field={field} props={props} setOpenStockAdj={setOpenStockAdj} />
-                                        )
-                                    }</div>
-                                    {field.required ?(
-                                            <Form.Control.Feedback type="invalid">
-                                                Este campo es obligatorio
-                                            </Form.Control.Feedback> 
-                                        ) :(
-                                            <Form.Control.Feedback />
-                                        ) 
-                                    }
-                                </Form.Group>
+                                <>
+                                {!((props.formType === FormType.UPDATE) && (field.headerName === "Contraseña")) &&
+                                    <Form.Group className="form-group" key={index}>
+                                        <Form.Label>{field.headerName}</Form.Label>
+                                            <div className="row g-2">{
+                                                field.select ? (
+                                                    <CreateSelect field={field} props={props} />
+                                                ) : (
+                                                    <CreateControl field={field} props={props} setOpenStockAdj={setOpenStockAdj} />
+                                                )
+                                            }</div>
+                                        {field.required ?(
+                                                <Form.Control.Feedback type="invalid">
+                                                    Este campo es obligatorio
+                                                </Form.Control.Feedback> 
+                                            ) :(
+                                                <Form.Control.Feedback />
+                                            ) 
+                                        }
+                                    </Form.Group>
+                                }
+                                </>
                             ))
                         }
 
