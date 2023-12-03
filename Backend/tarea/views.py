@@ -63,7 +63,7 @@ class TareaCommonLogic:
             tiempo_serializer.save(created_by=user)
 
     def update_empleados_relation(empleados_data, tarea_pk, user):
-        tarea_empleados = model.Tiempo.objects.filter(tarea=tarea_pk).all()
+        tarea_empleados = models.Tiempo.objects.filter(tarea=tarea_pk).all()
         new_empleados = []
 
         # update empleados
