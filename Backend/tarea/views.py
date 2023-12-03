@@ -195,7 +195,6 @@ class EmpleadoCRUD(CustomModelViewSet):
     def __table__():
         return 'empleado'
 
-mrtc101@Mrtc101-Notebook:~/.../proyecto-gestion-de-inventario$ git push
 class EncuestaSatisfaccionCRUD(CustomModelViewSet):
     serializer_class = serializer.EncuestaSatisfaccionSerializer
     queryset = models.EncuestaSatisfaccion.objects.all()
