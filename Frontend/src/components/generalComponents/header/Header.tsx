@@ -1,14 +1,15 @@
 import "./header.scss"
-import { Button, Col, Container, Dropdown, Row } from "react-bootstrap";
+import { Button, ButtonGroup, Col, Container, Dropdown, ListGroup, ListGroupItem, Popover, PopoverBody, PopoverHeader, Row } from "react-bootstrap";
 
 import { Logout, WhoAmI } from "../../../Api/apiService";
 
 import { useAuthData } from "../../providerComponents/authProvider/AuthProvider";
-import { setMessage } from "../../providerComponents/messageProvider/MessageProvider";
+import { setMessage } from "../../providerComponents/messageDisplay/MessageDisplay";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
 
 function UserDropDown(){
-  console.log(useAuthData());
   const [authData,setAuthData] = useAuthData();
   const nav = useNavigate();
   const handleLogout = () => {
@@ -29,50 +30,52 @@ function UserDropDown(){
     }) 
   }
 
+  const [visible,setVisible]=useState(false);
+  const ja = ()=>{
+    setVisible(!visible)
+  }
   return (
-    <Dropdown>
-      <Dropdown.Toggle split variant="primary" id="dropdown-split-basic">
-            <div className="user">
-              <img src="https://freesvg.org/img/abstract-user-flat-4.png" alt="" />
-              <span>{authData['username']}</span>
-            </div>
-      </Dropdown.Toggle>  
+    <>
+    <Dropdown as={ButtonGroup} drop="start">
+      <Button className="user" variant="secondary">
+        <img src="https://freesvg.org/img/abstract-user-flat-4.png" alt="" />
+        <span>{authData['username']}</span>
+      </Button>
+      <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic"/>
       <Dropdown.Menu>
-        <Container>
-          <div className="fields">
-            <Row>
-              <Col><div className="header">Nombre de usuario:</div></Col>
-            </Row>
-            <Row>
-              <Col><div className="content">{authData['username']}</div></Col>
-            </Row>
-            <Row>
-              <Col><div className="header">Correo:</div></Col>
-            </Row>
-            <Row>
-              <Col><div className="content">{authData['email']}</div></Col>
-            </Row>
-            <Row>
-              <Col><div className="header">Rol:</div></Col>
-            </Row>
-            <Row>
-              <Col><div className="content">{authData['rol']}</div></Col>
-            </Row>
-            <Row>
-              <Button variant="danger" onClick={handleLogout}>Logout</Button>
-            </Row>
-          </div>
-        </Container>
+      <div className="fields">
+          <ListGroup>
+            <ListGroupItem>
+              <span className="header">Nombre de usuario:</span>
+              <span className="content">{authData['username']}</span>
+            </ListGroupItem>
+            <ListGroupItem>
+              <span className="header">Correo:</span>
+              <span className="content">{authData['email']}</span>
+            </ListGroupItem>
+            <ListGroupItem>
+              <span className="header">Rol:</span>
+              <span className="content">{authData['rol']}</span>
+            </ListGroupItem>
+            <ListGroupItem>
+            <Button variant="warning" onClick={()=>{nav("/nueva-contraseña")}}>Cambiar Contraseña</Button>  
+            </ListGroupItem>
+            <ListGroupItem>
+            <Button variant="danger" onClick={handleLogout}>Cerrar sesión</Button>
+            </ListGroupItem>
+          </ListGroup>    
+        </div>
       </Dropdown.Menu>
     
     </Dropdown>
+    </>
   );
 }
 
 
 function Header() {
   return (
-    <div className="header">
+    <div className="myheader">
       <div className="logo">
         <img className="transparent" src="https://ingenieria.uncuyo.edu.ar/images/ingenieriablanco2016.png" alt="" />
         <span>Mantenimiento</span>

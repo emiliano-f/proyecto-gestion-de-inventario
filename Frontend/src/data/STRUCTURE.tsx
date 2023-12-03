@@ -611,9 +611,9 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "password": {
                 editable: true,
-                show: true,
+                show: false,
                 name: "Contraseña",
-                type: "password",
+                type: "string",
                 col_size: SIZE.TINY,
                 required: true,
                 select: false,
@@ -649,10 +649,10 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select: false,
             },
             "is_staff": {
-                editable: false,
+                editable: true,
                 show: true,
                 name: "Es Administrador",
-                type: "boolean",
+                type: "checkbox",
                 col_size: SIZE.TINY,
                 required: false,
                 select: false,
@@ -715,6 +715,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "ID",
                 type: "number",
                 col_size: SIZE.TINY,
+                required: true,
+                select: false,
+                enum: false
+            },
+            "ordenServicio": {
+                editable: false,
+                show: true,
+                name: "Nº Orden",
+                type: "number",
+                col_size: 80,
                 required: true,
                 select: false,
                 enum: false

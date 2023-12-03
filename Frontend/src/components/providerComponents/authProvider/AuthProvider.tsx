@@ -5,7 +5,7 @@ type AuthData = {
   authenticated: boolean,
   username: string,
   email: string,
-  rol: string,
+  rol: string
 }
 
 
@@ -17,7 +17,7 @@ const getInitialState = () : any => {
       authenticated: false,
       username: "No consultado",
       email: "No consultado",
-      rol: "No consultado",
+      rol: "No consultado"
     }
   }else{
     authData = JSON.parse(authData)

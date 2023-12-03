@@ -11,8 +11,7 @@ import ModalForm, { FormType } from "../../createComponents/modalForm/ModalForm"
 import DeleteAlert from "../deleteAlert/DeleteAlert";
 import { DataTable } from "../dataTable/DataTable";
 
-import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
-import MessageDisplay from "../../../generalComponents/messageDisplay/MessageDisplay";
+import { setMessage } from "../../../providerComponents/messageDisplay/MessageDisplay";
 
 import { getPlural, getSingular } from "../../../../data/TRANSLATIONS";
 import { Field, GetColumns, GetFields } from "../../../../data/STRUCTURE";
@@ -141,8 +140,7 @@ const ListByEntity = ({ entityNameToFilterBy, entityNameToList }) => {
     console.log(filterID)
     return (
         <>
-            <MessageDisplay {...ErrorState} />
-            <div className="ListByEntity">
+           <div className="ListByEntity">
                 <ListFilters setFilterID={setFilterID} filterName={entityNameToFilterBy} />
                 <FilteredDataGrid filterID={filterID} filteredEntity={entityNameToList} setFilterID={setFilterID}/>
             </div>

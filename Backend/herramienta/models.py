@@ -22,13 +22,16 @@ class Herramienta(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=32)
     tipoHerramienta = models.ForeignKey(TipoHerramienta, on_delete=models.DO_NOTHING)
-    codigo = models.CharField(max_length=16, unique=True, null=True)
+    codigo = models.CharField(max_length=16, null=True)
 
     fechaAlta = models.DateField(auto_now_add=True)
     observaciones = models.CharField(max_length=255, null=True)
     estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
     is_active = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ('nombre', 'codigo')
 
     def __str__(self):
         texto = "{0} [{1}]"

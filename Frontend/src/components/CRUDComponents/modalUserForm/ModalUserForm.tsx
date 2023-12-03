@@ -1,19 +1,20 @@
 import "./modalForm.scss"
-import React, { useContext } from "react";
+import React from "react";
 import { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import { SiBetfair } from 'react-icons/si'
 
-import { UpdateItem as Update, CreateItem as Create } from "../../../../Api/apiService"
-import { setMessage } from "../../../providerComponents/messageDisplay/MessageDisplay";
-import SelectList from "../selectComponentes/selectList/SelectList";
-import SelectEnum from "../selectComponentes/selecEnum/SelectEnum";
-import StockAdjusment from "./stockAdjustment/StockAdjustment";
+import { UpdateItem as Update, CreateItem as Create } from "../../../Api/apiService"
+import { setMessage } from "../messageDisplay/MessageDisplay";
+import SelectList from "../selectList/SelectList";
+import SelectEnum from "../selecEnum/SelectEnum";
+import StockAdjusment from "../stockAdjustment/StockAdjustment";
 
-import { GetUrlParts } from "../../../../data/FRONTURLS";
-import { getSingular } from "../../../../data/TRANSLATIONS";
-import { Field } from "../../../../data/STRUCTURE";
+
+import { GetUrlParts } from "../../../data/FRONTURLS";
+import { getSingular } from "../../../data/TRANSLATIONS";
+import { Field } from "../../../data/STRUCTURE";
 
 
 export enum FormType {
@@ -46,18 +47,8 @@ function CreateSelect({field,props}) {
 
 function CreateControl({field,props,setOpenStockAdj}) {
     return <>
-        {(field.type==="checkbox")?
-            <Form.Control
-            id="staffCheck"
-            className="checkbox"
-            name={field.field}
-            required={field.required}
-            type={field.type}
-            value={""}
-          />
-        :
-            <Form.Control
-            className={(field.type==="checkbox")?"checkbox":"col"}
+        <Form.Control
+            className="col"
             name={field.field}
             required={field.required}
             type={field.type}
@@ -72,7 +63,6 @@ function CreateControl({field,props,setOpenStockAdj}) {
                     (props.row[field.field]) : ("")
             }
         />
-        }
         {
             props.formType === FormType.UPDATE && field.field === "cantidad" &&
             props.slug === "insumos" && <div className="col-3">
@@ -92,30 +82,29 @@ const ModalForm = (props: Props) => {
     const [openStockAdj, setOpenStockAdj] = useState(false);
     const [validated, setValidated] = useState(false);
 
+
     const updateItem = (entity: string, formData: FormData, id: number) => {
         // Comentario jm: sería mejor que la función reciba un int y el casteo lo haga dentro
         Update(entity, formData, id.toString())
             .then(() => {
                 setMessage(`Se ha modificado ${getSingular(entity)} con éxito`, null)
-                props.setOpen(false)
-                props.switchChange()
             })
             .catch((error) => {
                 setMessage(`Ha surgido un error al modificar ${getSingular(entity)}.`, error)
             })
+            .finally(() => props.setOpen(false));
     }
 
     const createItem = (entity: string, formData: FormData) => {
         Create(entity, formData)
             .then(() => {
                 setMessage(`Se ha creado el nuevo ${getSingular(entity)} con exito`, null)
-                props.setOpen(false)
-                props.switchChange()
             })
             .catch((error) => {
                 console.log(error)
                 setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(entity)}.`, error)
             })
+            .finally(() => props.setOpen(false));
     }
 
 
@@ -123,10 +112,6 @@ const ModalForm = (props: Props) => {
         e.preventDefault();
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
-        const check = document.getElementById("staffCheck");
-        if(check!==null){
-            formData.append("is_staff:",check.checked);
-        }
         console.log(formData)
         if (form.checkValidity() === false) {
             e.stopPropagation();
@@ -140,7 +125,7 @@ const ModalForm = (props: Props) => {
 
         }
         setValidated(true);
-    };
+    };  
 
     return (
         <>
@@ -154,32 +139,29 @@ const ModalForm = (props: Props) => {
                         {props.fields
                             .filter(item => item.editable == true)
                             .map((field, index) => (
-                                <>
-                                {!((props.formType === FormType.UPDATE) && (field.headerName === "Contraseña")) &&
-                                    <Form.Group className="form-group" key={index}>
-                                        <Form.Label>{field.headerName}</Form.Label>
-                                            <div className="row g-2">{
-                                                field.select ? (
-                                                    <CreateSelect field={field} props={props} />
-                                                ) : (
-                                                    <CreateControl field={field} props={props} setOpenStockAdj={setOpenStockAdj} />
-                                                )
-                                            }</div>
-                                        {field.required ?(
-                                                <Form.Control.Feedback type="invalid">
-                                                    Este campo es obligatorio
-                                                </Form.Control.Feedback> 
-                                            ) :(
-                                                <Form.Control.Feedback />
-                                            ) 
-                                        }
-                                    </Form.Group>
-                                }
-                                </>
+                                <Form.Group className="form-group" key={index}>
+                                    <Form.Label>{field.headerName}</Form.Label>
+                                    <div className="row g-2">{
+                                        field.select ? (
+                                            <CreateSelect field={field} props={props} />
+                                        ) : (
+                                            <CreateControl field={field} props={props} setOpenStockAdj={setOpenStockAdj} />
+                                        )
+                                    }</div>
+                                    {field.required ?(
+                                            <Form.Control.Feedback type="invalid">
+                                                Este campo es obligatorio
+                                            </Form.Control.Feedback> 
+                                        ) :(
+                                            <Form.Control.Feedback />
+                                        ) 
+                                    }
+                                </Form.Group>
                             ))
                         }
 
                         <Button type="submit" className="mt-3"
+                            onClick={() => props.switchChange()}
                             disabled={props.formType === FormType.READ}>
                             {props.formType === FormType.ADD && "Crear"}
                             {props.formType === FormType.UPDATE && "Modificar"}

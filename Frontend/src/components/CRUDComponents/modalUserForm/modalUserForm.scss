@@ -1,8 +1,7 @@
-@import "../../../../styles/variables.scss";
-@import "../../../../styles/responsive.scss";
+@import "../../../styles/variables.scss";
 
 .modal-background {
-    z-index: 800;
+    z-index: 9999;
     width: 100vw;
     height: 100vh;
     position: fixed;
@@ -86,12 +85,9 @@
                 cursor: pointer;
             }
 
+            .modal-background .modal-front form .form-group input .checkBox{
+                display: none;
+            }
         }
-    }
-    input[type="checkbox"].form-control{
-        margin-left: 50%;
-        appearance: auto;
-        width: 20px;
-        height: 48px;
     }
 }

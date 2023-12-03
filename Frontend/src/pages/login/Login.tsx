@@ -5,16 +5,16 @@ import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { WhoAmI ,Login as login } from "../../Api/apiService"
-import MessageDisplay from "../../components/generalComponents/messageDisplay/MessageDisplay";
-import MessageProvider, { setMessage } from "../../components/providerComponents/messageProvider/MessageProvider";
 import { useAuthData } from "../../components/providerComponents/authProvider/AuthProvider";
+import { setMessage } from "../../components/providerComponents/messageDisplay/MessageDisplay";
+import MessageDisplay from "../../components/providerComponents/messageDisplay/MessageDisplay";
 
 function Login() {
   
   const [authData,setAuthData] = useAuthData();
   const [validated,setValidated] = useState(false);
   const nav = useNavigate();
-
+  
   const handleWhoAmI = () => {
       WhoAmI()
       .then((r)=>{
@@ -23,9 +23,16 @@ function Login() {
           authenticated: true,
           username: r.data["username"],
           email: r.data["email"],
-          rol: r.data["rol"],
+          rol: r.data["rol"]
         });
-        nav("/")
+        if(r.data["default_password"]){
+          nav("/nueva-contraseña")
+        }
+        if(r.data["is_staff"]){
+          nav("/")
+        }else{
+          nav("/orden-servicio")
+        }
       })
       .catch((e)=>{
         setMessage("Error al cargar usuario",e)
@@ -84,15 +91,17 @@ function Login() {
     );
   }
 
+  const [message,setnewMessage] = useState( {title: "",desc: "",is_error: false});
+
   return (
-    <div className="background">    
-      <MessageProvider>
-        <div className="error" >
-          <MessageDisplay />
-        </div>
+    <>
+      <div className="error">
+        <MessageDisplay stateMessage={message} setStateMessage={setnewMessage}/>
+      </div>
+      <div className="background">    
         <LoginForm/>
-      </MessageProvider>
-    </div>          
+      </div>
+    </>          
   )
 }
 

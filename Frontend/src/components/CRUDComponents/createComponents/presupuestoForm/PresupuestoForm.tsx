@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 
 import { ReadItem } from '../../../../Api/apiService';
 import AddEntity from "../addEntity/AddEntity";
-import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
+import { setMessage } from "../../../providerComponents/messageDisplay/MessageDisplay";
 
 import { getSingular } from '../../../../data/TRANSLATIONS';
 import { GetUrlParts } from '../../../../data/FRONTURLS';

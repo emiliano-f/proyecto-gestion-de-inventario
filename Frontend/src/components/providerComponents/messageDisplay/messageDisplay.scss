@@ -1,0 +1,55 @@
+.hidden{
+    z-index: 9999;
+    display: none;
+    opacity: 0;
+}
+
+@keyframes hideElement {
+    0% {
+        opacity: 1;
+        display: block;
+    }
+    20%,
+    40%,
+    60%,
+    80%,
+    100% {
+        opacity: 0;
+        display: none;
+    }
+  }
+
+.visible{
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 25%;
+    width: 65%;
+    display: block;
+    animation: hideElement 10s ease 9s;
+}
+
+.alert {
+    height: fit-content;
+    display: flex;
+    .row{
+        width: 100%;
+        .icon{
+            flex: 2; 
+            margin-top: 1%;
+            margin-left: 1%;
+            margin-right: 2%;
+        } 
+        .title{
+            font-weight: bold;
+            font-size: larger;
+            text-align: left;
+            justify-content: right;
+        }
+        .desc{
+            display: block;
+            text-align: left;
+            flex: auto;
+        }
+    }
+}

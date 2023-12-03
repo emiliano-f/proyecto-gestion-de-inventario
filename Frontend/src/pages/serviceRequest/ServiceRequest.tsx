@@ -1,8 +1,7 @@
 import Header from "../../components/generalComponents/header/Header"
 import ServiceForm from "../../components/CRUDComponents/createComponents/serviceform/ServiceForm"
-import MessageDisplay from "../../components/generalComponents/messageDisplay/MessageDisplay"
-import MessageProvider from "../../components/providerComponents/messageProvider/MessageProvider"
-import { useEffect } from "react";
+import MessageDisplay from "../../components/providerComponents/messageDisplay/MessageDisplay";
+import { useEffect, useState } from "react";
 import { useAuthData } from "../../components/providerComponents/authProvider/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -20,13 +19,12 @@ function ServiceRequest(){
         return <Link to="/login" />;
     }
 
+    const [message,setMessage] = useState( {title: "",desc: "",is_error: false});
+  
     return (
-        <>
+        <>  <MessageDisplay stateMessage={message} setStateMessage={setMessage}/>
             <Header/>
-            <MessageProvider>
-                <MessageDisplay/>
-                <ServiceForm />
-            </MessageProvider>
+            <ServiceForm />
         </>
     )
 }

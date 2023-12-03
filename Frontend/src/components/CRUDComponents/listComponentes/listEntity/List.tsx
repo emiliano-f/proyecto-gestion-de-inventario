@@ -14,7 +14,7 @@ import { getSingular, getPlural} from "../../../../data/TRANSLATIONS"
 import { GetUrlParts } from "../../../../data/FRONTURLS";
 import getACTION from "../../../../data/ACTIONS";
 
-import { setMessage } from "../../../providerComponents/messageProvider/MessageProvider";
+import { setMessage } from "../../../providerComponents/messageDisplay/MessageDisplay";
 
 const List = () => {
     
@@ -37,14 +37,13 @@ const List = () => {
 
     useEffect(()=>{
         ListItems(setItems, entityName)
-            .catch((error) => {
-                setMessage(`Ha surgido un error al buscar ${getPlural(entityName)}.`,error)
-            })
+        .catch((error) => {
+            setMessage(`Ha surgido un error al buscar ${getPlural(entityName)}.`,error)
+        })
     }, [changeRef.current, entityName])
 
     const columns: GridColDef[] = GetColumns(groupName, entityName);
     const fields: Field[] = GetFields(groupName, entityName);
-
     return (
         <>
             <div className="item">

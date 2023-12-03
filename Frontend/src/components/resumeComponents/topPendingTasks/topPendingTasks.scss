@@ -1,0 +1,43 @@
+@import "../../../styles/responsive.scss";
+
+.topBox{
+    h1{
+        margin-bottom: 20px;
+        text-align: center;
+        @include xxl{
+            font-size: 24px;
+        }
+    }
+
+    .list{
+
+        .listItem{
+            display: block;
+            align-items: center;
+            margin-bottom: 30px;
+            .task{
+                width: 100%;
+                display: flex;
+                padding: 2%;
+                font-size: 13px;
+                text-transform: lowercase capitalize;
+                min-width: 250px;
+                .identifiers{
+                    display: grid;
+                    margin-right: auto;
+                    font-weight:600;
+                }
+                .location{
+                    display: grid;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                .clasification{
+                    display: grid;
+                    margin-left: auto;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}

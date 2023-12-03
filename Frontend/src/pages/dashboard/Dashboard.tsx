@@ -3,10 +3,10 @@ import Header from "../../components/generalComponents/header/Header"
 import Footer from "../../components/generalComponents/footer/Footer"
 import Sidebar from "../../components/generalComponents/sidebar/Sidebar"
 
-import MessageDisplay from "../../components/generalComponents/messageDisplay/MessageDisplay"
-import MessageProvider from "../../components/providerComponents/messageProvider/MessageProvider"
 import { useAuthData } from "../../components/providerComponents/authProvider/AuthProvider"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import MessageDisplay from "../../components/providerComponents/messageDisplay/MessageDisplay"
+import CreateNav from "../../components/providerComponents/navProvider/NavProvider"
 
 function Dashboard() {
     
@@ -23,19 +23,20 @@ function Dashboard() {
         console.log(authData)
         return <Link to="/login" />;
     }
+
+    const [message,setMessage] = useState({title: "",desc: "",is_error: false});
     
     return (
         <div className="main">
+            <CreateNav/>
             <Header />
             <div className="container2">
                 <div className="menuContainer">
                     <Sidebar />
                 </div>
                 <div className="contentContainer">
-                    <MessageProvider>
-                        <MessageDisplay />
-                        <Outlet />
-                    </MessageProvider>
+                    <MessageDisplay stateMessage={message} setStateMessage={setMessage}/>
+                    <Outlet/>
                 </div>
             </div>
             <Footer />

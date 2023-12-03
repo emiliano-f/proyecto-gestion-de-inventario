@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios, { AxiosHeaders, AxiosResponse } from "axios"
 import { BASEURL, getBackendUrl } from "../data/BACKENDURLS"
+import { initializedNavegate as nav } from "../components/providerComponents/navProvider/NavProvider";
 
 const inventarioAPI = axios.create()
 inventarioAPI.defaults.xsrfCookieName = 'csrftoken';
@@ -11,6 +12,12 @@ inventarioAPI.defaults.xsrfHeaderName = 'X-CSRFToken';
 inventarioAPI.defaults.withCredentials = true;
 //Coloca la ip correspondiente como url base para todas las peticiones.
 inventarioAPI.defaults.baseURL = BASEURL
+
+
+function backToLogin(){
+    sessionStorage.clear();
+    nav("/login");   
+}
 
 export function ListItems(setItems: any, itemName: string): Promise<AxiosResponse<any, any>> {
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
@@ -22,8 +29,8 @@ export function ListItems(setItems: any, itemName: string): Promise<AxiosRespons
                     resolve(response)
                 })
                 .catch(
-                    (error) => reject(error)
-                    /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/
+                    //(error) => reject(error)
+                    (error) => (error.response?.status !== 403 ? reject(error) : backToLogin(nav))
                     )
         }
         loadItems()
@@ -31,9 +38,8 @@ export function ListItems(setItems: any, itemName: string): Promise<AxiosRespons
 }
 
 export function ReadItem(setItem: any, itemName: string): Promise<AxiosResponse<any, any>> {
-    
     const { id } = useParams();
-    console.log(getBackendUrl(itemName) + `${id}/`)
+
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         useEffect(() => {
             async function loadItem() {
@@ -42,29 +48,53 @@ export function ReadItem(setItem: any, itemName: string): Promise<AxiosResponse<
                 )
                     .then((response) => {
                         setItem(response.data)
-                        
                         resolve(response)
                     })
                     .catch(
-                        (error) => reject(error)
-                        /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
-            }
+                        //(error) => reject(error)
+                        (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())                    
+                    )    
+                    }
             loadItem()
-        }, [itemName, setItem]);
+        }, [itemName, setItem, id]);
     })
 }
 
+
+export function ReadItemId(setItem: any, itemName: string, id: string): Promise<AxiosResponse<any, any>> {
+    return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
+        
+        async function loadItem() {
+            await inventarioAPI.get(
+                getBackendUrl(itemName) + `${id}/`
+            )
+                .then((response) => {
+                    setItem(response.data)
+                    resolve(response)
+                })
+                .catch(
+                    (error) => reject(error)
+                    /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
+        }
+        loadItem()
+        
+    })
+}
+
+
+
+
 export function CreateItem(itemName: string, formData: FormData | string): Promise<AxiosResponse<any, any>> {
     
-    console.log(formData);
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         async function createData(itemName: string, formData: FormData) {
             await inventarioAPI.post(getBackendUrl(itemName), formData)
                 .then((response) => {
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
+                .catch(
+                    (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())                                        
+                )
         }
         createData(itemName, formData);
     })
@@ -80,8 +110,9 @@ export function UpdateItem(itemName: string, formData: FormData, id: string | un
                     
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
+                .catch(
+                    (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())                    
+                )
         }
         updateData(itemName, id, formData)
     })
@@ -96,9 +127,10 @@ export function DeleteItem(itemName: string, id: string): Promise<AxiosResponse<
                     
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
-        }
+                .catch(
+                (error) => (error.response?.status !== 403 ? reject(error) : backToLogin()) 
+                )                   
+            }
         deleteData(itemName, id);
     })
 }
@@ -113,8 +145,9 @@ export function getSectors(setSectors: any, edificioName: number): Promise<Axios
                     
                     resolve(response);
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
+                .catch(
+                (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())  
+                )                  
         }
         listSectors();
     })
@@ -129,15 +162,15 @@ export function SendServiceRequest(formData: FormData): Promise<AxiosResponse<an
                     
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
-        }
+                .catch(
+                    (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())                                        
+                )
+            }
         sendData(formData);
     })
 }
 
 export function GetEnums(setEnum: any): Promise<AxiosResponse<any, any>> {
-    
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         async function loadItem() {
             await inventarioAPI.get(getBackendUrl("enums"))
@@ -145,8 +178,10 @@ export function GetEnums(setEnum: any): Promise<AxiosResponse<any, any>> {
                     setEnum(response.data)
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
+                .catch(
+                    (error) => reject(error)
+                /*(error) => (error.response?.status !== 403 ? reject(error) : ("/login"))*/
+                )
         }
         loadItem();
 
@@ -154,8 +189,6 @@ export function GetEnums(setEnum: any): Promise<AxiosResponse<any, any>> {
 }
 
 export function ListItemsFiltered(setItems, filteredEntityName, filterID) {
-    
-    console.log(`${filteredEntityName}-filtered`)
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         async function loadItems() {
             await inventarioAPI.get(getBackendUrl(`${filteredEntityName}-filtered`).concat(`${filterID}/`))
@@ -164,9 +197,9 @@ export function ListItemsFiltered(setItems, filteredEntityName, filterID) {
                     
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/
-                )
+                .catch(
+                    (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())  
+                    ) 
         }
         loadItems()
     });
@@ -176,6 +209,20 @@ export function Login(formData: FormData): Promise<AxiosResponse<any, any>> {
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
         async function loginUser() {
             await inventarioAPI.post('/usuario/login/', formData)
+                .then((response) => {
+                    
+                    resolve(response)
+                })
+                .catch((error) => (reject(error)))
+        }
+        loginUser();
+    });
+}
+
+export function newPassword(formData: FormData): Promise<AxiosResponse<any, any>> {
+    return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
+        async function loginUser() {
+            await inventarioAPI.post('/usuario/change_password/', formData)
                 .then((response) => {
                     
                     resolve(response)
@@ -206,7 +253,9 @@ export function Logout() {
                 .then((response) => {
                     resolve(response)
                 })
-                .catch((error) => (reject(error)))
+                .catch(
+                    (error) => backToLogin() 
+                    ) 
         }
         loginUser();
     });

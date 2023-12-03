@@ -1,4 +1,4 @@
-import "./addEntityAmount.scss"
+import "./addEntityAmount2.scss"
 import React, { useState,useEffect } from "react";
 import { Form,Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 
@@ -17,23 +17,30 @@ type Props = {
     setEntList: React.Dispatch<React.SetStateAction<Entities[]>>
     amountTitle: string;
     amountTooltip?: string;
+    amountTitle2: string;
+    amountTooltip2?: string;
+    action?: "update" | "create";
 }
 
-const AddEntityAmount = (props:Props) =>{
+const AddEntityAmount2 = (props:Props) =>{
     // console.log(props.entList);
     // Agrega un campo de entidad
     const handleAddEnt =()=>{
         props.setEntList(prevState => [...prevState, { [props.entityName]: '' }]);
     }
-    const entListString: string[] = Object.values(props.entList).map(item => item[props.entityName]);
 
-    // Posiblilidad de eliminar
     
-    const [amounts, setAmounts] = useState(props.entList.map(x => x[props.amountTitle] || ""));
+    const entListString: string[] = Object.values(props.entList).map(item => item[props.entityName]);
+    
+
+    const [amounts, setAmounts] = useState(props.entList.map(x => x[props.amountTitle] || ""));    
+
+    const [amounts2, setAmounts2] = useState(props.entList.map(x => x[props.amountTitle2] || ""));
 
     useEffect(() => {
         // Actualizar el estado local cuando props.entList cambie
         setAmounts(props.entList.map(x => x[props.amountTitle] || ""));
+        setAmounts2(props.entList.map(x => x[props.amountTitle2] || ""));
     }, [props.entList]);
 
 
@@ -51,7 +58,15 @@ const AddEntityAmount = (props:Props) =>{
             const updatedList = [...prevList];
             const objetoModificado = { ...updatedList[index], [props.amountTitle]: amount};
             updatedList[index] = objetoModificado;
-            
+            return updatedList;
+        });
+    }
+
+    const addAmount2 = (index: number, amount2: any) => {
+        props.setEntList(prevList => {
+            const updatedList = [...prevList];
+            const objetoModificado = { ...updatedList[index], [props.amountTitle2]: amount2 };
+            updatedList[index] = objetoModificado;
             return updatedList;
         });
     }
@@ -65,9 +80,17 @@ const AddEntityAmount = (props:Props) =>{
 
     };
 
+    const handleChange2 = (index: number, amount2: any) => {
+        const newAmounts = [...amounts2]; // Copiamos el arreglo de valores actual
+        newAmounts[index] = amount2; // Actualizamos el valor en la posición correspondiente
+        setAmounts2(newAmounts); // Actualizamos el estado con los nuevos valores
+        addAmount2(index, amount2);
+
+    };
+
     return(
         <>
-            <div className="entity-label">{getPlural(props.entityName) +"/"+ (props.amountTooltip || "Cantidad")}</div>
+            <div className="entity-label">{getPlural(props.entityName) +"/"+ (props.amountTooltip || "Cantidad") + "/" + (props.amountTooltip2 || "Cantidad2")}</div>
             {props.entList.map((x, i) => {
                 return (
                     <Form.Group className="mb-1" controlId="formGridEntidad" key={i}>
@@ -84,7 +107,18 @@ const AddEntityAmount = (props:Props) =>{
                                         </Tooltip>
                                     }
                                 >
-                                    <Form.Control className="w-25" name="cantidad" inputMode="numeric" pattern="[0-9]*" defaultValue={amounts[i]} onChange={(e) => handleChange(i, e.target.value)} />
+                                    <Form.Control className="w-25" name="horasEstimadas" inputMode="numeric" pattern="[0-9]*" defaultValue={amounts[i]} onChange={(e) => handleChange(i, e.target.value)} />
+                                </OverlayTrigger>
+
+                                <OverlayTrigger
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id={`tooltip2-${i}`}>
+                                            {props.amountTooltip2 || "Cantidad (positiva)"}
+                                        </Tooltip>
+                                    }
+                                >
+                                    <Form.Control readOnly={props.action === "create"} className="w-25" name="horasTotales" inputMode="numeric" pattern="[0-9]*" defaultValue={amounts2[i]} onChange={(e) => handleChange2(i, e.target.value)} />
                                 </OverlayTrigger>
 
                                 {props.entList.length !== 1 &&
@@ -102,5 +136,5 @@ const AddEntityAmount = (props:Props) =>{
         </>
     )  
 }
-export default React.memo(AddEntityAmount);
+export default React.memo(AddEntityAmount2);
 
