@@ -14,6 +14,7 @@ from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, 
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from settings.common_class import LoginRequiredNoRedirect
+from settings.auxs_fn import ErrorToString
 
 from . import serializer
 from . import models
@@ -29,7 +30,6 @@ class CustomModelViewSet(viewsets.ModelViewSet):
 class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     serializer_class = serializer.UsuarioSerializer
     queryset = models.Usuario.objects.all().filter(is_active=True)
-    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.action in ['list', 'retrieve', 'update', 'delete']:
@@ -72,7 +72,7 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -88,7 +88,7 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e: 
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def __table__():
         return 'usuario'

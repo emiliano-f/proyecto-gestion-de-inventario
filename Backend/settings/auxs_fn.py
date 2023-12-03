@@ -7,6 +7,21 @@ import compra.models as com
 import herramienta.models as her
 import usuario.models as usu
 
+from rest_framework.exceptions import APIException
+
+def ErrorToString(e):
+    msg = "";
+    if(isinstance(e,APIException)):
+        if(hasattr(e,'detail')):
+            for key in e.detail.keys():
+                for err in e.detail[key]:
+                    msg+= str(err)+"\n"
+        else:
+            msg=str(e.default_detail)
+    else:
+        msg = str(e);
+    return msg;
+
 def get_models(request):
     """
     Captures names of apps, models and their attributes

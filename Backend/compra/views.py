@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from . import serializer
 from . import models
 from inventario.models import Insumo
+from settings.auxs_fn import ErrorToString
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
@@ -42,7 +43,7 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
             return Response(serializer_class.data)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @transaction.atomic
     def create(self, request):
@@ -167,7 +168,7 @@ class PresupuestoCRUD(CustomModelViewSet):
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def __table__():
         return 'presupuesto'
@@ -221,7 +222,7 @@ class DetallePedidoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
         try:

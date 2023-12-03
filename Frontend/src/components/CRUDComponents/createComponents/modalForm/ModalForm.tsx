@@ -113,7 +113,6 @@ const ModalForm = (props: Props) => {
                 props.switchChange()
             })
             .catch((error) => {
-                console.log(error)
                 setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(entity)}.`, error)
             })
     }

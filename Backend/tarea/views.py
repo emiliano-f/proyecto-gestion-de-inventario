@@ -16,6 +16,8 @@ import herramienta.models as herramienta_models
 import inventario.models as inventario_models
 import inventario.serializer as inventario_serializer
 import json
+from settings.auxs_fn import ErrorToString
+
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
@@ -172,7 +174,7 @@ class EmpleadoCRUD(CustomModelViewSet):
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
     def delete(self, request, *args, **kwargs):
@@ -230,13 +232,14 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
                 ]
             return Response(serializer_class.data)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @transaction.atomic
     def create(self, request):
         try:
             # get empleados, herramientas, insumos
             to_create = request.data.copy()
+            print(to_create.pop('empleados', []))
             empleados_data = json.loads(to_create.pop('empleados', [])[0])
             
             herramientas_data = json.loads(to_create.pop('herramientas', [])[0])
@@ -347,7 +350,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             transaction.set_rollback(True)
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def destroy(self, request, pk):
@@ -375,7 +378,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e: 
             transaction.set_rollback(True)
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
@@ -396,7 +399,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             serializer_class.save(usuario=request.user)
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
@@ -418,7 +421,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def destroy(self, request, pk):
@@ -448,7 +451,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e: 
             transaction.set_rollback(True)
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class SectorListCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     permission_classes = [IsAdminUser]
@@ -482,4 +485,4 @@ class TiempoCRUD(CustomModelViewSet):
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)

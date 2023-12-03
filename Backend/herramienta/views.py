@@ -8,6 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from . import serializer
 from . import models
+from settings.auxs_fn import ErrorToString
+from rest_framework.exceptions import APIException
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
@@ -37,7 +39,7 @@ class TipoHerramientaCRUD(CustomModelViewSet):
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def __table__():
         return 'tipoherramienta'
@@ -70,7 +72,7 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             transaction.set_rollback(True)
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
@@ -91,7 +93,7 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def destroy(self, request, pk):
@@ -126,7 +128,7 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e: 
             transaction.set_rollback(True)
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class EstadoHerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     permission_classes = [IsAdminUser]
@@ -156,7 +158,7 @@ class EstadoHerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             transaction.set_rollback(True)
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
@@ -177,7 +179,7 @@ class EstadoHerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
         estado_herramienta = models.EstadoHerramienta.objects.get(id=pk)

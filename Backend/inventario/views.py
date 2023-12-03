@@ -1,5 +1,6 @@
 from django.db import transaction
 from settings.common_class import LoginRequiredNoRedirect
+from rest_framework.exceptions import *
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser
@@ -7,6 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from . import serializer
 from . import models
+from settings.auxs_fn import ErrorToString
+
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
@@ -26,7 +29,6 @@ class InventarioCommonLogic:
         insumo.save()
         return serializer_class
 
-
 class TipoInsumoCRUD(CustomModelViewSet):
     serializer_class = serializer.TipoInsumoSerializer
     queryset = models.TipoInsumo.objects.all()
@@ -37,9 +39,9 @@ class TipoInsumoCRUD(CustomModelViewSet):
             serializer_class.is_valid(raise_exception=True)
             serializer_class.save(created_by=request.user)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def __table__():
         return 'tipoinsumo'
