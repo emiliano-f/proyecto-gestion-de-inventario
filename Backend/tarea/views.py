@@ -335,8 +335,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
             
             # update insumos
-            TareaCommonLogic.update_insumos(insumos_data, tarea, request.user)
-
+            TareaCommonLogic.update_insumos(insumos_data, tarea.id, request.user)
+            
             # update orden servicio
             if tarea.fechaFin is not None:
                 tarea.ordenServicio.estado = models.OrdenServicio().StatusScale.FINALIZADA
