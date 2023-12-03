@@ -1,4 +1,4 @@
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from settings.common_class import LoginRequiredNoRedirect
 from rest_framework.exceptions import *
 from rest_framework import viewsets
@@ -89,6 +89,8 @@ class InsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def destroy(self, request, pk):
         try:
             insumo = models.Insumo.objects.get(id=pk)
+        except IntegrityError:
+            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
