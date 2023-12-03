@@ -6,6 +6,7 @@ from inventario.views import InventarioCommonLogic
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from settings.common_class import LoginRequiredNoRedirect
@@ -18,6 +19,7 @@ import json
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+    permission_classes = [IsAdminUser]
 
 class TareaCommonLogic:
     def update_herramientas(herramientas_data, tarea, status=None):
@@ -47,33 +49,32 @@ class TareaCommonLogic:
 
     # forgive me, God, this aberration, but I'm in a hurry and I'm drunk
     def update_insumos(insumos_data, tarea, user):
-        ordenes_retiro = inventario_models.OrdenRetiro.objects.filter(tarea=tarea):
-        for insumo_data in insumos_data:
-            # get orden with insumo
-            insumo_existent = ordenes_retiro.filter(insumo=insumo_data['id']).first()
+        for orden_retiro in inventario_models.OrdenRetiro.objects.filter(tarea=tarea):
+            for insumo_data in insumos_data:
+                insumo_data_cant = int(insumo_data['id'])
+                if orden_retiro.insumo.id == insumo_data_cant:
+                    if insumo_data_cant == 0:
+                        # return insumos
+                        orden_retiro.insumo.cantidad += orden_retiro.cantidad
+                        orden_retiro.insumo.save()
+                        # delete orden
+                        orden_retiro.delete()
 
-            if insumo_existent is None:
-                # create order
-                insumo_data['tarea'] = tarea_pk
-                InventarioCommonLogic.create_orden_retiro(insumo_data, user)
-            else: 
-                insumo_data_cant = int(insumo_data['cantidad'])
-                if insumo_data_cant == 0:
-                    # return insumos
-                    insumo_existent.insumo.cantidad += insumo_existent.cantidad
-                    insumo_existent.insumo.save()
-                    # delete orden
-                    insumo_existent.delete()
+                    elif insumo_data_cant != insumo_existent.cantidad:
+                        # update quantities
+                        diff = orden_retiro.cantidad - insumo_data_cant
+                        orden_retiro.cantidad = insumo_data_cant
+                        orden_retiro.insumo.cantidad += diff
 
-                elif insumo_data_cant != insumo_existent.cantidad:
-                    # update quantities
-                    diff = insumo_existent.cantidad - insumo_data_cant
-                    insumo_existent.cantidad = insumo_data_cant
-                    insumo_existent.insumo.cantidad += diff
+                        # validate and check
+                        orden_retiro.save(created_by=user)
+                        orden_retiro.insumo.save()
+                    
+                    insumos_data.remove(insumo_data)
+                    break
 
-                    # validate and check
-                    insumo_existent.save(created_by=user)
-                    insumo_existent.insumo.save()
+        # create orden for new insumos
+        TareaCommonLogic.create_entry_insumos(insumos_data, tarea.id, user)
 
     def create_empleados_relation(empleados_data, tarea_pk, user):
         for empleado in empleados_data:
@@ -98,7 +99,7 @@ class TareaCommonLogic:
 
         # update empleados
         for empleado in empleados_data:
-            tiempo_model = next((model for model in tarea_empleados if model.empleado == empleado['id']), None)
+            tiempo_model = next((tiempo for tiempo in tarea_empleados if tiempo.empleado.id == int(empleado['empleado'])), None)
             if tiempo_model is None:
                 new_empleados.append(empleado)
             else:
@@ -112,7 +113,7 @@ class TareaCommonLogic:
 
         # add empleados
         if not new_empleados:
-            create_empleados_relation(new_empleados, tarea_pk, user)
+            TareaCommonLogic.create_empleados_relation(new_empleados, tarea_pk, user)
 
     def restore_herramientas(tarea, user):
         # restore herramientas
@@ -199,6 +200,7 @@ class EncuestaSatisfaccionCRUD(CustomModelViewSet):
         return 'encuestasatisfaccion'
 
 class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'tarea'
@@ -444,6 +446,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class SectorListCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
     def __table__():
         return 'sector'
 
