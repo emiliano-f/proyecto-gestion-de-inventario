@@ -2,53 +2,89 @@ import "./serviceOrderInfo.scss"
 import { Button, Col, Row } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form';
 import "./serviceOrderInfo.scss"
-import { ReadItemId, UpdateItem } from "../../../../../Api/apiService";
+import { UpdateItem } from "../../../../../Api/apiService";
+import { useEffect, useState } from "react";
 import { setMessage } from "../../../../providerComponents/messageDisplay/MessageDisplay";
-import { useState } from "react";
 
-type Props = {
-    serviceOrder: any,
+
+interface ServiceOrder {
+    id: number | string,
+    estado: string,
+    usuarioNombre: string,
+    usuarioApellido: string,
+    sector: string,
+    categoria: string,
+    descripcion: string,
+    prioridad: string,
+    fechaNecesidad: string,
+    comentario: string | null,
+    [key: string]: any;
+
+}
+
+interface Props {
+    serviceOrder: ServiceOrder,
     action: "update" | "create"
 }
 
 
 export const ServiceOrderInfo = (props:Props) => {
-    //console.log(props.serviceOrder)
     /**
      * Cambia el estado de la orden de servicio 
      */
-    const changeStatus = (state) => {
-        UpdateItem("ordenes-servicio",{
-            categoria: props.serviceOrder["categoria"],
-            comentario: props.serviceOrder["comentario"],
-            descripcion: props.serviceOrder["descripcion"],
-            estado: state,
-            fechaGeneracion: props.serviceOrder["fechaGeneracion"],
-            fechaNecesidad: props.serviceOrder["fechaNecesidad"],
-            prioridad: props.serviceOrder["prioridad"],
-            sector: props.serviceOrder["sectorID"],
-            usuario: props.serviceOrder["usuarioID"],
-        },props.serviceOrder["id"])
-        .then((response)=>{})
-        .catch((error)=>{setMessage("Se produjo un error al cambiar el estado de la Orden de servicio.",error)})
+    const [status, setStatus] = useState(props.serviceOrder["estado"]);
+
+
+    useEffect(() => {
+
+    }, [status]);
+
+    const changeStatus = () => {
+        var newStatus: string = status;
+
+        if (status === "EN_ESPERA" || status === "APROBADA") {
+            newStatus = "RECHAZADA";
+            setStatus("RECHAZADA");
+        }
+        if (status === "RECHAZADA") {
+            newStatus = "APROBADA"
+        }
+        setStatus(newStatus);
+    
+        const formData = new FormData();
+        // Agregar propiedades del serviceOrder a FormData  
+        formData.append("categoria", props.serviceOrder["categoria"]);
+        if (props.serviceOrder["comentario"] !== null) formData.append("comentario", props.serviceOrder["comentario"]);
+        formData.append("descripcion", props.serviceOrder["descripcion"]);
+        formData.append("estado", newStatus);
+        formData.append("fechaGeneracion", props.serviceOrder["fechaGeneracion"]);
+        formData.append("fechaNecesidad", props.serviceOrder["fechaNecesidad"]);
+        formData.append("prioridad", props.serviceOrder["prioridad"]);
+        formData.append("sector", props.serviceOrder["sectorID"]);
+        formData.append("usuario", props.serviceOrder["usuarioID"]);
+
+        UpdateItem("ordenes-servicio", formData, props.serviceOrder["id"].toString())
+            .then((response) => { console.log(response)})
+            .catch((error) => { setMessage("Se produjo un error al cambiar el estado de la Orden de servicio.", error) });
+        window.location.reload();
     }
+
 
     return (
             <Col xs={5} className="service-order">
                 <div className="row">
                     <h4 className="col">Orden de servicio</h4>
                     
-                    {props.action === "create" && (props.serviceOrder["estado"] === "EN_ESPERA" || props.serviceOrder["estado"] === "APROBADA") && (
-                        <Button className="btn btn-danger mx-2 col-4" onClick={()=>changeStatus("RECHAZADA")}>
+                    {props.action === "create" && (status === "EN_ESPERA" || status === "APROBADA") && (
+                        <Button className="btn btn-danger mx-2 col-4" onClick={changeStatus}>
                             Rechazar
                         </Button>
                     )}
-                    {props.action === "create" && props.serviceOrder["estado"] === "RECHAZADA" && (
-                        <Button className="btn btn-success mx-2 col-4" onClick={()=>changeStatus("APROBADA")}>
+                {props.action === "create" && status === "RECHAZADA" && (
+                        <Button className="btn btn-success mx-2 col-4" onClick={changeStatus}>
                             Aprobar
                         </Button>
                     )}
-                        
                 </div>
                 
                 <Row className="mb-3">
