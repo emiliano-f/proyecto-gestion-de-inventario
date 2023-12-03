@@ -4,21 +4,27 @@ import Form from 'react-bootstrap/Form';
 import "./serviceOrderInfo.scss"
 import { UpdateItem } from "../../../../../Api/apiService";
 import { useEffect, useState } from "react";
+import { setMessage } from "../../../../providerComponents/messageDisplay/MessageDisplay";
+
+
+interface ServiceOrder {
+    id: number | string,
+    estado: string,
+    usuarioNombre: string,
+    usuarioApellido: string,
+    sector: string,
+    categoria: string,
+    descripcion: string,
+    prioridad: string,
+    fechaNecesidad: string,
+    comentario: string | null,
+    [key: string]: any;
+
+}
 
 interface Props {
-    serviceOrder: {
-        estado: string,
-        usuarioNombre: string,
-        usuarioApellido: string,
-        sector: string,
-        categoria: string,
-        descripcion: string,
-        prioridad: string,
-        fechaNecesidad: string,
-        comentario: string
-         
-    };
-    action: "update" | "create";
+    serviceOrder: ServiceOrder,
+    action: "update" | "create"
 }
 
 
@@ -27,28 +33,40 @@ export const ServiceOrderInfo = (props:Props) => {
      * Cambia el estado de la orden de servicio 
      */
     const [status, setStatus] = useState(props.serviceOrder["estado"]);
-    const [serviceOrder, setServiceOrder] = useState(props.serviceOrder);
+
 
     useEffect(() => {
 
-        setServiceOrder((prevServiceOrder) => ({
-            ...prevServiceOrder,
-            estado: status,
-        }));
     }, [status]);
 
-    const changeStatusState = () => {
+    const changeStatus = () => {
+        var newStatus: string = status;
+
         if (status === "EN_ESPERA" || status === "APROBADA") {
+            newStatus = "RECHAZADA";
             setStatus("RECHAZADA");
         }
         if (status === "RECHAZADA") {
-            setStatus("APROBADA");
+            newStatus = "APROBADA"
         }
-    }
+        setStatus(newStatus);
+    
+        const formData = new FormData();
+        // Agregar propiedades del serviceOrder a FormData  
+        formData.append("categoria", props.serviceOrder["categoria"]);
+        if (props.serviceOrder["comentario"] !== null) formData.append("comentario", props.serviceOrder["comentario"]);
+        formData.append("descripcion", props.serviceOrder["descripcion"]);
+        formData.append("estado", newStatus);
+        formData.append("fechaGeneracion", props.serviceOrder["fechaGeneracion"]);
+        formData.append("fechaNecesidad", props.serviceOrder["fechaNecesidad"]);
+        formData.append("prioridad", props.serviceOrder["prioridad"]);
+        formData.append("sector", props.serviceOrder["sectorID"]);
+        formData.append("usuario", props.serviceOrder["usuarioID"]);
 
-    const changeStatus = () => {
-        changeStatusState();
-        serviceOrder["estado"]=status;
+        UpdateItem("ordenes-servicio", formData, props.serviceOrder["id"].toString())
+            .then((response) => { console.log(response)})
+            .catch((error) => { setMessage("Se produjo un error al cambiar el estado de la Orden de servicio.", error) });
+        window.location.reload();
     }
 
 
@@ -67,8 +85,6 @@ export const ServiceOrderInfo = (props:Props) => {
                             Aprobar
                         </Button>
                     )}
-
-
                 </div>
                 
                 <Row className="mb-3">

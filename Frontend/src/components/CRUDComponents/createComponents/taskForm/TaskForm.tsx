@@ -80,7 +80,7 @@ const TaskForm = (props:Props) => {
             const updatedHerrList = task["herramientas"].map(item => ({ ["herramienta"]: item.id.toString() }));
             if (updatedHerrList.length>0) setHerrList(updatedHerrList);
 
-            ReadItemId(setServiceOrder, "es-servicio", task.ordenServicio.toString())
+            ReadItemId(setServiceOrder, "ordenes-servicio", task.ordenServicio.toString())
                 .then((response) => console.log(response))
                 .catch((error) => {
                     setMessage(`Ha surgido un error al buscar la ${getSingular("orden-servicio")} correspondiente a la tarea`, error)

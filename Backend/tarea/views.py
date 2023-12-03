@@ -69,9 +69,9 @@ class TareaCommonLogic:
         new_empleados = []
         
         # update empleados
-        for empleado in empleados_data:
-            print(empleado)
-            tiempo_model = next((model for model in tarea_empleados if model.empleado == empleado['empleado']), None)
+        for empleado in empleados_data:      
+            tiempo_model = next((tiempo for tiempo in tarea_empleados if tiempo.empleado.id == int(empleado['empleado'])), None)
+            
             if tiempo_model is None:
                 new_empleados.append(empleado)
             else:
@@ -85,7 +85,7 @@ class TareaCommonLogic:
 
         # add empleados
         if not new_empleados:
-            create_empleados_relation(new_empleados, tarea_pk, user)
+            TareaCommonLogic.create_empleados_relation(new_empleados, tarea_pk, user)
 
     def restore_herramientas(tarea, user):
         # restore herramientas
