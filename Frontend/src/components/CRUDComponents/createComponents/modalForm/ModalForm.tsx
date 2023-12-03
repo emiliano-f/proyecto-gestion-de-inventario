@@ -154,24 +154,28 @@ const ModalForm = (props: Props) => {
                         {props.fields
                             .filter(item => item.editable == true)
                             .map((field, index) => (
-                                <Form.Group className="form-group" key={index}>
-                                    <Form.Label>{field.headerName}</Form.Label>
-                                    <div className="row g-2">{
-                                        field.select ? (
-                                            <CreateSelect field={field} props={props} />
-                                        ) : (
-                                            <CreateControl field={field} props={props} setOpenStockAdj={setOpenStockAdj} />
-                                        )
-                                    }</div>
-                                    {field.required ?(
-                                            <Form.Control.Feedback type="invalid">
-                                                Este campo es obligatorio
-                                            </Form.Control.Feedback> 
-                                        ) :(
-                                            <Form.Control.Feedback />
-                                        ) 
-                                    }
-                                </Form.Group>
+                                <>
+                                {!((props.formType === FormType.UPDATE) && (field.headerName === "Contraseña")) &&
+                                    <Form.Group className="form-group" key={index}>
+                                        <Form.Label>{field.headerName}</Form.Label>
+                                            <div className="row g-2">{
+                                                field.select ? (
+                                                    <CreateSelect field={field} props={props} />
+                                                ) : (
+                                                    <CreateControl field={field} props={props} setOpenStockAdj={setOpenStockAdj} />
+                                                )
+                                            }</div>
+                                        {field.required ?(
+                                                <Form.Control.Feedback type="invalid">
+                                                    Este campo es obligatorio
+                                                </Form.Control.Feedback> 
+                                            ) :(
+                                                <Form.Control.Feedback />
+                                            ) 
+                                        }
+                                    </Form.Group>
+                                }
+                                </>
                             ))
                         }
 

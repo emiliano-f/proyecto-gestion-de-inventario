@@ -611,7 +611,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             },
             "password": {
                 editable: true,
-                show: true,
+                show: false,
                 name: "Contraseña",
                 type: "string",
                 col_size: SIZE.TINY,
