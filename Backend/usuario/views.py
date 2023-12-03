@@ -2,6 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User, Group
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
@@ -26,7 +27,7 @@ class CustomModelViewSet(viewsets.ModelViewSet):
 
 class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     serializer_class = serializer.UsuarioSerializer
-    queryset = models.Usuario.objects.all()
+    queryset = models.Usuario.objects.all().filter(is_active=True)
     permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
@@ -35,7 +36,7 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
         return serializer.UsuarioSerializer
 
     def list(self, request):
-        usuarios = models.Usuario.objects.all()
+        usuarios = models.Usuario.objects.all().filter(is_active=True)
         serializer_usuario = serializer.UsuarioSerializerNoPassword(usuarios, many=True)
         return Response(serializer_usuario.data)
 

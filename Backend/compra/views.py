@@ -17,6 +17,7 @@ class CompraCommonLogic:
         ## check positive value
         if quantity <= 0: raise Exception('Negative or zero: invalid quantity')
 
+from django.core.exceptions import ObjectDoesNotExist
 class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def __table__():

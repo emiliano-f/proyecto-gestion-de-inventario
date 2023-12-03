@@ -144,12 +144,13 @@ class EmpleadoCRUD(CustomModelViewSet):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
     def delete(self, request, *args, **kwargs):
         empleado = self.get_object()
 
         # check
         if not empleado.is_active:
-            raise ObjectDoesNotFound('Empleado inactivo')
+            raise ObjectDoesNotExist('Empleado inactivo')
 
         # it is assigned?
         for tiempo in models.Tiempo.objects.filter(empleado=empleado):
