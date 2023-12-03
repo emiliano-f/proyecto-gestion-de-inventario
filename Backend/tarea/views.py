@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from django.utils import timezone
 from herramienta.views import HerramientaCommonLogic
 from inventario.views import InventarioCommonLogic
@@ -365,6 +365,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
                 tarea.ordenServicio.save()
 
             return Response(tarea_serializer.data)
+        except IntegrityError:
+            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
         except ObjectDoesNotExist: 
             transaction.set_rollback(True)
             return Response(status=status.HTTP_404_NOT_FOUND)

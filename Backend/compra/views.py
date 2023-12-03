@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from settings.common_class import LoginRequiredNoRedirect
 from rest_framework import viewsets
 from rest_framework import status
@@ -150,11 +150,13 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def destroy(self, request, pk):
         try:
             pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
+            pedido_insumo.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except IntegrityError:
+            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        pedido_insumo.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
     
 class PresupuestoCRUD(CustomModelViewSet):
     serializer_class = serializer.PresupuestoSerializer
@@ -227,8 +229,9 @@ class DetallePedidoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def destroy(self, request, pk):
         try:
             detalle_pedido = models.DetallePedido.objects.get(id=pk)
+            detalle_pedido.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except IntegrityError:
+            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-        detalle_pedido.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
