@@ -97,7 +97,7 @@ class TareaCommonLogic:
 
         # update empleados
         for empleado in empleados_data:
-            tiempo_model = next((model for model in tarea_empleados if model.empleado == empleado['id']), None)
+            tiempo_model = next((tiempo for tiempo in tarea_empleados if tiempo.empleado.id == empleado['empleado']), None)
             if tiempo_model is None:
                 new_empleados.append(empleado)
             else:
