@@ -85,6 +85,9 @@
                 cursor: pointer;
             }
 
+            .modal-background .modal-front form .form-group input .checkBox{
+                display: none;
+            }
         }
     }
 }

@@ -44,7 +44,6 @@ const List = () => {
 
     const columns: GridColDef[] = GetColumns(groupName, entityName);
     const fields: Field[] = GetFields(groupName, entityName);
-
     return (
         <>
             <div className="item">

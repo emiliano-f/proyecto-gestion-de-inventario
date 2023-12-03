@@ -71,7 +71,7 @@ function UserDropDown(){
 
 function Header() {
   return (
-    <div className="header">
+    <div className="myheader">
       <div className="logo">
         <img className="transparent" src="https://ingenieria.uncuyo.edu.ar/images/ingenieriablanco2016.png" alt="" />
         <span>Mantenimiento</span>
