@@ -373,7 +373,6 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
-    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'ordenservicio'
