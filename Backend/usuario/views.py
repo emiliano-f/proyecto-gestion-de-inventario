@@ -10,7 +10,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 from rest_framework import viewsets, status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from settings.common_class import LoginRequiredNoRedirect
@@ -24,6 +24,7 @@ import string
 
 class CustomModelViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+    permission_classes = [IsAdminUser]
 
 class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     serializer_class = serializer.UsuarioSerializer
@@ -31,15 +32,11 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
-        if self.action in ['list', 'update', 'delete']:
+        if self.action in ['list', 'retrieve', 'update', 'delete']:
             return serializer.UsuarioSerializerNoPassword
         return serializer.UsuarioSerializer
 
-    def list(self, request):
-        usuarios = models.Usuario.objects.all().filter(is_active=True)
-        serializer_usuario = serializer.UsuarioSerializerNoPassword(usuarios, many=True)
-        return Response(serializer_usuario.data)
-
+   
     @transaction.atomic
     def create(self, request):
         try:
@@ -144,7 +141,6 @@ class WhoAmIView(APIView):
     @staticmethod
     @csrf_exempt
     def get(request, format=None):
-        print(request.user.password)
         if request.user.is_staff:
             rol = "Administrador" if request.user.is_superuser else "Staff"
         else:

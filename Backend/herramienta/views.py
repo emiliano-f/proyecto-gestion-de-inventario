@@ -3,6 +3,7 @@ from django.db import transaction
 from settings.common_class import LoginRequiredNoRedirect
 from rest_framework import viewsets
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from . import serializer
@@ -10,6 +11,7 @@ from . import models
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+    permission_classes = [IsAdminUser]
 
 class HerramientaCommonLogic:
     def create_estado_entry(herramienta):
@@ -41,6 +43,7 @@ class TipoHerramientaCRUD(CustomModelViewSet):
         return 'tipoherramienta'
 
 class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'herramienta'
@@ -126,6 +129,7 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class EstadoHerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'estadoherramienta'

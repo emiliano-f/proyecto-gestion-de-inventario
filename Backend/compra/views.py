@@ -4,6 +4,7 @@ from settings.common_class import LoginRequiredNoRedirect
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from . import serializer
 from . import models
@@ -11,6 +12,7 @@ from inventario.models import Insumo
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+    permission_classes = [IsAdminUser]
 
 class CompraCommonLogic:
     def detalle_pedido_logic(quantity):
@@ -19,6 +21,7 @@ class CompraCommonLogic:
 
 from django.core.exceptions import ObjectDoesNotExist
 class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'pedidoinsumo'
@@ -170,6 +173,7 @@ class PresupuestoCRUD(CustomModelViewSet):
         return 'presupuesto'
 
 class DetallePedidoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'detallepedido'
