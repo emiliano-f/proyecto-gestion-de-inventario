@@ -18,11 +18,9 @@ function ServiceRequest(){
     if (authData["authenticated"] === false) {
         return <Link to="/login" />;
     }
-
-    const [message,setMessage] = useState( {title: "",desc: "",is_error: false});
   
     return (
-        <>  <MessageDisplay stateMessage={message} setStateMessage={setMessage}/>
+        <>  <MessageDisplay/>
             <Header/>
             <ServiceForm />
         </>

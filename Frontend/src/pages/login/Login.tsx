@@ -91,12 +91,10 @@ function Login() {
     );
   }
 
-  const [message,setnewMessage] = useState( {title: "",desc: "",is_error: false});
-
   return (
     <>
       <div className="error">
-        <MessageDisplay stateMessage={message} setStateMessage={setnewMessage}/>
+        <MessageDisplay />
       </div>
       <div className="background">    
         <LoginForm/>

@@ -1,5 +1,5 @@
 import "./messageDisplay.scss"
-import React, { SetStateAction, useContext, useRef } from "react";
+import React, { SetStateAction, useContext, useRef, useState } from "react";
 import { FiAlertTriangle, FiAlertCircle } from 'react-icons/fi';
 
 type Message = {
@@ -68,9 +68,8 @@ export function setMessage(title: string, error: Promise<AxiosResponse<any, any>
     }
 }
 
-function MessageDisplay({stateMessage,setStateMessage}:{stateMessage:Message,setStateMessage:React.Dispatch<SetStateAction<Message>>}) {
-    message = stateMessage;
-    setNewMessage = setStateMessage; 
+function MessageDisplay() {
+    [message,setNewMessage] = useState({title: "",desc: "",is_error: false});
     return (
         <div id="msg" className={(message.title === "") ? "hidden" : "visible"}>
             <div className={message.is_error ? "alert alert-danger" : "alert alert-success"}>
