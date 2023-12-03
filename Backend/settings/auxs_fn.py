@@ -8,7 +8,6 @@ import compra.models as com
 import herramienta.models as her
 import usuario.models as usu
 
-<<<<<<< HEAD
 from rest_framework.exceptions import APIException
 
 def ErrorToString(e):
@@ -24,9 +23,7 @@ def ErrorToString(e):
         msg = str(e);
     return msg;
 
-=======
 @login_required
->>>>>>> backend
 def get_models(request):
     """
     Captures names of apps, models and their attributes
