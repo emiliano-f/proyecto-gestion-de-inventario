@@ -1,6 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User, Group
 from django.db import transaction
 from django.http import JsonResponse
@@ -109,7 +109,8 @@ class WhoAmIView(APIView):
 
     @staticmethod
     @csrf_exempt
-    def get(request,format=None):
+    def get(request, format=None):
+        print(request.user.password)
         if request.user.is_staff:
             rol = "Administrador" if request.user.is_superuser else "Staff"
         else:
@@ -118,3 +119,22 @@ class WhoAmIView(APIView):
                              'id': request.user.id,
                              'email': request.user.email,
                              'rol': rol})
+
+class PasswordView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def post(request, format=None):
+        try:
+            if not check_password(request.data.get('password'), request.user.password):
+                raise Exception('Invalid current password')
+
+            request.user.password = make_password(request.data['new_password'])
+            request.user.save()
+            update_session_auth_hash(request, request.user)
+            return Response({'notice': 'password changed'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error":str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        return JsonResponse({'isAuthenticated': True})
