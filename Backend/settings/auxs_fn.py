@@ -16,7 +16,7 @@ def ErrorToString(e):
         if(hasattr(e,'detail')):
             for key in e.detail.keys():
                 for err in e.detail[key]:
-                    msg+= str(err)+"\n"
+                    msg+= key+":"+str(err)+"\n"
         else:
             msg=str(e.default_detail)
     else:

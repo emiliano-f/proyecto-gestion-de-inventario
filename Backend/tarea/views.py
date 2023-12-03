@@ -239,15 +239,34 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         try:
             # get empleados, herramientas, insumos
             to_create = request.data.copy()
-            print(to_create.pop('empleados', []))
-            empleados_data = json.loads(to_create.pop('empleados', [])[0])
+
+            empleados_list = to_create.pop('empleados', []);
+            herramientas_list = to_create.pop('herramientas', []);
+            retirosinsumos_list = to_create.pop('retiros_insumos', []);
+            ordenserivico_list = to_create.get('ordenServicio');
+           
+            if(empleados_list!=[]):
+                empleados_data = json.loads(empleados_list[0])
+            else:
+                empleados_data = [];
             
-            herramientas_data = json.loads(to_create.pop('herramientas', [])[0])
+            if(herramientas_list!=[]):
+                herramientas_data = json.loads(herramientas_list[0])
+            else:
+                herramientas_data = [];
             
-            insumos_data = json.loads(to_create.pop('retiros_insumos', [])[0])
-            orden_servicio_pk = json.loads(to_create.get('orden_servicio', [])[0])
+            if(retirosinsumos_list!=[]):
+                insumos_data = json.loads(retirosinsumos_list[0])
+            else:
+                insumos_data = [];
+            
+            if(ordenserivico_list!=[]):
+                orden_servicio_pk = json.loads(ordenserivico_list[0])
+            else:
+                orden_servicio_pk = [];
+
             orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
-            
+        
             # check previous tarea
             for tarea_iter in models.Tarea.objects.filter(ordenServicio=orden_servicio_model):
                 if tarea_iter.is_active:
@@ -255,8 +274,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
             # check and create tarea
             serializer_tarea = serializer.TareaSerializer(data=to_create)
-            
             serializer_tarea.is_valid(raise_exception=True)
+            
             tarea = serializer_tarea.save(created_by=request.user)
                
             # create empleados relation (Tiempo)
@@ -270,7 +289,6 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             
             # update orden servicio
             tarea.ordenServicio = orden_servicio_model
-
             # modify orden servicio status
             if tarea.fechaInicio == timezone.now().date():
                 orden_servicio_model.estado = models.OrdenServicio().StatusScale.EN_PROGRESO
@@ -283,7 +301,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(serializer_tarea.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             transaction.set_rollback(True)
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
@@ -316,7 +334,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(tarea_data)
 
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def update(self, request, pk):
