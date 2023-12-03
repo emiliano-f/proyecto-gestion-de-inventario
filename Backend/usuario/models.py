@@ -9,3 +9,4 @@ class Usuario(AbstractUser):
                                  null=True)
     cargo = models.CharField(max_length=255, null=True)
     telefono = models.CharField(max_length=255, null=True)
+    default_password = models.BooleanField(default=True)
