@@ -1,4 +1,5 @@
 from django.apps import apps
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import inspect
 import inventario.models as inv
@@ -7,12 +8,16 @@ import compra.models as com
 import herramienta.models as her
 import usuario.models as usu
 
+@login_required
 def get_models(request):
     """
     Captures names of apps, models and their attributes
 
     :return: dict with fields
     """
+
+    if not request.user.is_staff:
+        return JsonResponse({"error": "No puedes acceder a esta url"},status=403)
 
     # Get apps
     apps_names = ["inventario", "compra", "usuario", "tarea", "herramienta"]
@@ -32,10 +37,14 @@ def get_models(request):
 
     return JsonResponse(models_dict)
 
+@login_required
 def enabled_methods(request):
     """
     This function was not implemented
     """
+
+    if not request.user.is_staff:
+        return JsonResponse({"error": "No puedes acceder a esta url"},status=403)
 
     apps_names = ["inventario", "compra", "usuario", "tarea", "herramienta"]
 
@@ -54,12 +63,16 @@ def enabled_methods(request):
 
     return JsonResponse(models_dict)
 
+@login_required
 def enums_models(request):
     """
     Gets the scale (enums) in each attribute model
     
     :return: dict with the enums
     """
+
+    if not request.user.is_staff:
+        return JsonResponse({"error": "No puedes acceder a esta url"},status=403)
 
     def is_method(att):
         """
