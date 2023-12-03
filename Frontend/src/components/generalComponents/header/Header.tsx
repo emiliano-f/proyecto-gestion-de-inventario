@@ -1,11 +1,12 @@
 import "./header.scss"
-import { Button, Col, Container, Dropdown, Row } from "react-bootstrap";
+import { Button, Col, Container, Dropdown, ListGroup, ListGroupItem, Popover, PopoverBody, PopoverHeader, Row } from "react-bootstrap";
 
 import { Logout, WhoAmI } from "../../../Api/apiService";
 
 import { useAuthData } from "../../providerComponents/authProvider/AuthProvider";
 import { setMessage } from "../../providerComponents/messageDisplay/MessageDisplay";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function UserDropDown(){
   const [authData,setAuthData] = useAuthData();
@@ -28,9 +29,14 @@ function UserDropDown(){
     }) 
   }
 
+  const [visible,setVisible]=useState(false);
+  const ja = ()=>{
+    setVisible(!visible)
+  }
   return (
+    <>
     <Dropdown>
-      <Dropdown.Toggle split variant="primary" id="dropdown-split-basic">
+      <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" split>
             <div className="user">
               <img src="https://freesvg.org/img/abstract-user-flat-4.png" alt="" />
               <span>{authData['username']}</span>
@@ -40,22 +46,22 @@ function UserDropDown(){
         <Container>
           <div className="fields">
             <Row>
-              <Col><div className="header">Nombre de usuario:</div></Col>
-            </Row>
-            <Row>
-              <Col><div className="content">{authData['username']}</div></Col>
-            </Row>
-            <Row>
-              <Col><div className="header">Correo:</div></Col>
-            </Row>
-            <Row>
-              <Col><div className="content">{authData['email']}</div></Col>
-            </Row>
-            <Row>
-              <Col><div className="header">Rol:</div></Col>
-            </Row>
-            <Row>
-              <Col><div className="content">{authData['rol']}</div></Col>
+              <Col>
+              <ListGroup>
+                <ListGroupItem>
+                  <span className="header">Nombre de usuario:</span>
+                  <span className="content">{authData['username']}</span>
+                </ListGroupItem>
+                <ListGroupItem>
+                  <span className="header">Correo:</span>
+                  <span className="content">{authData['email']}</span>
+                </ListGroupItem>
+                <ListGroupItem>
+                  <span className="header">Rol:</span>
+                  <span className="content">{authData['rol']}</span>
+                </ListGroupItem>
+              </ListGroup>
+              </Col>
             </Row>
             <Row>
               <Button variant="warning" onClick={()=>{nav("/nueva-contraseña")}}>Cambiar Contraseña</Button>
@@ -68,6 +74,7 @@ function UserDropDown(){
       </Dropdown.Menu>
     
     </Dropdown>
+    </>
   );
 }
 
