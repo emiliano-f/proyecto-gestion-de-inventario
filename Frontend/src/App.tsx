@@ -7,6 +7,7 @@ import "./styles/global.scss"
 import { useState } from 'react';
 
 import { AuthProvider } from './components/providerComponents/authProvider/AuthProvider';
+import CreateNav from './components/providerComponents/navProvider/NavProvider';
 
 function App() {
   return (

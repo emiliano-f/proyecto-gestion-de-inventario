@@ -5,8 +5,8 @@ import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { WhoAmI ,Login as login } from "../../Api/apiService"
-import { setMessage } from "../../components/providerComponents/messageDisplay/MessageDisplay";
 import { useAuthData } from "../../components/providerComponents/authProvider/AuthProvider";
+import { setMessage } from "../../components/providerComponents/messageDisplay/MessageDisplay";
 import MessageDisplay from "../../components/providerComponents/messageDisplay/MessageDisplay";
 
 function Login() {
@@ -14,8 +14,7 @@ function Login() {
   const [authData,setAuthData] = useAuthData();
   const [validated,setValidated] = useState(false);
   const nav = useNavigate();
-  const [message,setMessage] = useState({title: "",desc: "",is_error: false});
- 
+  
   const handleWhoAmI = () => {
       WhoAmI()
       .then((r)=>{
@@ -85,13 +84,17 @@ function Login() {
     );
   }
 
-  const messageState = useState( {title: "",desc: "",is_error: false});
+  const [message,setnewMessage] = useState( {title: "",desc: "",is_error: false});
 
   return (
-    <div className="background">    
-      <MessageDisplay stateMessage={message} setStateMessage={setMessage}/>
-      <LoginForm/>
-    </div>          
+    <>
+      <div className="error">
+        <MessageDisplay stateMessage={message} setStateMessage={setnewMessage}/>
+      </div>
+      <div className="background">    
+        <LoginForm/>
+      </div>
+    </>          
   )
 }
 

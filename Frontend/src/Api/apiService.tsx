@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios, { AxiosHeaders, AxiosResponse } from "axios"
 import { BASEURL, getBackendUrl } from "../data/BACKENDURLS"
+import { initializedNavegate as nav } from "../components/providerComponents/navProvider/NavProvider";
 
 const inventarioAPI = axios.create()
 inventarioAPI.defaults.xsrfCookieName = 'csrftoken';
@@ -11,6 +12,12 @@ inventarioAPI.defaults.xsrfHeaderName = 'X-CSRFToken';
 inventarioAPI.defaults.withCredentials = true;
 //Coloca la ip correspondiente como url base para todas las peticiones.
 inventarioAPI.defaults.baseURL = BASEURL
+
+
+function backToLogin(){
+    sessionStorage.clear();
+    nav("/login");   
+}
 
 export function ListItems(setItems: any, itemName: string): Promise<AxiosResponse<any, any>> {
     return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
@@ -22,8 +29,8 @@ export function ListItems(setItems: any, itemName: string): Promise<AxiosRespons
                     resolve(response)
                 })
                 .catch(
-                    (error) => reject(error)
-                    /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/
+                    //(error) => reject(error)
+                    (error) => (error.response?.status !== 403 ? reject(error) : backToLogin(nav))
                     )
         }
         loadItems()
@@ -44,9 +51,10 @@ export function ReadItem(setItem: any, itemName: string): Promise<AxiosResponse<
                         resolve(response)
                     })
                     .catch(
-                        (error) => reject(error)
-                        /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
-            }
+                        //(error) => reject(error)
+                        (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())                    
+                    )    
+                    }
             loadItem()
         }, [itemName, setItem, id]);
     })
@@ -84,8 +92,9 @@ export function CreateItem(itemName: string, formData: FormData | string): Promi
                 .then((response) => {
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
+                .catch(
+                    (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())                                        
+                )
         }
         createData(itemName, formData);
     })
@@ -101,8 +110,9 @@ export function UpdateItem(itemName: string, formData: FormData, id: string | un
                     
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
+                .catch(
+                    (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())                    
+                )
         }
         updateData(itemName, id, formData)
     })
@@ -117,9 +127,10 @@ export function DeleteItem(itemName: string, id: string): Promise<AxiosResponse<
                     
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
-        }
+                .catch(
+                (error) => (error.response?.status !== 403 ? reject(error) : backToLogin()) 
+                )                   
+            }
         deleteData(itemName, id);
     })
 }
@@ -134,8 +145,9 @@ export function getSectors(setSectors: any, edificioName: number): Promise<Axios
                     
                     resolve(response);
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
+                .catch(
+                (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())  
+                )                  
         }
         listSectors();
     })
@@ -150,9 +162,10 @@ export function SendServiceRequest(formData: FormData): Promise<AxiosResponse<an
                     
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
-        }
+                .catch(
+                    (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())                                        
+                )
+            }
         sendData(formData);
     })
 }
@@ -165,8 +178,10 @@ export function GetEnums(setEnum: any): Promise<AxiosResponse<any, any>> {
                     setEnum(response.data)
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/)
+                .catch(
+                    (error) => reject(error)
+                /*(error) => (error.response?.status !== 403 ? reject(error) : ("/login"))*/
+                )
         }
         loadItem();
 
@@ -182,9 +197,9 @@ export function ListItemsFiltered(setItems, filteredEntityName, filterID) {
                     
                     resolve(response)
                 })
-                .catch((error) => reject(error)
-                /*(error) => (error.response?.status !== 403 ? reject(error) : nav("/login"))*/
-                )
+                .catch(
+                    (error) => (error.response?.status !== 403 ? reject(error) : backToLogin())  
+                    ) 
         }
         loadItems()
     });
@@ -224,7 +239,9 @@ export function Logout() {
                 .then((response) => {
                     resolve(response)
                 })
-                .catch((error) => (reject(error)))
+                .catch(
+                    (error) => backToLogin() 
+                    ) 
         }
         loginUser();
     });

@@ -28,7 +28,6 @@ class TareaCommonLogic:
             
             ## update herramienta
             herramienta = herramienta_models.Herramienta.objects.get(id=int(herramienta_data['herramienta']))
-            
             tarea.herramientas.add(herramienta)
             if not herramienta.is_available():
                 raise Exception('La herramienta no está disponible')
@@ -301,7 +300,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             
             # update herramientas and estado
             TareaCommonLogic.update_herramientas(herramientas_data, tarea)
-            
+
             # update empleados relation (Tiempo)
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
             
@@ -365,7 +364,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         try:
             serializer_class = serializer.OrdenServicioSerializer(data=request.data)
             serializer_class.is_valid(raise_exception=True)
-            serializer_class.save(created_by=request.user)
+            serializer_class.save(usuario=request.user)
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

@@ -1,4 +1,5 @@
 .hidden{
+    z-index: 9999;
     display: none;
     opacity: 0;
 }
@@ -19,25 +20,36 @@
   }
 
 .visible{
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 25%;
+    width: 65%;
     display: block;
     animation: hideElement 10s ease 9s;
 }
 
 .alert {
-    .icon{
-        display: block;
-        margin-top: 8px;
-        margin-left: 20px;
-    } 
-    .title{
-        font-weight: bold;
-        font-size: larger;
-        display: flex;
-        text-align: left;
-        flex:2
-    }
-    .desc{
-        display: block;
-        text-align: left;
+    height: fit-content;
+    display: flex;
+    .row{
+        width: 100%;
+        .icon{
+            flex: 2; 
+            margin-top: 1%;
+            margin-left: 1%;
+            margin-right: 2%;
+        } 
+        .title{
+            font-weight: bold;
+            font-size: larger;
+            text-align: left;
+            justify-content: right;
+        }
+        .desc{
+            display: block;
+            text-align: left;
+            flex: auto;
+        }
     }
 }

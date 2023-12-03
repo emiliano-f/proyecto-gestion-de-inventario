@@ -6,6 +6,7 @@ import Sidebar from "../../components/generalComponents/sidebar/Sidebar"
 import { useAuthData } from "../../components/providerComponents/authProvider/AuthProvider"
 import { useEffect, useState } from "react"
 import MessageDisplay from "../../components/providerComponents/messageDisplay/MessageDisplay"
+import CreateNav from "../../components/providerComponents/navProvider/NavProvider"
 
 function Dashboard() {
     
@@ -27,6 +28,7 @@ function Dashboard() {
     
     return (
         <div className="main">
+            <CreateNav/>
             <Header />
             <div className="container2">
                 <div className="menuContainer">
