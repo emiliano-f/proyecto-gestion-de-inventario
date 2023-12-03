@@ -113,7 +113,7 @@ export const ServiceOrderInfo = (props:Props) => {
                 </Row>
                 <Form.Group className="mb-3" controlId="no">
                     <Form.Label>Comentario adicional</Form.Label>
-                    <Form.Control disabled as="textarea" rows={2} value={props.serviceOrder["comentario"]} />
+                    <Form.Control disabled as="textarea" rows={2} value={props.serviceOrder["comentario"]===null?"":props.serviceOrder["comentario"]} />
                 </Form.Group>
             </Col>
     )

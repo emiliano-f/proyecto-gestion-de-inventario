@@ -298,7 +298,6 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             
             # update herramientas and estado
             TareaCommonLogic.update_herramientas(herramientas_data, tarea)
-
             # update empleados relation (Tiempo)
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
             

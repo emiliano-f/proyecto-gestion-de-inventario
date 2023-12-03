@@ -2,6 +2,7 @@
 
 .myheader{
     width: 100%;
+    height: fit-content;
     padding: 20px;
     display: flex;
     align-items: center;
@@ -47,37 +48,32 @@
         }
 
         .user {
-            display: block;
+            display: flex;
             align-items: center;
-            gap: 10px;
             img {
                 margin-right: 10%;
-                width: 26px;
-                height: 26px;
                 border-radius: 50%;
                 object-fit: cover;
+                width: 26px;
+                height: 26px;
             }
         }
         .fields{
-            .row{
-                .col{
-                    margin-top: 0px;
-                    margin-bottom: 0px;
-                    padding-right: 0px;
-                    padding-left: 0px;
-                    .header{
-                        padding: 0px;
-                        font-weight: 500;
-                        display: block;
-                        text-align: center;
-                        font-size: 11px;
-                    }
-                    .content{
-                        display: block;
-                        text-align: center;
-                        font-size: 12px;
-                    }
-                }
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding-right: 0px;
+            padding-left: 0px;
+            .header{
+                padding: 0px;
+                font-weight: 500;
+                display: block;
+                text-align: center;
+                font-size: 11px;
+            }
+            .content{
+                display: block;
+                text-align: center;
+                font-size: 12px;
             }
         }
     }
