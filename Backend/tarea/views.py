@@ -168,29 +168,33 @@ class EmpleadoCRUD(CustomModelViewSet):
         try:
             serializer_class = self.get_serializer(data=request.data)
             serializer_class.is_valid(raise_exception=True)
-            serializer_class.save(created_by=request.user)
+            serializer_class.save(created_by=request.user, is_active=True)
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-    def delete(self, request, *args, **kwargs):
-        empleado = self.get_object()
+    def destroy(self, request, *args, **kwargs):
+        try:
+            empleado = self.get_object()
 
-        # check
-        if not empleado.is_active:
-            raise ObjectDoesNotExist('Empleado inactivo')
+            # check
+            empleado.is_active_(raise_exception=True, msg="Empleado no activo")
 
-        # it is assigned?
-        for tiempo in models.Tiempo.objects.filter(empleado=empleado):
-            if tiempo.tarea.fechaFin is not None:
-                raise Exception('Empleado no puede eliminarse porque está asignado a una tarea sin finalizar')
+            # it is assigned?
+            for tiempo in models.Tiempo.objects.filter(empleado=empleado):
+                if tiempo.tarea.fechaFin is not None:
+                    raise Exception('Empleado no puede eliminarse porque está asignado a una tarea sin finalizar')
 
-        # deactivate empleado
-        empleado.is_active = False
-        empleado.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            # deactivate empleado
+            empleado.is_active = False
+            empleado.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e: 
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def __table__():
         return 'empleado'
