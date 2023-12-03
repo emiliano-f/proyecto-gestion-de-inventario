@@ -2,6 +2,9 @@ import "./serviceOrderInfo.scss"
 import { Button, Col, Row } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form';
 import "./serviceOrderInfo.scss"
+import { ReadItemId, UpdateItem } from "../../../../../Api/apiService";
+import { setMessage } from "../../../../providerComponents/messageDisplay/MessageDisplay";
+import { useState } from "react";
 
 type Props = {
     serviceOrder: any,
@@ -10,14 +13,17 @@ type Props = {
 
 
 export const ServiceOrderInfo = (props:Props) => {
-    console.log(props.serviceOrder["estado"])
+    console.log(props.serviceOrder)
     /**
      * Cambia el estado de la orden de servicio 
      */
-    const changeStatus = () => {
-
+    const changeStatus = (state) => {
+        UpdateItem("ordenes-servicio",{
+            
+        },props.serviceOrder["id"])
+        .then((response)=>{})
+        .catch((error)=>{setMessage("Se produjo un error al cambiar el estado de la Orden de servicio.",error)})
     }
-
 
     return (
             <Col xs={5} className="service-order">
@@ -25,20 +31,16 @@ export const ServiceOrderInfo = (props:Props) => {
                     <h4 className="col">Orden de servicio</h4>
                     
                     {props.action === "create" && (props.serviceOrder["estado"] === "EN_ESPERA" || props.serviceOrder["estado"] === "APROBADA") && (
-                        <Button className="btn btn-danger mx-2 col-4" onClick={changeStatus}>
+                        <Button className="btn btn-danger mx-2 col-4" onClick={()=>changeStatus("RECHAZADA")}>
                             Rechazar
                         </Button>
                     )}
                     {props.action === "create" && props.serviceOrder["estado"] === "RECHAZADA" && (
-                        <Button className="btn btn-success mx-2 col-4" onClick={changeStatus}>
+                        <Button className="btn btn-success mx-2 col-4" onClick={()=>changeStatus("APROBADA")}>
                             Aprobar
                         </Button>
                     )}
                         
-                    
-                    
-
-
                 </div>
                 
                 <Row className="mb-3">
@@ -83,7 +85,7 @@ export const ServiceOrderInfo = (props:Props) => {
                 </Row>
                 <Form.Group className="mb-3" controlId="no">
                     <Form.Label>Comentario adicional</Form.Label>
-                    <Form.Control disabled as="textarea" rows={2} value={props.serviceOrder["comentario"]} />
+                    <Form.Control disabled as="textarea" rows={2} value={props.serviceOrder["comentario"]===null?"":props.serviceOrder["comentario"]} />
                 </Form.Group>
             </Col>
     )

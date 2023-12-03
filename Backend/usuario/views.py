@@ -27,6 +27,7 @@ class CustomModelViewSet(viewsets.ModelViewSet):
 class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     serializer_class = serializer.UsuarioSerializer
     queryset = models.Usuario.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.action in ['list', 'update', 'delete']:

@@ -46,6 +46,7 @@ class OrdenServicioUsuarioSerializer(serializers.ModelSerializer):
     usuarioID = serializers.IntegerField(source='usuario.id', required=False)
     edificio = serializers.CharField(source='sector.edificio')
     sector = serializers.CharField(source='sector.nombre')
+    sectorID = serializers.IntegerField(source='sector.id')
     class Meta:
         model = models.OrdenServicio
         fields = ['id', 'fechaGeneracion', 
@@ -53,7 +54,7 @@ class OrdenServicioUsuarioSerializer(serializers.ModelSerializer):
                   'prioridad', 'categoria', 'estado',
                   'usuarioNombre', 'usuarioApellido',
                   'usuarioID',
-                  'edificio', 'sector']
+                  'edificio', 'sector','sectorID']
 
 class TiempoSerializer(serializers.ModelSerializer):
     """
