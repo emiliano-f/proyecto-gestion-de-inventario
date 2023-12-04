@@ -110,9 +110,10 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             estado_herramienta = models.EstadoHerramienta(
                     herramienta=herramienta,
                     estado=request.data['estado'],
-                    observaciones='Actualizacion estado herramienta id '+str(pk)
+                    observaciones='Actualizacion estado herramienta id '+str(pk),
+                    created_by=request.user
                 )
-            estado_herramienta.save(created_by=request.user)
+            estado_herramienta.save()
 
             serializer_class = serializer.HerramientaSerializer(herramienta, data=request.data)
             serializer_class.is_valid(raise_exception=True)
