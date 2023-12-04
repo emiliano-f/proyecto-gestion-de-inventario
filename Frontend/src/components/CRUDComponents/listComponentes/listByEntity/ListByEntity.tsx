@@ -66,33 +66,6 @@ function FilteredDataGrid({ filterID, filteredEntity,  setFilterID }): React.Rea
     )
 }
 
-class renderRow extends PureComponent {
-    render() {
-        const filters = this.props.data["filters"];
-        const setFilterID = this.props.data["setFilter"];
-        const currWord = this.props.data["currWord"];
-
-        const handleClick = (filter) => setFilterID(filter["id"]);
-        const lookFor = (filter) => String(filter["id"]).startsWith(currWord) 
-        || (new Date(filter["fechaHora"])).toLocaleString().match(currWord) 
-        || currWord === "";
-        console.log(currWord)
-        return (
-            filters.filter(lookFor).map((filter,index) => {
-            return (
-                <ListItem className="list-items" key={index}>
-                    <ListItemButton className="btn btn-primary" onClick={() => handleClick(filter)}>
-                        <ListItemText className="item-button-id" primary={filter["id"]} />
-                        <ListItemText className="item-button-date" primary={`${(new Date(filter["fechaHora"])).toLocaleString()}`} />
-                    </ListItemButton>
-                </ListItem>
-            );
-        })
-        );
-    }
-}
-
-
 function ListFilters({ setFilterID, filterName }): React.ReactElement {
 
     const [filters, setFilters] = useState([]);
@@ -106,22 +79,29 @@ function ListFilters({ setFilterID, filterName }): React.ReactElement {
 
     const [currWord,setCurrWord] = useState("");
 
+    const handleClick = (filter) => setFilterID(filter["id"]);
+    const lookFor = (filter) => String(filter["id"]).startsWith(currWord) 
+    || (new Date(filter["fechaHora"])).toLocaleString().match(currWord) 
+    || currWord === "";
+
     return (
         <div className="Filters">
             <Card>
                 <h4>Pedidos de Insumo</h4>
                 <Card className="custom-card">
                     <input value={currWord} placeholder="Buscar..." onChange={(event) => setCurrWord(event.target.value)}/>
-                    <FixedSizeList
-                        height={570}
-                        width={250}
-                        itemSize={50}
-                        itemCount={filters.length}
-                        overscanCount={1}
-                        itemData={{filters:filters,setFilter:setFilterID,currWord:currWord}}
-                    >   
-                        {renderRow}
-                    </FixedSizeList>
+                    {
+                        filters.filter(lookFor).map((filter,index) => {
+                            return (
+                                <ListItem className="list-items" key={index}>
+                                    <ListItemButton className="btn btn-primary" onClick={() => handleClick(filter)}>
+                                        <ListItemText className="item-button-id" primary={filter["id"]} />
+                                        <ListItemText className="item-button-date" primary={`${(new Date(filter["fechaHora"])).toLocaleString()}`} />
+                                    </ListItemButton>
+                                </ListItem>
+                            )
+                        })
+                    }
                 </Card>
             </Card>
         </div>
@@ -131,11 +111,7 @@ function ListFilters({ setFilterID, filterName }): React.ReactElement {
 const ListByEntity = ({ entityNameToFilterBy, entityNameToList }) => {
     const ErrorState = useState(["", false]);
     
-    //Operaciones de Filtro
-    const [openRead, setOpenRead] = useState(false);
-
     // Operaciones de etnidad
-
     const [filterID, setFilterID] = useState(-1);
     console.log(filterID)
     return (

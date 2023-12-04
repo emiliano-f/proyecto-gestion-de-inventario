@@ -73,6 +73,7 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
             user_serializer = self.get_serializer(user_instance, data=request.data, partial=True)
             user_serializer.is_valid(raise_exception=True)
             self.perform_update(user_serializer)
+            return Response(user_serializer.data, status=status.HTTP_200_OK)
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
