@@ -56,7 +56,8 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         try:
 
             ## check if detalles is empty
-            detalles_data = request.data.pop('detalles', [])
+            data = request.data.copy()
+            detalles_data = data.pop('detalles', [])
             if not detalles_data:
                 raise Exception("Details empty")
 
@@ -158,7 +159,10 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
 
             if pedido_insumo.recibido == models.StatusScale.SI:
-                raise Exception('Pedido recibido, no se puede eliminar')
+                return Response({"error": "No se puede eliminar un pedido ya recibido"}, status=status.HTTP_400_BAD_REQUEST)
+            for detalles in models.DetallePedido.objects.filter(pedidoInsumo=pedido_insumo).all():
+                detalles.delete()
+
             pedido_insumo.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except IntegrityError:
