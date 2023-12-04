@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction, IntegrityError
 from settings.common_class import LoginRequiredNoRedirect
 from rest_framework.exceptions import *
@@ -24,6 +25,7 @@ class InventarioCommonLogic:
 
         ## update cantidad from Insumo
         insumo = models.Insumo.objects.get(id=data.get('insumo'))
+        insumo.is_active_(raise_exception=True, msg='Insumo no existente')
         insumo.update_quantity(int(data['cantidad']), models.ActionScale.RESTAR)
         
         insumo.save()
@@ -50,8 +52,10 @@ class TipoInsumoCRUD(CustomModelViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except IntegrityError:
             return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
-        except: 
+        except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        except Except as e: 
+            return Response({"error", str(e)}, status=status.HTTP_400_NOT_FOUND)
 
     def __table__():
         return 'tipoinsumo'
@@ -64,7 +68,7 @@ class InsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def list(self, request):
         # join
-        insumo = models.Insumo.objects.prefetch_related('tipoInsumo').all()
+        insumo = models.Insumo.objects.filter(is_active=True).prefetch_related('tipoInsumo').all()
         # serializer
         serializer_class = serializer.InsumoTipoInsumoWithoutEstado(insumo, many=True)
         return Response(serializer_class.data)
@@ -79,32 +83,38 @@ class InsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def retrieve(self, request, pk):
         try:
             insumo = models.Insumo.objects.get(id=pk)
-        except: 
+            insumo.is_active_(raise_exception=True, msg='Insumo no existente')
+            serializer_class = serializer.InsumoTipoInsumoSerializer(insumo)
+            return Response(serializer_class.data)
+        except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer_class = serializer.InsumoTipoInsumoSerializer(insumo)
-        return Response(serializer_class.data)
+        except Exception as e: 
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk):
         try:
             insumo = models.Insumo.objects.get(id=pk)
-        except: 
+            insumo.is_active_(raise_exception=True, msg='Insumo no existente')
+            serializer_class = serializer.InsumoSerializer(insumo, data=request.data)
+            serializer_class.is_valid(raise_exception=True)
+            serializer_class.save()
+            return Response(serializer_class.data)
+        except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer_class = serializer.InsumoSerializer(insumo, data=request.data)
-        serializer_class.is_valid(raise_exception=True)
-        serializer_class.save()
-        return Response(serializer_class.data)
+        except Exception as e: 
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
         try:
             insumo = models.Insumo.objects.get(id=pk)
-            insumo.delete()
+            insumo.is_active_(raise_exception=True, msg='Insumo no existente')
             return Response(status=status.HTTP_204_NO_CONTENT)
         except IntegrityError:
             return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
-        except: 
+        except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e: 
+            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     permission_classes = [IsAdminUser]
@@ -114,7 +124,7 @@ class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def list(self, request):
         # join
-        orden_retiro = models.OrdenRetiro.objects.all()
+        orden_retiro = models.OrdenRetiro.objects.filter(is_active=True).all()
         # serializer
         serializer_class = serializer.OrdenRetiroFkReplacedSerializer(orden_retiro, many=True)
         return Response(serializer_class.data)
@@ -132,11 +142,14 @@ class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def retrieve(self, request, pk):
         try:
             orden_retiro = models.OrdenRetiro.objects.get(id=pk)
-        except: 
+            orden_retiro.is_active_(raise_exception=True, msg='Orden de retiro no existente')
+            serializer_class = serializer.OrdenRetiroFkReplacedSerializer(orden_retiro)
+            return Response(serializer_class.data)
+        except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer_class = serializer.OrdenRetiroFkReplacedSerializer(orden_retiro)
-        return Response(serializer_class.data)
 
     def update(self, request, pk):
         return Response({"error": "La actualización no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

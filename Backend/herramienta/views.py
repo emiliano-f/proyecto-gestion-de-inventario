@@ -62,8 +62,8 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def list(self, request):
         # join
-                        #.filter(estado='OK') \
         herramienta = models.Herramienta.objects \
+                        .filter(is_active=True) \
                         .prefetch_related('tipoHerramienta').all()
         # serializer
         serializer_class = serializer.HerramientaJoinedSerializer(herramienta, many=True)
@@ -88,11 +88,13 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def retrieve(self, request, pk):
         try:
             herramienta = models.Herramienta.objects.get(id=pk)
-        except: 
+            herramienta.is_active_(raise_exception=True, msg='Herramienta no existente')
+            serializer_class = serializer.HerramientaJoinedSerializer(herramienta)
+            return Response(serializer_class.data)
+        except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer_class = serializer.HerramientaJoinedSerializer(herramienta)
-        return Response(serializer_class.data)
+        except Exception as e:
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk):
         try:
@@ -167,7 +169,7 @@ class EstadoHerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def list(self, request):
         # join
-        estado_herramienta = models.EstadoHerramienta.objects.all()
+        estado_herramienta = models.EstadoHerramienta.objects.filter(is_active=True).all()
         # serializer
         serializer_class = serializer.EstadoHerramientaJoinedSerializer(estado_herramienta, many=True)
         return Response(serializer_class.data)
@@ -192,15 +194,18 @@ class EstadoHerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def retrieve(self, request, pk):
         try:
             estado_herramienta = models.EstadoHerramienta.objects.get(id=pk)
-        except: 
+            estado_herramienta.is_active_(raise_exception=True, msg='Estado de herramienta no existente')
+            serializer_class = serializer.EstadoHerramientaJoinedSerializer(estado_herramienta)
+            return Response(serializer_class.data)
+        except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer_class = serializer.EstadoHerramientaJoinedSerializer(estado_herramienta)
-        return Response(serializer_class.data)
+        except Exception as e:
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk):
         try:
             estado_herramienta = models.EstadoHerramienta.objects.get(id=pk)
+            estado_herramienta.is_active_(raise_exception=True, msg='Estado de herramienta no existente')
             serializer_class = serializer.EstadoHerramientaSerializer(estado_herramienta, data=request.data)
             serializer_class.is_valid(raise_exception=True)
             serializer_class.save()
