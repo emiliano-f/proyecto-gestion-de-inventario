@@ -55,8 +55,9 @@ class TareaCommonLogic:
     def update_insumos(insumos_data, tarea, user):
         for orden_retiro in inventario_models.OrdenRetiro.objects.filter(tarea=tarea):
             for insumo_data in insumos_data:
-                insumo_data_cant = int(insumo_data['insumo'])
-                if orden_retiro.insumo.id == insumo_data_cant:
+                insumo_data_id = int(insumo_data['insumo'])
+                insumo_data_cant = abs(int(insumo_data['cantidad']))
+                if orden_retiro.insumo.id == insumo_data_id:
                     if insumo_data_cant == 0:
                         # return insumos
                         orden_retiro.insumo.cantidad += orden_retiro.cantidad

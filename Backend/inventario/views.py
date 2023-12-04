@@ -139,7 +139,7 @@ class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         return Response(serializer_class.data)
 
     def update(self, request, pk):
-        return Response({"error": "La eliminación no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response({"error": "La actualización no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def destroy(self, request, pk):
         return Response({"error": "La eliminación no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -199,7 +199,7 @@ class AjusteStockCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         return Response(serializer_class.data)
 
     def update(self, request, pk):
-        return Response({"error": "La eliminación no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response({"error": "La actualización no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def destroy(self, request, pk):
         return Response({"error": "La eliminación no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
