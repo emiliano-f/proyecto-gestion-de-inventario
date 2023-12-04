@@ -54,13 +54,6 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     @transaction.atomic
     def create(self, request):
         try:
-
-            ## check if detalles is empty
-            data = request.data.copy()
-            detalles_data = data.pop('detalles', [])
-            if not detalles_data:
-                raise Exception("Details empty")
-
             serializer_pedido = serializer.PedidoInsumoSerializer(data=request.data)
 
             ## check data types
