@@ -1,3 +1,4 @@
+import hashlib
 from django.apps import apps
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -22,6 +23,11 @@ def ErrorToString(e):
     else:
         msg = str(e);
     return msg;
+
+def create_hash(id, val):
+    data_to_hash = f"{id}-{val}"
+    hashed_value = hashlib.sha256(data_to_hash.encode()).hexdigest()
+    return hashed_value
 
 @login_required
 def get_models(request):

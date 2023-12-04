@@ -14,7 +14,7 @@ from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, 
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from settings.common_class import LoginRequiredNoRedirect
-from settings.auxs_fn import ErrorToString
+from settings.auxs_fn import ErrorToString, create_hash
 
 from . import serializer
 from . import models
@@ -81,12 +81,11 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         try:
-            user_instance = self.get_object()
-
+            user_instance = self.get_object()    
             # check if it is active
             if not user_instance.is_active:
                 raise ObjectDoesNotExist('Usuario no encontrado para eliminación')
-
+            user_instance.username = create_hash(user_instance.id,user_instance.username);
             user_instance.is_active = False
             user_instance.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
