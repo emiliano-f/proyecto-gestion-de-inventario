@@ -13,7 +13,9 @@ type Entities = {
 type Props = {
     entityName: string,
     entList: Entities,
-    setEntList: React.Dispatch<React.SetStateAction<Entities[]>>
+    setEntList: React.Dispatch<React.SetStateAction<Entities[]>>,
+    readOnly?: boolean
+
 }
 
 const AddEntity = (props:Props) =>{
@@ -43,12 +45,12 @@ const AddEntity = (props:Props) =>{
                             <div className="entity-row">
                                 <InputGroup.Text id="basic-addon1">{i + 1}</InputGroup.Text>
 
-                                <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: x[props.entityName], exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}}} />
+                                <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: x[props.entityName], exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}, readOnly: props.readOnly}} />
 
-                                {props.entList.length !== 1 &&
+                                {!props.readOnly && props.entList.length !== 1 &&
                                     <Button className="btn btn-danger" onClick={() => handleDeleteEnt(i)}>-</Button>
                                 }
-                                {props.entList.length - 1 === i &&
+                                {!props.readOnly && props.entList.length - 1 === i &&
                                     <Button className="btn btn-success" onClick={handleAddEnt}>+</Button>
                                 }
                             </div>

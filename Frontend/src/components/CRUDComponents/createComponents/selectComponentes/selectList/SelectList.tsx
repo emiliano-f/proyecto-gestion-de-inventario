@@ -15,7 +15,8 @@ type Props = {
     setEntListObj?: {
         setEntList: React.Dispatch<React.SetStateAction<{[x: string]: string;}[]>>
         index: number}
-        | undefined;
+        | undefined,
+    readOnly?: boolean
 }
 
 /**
@@ -78,6 +79,7 @@ const SelectList = React.memo(({ props }: { props: Props }) => {
             value={currOption}
             required={props.required}
             onChange={changeHandler}
+            disabled={props.readOnly || false}
             >
             <option value="" disabled>Elegir {getSingular(itemName)}</option>
             {list

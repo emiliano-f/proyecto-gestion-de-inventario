@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import { useNavigate } from 'react-router-dom';
 
 import { ReadItem, CreateItem as Create, UpdateItem as Update, ReadItemId } from "../../../../Api/apiService";
 
@@ -18,6 +19,7 @@ import { setMessage } from "../../../providerComponents/messageDisplay/MessageDi
 import { getSingular } from "../../../../data/TRANSLATIONS";
 import { objectFilteringNoEmptyValues } from "../../../../utils/utils";
 import AddEntityAmount2 from "./addEntityAmount2/AddEntityAmount2";
+
 
 type Props = {
     action: "create" | "update",
@@ -59,7 +61,8 @@ const TaskForm = (props:Props) => {
     const [insumoList, setInsumoList] = useState<Entity[]>([{ ["insumo"]: '', ["cantidad"]: 0 }]);
     // Array de herramientas
     const [herrList, setHerrList] = useState<Entity[]>([{ ["herramienta"]: '' }]);
-
+    // Utilizado para manejar una redirección
+    const navigate = useNavigate();
     // Si se está realizando una modificación se busca la información de la tarea correspondiente
     if (props.action === "update") {
         ReadItem(setTask, entityName)
@@ -105,10 +108,12 @@ const TaskForm = (props:Props) => {
     const createItem = (formData: FormData | string) => {
         Create("tareas", formData)
             .then(() => {
-                setMessage(`Se ha creado la nueva Tarea con exito`, null)
+                setMessage(`Se ha creado la nueva Tarea con exito`, null);
+                navigate('/tarea/tareas');
+
             })
             .catch((error) => {
-                setMessage(`Ha surgido un error al crear la nueva Tarea.`, error)
+                setMessage(`Ha surgido un error al crear la nueva Tarea.`, error);
             })
             
     }
@@ -120,10 +125,11 @@ const TaskForm = (props:Props) => {
     const updateItem = (formData: FormData, id:number) => {
         Update("tareas", formData, id.toString())
             .then(() => {
-                setMessage(`Se ha modificado la Tarea con exito`, null)
+                setMessage(`Se ha modificado la Tarea con exito`, null);
+                window.location.reload();
             })
             .catch((error) => {
-                setMessage(`Ha surgido un error al modificar la Tarea.`, error)
+                setMessage(`Ha surgido un error al modificar la Tarea.`, error);
             })
     }
     /**
@@ -222,10 +228,6 @@ const TaskForm = (props:Props) => {
                 setMessage("Antes de finalizar la tarea, asignar horas totales a cada empleado", null);
             }
         }
-
-        
-            
-        
                
     };
     
@@ -254,14 +256,14 @@ const TaskForm = (props:Props) => {
                     <Row className="mb-3">
                         <Form.Group as={Col} controlId="taken">
                             <Form.Label>Tipo</Form.Label>
-                            <SelectEnum props={{ entityName: entityName, fieldName: "tipo", required: true, defaultValue: task ? (task["tipo"]):"", exclude:undefined }}/>
+                            <SelectEnum props={{ entityName: entityName, fieldName: "tipo", required: true, defaultValue: task ? (task["tipo"]):"", exclude:undefined, readOnly:serviceOrder && (serviceOrder["estado"]==="FINALIZADA") || false}}/>
                             <Form.Control.Feedback type="invalid">
                                 Este campo es obligatorio
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group as={Col} controlId="taken">
                             <Form.Label>Clasificación</Form.Label>
-                                    <SelectEnum props={{ entityName: entityName, fieldName: "clasificacion", required: true, defaultValue: task ? (task["tipo"]) : "", exclude:undefined }} />
+                                <SelectEnum props={{ entityName: entityName, fieldName: "clasificacion", required: true, defaultValue: task ? (task["tipo"]) : "", exclude: undefined, readOnly: serviceOrder && (serviceOrder["estado"] === "FINALIZADA") || false }} />
                             <Form.Control.Feedback type="invalid">
                                 Este campo es obligatorio
                             </Form.Control.Feedback>
@@ -270,7 +272,7 @@ const TaskForm = (props:Props) => {
 
                     <Form.Group className="mb-3" controlId="taken">
                         <Form.Label>Descripción</Form.Label>
-                                <Form.Control name="descripcion" as="textarea" rows={2} required defaultValue={task ? (task["descripcion"]) : ""} />
+                                <Form.Control name="descripcion" as="textarea" rows={2} required defaultValue={task ? (task["descripcion"]) : ""} readOnly={serviceOrder && (serviceOrder["estado"] === "FINALIZADA") || false} />
                                 <Form.Control.Feedback type="invalid">
                                     Este campo es obligatorio
                                 </Form.Control.Feedback>
@@ -280,7 +282,7 @@ const TaskForm = (props:Props) => {
                         
                         <Form.Group as={Col} controlId="taken">
                             <Form.Label>Fecha de Inicio</Form.Label>
-                            <Form.Control name="fechaInicio" type="date" defaultValue={task ? (task["fechaInicio"]) : ""} />
+                                    <Form.Control name="fechaInicio" type="date" defaultValue={task ? (task["fechaInicio"]) : ""} readOnly={serviceOrder && (serviceOrder["estado"] === "FINALIZADA") || false} />
                         </Form.Group>
                             <Form.Group as={Col} controlId="taken">
                                 <Form.Label>Fecha Tentativa</Form.Label>
@@ -295,14 +297,14 @@ const TaskForm = (props:Props) => {
                         </Form.Group>
                         </Row>
                         <Row className="mb-3">                            
-                            <AddEntityAmount2 entList={empList} setEntList={setEmpList} entityName="empleado" amountTitle="horasEstimadas" amountTooltip="Horas estimadas" amountTitle2="horasTotales" amountTooltip2="Horas totales" action={props.action}/>
+                            <AddEntityAmount2 entList={empList} setEntList={setEmpList} entityName="empleado" amountTitle="horasEstimadas" amountTooltip="Horas estimadas" amountTitle2="horasTotales" amountTooltip2="Horas totales" action={props.action} readOnly={serviceOrder && (serviceOrder["estado"] === "FINALIZADA") || false} />
                         </Row>
                         <Row className="mb-3">
                             <Col className="mb-3">
-                                <AddEntityAmount entList={insumoList} setEntList={setInsumoList} entityName="insumo" amountTitle="cantidad"/>
+                                <AddEntityAmount entList={insumoList} setEntList={setInsumoList} entityName="insumo" amountTitle="cantidad" readOnly={serviceOrder && (serviceOrder["estado"] === "FINALIZADA") || false} />
                             </Col>
                             <Col className="mb-3">
-                                <AddEntity entList={herrList} setEntList={setHerrList} entityName="herramienta"/>
+                                <AddEntity entList={herrList} setEntList={setHerrList} entityName="herramienta" readOnly={serviceOrder && (serviceOrder["estado"] === "FINALIZADA") || false} />
                             </Col>
                         </Row>
                              

@@ -8,7 +8,8 @@ type Props = {
     fieldName: string,
     required: boolean,
     defaultValue?: string | undefined,
-    exclude?: string[] | undefined
+    exclude?: string[] | undefined,
+    readOnly?: boolean
 }
 
 /**
@@ -46,6 +47,7 @@ const SelectEnum = ({ props }: { props: Props }) => {
             value={currOption}
             required={props.required}
             onChange={changeHandler}
+            disabled={props.readOnly || false}
         >
             <option value="" disabled>Elegir {props.fieldName}</option>
             {enums!==""?

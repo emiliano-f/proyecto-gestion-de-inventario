@@ -205,13 +205,17 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         try:
             # get empleados, herramientas, insumos
             to_create = request.data.copy()
+            print(to_create)
             empleados_data = json.loads(to_create.pop('empleados', [])[0])
             
             herramientas_data = json.loads(to_create.pop('herramientas', [])[0])
             
             insumos_data = json.loads(to_create.pop('retiros_insumos', [])[0])
-            orden_servicio_pk = json.loads(to_create.get('orden_servicio', [])[0])
+            print("1")
+            orden_servicio_pk = json.loads(to_create.get('ordenServicio', [])[0])
+            print("2")
             orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
+            
             
             # check previous tarea
             for tarea_iter in models.Tarea.objects.filter(ordenServicio=orden_servicio_model):
