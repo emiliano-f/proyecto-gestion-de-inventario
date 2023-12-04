@@ -25,7 +25,7 @@ class HerramientaCommonLogic:
                        'created_by': herramienta.created_by.id}
         estado_serializer = serializer.EstadoHerramientaSerializer(data=estado_data)
         estado_serializer.is_valid(raise_exception=True)
-        estado_serializer.save()
+        estado_serializer.save(created_by=herramienta.created_by)
 
 class TipoHerramientaCRUD(CustomModelViewSet):
     serializer_class = serializer.TipoHerramientaSerializer
@@ -96,6 +96,23 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def update(self, request, pk):
         try:
             herramienta = models.Herramienta.objects.get(id=pk)
+
+            # herramienta is active
+            herramienta.is_active_(raise_exception=True, msg='Herramienta no encontrada para eliminación')
+
+            # check if it is in use
+            last_estado = models.EstadoHerramienta.objects.filter(herramienta=herramienta).latest('fecha')
+            if last_estado.estado == models.StatusScale.EN_USO:
+                raise Exception('No es posible cambiar estado mientras está en uso por una tarea')
+
+            # create estado entry
+            estado_herramienta = models.EstadoHerramienta(
+                    herramienta=herramienta,
+                    estado=request.data['estado'],
+                    observaciones='Actualizacion estado herramienta id '+str(pk)
+                )
+            estado_herramienta.save(created_by=request.user)
+
             serializer_class = serializer.HerramientaSerializer(herramienta, data=request.data)
             serializer_class.is_valid(raise_exception=True)
             serializer_class.save()
@@ -124,7 +141,7 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
                     estado=models.StatusScale.ELIMINADA,
                     observaciones='Eliminacion de registro herramienta id '+str(pk)
                 )
-            estado_herramienta.save()
+            estado_herramienta.save(created_by=request.user)
 
             # deactivate herramienta
             herramienta.estado = models.StatusScale.ELIMINADA

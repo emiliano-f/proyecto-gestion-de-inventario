@@ -17,7 +17,7 @@ class TipoHerramienta(models.Model):
 
     def __str__(self):
         texto = "{0}"
-        return texto.format(self.Nombre)
+        return texto.format(self.nombre)
 
 class Herramienta(CommonModel):
     id = models.AutoField(primary_key=True)
