@@ -481,7 +481,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 col_size: SIZE.TINY,
                 required: false,
                 select : true,
-                enum: false
+                enum: true
             },
             "pedidoInsumo": {
                 editable: true,
