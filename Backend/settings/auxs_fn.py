@@ -86,8 +86,6 @@ def enums_models(request):
     :return: dict with the enums
     """
 
-    if not request.user.is_staff:
-        return JsonResponse({"error": "No puedes acceder a esta url"},status=403)
 
     def is_method(att):
         """

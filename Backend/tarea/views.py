@@ -364,7 +364,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             tarea_serializer.save()
             
             # update herramientas and estado
-            TareaCommonLogic.update_herramientas(herramientas_data, tarea, herramientas_models.StatusScale.EN_USO)
+            TareaCommonLogic.update_herramientas(herramientas_data, tarea, herramienta_models.StatusScale.EN_USO)
             # update empleados relation (Tiempo)
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
             # update insumos
@@ -488,7 +488,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class SectorListCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
-    permission_classes = [IsAdminUser]
+    
     def __table__():
         return 'sector'
 
