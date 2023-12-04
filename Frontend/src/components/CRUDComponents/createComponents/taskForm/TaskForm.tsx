@@ -153,7 +153,6 @@ const TaskForm = (props:Props) => {
             formData.append("empleados", JSON.stringify(objectFilteringNoEmptyValues("empleado", empList)));
             formData.append("retiros_insumos", JSON.stringify(objectFilteringNoEmptyValues("insumo", insumoList)));
             formData.append("herramientas", JSON.stringify(objectFilteringNoEmptyValues("herramienta", herrList)));
-            console.log(formData);
             createItem(formData);
         }
         else {
@@ -171,7 +170,6 @@ const TaskForm = (props:Props) => {
                 formData.append("retiros_insumos", JSON.stringify(objectFilteringNoEmptyValues("insumo", insumoList)));
                 formData.append("herramientas", JSON.stringify(objectFilteringNoEmptyValues("herramienta", herrList)));
                 formData.append("id", task["id"].toString());
-                console.log(formData);
                 updateItem(formData, task["id"]);
             }
         }
