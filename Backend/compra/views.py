@@ -56,7 +56,7 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         try:
             serializer_pedido = serializer.PedidoInsumoSerializer(data=request.data)
             serializer_pedido.is_valid(raise_exception=True)
-            serializer_pedido.save()
+            serializer_pedido.save(created_by=request.user)
             return Response(serializer_pedido.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             transaction.set_rollback(True)
