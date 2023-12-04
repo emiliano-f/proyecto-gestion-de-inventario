@@ -56,7 +56,8 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         try:
 
             ## check if detalles is empty
-            detalles_data = request.data.pop('detalles', [])
+            data = request.data.copy()
+            detalles_data = data.pop('detalles', [])
             if not detalles_data:
                 raise Exception("Details empty")
 
