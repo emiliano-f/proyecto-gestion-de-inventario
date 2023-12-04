@@ -50,7 +50,6 @@ function CreateControl({field,props,setOpenStockAdj}) {
             <Form.Control
             id="staffCheck"
             className="checkbox"
-            name={field.field}
             required={field.required}
             type={field.type}
             value={""}
@@ -124,7 +123,7 @@ const ModalForm = (props: Props) => {
         const formData = new FormData(form);
         const check = document.getElementById("staffCheck");
         if(check!==null){
-            formData.append("is_staff:",check.checked);
+            formData.append("is_staff",check.checked);
         }
         console.log(formData)
         if (form.checkValidity() === false) {

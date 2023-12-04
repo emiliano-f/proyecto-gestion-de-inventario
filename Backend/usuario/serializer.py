@@ -5,7 +5,7 @@ from . import models
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Usuario
-        exclude = ['user_permissions','is_active','is_superuser','last_login']
+        exclude = ['user_permissions','is_superuser','last_login']
 
 class UsuarioSerializerNoPassword(serializers.ModelSerializer):
     class Meta:

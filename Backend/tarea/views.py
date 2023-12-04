@@ -26,6 +26,7 @@ class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
 class TareaCommonLogic:
     def close_tarea_herramientas(tarea, user):
         for herramienta in tarea.herramientas.all():
+            herramienta.is_active_(raise_exception=True, msg='Herramienta no disponible')
             herramienta.estado = herramienta_models.StatusScale.DISPONIBLE
             herramienta.save()
             estado_herramienta = herramienta_models.EstadoHerramienta(
@@ -42,6 +43,7 @@ class TareaCommonLogic:
         for herramienta_data in herramientas_data:
             ## update herramienta
             herramienta = herramienta_models.Herramienta.objects.get(id=int(herramienta_data['herramienta']))
+            herramienta.is_active_(raise_exception=True, msg='Herramienta no disponible')
             tarea.herramientas.add(herramienta)
 
             not_added_yet = True
@@ -71,10 +73,12 @@ class TareaCommonLogic:
     # forgive me, God, this aberration, but I'm in a hurry and I'm drunk
     def update_insumos(insumos_data, tarea, user):
         for orden_retiro in inventario_models.OrdenRetiro.objects.filter(tarea=tarea):
+            orden_retiro.is_active_(raise_exception=True, msg='Orden de retiro inexistente')
             for insumo_data in insumos_data:
                 insumo_data_id = int(insumo_data['insumo'])
                 insumo_data_cant = abs(int(insumo_data['cantidad']))
                 if orden_retiro.insumo.id == insumo_data_id:
+                    orden_retiro.insumo.is_active_(raise_exception=True, msg='Insumo inexistente')
                     if insumo_data_cant == 0:
                         # return insumos
                         orden_retiro.insumo.cantidad += orden_retiro.cantidad
@@ -113,7 +117,8 @@ class TareaCommonLogic:
             tiempo_serializer = serializer.TiempoSerializer(data=tiempo_entry)
             tiempo_serializer.is_valid(raise_exception=True)
             ## saving
-            tiempo_serializer.save(created_by=user)
+            tiempo_model = tiempo_serializer.save(created_by=user)
+            tiempo_model.empleado.is_active_(raise_exception=True, msg='Empleado inexistente')
 
     def update_empleados_relation(empleados_data, tarea_pk, user):
         tarea_empleados = models.Tiempo.objects.filter(tarea=tarea_pk).all()
@@ -132,6 +137,7 @@ class TareaCommonLogic:
                 if 'responsable' in empleado:
                     tiempo_model.responsable = empleado['responsable']
                 tiempo_model.save()
+                tiempo_model.empleado.is_active_(raise_exception=True, msg='Empleado inexistente')
 
         # add empleados
         if not new_empleados:
@@ -140,6 +146,7 @@ class TareaCommonLogic:
     def restore_herramientas(tarea, user):
         # restore herramientas
         for herramienta in tarea.herramientas.all():
+            herramienta.is_active_(raise_exception=True, msg='Herramienta inexistente')
             herramienta.estado = herramienta_models.StatusScale.DISPONIBLE
             herramienta.save()
             # create entry in EstadoHerramienta
@@ -182,7 +189,7 @@ class TareaCommonLogic:
 
 class EmpleadoCRUD(CustomModelViewSet):
     serializer_class = serializer.EmpleadoSerializer
-    queryset = models.Empleado.objects.all()
+    queryset = models.Empleado.objects.filter(is_active=True).all()
 
     def create(self, request, *args, **kwargs):
         try:
@@ -194,6 +201,29 @@ class EmpleadoCRUD(CustomModelViewSet):
         except Exception as e:
             return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            empleado = self.get_object()
+            empleado.is_active_(raise_exception=True, msg="Empleado no activo")
+            serializer_class = self.get_serializer()
+            return Response(serializer_class.data)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e: 
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        try:
+            empleado = self.get_object()
+            empleado.is_active_(raise_exception=True, msg="Empleado no activo")
+            serializer_class = self.get_serializer(data=request.data)
+            serializer_class.is_valid(raise_exception=True)
+            serializer_class.save()
+            return Response(serializer_class.data)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e: 
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -235,7 +265,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def list(self, request):
         try:
             # join
-            tarea = models.Tarea.objects.prefetch_related('empleados', 'herramientas').all()
+            tarea = models.Tarea.objects.filter(is_active=True).prefetch_related('empleados', 'herramientas').all()
             # serializer
             serializer_class = serializer.TareaJoinedSerializer(tarea, many=True, read_only=False)
 
@@ -327,6 +357,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def retrieve(self, request, pk):
         try:
             tarea = models.Tarea.objects.get(id=pk)
+            tarea.is_active_(raise_exception=True, msg='Tarea no existente')
             tarea_data = serializer.TareaJoinedSerializer(tarea).data.copy()
 
             # insumos asociados
@@ -352,19 +383,22 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
             tarea_data['retiros_insumos'] = insumos
             return Response(tarea_data)
-
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def update(self, request, pk):
         try:
+            tarea = models.Tarea.objects.get(id=pk)
+            tarea.is_active_(raise_exception=True, msg='Tarea no existente')
+
             tarea_update_data = request.data.copy()
             herramientas_data = json.loads(tarea_update_data.pop('herramientas', [])[0])
             empleados_data = json.loads(tarea_update_data.pop('empleados', [])[0])
             insumos_data = json.loads(tarea_update_data.pop('retiros_insumos', [])[0])
 
-            tarea = models.Tarea.objects.get(id=pk)
             tarea_serializer = serializer.TareaSerializer(tarea, data=tarea_update_data)
             tarea_serializer.is_valid(raise_exception=True)
             tarea_serializer.save()
@@ -399,8 +433,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             tarea = models.Tarea.objects.get(id=pk)
 
             # check if it is active
-            if not tarea.is_active:
-                raise ObjectDoesNotExist('Tarea no encontrada para eliminación')
+            tarea.is_active_(raise_exception=True, msg='Tarea no existente')
 
             # check if tarea is finished
             if tarea.fechaFin is not None:
@@ -428,7 +461,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def list(self, request):
         # join
-        orden_servicio = models.OrdenServicio.objects.prefetch_related('usuario', 'sector').all()
+        orden_servicio = models.OrdenServicio.objects.filter(is_active=True).prefetch_related('usuario', 'sector').all()
         # serializer
         serializer_class = serializer.OrdenServicioUsuarioSerializer(orden_servicio, many=True)
         return Response(serializer_class.data)
@@ -445,14 +478,18 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def retrieve(self, request, pk):
         try:
             orden_servicio = models.OrdenServicio.objects.get(id=pk)
-        except: 
+            orden_servicio.is_active_(raise_exception=True, msg='Orden de servicio inexistente')
+            serializer_class = serializer.OrdenServicioUsuarioSerializer(orden_servicio)
+            return Response(serializer_class.data)
+        except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer_class = serializer.OrdenServicioUsuarioSerializer(orden_servicio)
-        return Response(serializer_class.data)
+        except Exception as e: 
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk):
         try:
             orden_servicio = models.OrdenServicio.objects.get(id=pk)
+            orden_servicio.is_active_(raise_exception=True, msg='Orden de servicio inexistente')
             serializer_class = serializer.OrdenServicioSerializer(orden_servicio, data=request.data)
             serializer_class.is_valid(raise_exception=True)
             # check status
@@ -470,8 +507,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             orden_servicio = models.OrdenServicio.objects.get(id=pk)
 
             # check if it is active
-            if not orden_servicio.is_active:
-                raise ObjectDoesNotExist('Orden de servicio no encontrada para eliminación')
+            orden_servicio.is_active_(raise_exception=True, msg='Orden de servicio inexistente')
 
             # check orden servicio
             if orden_servicio.estado in [orden_servicio.StatusScale.EN_PROGRESO,

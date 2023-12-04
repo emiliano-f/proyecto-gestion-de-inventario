@@ -45,7 +45,7 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
             usuario_serializer = serializer.UsuarioSerializer(data=request.data)
             usuario_serializer.is_valid(raise_exception=True)
             usuario_serializer.validated_data['password'] = make_password(usuario_serializer.validated_data['password'])
-            user = usuario_serializer.save()
+            user = usuario_serializer.save(is_active=True, default_password=True)
             
             # add to group
             if user.is_staff:
