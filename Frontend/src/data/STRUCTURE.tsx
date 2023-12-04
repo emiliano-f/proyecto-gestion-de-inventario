@@ -455,7 +455,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 editable: true,
                 show: true,
                 name: "recibido",
-                type: "string",
+                type: "boolean",
                 col_size: SIZE.TINY,
                 required: true,
                 select : true,
@@ -468,9 +468,19 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 show: true,
                 name: "ID",
                 type: "number",
-                col_size: SIZE.TINY,
+                col_size: SIZE.ID,
                 required: true,
                 select : false,
+                enum: false
+            },
+            "recibido": {
+                editable: true,
+                show: true,
+                name: "recibido",
+                type: "boolean",
+                col_size: SIZE.TINY,
+                required: false,
+                select : true,
                 enum: false
             },
             "pedidoInsumo": {
@@ -511,16 +521,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 col_size: SIZE.BIG,
                 required: false,
                 select: false,
-                enum: false
-            },
-            "recibido": {
-                editable: true,
-                show: true,
-                name: "recibido",
-                type: "string",
-                col_size: SIZE.TINY,
-                required: false,
-                select : false,
                 enum: false
             },
         },
