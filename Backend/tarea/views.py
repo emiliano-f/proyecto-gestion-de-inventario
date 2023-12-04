@@ -24,11 +24,21 @@ class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
 
 class TareaCommonLogic:
+    def close_tarea_herramientas(tarea, user):
+        for herramienta in tarea.herramientas.all():
+            herramienta.estado = herramienta_models.StatusScale.DISPONIBLE
+            herramienta.save()
+            estado_herramienta = herramienta_models.EstadoHerramienta(
+                    herramienta=herramienta,
+                    estado=herramienta_models.StatusScale.DISPONIBLE,
+                    observaciones='Finalización tarea id '+str(tarea.id)
+                )
+            estado_herramienta.save(created_by=user)
+
     def update_herramientas(herramientas_data, tarea, status=None):
         # update herramientas and estado
         
         for herramienta_data in herramientas_data:
-            
             
             ## update herramienta
             herramienta = herramienta_models.Herramienta.objects.get(id=int(herramienta_data['herramienta']))
@@ -364,6 +374,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             if tarea.fechaFin is not None:
                 tarea.ordenServicio.estado = models.OrdenServicio().StatusScale.FINALIZADA
                 tarea.ordenServicio.save()
+                TareaCommonLogic.close_tarea_herramientas(tarea, request.user)
 
             return Response(tarea_serializer.data)
         except IntegrityError:
