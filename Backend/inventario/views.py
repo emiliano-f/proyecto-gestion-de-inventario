@@ -199,22 +199,7 @@ class AjusteStockCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         return Response(serializer_class.data)
 
     def update(self, request, pk):
-        try:
-            ajuste_stock = models.AjusteStock.objects.get(id=pk)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer_class = serializer.AjusteStockSerializer(ajuste_stock, data=request.data)
-        serializer_class.is_valid(raise_exception=True)
-        serializer_class.save()
-        return Response(serializer_class.data)
+        return Response({"error": "La eliminación no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def destroy(self, request, pk):
-        try:
-            ajuste_stock = models.AjusteStock.objects.get(id=pk)
-            ajuste_stock.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except IntegrityError:
-            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "La eliminación no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
