@@ -109,6 +109,7 @@ class InsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             insumo = models.Insumo.objects.get(id=pk)
             insumo.is_active_(raise_exception=True, msg='Insumo no existente')
             insumo.is_active = False
+            insumo.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except IntegrityError:
             return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
