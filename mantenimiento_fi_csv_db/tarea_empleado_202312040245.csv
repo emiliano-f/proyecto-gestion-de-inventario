@@ -1,0 +1,2 @@
+"id","is_active","dni","nombre","apellido","telefono","mail","categoria","created_by_id"
+1,1,310000000,Juan,Pérez,"26122222222",juanperez@unmail.com,"1",1

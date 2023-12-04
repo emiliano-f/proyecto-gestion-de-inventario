@@ -1,0 +1,17 @@
+"id","password","last_login","is_superuser","username","first_name","last_name","email","is_staff","is_active","date_joined","legajo","cargo","telefono","default_password"
+1,pbkdf2_sha256$600000$j9OyqXXYz38FpKdLWK0pDS$o3PCfCOJuzFA+gLjElq2xcerzVguZoIic+l0AtSIUVI=,2023-12-04 05:31:38.471,1,juanma,"","","",1,1,2023-12-04 04:39:59.070,,,,1
+2,pbkdf2_sha256$600000$vV8WydtgZHGse5qweCTJsR$u1QKk1nniY8KU1ooMWyfSjmpmQAMURpo9JVVRyEp6U8=,2023-12-04 04:53:54.577,0,aldo,Aldo,Trillini,aldo.trillini@ingenieria.uncuyo.edu.ar,0,0,2023-12-04 04:49:18.794,111111,Jefe Mantenimiento,"2611111111",0
+3,pbkdf2_sha256$600000$r0J84hCN4xNTfTIY8zK06Z$6vNjkXQI47fE0C/2sV1GCCFlY1Gc0+QeQkMcJqh7+rk=,,0,carla,Carla,López,carla.pizzi@gmail.com,0,0,2023-12-04 04:55:41.534,222,Directora,"4131641631",0
+4,pbkdf2_sha256$600000$vd5obH4VShGRbWAQrIFfnL$qFGlFR8nFP9LgH/fcD6akA2mluO/B5etmy04PwkxIdM=,,0,dsfsdf,asd,asd,asdasd@gmail.com,0,0,2023-12-04 04:56:51.262,13213,asdasd,"1531",0
+5,pbkdf2_sha256$600000$CRj7SuIy7r6xRRsvKNRPBk$q09+P/PjSABLXWUhsmZNhnX1NAcElD/W4bMjkxoFYwU=,,0,asdasd,asd,ad,j@sdd.com,0,0,2023-12-04 04:59:01.886,2131,"213","46",0
+6,pbkdf2_sha256$600000$k4xkDKVHrdBJnXXxcY8DjV$cLXyujUSHhDGCqtFLfqPg/iaBSWbZMyHYAoJyjLTO/w=,,0,sad,asd,asd,k@gm.com,0,0,2023-12-04 05:01:58.479,1463,asd,"11",0
+7,pbkdf2_sha256$600000$fKDH2tkKRf2bawjrGJeInB$vWZawpzAHsW99gtUW+AM8Es23i4kc9KaktU2yBthaw0=,,0,asdas,kasd,asd,asdasd@gmail.com,0,0,2023-12-04 05:05:54.784,3,asd,"32321",0
+8,pbkdf2_sha256$600000$UYwa32qyQMv1m1HytN1cxZ$GVB4rEeMU4fVlX+4yKqMVxbasCC8Hs+LxHomY7atJN0=,,0,d,s,s,s@a.com,0,0,2023-12-04 05:06:35.557,1,s,s,0
+9,pbkdf2_sha256$600000$ycDT1mgAy3mERpUMZeYqu9$EXvHt4woxES6E3OymcHPwsdmogHEtXNZ95VdU/ql89U=,,0,e,s,s,s@a.com,0,0,2023-12-04 05:08:01.536,13,d,"5143",0
+10,pbkdf2_sha256$600000$8F40KOrfMm5oZjq0YNgMXN$/4awkm8bQskrYilIuPA8VoE5sT4jObOwu6NTk1KpRyA=,,0,dsad,sad,asd,s@a.com,0,0,2023-12-04 05:18:23.194,23,gh,"41361",0
+11,pbkdf2_sha256$600000$RcCWB1jSVWPOt7JByRLqOD$Mlt1UsVk/XeoTe75W6ZNUD5gPU8P2jg/w8YR8Z5lCj4=,,0,J,a,a,j@gmail.com,1,0,2023-12-04 05:19:32.880,123,asd,"123",0
+12,pbkdf2_sha256$600000$AiVTI4T6G2kMAUm6fRjrJX$zpNB4kBqJDzdNtLpWjqLCTeeWmMHjyF+Xncv0qX5wCM=,,0,Juan,juan,juan,juanmanuel@gmail.com,1,0,2023-12-04 05:21:09.153,451,Adm,"16351313",0
+13,pbkdf2_sha256$600000$HuRFWcoIRwdOR1vuAwARDY$AoxrDCkXVF+/axDj/1Ju1fnkQdQi8TV/7hN+dyOG3yE=,,0,Carlos,Carlos,asdasd,carlos@gmai.com,1,0,2023-12-04 05:22:59.546,113213,asd,"21314",0
+14,pbkdf2_sha256$600000$9slmYWV8OIS2fnnaCf1raw$yQlrTil33O6wme0oJN08ooH6an656z2MzyMriK7swiY=,2023-12-04 05:26:25.613,0,marisa,Marisa,Haderne,marisa.haderne@gmail.com,1,1,2023-12-04 05:26:16.530,2323232,Directora Lic. CC,"261413651",0
+15,pbkdf2_sha256$600000$guj2G1drjKE8jQGgNKN66q$yf1fKWX7D++JKEDqohLdqpROkbIgwdXzcK8nBYq2lbc=,2023-12-04 05:27:45.327,0,carla_pizzi,Carla,Pizzi,carla.pizzi@gmail.com,0,1,2023-12-04 05:27:28.642,23131,Directora Ing. Ind.,"2618644166",0
+16,pbkdf2_sha256$600000$Q7bH1ilhYo91JmakV69aFT$jazF0nu/80NVB92I57zrqnYAhoRCEF933smOuOTDGSg=,2023-12-04 05:31:26.347,0,juli,Julian,Corradini,juli@gmail.com,0,1,2023-12-04 05:29:55.102,123431,Director Ing. Civ.,"216541364",0
