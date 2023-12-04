@@ -40,22 +40,28 @@ class TareaCommonLogic:
         # update herramientas and estado
         
         for herramienta_data in herramientas_data:
-            
             ## update herramienta
             herramienta = herramienta_models.Herramienta.objects.get(id=int(herramienta_data['herramienta']))
             tarea.herramientas.add(herramienta)
-            if not herramienta.is_available():
-                raise Exception('La herramienta no está disponible')
 
-            if status is None:
-                herramienta.estado = herramienta_data['estado']
-            else:
-                herramienta.estado = status
+            not_added_yet = True
+            for herr in tarea.herramientas.all():
+                if herramienta.id == herr.id:
+                    not_added_yet = False
+                    break
 
-            herramienta.save()
+            if not_added_yet:
+                if not herramienta.is_available():
+                    raise Exception('La herramienta no está disponible')
 
-            ## create estado entry
-            HerramientaCommonLogic.create_estado_entry(herramienta)
+                if status is None:
+                    herramienta.estado = herramienta_data['estado']
+                else:
+                    herramienta.estado = status
+
+                herramienta.save()
+                ## create estado entry
+                HerramientaCommonLogic.create_estado_entry(herramienta)
 
     def create_entry_insumos(insumos_data, tarea_pk, user):
         for insumo_data in insumos_data:
@@ -365,7 +371,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             tarea_serializer.save()
             
             # update herramientas and estado
-            TareaCommonLogic.update_herramientas(herramientas_data, tarea, herramientas_models.StatusScale.EN_USO)
+            TareaCommonLogic.update_herramientas(herramientas_data, tarea, herramienta_models.StatusScale.EN_USO)
             # update empleados relation (Tiempo)
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
             # update insumos
