@@ -10,7 +10,8 @@ class EmpleadoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Empleado
-        fields = '__all__'
+        exclude = ['is_active','created_by']
+
 
 class EncuestaSatisfaccionSerializer(serializers.ModelSerializer):
     """
@@ -28,7 +29,8 @@ class OrdenServicioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.OrdenServicio
-        fields = '__all__'
+        exclude = ['is_active']
+
 
 class OrdenServicioUsuarioSerializer(serializers.ModelSerializer):
     """
@@ -63,7 +65,8 @@ class TiempoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Tiempo
-        fields = '__all__'
+        exclude = ['created_by']
+
 
 class TareaSerializer(serializers.ModelSerializer):
     """
@@ -72,7 +75,7 @@ class TareaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Tarea
-        fields = '__all__'
+        exclude = ['is_active','created_by']
 
 class TareaJoinedSerializer(TareaSerializer):
     empleados = EmpleadoSerializer(many=True, required=False)

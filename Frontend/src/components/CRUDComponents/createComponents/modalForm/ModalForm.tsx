@@ -113,7 +113,6 @@ const ModalForm = (props: Props) => {
                 props.switchChange()
             })
             .catch((error) => {
-                console.log(error)
                 setMessage(`Ha surgido un error al crear el Nuevo ${getSingular(entity)}.`, error)
             })
     }
@@ -154,9 +153,9 @@ const ModalForm = (props: Props) => {
                         {props.fields
                             .filter(item => item.editable == true)
                             .map((field, index) => (
-                                <>
-                                {!((props.formType === FormType.UPDATE) && (field.headerName === "Contraseña")) &&
-                                    <Form.Group className="form-group" key={index}>
+                                <Form.Group className="form-group" key={index}>
+                                    {!((props.formType === FormType.UPDATE) && (field.headerName === "Contraseña")) &&
+                                    <>
                                         <Form.Label>{field.headerName}</Form.Label>
                                             <div className="row g-2">{
                                                 field.select ? (
@@ -173,9 +172,9 @@ const ModalForm = (props: Props) => {
                                                 <Form.Control.Feedback />
                                             ) 
                                         }
+                                    </>
+                                    }
                                     </Form.Group>
-                                }
-                                </>
                             ))
                         }
 

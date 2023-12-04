@@ -1,4 +1,5 @@
 from django.db import models
+from settings.common_class import CommonModel
 from usuario.models import Usuario
 
 class StatusScale(models.TextChoices):
@@ -16,9 +17,9 @@ class TipoHerramienta(models.Model):
 
     def __str__(self):
         texto = "{0}"
-        return texto.format(self.Nombre)
+        return texto.format(self.nombre)
 
-class Herramienta(models.Model):
+class Herramienta(CommonModel):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=32)
     tipoHerramienta = models.ForeignKey(TipoHerramienta, on_delete=models.DO_NOTHING)
@@ -28,7 +29,6 @@ class Herramienta(models.Model):
     observaciones = models.CharField(max_length=255, null=True)
     estado = models.CharField(max_length=15, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)
     created_by = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, blank=True)
-    is_active = models.BooleanField(default=True)
 
     class Meta:
         unique_together = ('nombre', 'codigo')
@@ -40,7 +40,7 @@ class Herramienta(models.Model):
     def is_available(self):
         return self.estado == StatusScale.DISPONIBLE
 
-class EstadoHerramienta(models.Model):
+class EstadoHerramienta(CommonModel):
     herramienta = models.ForeignKey(Herramienta, on_delete=models.DO_NOTHING)
     fecha = models.DateField(auto_now_add=True)
     estado = models.CharField(max_length=16, choices=StatusScale.choices, default=StatusScale.DISPONIBLE)

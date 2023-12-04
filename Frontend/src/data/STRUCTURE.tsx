@@ -1,8 +1,8 @@
 enum SIZE {
-    ID = 50,
-    VERYTINY = 100,
-    TINY = 150,
-    SMALL = 200,
+    ID = 25,
+    VERYTINY = 50,
+    TINY = 100,
+    SMALL = 150,
     MEDIUM = 250,
     BIG = 350,
 }
@@ -224,9 +224,19 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             "cantidad": {
                 editable: true,
                 show: true,
-                name: "Ajuste realizado",
+                name: "Valor",
                 type: "number",
                 col_size: SIZE.TINY,
+                required: true,
+                select: false,
+                enum: false
+            },
+            "accionCantidad": {
+                editable: false,
+                show: true,
+                name: "Accion",
+                type: "string",
+                col_size: SIZE.SMALL,
                 required: true,
                 select: false,
                 enum: false
@@ -247,16 +257,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha",
                 type: "date",
                 col_size: SIZE.TINY,
-                required: true,
-                select: false,
-                enum: false
-            },
-            "accionCantidad": {
-                editable: false,
-                show: false,
-                name: "Accion",
-                type: "string",
-                col_size: SIZE.SMALL,
                 required: true,
                 select: false,
                 enum: false
@@ -653,15 +653,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 show: true,
                 name: "Es Administrador",
                 type: "checkbox",
-                col_size: SIZE.TINY,
-                required: false,
-                select: false,
-            },
-            "is_active": {
-                editable: false,
-                show: false,
-                name: "Está Activo",
-                type: "boolean",
                 col_size: SIZE.TINY,
                 required: false,
                 select: false,

@@ -23,5 +23,5 @@ urlpatterns = [
         path('ajustes-stock/', views.AjusteStockCRUD.as_view({'get':'list', 'post':'create'}), name='ajustes-stock'),
         path('ajustes-stock/<int:pk>/', views.AjusteStockCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='ajustes-stock-id'),
         path('ordenes-retiro/', views.OrdenRetiroCRUD.as_view({'get':'list', 'post':'create'}), name='ordenes-retiro'),
-        path('ordenes-retiro/<int:pk>', views.OrdenRetiroCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='ordenes-retiro-id'),
+        path('ordenes-retiro/<int:pk>/', views.OrdenRetiroCRUD.as_view({'get':'retrieve', 'put':'update', 'delete':'destroy'}), name='ordenes-retiro-id'),
 ]

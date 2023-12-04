@@ -1,15 +1,18 @@
 from django.db import connection
 from settings.common_class import LoginRequiredNoRedirect
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 import inventario.models as inv_models
 
+class CustomViewSet(ViewSet):
+    permission_classes = [IsAdminUser]
+
 def toObjList(resultados):
     keys = resultados.pop(0);
     return [dict(zip(keys,item)) for item in resultados]
-    
 
-class InsumosBajoReposición(LoginRequiredNoRedirect, ViewSet):
+class InsumosBajoReposición(LoginRequiredNoRedirect, CustomViewSet):
     def list(self, request):
         #insumos = inv_models.Insumo.objects.aggregate(total_consumido=Sum('precio')
         query = """
@@ -33,7 +36,7 @@ class InsumosBajoReposición(LoginRequiredNoRedirect, ViewSet):
             resultados += cursor.fetchall()
         return Response(toObjList(resultados))
 
-class TareasPendientesUrgentes(LoginRequiredNoRedirect, ViewSet):
+class TareasPendientesUrgentes(LoginRequiredNoRedirect, CustomViewSet):
     def list(self, request):
         query = """
                     SELECT 
@@ -72,7 +75,7 @@ class TareasPendientesUrgentes(LoginRequiredNoRedirect, ViewSet):
 
         return Response(toObjList(resultados))
 
-class InsumoMasConsumido(LoginRequiredNoRedirect, ViewSet):
+class InsumoMasConsumido(LoginRequiredNoRedirect, CustomViewSet):
     def list(self, request):
         query = """
                 SELECT 
@@ -98,7 +101,7 @@ class InsumoMasConsumido(LoginRequiredNoRedirect, ViewSet):
 
         return Response(toObjList(resultados))
 
-class TareasCompletadas(LoginRequiredNoRedirect, ViewSet):
+class TareasCompletadas(LoginRequiredNoRedirect, CustomViewSet):
     def list(self, request):
         ## filtrar por nulos fechaFin
         query = """
@@ -120,7 +123,7 @@ class TareasCompletadas(LoginRequiredNoRedirect, ViewSet):
         return Response(toObjList(resultados))
 
 
-class EmpleadosHorasTotales(LoginRequiredNoRedirect, ViewSet):
+class EmpleadosHorasTotales(LoginRequiredNoRedirect, CustomViewSet):
     def list(self, request):
         query = """
             WITH tmp AS (

@@ -1,11 +1,12 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from django.utils import timezone
 from herramienta.views import HerramientaCommonLogic
 from inventario.views import InventarioCommonLogic
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from settings.common_class import LoginRequiredNoRedirect
@@ -15,16 +16,30 @@ import herramienta.models as herramienta_models
 import inventario.models as inventario_models
 import inventario.serializer as inventario_serializer
 import json
+from settings.auxs_fn import ErrorToString
+
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+    permission_classes = [IsAdminUser]
 
 class TareaCommonLogic:
+    def close_tarea_herramientas(tarea, user):
+        for herramienta in tarea.herramientas.all():
+            herramienta.estado = herramienta_models.StatusScale.DISPONIBLE
+            herramienta.save()
+            estado_herramienta = herramienta_models.EstadoHerramienta(
+                    herramienta=herramienta,
+                    estado=herramienta_models.StatusScale.DISPONIBLE,
+                    observaciones='Finalización tarea id '+str(tarea.id),
+                    created_by=user
+                )
+            estado_herramienta.save()
+
     def update_herramientas(herramientas_data, tarea, status=None):
         # update herramientas and estado
         
         for herramienta_data in herramientas_data:
-            
             
             ## update herramienta
             herramienta = herramienta_models.Herramienta.objects.get(id=int(herramienta_data['herramienta']))
@@ -42,10 +57,40 @@ class TareaCommonLogic:
             ## create estado entry
             HerramientaCommonLogic.create_estado_entry(herramienta)
 
-    def update_insumos(insumos_data, tarea_pk, user):
+    def create_entry_insumos(insumos_data, tarea_pk, user):
         for insumo_data in insumos_data:
             insumo_data['tarea'] = tarea_pk
             InventarioCommonLogic.create_orden_retiro(insumo_data, user)
+
+    # forgive me, God, this aberration, but I'm in a hurry and I'm drunk
+    def update_insumos(insumos_data, tarea, user):
+        for orden_retiro in inventario_models.OrdenRetiro.objects.filter(tarea=tarea):
+            for insumo_data in insumos_data:
+                insumo_data_id = int(insumo_data['insumo'])
+                insumo_data_cant = abs(int(insumo_data['cantidad']))
+                if orden_retiro.insumo.id == insumo_data_id:
+                    if insumo_data_cant == 0:
+                        # return insumos
+                        orden_retiro.insumo.cantidad += orden_retiro.cantidad
+                        orden_retiro.insumo.save()
+                        # delete orden
+                        orden_retiro.delete()
+
+                    elif insumo_data_cant != orden_retiro.cantidad:
+                        # update quantities
+                        diff = orden_retiro.cantidad - insumo_data_cant
+                        orden_retiro.cantidad = insumo_data_cant
+                        orden_retiro.insumo.cantidad += diff
+
+                        # validate and check
+                        orden_retiro.save(created_by=user)
+                        orden_retiro.insumo.save()
+                    
+                    insumos_data.remove(insumo_data)
+                    break
+
+        # create orden for new insumos
+        TareaCommonLogic.create_entry_insumos(insumos_data, tarea.id, user)
 
     def create_empleados_relation(empleados_data, tarea_pk, user):
         for empleado in empleados_data:
@@ -69,9 +114,8 @@ class TareaCommonLogic:
         new_empleados = []
         
         # update empleados
-        for empleado in empleados_data:      
+        for empleado in empleados_data:
             tiempo_model = next((tiempo for tiempo in tarea_empleados if tiempo.empleado.id == int(empleado['empleado'])), None)
-            
             if tiempo_model is None:
                 new_empleados.append(empleado)
             else:
@@ -138,28 +182,33 @@ class EmpleadoCRUD(CustomModelViewSet):
         try:
             serializer_class = self.get_serializer(data=request.data)
             serializer_class.is_valid(raise_exception=True)
-            serializer_class.save(created_by=request.user)
+            serializer_class.save(created_by=request.user, is_active=True)
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            empleado = self.get_object()
+
+            # check
+            empleado.is_active_(raise_exception=True, msg="Empleado no activo")
+
+            # it is assigned?
+            for tiempo in models.Tiempo.objects.filter(empleado=empleado):
+                if tiempo.tarea.fechaFin is not None:
+                    raise Exception('Empleado no puede eliminarse porque está asignado a una tarea sin finalizar')
+
+            # deactivate empleado
+            empleado.is_active = False
+            empleado.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except ObjectDoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e: 
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, *args, **kwargs):
-        empleado = self.get_object()
-
-        # check
-        if not empleado.is_active:
-            raise ObjectDoesNotFound('Empleado inactivo')
-
-        # it is assigned?
-        for tiempo in models.Tiempo.objects.filter(empleado=empleado):
-            if tiempo.tarea.fechaFin is not None:
-                raise Exception('Empleado no puede eliminarse porque está asignado a una tarea sin finalizar')
-
-        # deactivate empleado
-        empleado.is_active = False
-        empleado.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def __table__():
         return 'empleado'
@@ -172,6 +221,7 @@ class EncuestaSatisfaccionCRUD(CustomModelViewSet):
         return 'encuestasatisfaccion'
 
 class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'tarea'
@@ -198,25 +248,41 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
                 ]
             return Response(serializer_class.data)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @transaction.atomic
     def create(self, request):
         try:
             # get empleados, herramientas, insumos
             to_create = request.data.copy()
-            print(to_create)
-            empleados_data = json.loads(to_create.pop('empleados', [])[0])
+
+            empleados_list = to_create.pop('empleados', []);
+            herramientas_list = to_create.pop('herramientas', []);
+            retirosinsumos_list = to_create.pop('retiros_insumos', []);
+            ordenserivico_list = to_create.get('ordenServicio');
+           
+            if(empleados_list!=[]):
+                empleados_data = json.loads(empleados_list[0])
+            else:
+                empleados_data = [];
             
-            herramientas_data = json.loads(to_create.pop('herramientas', [])[0])
+            if(herramientas_list!=[]):
+                herramientas_data = json.loads(herramientas_list[0])
+            else:
+                herramientas_data = [];
             
-            insumos_data = json.loads(to_create.pop('retiros_insumos', [])[0])
-            print("1")
-            orden_servicio_pk = json.loads(to_create.get('ordenServicio', [])[0])
-            print("2")
+            if(retirosinsumos_list!=[]):
+                insumos_data = json.loads(retirosinsumos_list[0])
+            else:
+                insumos_data = [];
+            
+            if(ordenserivico_list!=[]):
+                orden_servicio_pk = json.loads(ordenserivico_list[0])
+            else:
+                orden_servicio_pk = [];
+
             orden_servicio_model = models.OrdenServicio.objects.get(id=orden_servicio_pk)
-            
-            
+
             # check previous tarea
             for tarea_iter in models.Tarea.objects.filter(ordenServicio=orden_servicio_model):
                 if tarea_iter.is_active:
@@ -224,9 +290,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
             # check and create tarea
             serializer_tarea = serializer.TareaSerializer(data=to_create)
-            
             serializer_tarea.is_valid(raise_exception=True)
-            tarea = serializer_tarea.save(created_by=request.user)
+            tarea = serializer_tarea.save(created_by=request.user,is_active=True)
                
             # create empleados relation (Tiempo)
             TareaCommonLogic.create_empleados_relation(empleados_data, tarea.id, request.user)
@@ -235,11 +300,10 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             TareaCommonLogic.update_herramientas(herramientas_data, tarea, herramienta_models.StatusScale.EN_USO)
             
             # update insumos
-            TareaCommonLogic.update_insumos(insumos_data, tarea.id, request.user)
+            TareaCommonLogic.create_entry_insumos(insumos_data, tarea.id, request.user)
             
             # update orden servicio
             tarea.ordenServicio = orden_servicio_model
-
             # modify orden servicio status
             if tarea.fechaInicio == timezone.now().date():
                 orden_servicio_model.estado = models.OrdenServicio().StatusScale.EN_PROGRESO
@@ -252,11 +316,10 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(serializer_tarea.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             transaction.set_rollback(True)
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
-            print(request.user.id)
             tarea = models.Tarea.objects.get(id=pk)
             tarea_data = serializer.TareaJoinedSerializer(tarea).data.copy()
 
@@ -285,7 +348,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(tarea_data)
 
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def update(self, request, pk):
@@ -304,22 +367,24 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             TareaCommonLogic.update_herramientas(herramientas_data, tarea)
             # update empleados relation (Tiempo)
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
-            
             # update insumos
-            TareaCommonLogic.update_insumos(insumos_data, tarea.id, request.user)
+            TareaCommonLogic.update_insumos(insumos_data, tarea, request.user)
             
             # update orden servicio
             if tarea.fechaFin is not None:
                 tarea.ordenServicio.estado = models.OrdenServicio().StatusScale.FINALIZADA
                 tarea.ordenServicio.save()
+                TareaCommonLogic.close_tarea_herramientas(tarea, request.user)
 
             return Response(tarea_serializer.data)
+        except IntegrityError:
+            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
         except ObjectDoesNotExist: 
             transaction.set_rollback(True)
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             transaction.set_rollback(True)
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def destroy(self, request, pk):
@@ -347,7 +412,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e: 
             transaction.set_rollback(True)
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
@@ -368,7 +433,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             serializer_class.save(usuario=request.user)
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk):
         try:
@@ -390,7 +455,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def destroy(self, request, pk):
@@ -420,9 +485,10 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e: 
             transaction.set_rollback(True)
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class SectorListCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
     def __table__():
         return 'sector'
 
@@ -453,4 +519,4 @@ class TiempoCRUD(CustomModelViewSet):
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)

@@ -45,7 +45,7 @@ const SelectList = React.memo(({ props }: { props: Props }) => {
         fetchData();
     }, [itemName]);
     
-    const [currOption,setCurrOption] =  useState(""); 
+    const [currOption,setCurrOption] =  useState(props.defaultValue); 
 
     useEffect(()=>{
         list.forEach((row)=>{
@@ -84,7 +84,10 @@ const SelectList = React.memo(({ props }: { props: Props }) => {
             <option value="" disabled>Elegir {getSingular(itemName)}</option>
             {list
                 .map(value => (
-                    <option value={value.id} key={value.id} disabled={(props.exclude)?(props.exclude.includes(value.id.toString())):false}>
+                    <option 
+                    value={value.id} 
+                    key={value.id} 
+                    disabled={(props.exclude)?(props.exclude.includes(value.id.toString())):false}>
                         {value.nombre!? value.nombre : value.id}
                     </option>
                 ))

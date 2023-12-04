@@ -5,6 +5,7 @@
 venv
 venv/
 Backend/ven/
+Backend/env.sh
 
 # db
 *.sqlite3

@@ -1,8 +1,11 @@
 @import "../../../styles/variables.scss";
 
 .detail{
-    display: flex;
-
+    width: fit-content;
+    position: relative;
+    margin: auto;
+    left: 0;
+    right: 0;
     .custom-card {
         
         margin-right: 20px;
@@ -12,7 +15,12 @@
         flex: 1;
 
         .card-header {
-            background-color: #03030323;   
+            display: block;
+            text-align: center;
+            background-color: #03030323;
+            Button{
+                margin-left: 80%;
+            }   
         }
 
         .card-body {  

@@ -1,23 +1,28 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from settings.common_class import LoginRequiredNoRedirect
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from . import serializer
 from . import models
 from inventario.models import Insumo
+from settings.auxs_fn import ErrorToString
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+    permission_classes = [IsAdminUser]
 
 class CompraCommonLogic:
     def detalle_pedido_logic(quantity):
         ## check positive value
         if quantity <= 0: raise Exception('Negative or zero: invalid quantity')
 
+from django.core.exceptions import ObjectDoesNotExist
 class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'pedidoinsumo'
@@ -38,7 +43,7 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
             return Response(serializer_class.data)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @transaction.atomic
     def create(self, request):
@@ -145,11 +150,13 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def destroy(self, request, pk):
         try:
             pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
+            pedido_insumo.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except IntegrityError:
+            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        pedido_insumo.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
     
 class PresupuestoCRUD(CustomModelViewSet):
     serializer_class = serializer.PresupuestoSerializer
@@ -163,12 +170,13 @@ class PresupuestoCRUD(CustomModelViewSet):
 
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def __table__():
         return 'presupuesto'
 
 class DetallePedidoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'detallepedido'
@@ -216,13 +224,14 @@ class DetallePedidoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
         try:
             detalle_pedido = models.DetallePedido.objects.get(id=pk)
+            detalle_pedido.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except IntegrityError:
+            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-        detalle_pedido.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)

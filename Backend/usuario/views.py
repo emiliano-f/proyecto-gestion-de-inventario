@@ -2,6 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User, Group
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
@@ -9,10 +10,11 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 from rest_framework import viewsets, status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from settings.common_class import LoginRequiredNoRedirect
+from settings.auxs_fn import ErrorToString
 
 from . import serializer
 from . import models
@@ -23,22 +25,17 @@ import string
 
 class CustomModelViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+    permission_classes = [IsAdminUser]
 
 class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     serializer_class = serializer.UsuarioSerializer
-    queryset = models.Usuario.objects.all()
-    permission_classes = [IsAuthenticated]
+    queryset = models.Usuario.objects.all().filter(is_active=True)
 
     def get_serializer_class(self):
-        if self.action in ['list', 'update', 'delete']:
+        if self.action in ['list', 'retrieve', 'update', 'delete']:
             return serializer.UsuarioSerializerNoPassword
         return serializer.UsuarioSerializer
-
-    def list(self, request):
-        usuarios = models.Usuario.objects.all()
-        serializer_usuario = serializer.UsuarioSerializerNoPassword(usuarios, many=True)
-        return Response(serializer_usuario.data)
-
+   
     @transaction.atomic
     def create(self, request):
         try:
@@ -69,13 +66,17 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
     def update(self, request, *args, **kwargs):
         try:
             user_instance = self.get_object()
+
+            if not user_instance.is_active:
+                raise ObjectDoesNotExist()
+
             user_serializer = self.get_serializer(user_instance, data=request.data, partial=True)
             user_serializer.is_valid(raise_exception=True)
             self.perform_update(user_serializer)
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -91,7 +92,7 @@ class UsuarioCRUD(LoginRequiredNoRedirect, CustomModelViewSet):
         except ObjectDoesNotExist: 
             return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as e: 
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def __table__():
         return 'usuario'
@@ -143,7 +144,6 @@ class WhoAmIView(APIView):
     @staticmethod
     @csrf_exempt
     def get(request, format=None):
-        print(request.user.password)
         if request.user.is_staff:
             rol = "Administrador" if request.user.is_superuser else "Staff"
         else:

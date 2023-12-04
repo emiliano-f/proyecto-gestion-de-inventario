@@ -1,14 +1,19 @@
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from settings.common_class import LoginRequiredNoRedirect
+from rest_framework.exceptions import *
 from rest_framework import viewsets
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from . import serializer
 from . import models
+from settings.auxs_fn import ErrorToString
+
 
 class CustomModelViewSet(LoginRequiredNoRedirect, viewsets.ModelViewSet):
     http_method_names = ['post', 'get', 'put', 'delete']
+    permission_classes = [IsAdminUser]
 
 class InventarioCommonLogic:
     def create_orden_retiro(data, user):
@@ -24,7 +29,6 @@ class InventarioCommonLogic:
         insumo.save()
         return serializer_class
 
-
 class TipoInsumoCRUD(CustomModelViewSet):
     serializer_class = serializer.TipoInsumoSerializer
     queryset = models.TipoInsumo.objects.all()
@@ -35,14 +39,25 @@ class TipoInsumoCRUD(CustomModelViewSet):
             serializer_class.is_valid(raise_exception=True)
             serializer_class.save(created_by=request.user)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        try:
+            tipo_insumo = models.TipoInsumo.objects.get(id=pk)
+            tipo_insumo.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except IntegrityError:
+            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
+        except: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def __table__():
         return 'tipoinsumo'
 
 class InsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'insumo'
@@ -84,13 +99,15 @@ class InsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def destroy(self, request, pk):
         try:
             insumo = models.Insumo.objects.get(id=pk)
+            insumo.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except IntegrityError:
+            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
         except: 
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        insumo.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
 class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'ordenretiro'
@@ -122,26 +139,13 @@ class OrdenRetiroCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         return Response(serializer_class.data)
 
     def update(self, request, pk):
-        try:
-            orden_retiro = models.OrdenRetiro.objects.get(id=pk)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer_class = serializer.OrdenRetiroSerializer(orden_retiro, data=request.data)
-        serializer_class.is_valid(raise_exception=True)
-        serializer_class.save()
-        return Response(serializer_class.data)
+        return Response({"error": "La actualización no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def destroy(self, request, pk):
-        try:
-            orden_retiro = models.OrdenRetiro.objects.get(id=pk)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        orden_retiro.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"error": "La eliminación no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 class AjusteStockCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
 
     def __table__():
         return 'ajustestock'
@@ -195,21 +199,7 @@ class AjusteStockCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         return Response(serializer_class.data)
 
     def update(self, request, pk):
-        try:
-            ajuste_stock = models.AjusteStock.objects.get(id=pk)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer_class = serializer.AjusteStockSerializer(ajuste_stock, data=request.data)
-        serializer_class.is_valid(raise_exception=True)
-        serializer_class.save()
-        return Response(serializer_class.data)
+        return Response({"error": "La actualización no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def destroy(self, request, pk):
-        try:
-            ajuste_stock = models.AjusteStock.objects.get(id=pk)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        
-        ajuste_stock.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"error": "La eliminación no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

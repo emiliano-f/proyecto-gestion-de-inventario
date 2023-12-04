@@ -8,7 +8,7 @@ class TipoInsumoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.TipoInsumo
-        fields = '__all__'
+        exclude = ['created_by']
 
 class TipoInsumoNombreSerializer(serializers.ModelSerializer):
     """
@@ -17,6 +17,7 @@ class TipoInsumoNombreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.TipoInsumo
+        exclude = ['created_by']
 
 # Insumo con estado
 class InsumoSerializer(serializers.ModelSerializer):
@@ -26,7 +27,7 @@ class InsumoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Insumo
-        fields = '__all__'
+        exclude = ['is_active','created_by']
 
 class InsumoTipoInsumoSerializer(InsumoSerializer):
     """
@@ -44,7 +45,7 @@ class InsumoSerializerWithoutEstado(serializers.ModelSerializer):
 
     class Meta:
         model = models.Insumo
-        fields = '__all__'
+        exclude = ['is_active','created_by']
 
 class InsumoTipoInsumoWithoutEstado(InsumoSerializerWithoutEstado):
     """
@@ -62,7 +63,7 @@ class OrdenRetiroSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.OrdenRetiro
-        fields = '__all__'
+        exclude = ['is_active','created_by']
 
 class OrdenRetiroFkReplacedSerializer(OrdenRetiroSerializer):
     """
@@ -79,7 +80,7 @@ class AjusteStockSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.AjusteStock
-        fields = '__all__'
+        exclude = ['created_by']
 
 class AjusteStockJoinedSerializer(AjusteStockSerializer):
     """

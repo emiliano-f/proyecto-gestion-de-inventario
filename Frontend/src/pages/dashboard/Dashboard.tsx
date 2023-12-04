@@ -24,7 +24,6 @@ function Dashboard() {
         return <Link to="/login" />;
     }
 
-    const [message,setMessage] = useState({title: "",desc: "",is_error: false});
     
     return (
         <div className="main">
@@ -35,7 +34,7 @@ function Dashboard() {
                     <Sidebar />
                 </div>
                 <div className="contentContainer">
-                    <MessageDisplay stateMessage={message} setStateMessage={setMessage}/>
+                    <MessageDisplay/>
                     <Outlet/>
                 </div>
             </div>

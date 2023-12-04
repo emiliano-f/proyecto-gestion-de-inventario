@@ -7,6 +7,7 @@ import { UpdateItem as Update, CreateItem as Create } from "../../../../../Api/a
 import { setMessage } from "../../../../providerComponents/messageDisplay/MessageDisplay";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
+import { Exception } from "sass";
 
 
 
@@ -32,26 +33,23 @@ const StockAdjusment = (props: Props) => {
         const formData = new FormData(form);
         formData.append("insumo", props.id.toString());
         formData.append('accionCantidad', formData.get("cantidad")>=0?'Sumar':'Restar');
+        formData.set("cantidad",Math.abs(formData.get("cantidad")))
         console.log(formData)
-
-        if (form.checkValidity() === false) {
-            e.stopPropagation();
-        } else {
+        if (form.checkValidity() === true) {
+            console.log("e")
             Create('ajustes-stock', formData)
                 .then(() => {
                     setMessage(`El ajuste de stock sobre ${props.slug} se ha realizado con exito`, null)
+                    setValidated(true);
+                    props.setOpen(false);
                 })
                 .catch((error) => {
                     setMessage(`Ha surgido un error al realizar el ajuste de stock sobre ${props.slug}.`, error)
                 })
                 .finally(() => props.setOpen(false));
-            console.log("Ajuste de stock realizado");
-
+        }else{
+            setMessage(`Todos los campos son obligatorios`, Promise.reject(new Error("Motivo es campo obligatorio")))
         }
-        setValidated(true);
-        props.setOpen(false);
-
-
     };
 
     return (
