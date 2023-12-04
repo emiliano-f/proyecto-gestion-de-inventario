@@ -1,6 +1,6 @@
 import "./listByEntity.scss"
 import { PureComponent, useEffect, useRef, useState } from "react";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, ListGroup } from "react-bootstrap";
 import { FixedSizeList } from 'react-window';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
@@ -90,6 +90,8 @@ function ListFilters({ setFilterID, filterName }): React.ReactElement {
                 <h4>Pedidos de Insumo</h4>
                 <Card className="custom-card">
                     <input value={currWord} placeholder="Buscar..." onChange={(event) => setCurrWord(event.target.value)}/>
+                    <div style={{ maxHeight: '65vh', overflowY: 'auto' }}>
+                    <ListGroup>
                     {
                         filters.filter(lookFor).map((filter,index) => {
                             return (
@@ -102,7 +104,9 @@ function ListFilters({ setFilterID, filterName }): React.ReactElement {
                             )
                         })
                     }
-                </Card>
+                    </ListGroup>
+                     </div>
+               </Card>
             </Card>
         </div>
     );
