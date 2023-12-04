@@ -224,9 +224,19 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
             "cantidad": {
                 editable: true,
                 show: true,
-                name: "Ajuste realizado",
+                name: "Valor",
                 type: "number",
                 col_size: SIZE.TINY,
+                required: true,
+                select: false,
+                enum: false
+            },
+            "accionCantidad": {
+                editable: false,
+                show: true,
+                name: "Accion",
+                type: "string",
+                col_size: SIZE.SMALL,
                 required: true,
                 select: false,
                 enum: false
@@ -247,16 +257,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 name: "Fecha",
                 type: "date",
                 col_size: SIZE.TINY,
-                required: true,
-                select: false,
-                enum: false
-            },
-            "accionCantidad": {
-                editable: false,
-                show: false,
-                name: "Accion",
-                type: "string",
-                col_size: SIZE.SMALL,
                 required: true,
                 select: false,
                 enum: false
