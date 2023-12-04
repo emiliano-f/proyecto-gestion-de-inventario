@@ -25,7 +25,7 @@ class HerramientaCommonLogic:
                        'created_by': herramienta.created_by.id}
         estado_serializer = serializer.EstadoHerramientaSerializer(data=estado_data)
         estado_serializer.is_valid(raise_exception=True)
-        estado_serializer.save()
+        estado_serializer.save(created_by=herramienta.created_by)
 
 class TipoHerramientaCRUD(CustomModelViewSet):
     serializer_class = serializer.TipoHerramientaSerializer
@@ -74,8 +74,9 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         try:
             serializer_class = serializer.HerramientaSerializer(data=request.data)
             serializer_class.is_valid(raise_exception=True)
-            herramienta = serializer_class.save(created_by=request.user)
-
+            
+            herramienta = serializer_class.save(created_by=request.user)    
+            
             # estado creation
             HerramientaCommonLogic.create_estado_entry(herramienta)
 

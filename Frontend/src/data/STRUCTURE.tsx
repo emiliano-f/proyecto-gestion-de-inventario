@@ -378,7 +378,7 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 enum: false
             },
             "herramienta": {
-                editable: true,
+                editable: false,
                 show: true,
                 name: "Herramienta",
                 type: "string",
@@ -386,6 +386,16 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 required: true,
                 select: true,
                 enum: false
+            },
+            "estado": {
+                editable: false,
+                show: true,
+                name: "Estado",
+                type: "string",
+                col_size: SIZE.TINY,
+                required: true,
+                select: true,
+                enum: true
             },
             "fecha": {
                 editable: false,
@@ -397,19 +407,9 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select: false,
                 enum: false
             },
-            "estado": {
-                editable: true,
-                show: false,
-                name: "Estado",
-                type: "string",
-                col_size: SIZE.TINY,
-                required: true,
-                select: true,
-                enum: true
-            },
             "observaciones": {
-                editable: true,
-                show: false,
+                editable: false,
+                show: true,
                 name: "Observaciones",
                 type: "string",
                 col_size: SIZE.SMALL,
