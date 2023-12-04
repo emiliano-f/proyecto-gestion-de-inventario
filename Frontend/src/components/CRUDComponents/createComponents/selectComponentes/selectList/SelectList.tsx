@@ -78,6 +78,7 @@ const SelectList = React.memo(({ props }: { props: Props }) => {
             value={currOption}
             required={props.required}
             onChange={changeHandler}
+            disabled={props.fieldName==="tarea"?true:false}
             >
             <option value="" disabled>Elegir {getSingular(itemName)}</option>
             {list

@@ -35,15 +35,15 @@ export const ACTIONS: Record<string, any> ={
         add: false,
         detail: true,
         stockAdj: false,
-        update: true,
-        delete: true,
+        update: false,
+        delete: false,
     },
     "ajustes-stock": {
         add: false,
         detail: false,
         stockAdj: false,
         update: false,
-        delete: true,
+        delete: false,
     },
     "estados-herramienta": {
         add: true,
