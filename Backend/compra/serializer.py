@@ -8,7 +8,7 @@ class PresupuestoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Presupuesto
-        fields = '__all__'
+        exclude = ['created_by']
 
 class DetallePedidoSerializer(serializers.ModelSerializer):
     """
@@ -17,7 +17,7 @@ class DetallePedidoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.DetallePedido
-        fields = '__all__'
+        fields = "__all__"
 
 class DetallePedidoFkReplacedSerializer(DetallePedidoSerializer):
     """
@@ -26,7 +26,7 @@ class DetallePedidoFkReplacedSerializer(DetallePedidoSerializer):
     """
     class Meta:
         model = models.DetallePedido
-        fields = '__all__'
+        fields = "__all__"
 
     #fechaHora = serializers.CharField(source='pedidoInsumo.fechaHora') 
     #observaciones = serializers.CharField(source='pedidoInsumo.observaciones') 
@@ -40,4 +40,5 @@ class PedidoInsumoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.PedidoInsumo
-        fields = '__all__'
+        exclude = ['created_by']
+        

@@ -74,8 +74,9 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         try:
             serializer_class = serializer.HerramientaSerializer(data=request.data)
             serializer_class.is_valid(raise_exception=True)
-            herramienta = serializer_class.save(created_by=request.user)
-
+            
+            herramienta = serializer_class.save(created_by=request.user)    
+            
             # estado creation
             HerramientaCommonLogic.create_estado_entry(herramienta)
 

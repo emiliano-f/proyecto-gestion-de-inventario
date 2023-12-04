@@ -22,7 +22,6 @@ const SelectEnum = ({ props }: { props: Props }) => {
     const [enums, setEnum] = useState("");
     const {entity} =  GetUrlParts();
     const entityName = props.entityName===undefined ? entity : props.entityName;
-    
     useEffect(() => {
         const fetchData = async () => {
             await GetEnums(setEnum); 
@@ -40,6 +39,7 @@ const SelectEnum = ({ props }: { props: Props }) => {
     //useState(()=>{setCurrOption(props.defaultValue)},[enums]);
     const changeHandler = e => setCurrOption(e.target.value);
     //console.log(entityName,props.fieldName)
+    console.log(entityName)
     return ( 
         <Form.Select
             name={props.fieldName}

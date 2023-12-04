@@ -364,7 +364,7 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             tarea_serializer.save()
             
             # update herramientas and estado
-            TareaCommonLogic.update_herramientas(herramientas_data, tarea)
+            TareaCommonLogic.update_herramientas(herramientas_data, tarea, herramientas_models.StatusScale.EN_USO)
             # update empleados relation (Tiempo)
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
             # update insumos
