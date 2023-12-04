@@ -473,16 +473,6 @@ const STRUCTURE: Record<string, Record<string, Record<string, Record<string, any
                 select : false,
                 enum: false
             },
-            "recibido": {
-                editable: true,
-                show: true,
-                name: "recibido",
-                type: "boolean",
-                col_size: SIZE.TINY,
-                required: false,
-                select : true,
-                enum: true
-            },
             "pedidoInsumo": {
                 editable: true,
                 show: true,

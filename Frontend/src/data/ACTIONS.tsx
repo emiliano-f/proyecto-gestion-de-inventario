@@ -54,7 +54,7 @@ export const ACTIONS: Record<string, any> ={
     },
     "pedidos-insumo": {
         add: true,
-        detail: true,
+        detail: false,
         stockAdj: false,
         update: true,
         delete: true,
@@ -68,7 +68,7 @@ export const ACTIONS: Record<string, any> ={
     },
     "presupuestos": {
         add: true,
-        detail: true,
+        detail: false,
         stockAdj: false,
         update: true,
         delete: true,
