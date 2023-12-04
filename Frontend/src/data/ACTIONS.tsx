@@ -46,11 +46,11 @@ export const ACTIONS: Record<string, any> ={
         delete: false,
     },
     "estados-herramienta": {
-        add: true,
-        detail: true,
+        add: false,
+        detail: false,
         stockAdj: false,
-        update: true,
-        delete: true,
+        update: false,
+        delete: false,
     },
     "pedidos-insumo": {
         add: true,
