@@ -156,12 +156,15 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def destroy(self, request, pk):
         try:
             pedido_insumo = models.PedidoInsumo.objects.get(id=pk)
+
+            if pedido_insumo.recibido == models.StatusScale.SI:
+                raise Exception('Pedido recibido, no se puede eliminar')
             pedido_insumo.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except IntegrityError:
             return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e: 
+            return Response({"error":str(e)}, status=status.HTTP_404_NOT_FOUND)
 
     
 class PresupuestoCRUD(CustomModelViewSet):
@@ -233,11 +236,4 @@ class DetallePedidoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
-        try:
-            detalle_pedido = models.DetallePedido.objects.get(id=pk)
-            detalle_pedido.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except IntegrityError:
-            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "La eliminación no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
