@@ -495,7 +495,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class SectorListCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
-    permission_classes = [IsAdminUser]
+
     def __table__():
         return 'sector'
 
