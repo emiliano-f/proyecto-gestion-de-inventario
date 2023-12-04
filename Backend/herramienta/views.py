@@ -111,8 +111,7 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             herramienta = models.Herramienta.objects.get(id=pk)
 
             # herramienta is active
-            if not herramienta.is_active:
-                raise ObjectDoesNotExist('Herramienta no encontrada para eliminación')
+            herramienta.is_active_(raise_exception=True, msg='Herramienta no encontrada para eliminación')
 
             # check if it is in use
             last_estado = models.EstadoHerramienta.objects.filter(herramienta=herramienta).latest('fecha')
@@ -192,11 +191,4 @@ class EstadoHerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
-        try:
-            estado_herramienta = models.EstadoHerramienta.objects.get(id=pk)
-            estado_herramienta.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except IntegrityError:
-            return Response({"error": "No se puede eliminar porque existe una dependencia con otro elemento"}, status=status.HTTP_409_CONFLICT)
-        except: 
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "La eliminación no está permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
