@@ -140,9 +140,10 @@ class HerramientaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             estado_herramienta = models.EstadoHerramienta(
                     herramienta=herramienta,
                     estado=models.StatusScale.ELIMINADA,
-                    observaciones='Eliminacion de registro herramienta id '+str(pk)
+                    observaciones='Eliminacion de registro herramienta id '+str(pk),
+                    created_by=request.user
                 )
-            estado_herramienta.save(created_by=request.user)
+            estado_herramienta.save()
 
             # deactivate herramienta
             herramienta.estado = models.StatusScale.ELIMINADA

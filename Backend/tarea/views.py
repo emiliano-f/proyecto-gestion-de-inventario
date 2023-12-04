@@ -31,9 +31,10 @@ class TareaCommonLogic:
             estado_herramienta = herramienta_models.EstadoHerramienta(
                     herramienta=herramienta,
                     estado=herramienta_models.StatusScale.DISPONIBLE,
-                    observaciones='Finalización tarea id '+str(tarea.id)
+                    observaciones='Finalización tarea id '+str(tarea.id),
+                    created_by=user
                 )
-            estado_herramienta.save(created_by=user)
+            estado_herramienta.save()
 
     def update_herramientas(herramientas_data, tarea, status=None):
         # update herramientas and estado
