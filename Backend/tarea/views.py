@@ -506,6 +506,18 @@ class SectorListCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer_class = serializer.SectorSubsectorSerializer(sectores, many=True)
         return Response(serializer_class.data)
+
+    def create(self, request):
+        return Response({"error": "Operacion no permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def update(self, request, pk):
+        return Response({"error": "Operacion no permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def list(self, request):
+        return Response({"error": "Operacion no permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def destroy(self, request, pk):
+        return Response({"error": "Operacion no permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     
 class SectorCRUD(CustomModelViewSet):
     serializer_class = serializer.SectorSerializer
