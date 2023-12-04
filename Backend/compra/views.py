@@ -27,11 +27,17 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def __table__():
         return 'pedidoinsumo'
 
+    def __update_insumo_model__(detalles):
+        for detalle_pedido in detalles:
+            ## update quantities
+            detalle_pedido.insumo.cantidad += detalle_pedido.cantidad
+            detalle_pedido.insumo.save()
+
     def __update_insumo__(detalles):
         for detalle_pedido in detalles:
-            insumo = Insumo.objects.get(id=detalle_pedido['insumo'].id)
+            insumo = Insumo.objects.get(id=int(detalle_pedido['insumo']))
             ## update quantities
-            insumo.cantidad += detalle_pedido['cantidad']
+            insumo.cantidad += int(detalle_pedido['cantidad'])
             insumo.save()
 
     def list(self, request):
@@ -50,9 +56,9 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
         try:
 
             ## check if detalles is empty
-            #detalles_data = request.data.pop('detalles', [])
-            #if not detalles_data:
-            #    raise Exception("Details empty")
+            detalles_data = request.data.pop('detalles', [])
+            if not detalles_data:
+                raise Exception("Details empty")
 
             serializer_pedido = serializer.PedidoInsumoSerializer(data=request.data)
 
@@ -61,21 +67,21 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             pedido_insumo = serializer_pedido.save(created_by=request.user)
 
             ## check for detalles
-            #serializers_detalles = []
-            #for detalle in detalles_data:
-            #    detalle['pedidoInsumo'] = pedido_insumo.id
-            #    serializers_detalles.append(serializer.DetallePedidoSerializer(data=detalle))
+            serializers_detalles = []
+            for detalle in detalles_data:
+                detalle['pedidoInsumo'] = pedido_insumo.id
+                serializers_detalles.append(serializer.DetallePedidoSerializer(data=detalle))
 
             ### check validity, logic and save
-            #detalle_pedido_models = []
-            #for serializer_detalle in serializers_detalles:
-            #    serializer_detalle.is_valid(raise_exception=True)
-            #    CompraCommonLogic.detalle_pedido_logic(serializer_detalle.validated_data.get('cantidad'))
-            #    detalle_pedido_models.append(serializer_detalle.save())
+            detalle_pedido_models = []
+            for serializer_detalle in serializers_detalles:
+                serializer_detalle.is_valid(raise_exception=True)
+                CompraCommonLogic.detalle_pedido_logic(serializer_detalle.validated_data.get('cantidad'))
+                detalle_pedido_models.append(serializer_detalle.save())
 
             ## check if PedidoInsumo was received
             if pedido_insumo.recibido == 'Si':
-                PedidoInsumoCRUD.__update_insumo__(detalle_pedido_models)
+                PedidoInsumoCRUD.__update_insumo_model__(detalle_pedido_models)
 
             return Response(serializer_pedido.data, status=status.HTTP_201_CREATED)
 
@@ -138,7 +144,7 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
                 serializer_detalles = serializer.DetallePedidoSerializer(
                                                     models.DetallePedido.objects.filter(pedidoInsumo=pk).all(),
                                                     many=True)
-                PedidoInsumoCRUD.__update_insumo__(serializer_detalles.data)
+                PedidoInsumoCRUD.__update_insumo_model__(models.DetallePedido.objects.filter(pedidoInsumo=pk).all())
 
             return Response(serializer_pedido.data)
 
