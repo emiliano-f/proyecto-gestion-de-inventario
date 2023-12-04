@@ -14,12 +14,13 @@ type Entities = {
 type Props = {
     entityName: string,
     entList: Entities,
-    setEntList: React.Dispatch<React.SetStateAction<Entities[]>>
-    amountTitle: string;
-    amountTooltip?: string;
-    amountTitle2: string;
-    amountTooltip2?: string;
-    action?: "update" | "create";
+    setEntList: React.Dispatch<React.SetStateAction<Entities[]>>,
+    amountTitle: string,
+    amountTooltip?: string,
+    amountTitle2: string,
+    amountTooltip2?: string,
+    action?: "update" | "create",
+    readOnly?: boolean
 }
 
 const AddEntityAmount2 = (props:Props) =>{
@@ -97,7 +98,7 @@ const AddEntityAmount2 = (props:Props) =>{
                         <div className="entity">
                             <div className="entity-row">
                                 <InputGroup.Text id="basic-addon1">{i + 1}</InputGroup.Text>
-                                <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: x[props.entityName], exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}}} />
+                                <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: x[props.entityName], exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}, readOnly: props.readOnly}} />
 
                                 <OverlayTrigger
                                     placement="top"
@@ -107,7 +108,7 @@ const AddEntityAmount2 = (props:Props) =>{
                                         </Tooltip>
                                     }
                                 >
-                                    <Form.Control className="w-25" name="horasEstimadas" inputMode="numeric" pattern="[0-9]*" defaultValue={amounts[i]} onChange={(e) => handleChange(i, e.target.value)} />
+                                    <Form.Control className="w-25" name="horasEstimadas" inputMode="numeric" pattern="[0-9]*" defaultValue={amounts[i]} onChange={(e) => handleChange(i, e.target.value)} readOnly={props.readOnly} />
                                 </OverlayTrigger>
 
                                 <OverlayTrigger
@@ -118,14 +119,14 @@ const AddEntityAmount2 = (props:Props) =>{
                                         </Tooltip>
                                     }
                                 >
-                                    <Form.Control readOnly={props.action === "create"} className="w-25" name="horasTotales" inputMode="numeric" pattern="[0-9]*" defaultValue={amounts2[i]} onChange={(e) => handleChange2(i, e.target.value)} />
+                                    <Form.Control readOnly={props.action === "create" || props.readOnly} className="w-25" name="horasTotales" inputMode="numeric" pattern="[0-9]*" defaultValue={amounts2[i]} onChange={(e) => handleChange2(i, e.target.value)} />
                                 </OverlayTrigger>
 
-                                {props.entList.length !== 1 &&
+                                {!props.readOnly && props.entList.length !== 1 &&
                                     <Button className="btn btn-danger" onClick={() => handleDeleteEnt(i)}>-</Button>
                                 }
 
-                                {props.entList.length - 1 === i &&
+                                {!props.readOnly && props.entList.length - 1 === i &&
                                     <Button className="btn btn-success" onClick={handleAddEnt}>+</Button>
                                 }
                             </div>

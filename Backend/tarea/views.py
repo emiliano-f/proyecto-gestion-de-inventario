@@ -40,22 +40,28 @@ class TareaCommonLogic:
         # update herramientas and estado
         
         for herramienta_data in herramientas_data:
-            
             ## update herramienta
             herramienta = herramienta_models.Herramienta.objects.get(id=int(herramienta_data['herramienta']))
             tarea.herramientas.add(herramienta)
-            if not herramienta.is_available():
-                raise Exception('La herramienta no está disponible')
 
-            if status is None:
-                herramienta.estado = herramienta_data['estado']
-            else:
-                herramienta.estado = status
+            not_added_yet = True
+            for herr in tarea.herramientas.all():
+                if herramienta.id == herr.id:
+                    not_added_yet = False
+                    break
 
-            herramienta.save()
+            if not_added_yet:
+                if not herramienta.is_available():
+                    raise Exception('La herramienta no está disponible')
 
-            ## create estado entry
-            HerramientaCommonLogic.create_estado_entry(herramienta)
+                if status is None:
+                    herramienta.estado = herramienta_data['estado']
+                else:
+                    herramienta.estado = status
+
+                herramienta.save()
+                ## create estado entry
+                HerramientaCommonLogic.create_estado_entry(herramienta)
 
     def create_entry_insumos(insumos_data, tarea_pk, user):
         for insumo_data in insumos_data:
@@ -320,7 +326,6 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
 
     def retrieve(self, request, pk):
         try:
-            print(request.user.id)
             tarea = models.Tarea.objects.get(id=pk)
             tarea_data = serializer.TareaJoinedSerializer(tarea).data.copy()
 
@@ -365,7 +370,8 @@ class TareaCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             tarea_serializer.save()
             
             # update herramientas and estado
-            TareaCommonLogic.update_herramientas(herramientas_data, tarea)
+            TareaCommonLogic.update_herramientas(herramientas_data, tarea, herramienta_models.StatusScale.EN_USO)
+            TareaCommonLogic.update_herramientas(herramientas_data, tarea, herramienta_models.StatusScale.EN_USO)
             # update empleados relation (Tiempo)
             TareaCommonLogic.update_empleados_relation(empleados_data, tarea.id, request.user)
             # update insumos
@@ -489,7 +495,7 @@ class OrdenServicioCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response({'error': ErrorToString(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class SectorListCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
-    permission_classes = [IsAdminUser]
+
     def __table__():
         return 'sector'
 
@@ -500,6 +506,18 @@ class SectorListCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer_class = serializer.SectorSubsectorSerializer(sectores, many=True)
         return Response(serializer_class.data)
+
+    def create(self, request):
+        return Response({"error": "Operacion no permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def update(self, request, pk):
+        return Response({"error": "Operacion no permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def list(self, request):
+        return Response({"error": "Operacion no permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def destroy(self, request, pk):
+        return Response({"error": "Operacion no permitida"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     
 class SectorCRUD(CustomModelViewSet):
     serializer_class = serializer.SectorSerializer

@@ -17,6 +17,7 @@ type Props = {
     setEntList: React.Dispatch<React.SetStateAction<Entities[]>>
     amountTitle: string;
     amountTooltip?: string;
+    readOnly?: boolean;
 }
 
 const AddEntityAmount = (props:Props) =>{
@@ -33,7 +34,7 @@ const AddEntityAmount = (props:Props) =>{
 
     useEffect(() => {
         // Actualizar el estado local cuando props.entList cambie
-        setAmounts(props.entList.map(x => x[props.amountTitle] || ""));
+        setAmounts(props.entList.map(x => x[props.amountTitle] || 0));
     }, [props.entList]);
 
 
@@ -74,7 +75,7 @@ const AddEntityAmount = (props:Props) =>{
                         <div className="entity">
                             <div className="entity-row">
                                 <InputGroup.Text id="basic-addon1">{i + 1}</InputGroup.Text>
-                                <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: x[props.entityName], exclude: [...entListString], setEntListObj: {setEntList: props.setEntList, index:i}}} />
+                                <SelectList props={{ fieldName: props.entityName, required: false, defaultValue: x[props.entityName], exclude: [...entListString], setEntListObj: { setEntList: props.setEntList, index: i }, readOnly: props.readOnly }} />
 
                                 <OverlayTrigger
                                     placement="top"
@@ -84,14 +85,14 @@ const AddEntityAmount = (props:Props) =>{
                                         </Tooltip>
                                     }
                                 >
-                                    <Form.Control className="w-25" name="cantidad" inputMode="numeric" pattern="[0-9]*" defaultValue={amounts[i]} onChange={(e) => handleChange(i, e.target.value)} />
+                                    <Form.Control className="w-25" name="cantidad" inputMode="numeric" pattern="[0-9]*" defaultValue={amounts[i]} onChange={(e) => handleChange(i, e.target.value)} readOnly={props.readOnly} />
                                 </OverlayTrigger>
 
-                                {props.entList.length !== 1 &&
+                                {!props.readOnly && props.entList.length !== 1 &&
                                     <Button className="btn btn-danger" onClick={() => handleDeleteEnt(i)}>-</Button>
                                 }
 
-                                {props.entList.length - 1 === i &&
+                                {!props.readOnly && props.entList.length - 1 === i &&
                                     <Button className="btn btn-success" onClick={handleAddEnt}>+</Button>
                                 }
                             </div>
