@@ -55,30 +55,9 @@ class PedidoInsumoCRUD(LoginRequiredNoRedirect, viewsets.ViewSet):
     def create(self, request):
         try:
             serializer_pedido = serializer.PedidoInsumoSerializer(data=request.data)
-
-            ## check data types
             serializer_pedido.is_valid(raise_exception=True)
-            pedido_insumo = serializer_pedido.save(created_by=request.user)
-
-            ## check for detalles
-            serializers_detalles = []
-            for detalle in detalles_data:
-                detalle['pedidoInsumo'] = pedido_insumo.id
-                serializers_detalles.append(serializer.DetallePedidoSerializer(data=detalle))
-
-            ### check validity, logic and save
-            detalle_pedido_models = []
-            for serializer_detalle in serializers_detalles:
-                serializer_detalle.is_valid(raise_exception=True)
-                CompraCommonLogic.detalle_pedido_logic(serializer_detalle.validated_data.get('cantidad'))
-                detalle_pedido_models.append(serializer_detalle.save())
-
-            ## check if PedidoInsumo was received
-            if pedido_insumo.recibido == 'Si':
-                PedidoInsumoCRUD.__update_insumo_model__(detalle_pedido_models)
-
+            serializer_pedido.save()
             return Response(serializer_pedido.data, status=status.HTTP_201_CREATED)
-
         except Exception as e:
             transaction.set_rollback(True)
             return Response({'error':str(e)}, status=status.HTTP_400_BAD_REQUEST)
